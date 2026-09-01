@@ -1,0 +1,590 @@
+# MoroccoApp -- Architecture
+
+## Cel projektu
+
+MoroccoApp to nowoczesna aplikacja podróżnicza w Kotlin + Jetpack Compose. Projekt jest budowany etapami z naciskiem na rozdzielenie odpowiedzialności między UI, ViewModel, Repository i DataSource.
+
+## Warstwy
+
+```text
+UI
+↓
+ViewModel
+↓
+Repository
+↓
+DataSource
+↓
+Model
+```
+
+UI nie pobiera danych bezpośrednio z DataSource. ViewModel korzysta z Repository, a stan ekranu jest wystawiany przez StateFlow.
+
+## Przepływ danych
+
+```text
+DataSource → Repository → ViewModel → StateFlow → collectAsState() → Compose UI
+```
+
+## Model i Repository
+
+`Place` reprezentuje zarówno miasta, jak i miejsca znajdujące się w miastach. O typie obiektu informuje `PlaceType`.
+
+`PlacesRepository` udostępnia m.in.:
+
+```kotlin
+fun getPlaces(): List<Place>
+fun getPlace(placeId: Int): Place?
+fun getPlacesByType(placeType: PlaceType): List<Place>
+fun getChildren(parentPlaceId: Int): List<Place>
+fun search(query: String): List<Place>
+```
+
+`getPlace()` służy do pobrania konkretnego obiektu po identyfikatorze, natomiast `getChildren()` pozwala powiązać miejsca z miastem nadrzędnym.
+
+### Dane zdjęć i opisów
+
+`Place` przechowuje listy zdjęć i opisów. Zdjęcia na ekranach szczegółów mają typ nullable:
+
+```kotlin
+placeImages: List<String?>
+placeDescriptions: List<Int>
+```
+
+`null` w `placeImages` ma znaczenie: oznacza, że na danej stronie nie ma zdjęcia. Nie powinien być traktowany jako błąd ładowania zdjęcia i dlatego nie powoduje wyświetlenia `default_image`.
+
+Liczba zdjęć i opisów nie musi być taka sama. Pozycje są łączone przez system stron `CityPage`.
+
+## Lista miast
+
+```text
+CitiesScreen
+↓
+LazyColumn
+↓
+CityListItem
+↓
+Card
+├── AsyncImage
+└── Column
+    ├── placeName
+    ├── placeTranslate
+    └── placeSnippet
+```
+
+`CityListItem` nie zna ViewModelu i nie wykonuje Navigation. Zgłasza kliknięcie przez:
+
+```kotlin
+onClick: (Place) -> Unit
+```
+
+## Navigation do miasta
+
+Po kliknięciu miasta przekazywany jest jego identyfikator, a nie cały obiekt `Place`.
+
+```text
+CityListItem
+↓
+CitiesScreen
+↓
+navController.navigate("city_details/{cityId}")
+↓
+CityDetailsScreen(placeId)
+```
+
+Argument Navigation jest pobierany jako `String`, a następnie konwertowany do `Int`.
+
+## CityDetailsScreen
+
+`CityDetailsScreen` otrzymuje `placeId`. Sam tworzy `CityDetailsViewModel` przy użyciu `CityDetailsViewModelFactory` i obserwuje jego `uiState`.
+
+```text
+Navigation
+↓
+placeId
+↓
+CityDetailsScreen
+↓
+CityDetailsViewModel
+↓
+PlacesRepository
+```
+
+### CityDetailsUiState
+
+```kotlin
+data class CityDetailsUiState(
+    val place: Place? = null,
+    val children: List<Place> = emptyList()
+)
+```
+
+`place` jest głównym miastem, a `children` to miejsca przypisane do tego miasta.
+
+### CityDetailsViewModel
+
+ViewModel pobiera oba elementy przez Repository:
+
+```text
+getPlace(cityId)
+getChildren(cityId)
+```
+
+i zapisuje je w jednym `CityDetailsUiState`.
+
+### CityDetailsViewModelFactory
+
+Ponieważ `CityDetailsViewModel` wymaga `placeId` w konstruktorze, używany jest `ViewModelProvider.Factory`.
+
+Schemat:
+
+```text
+cityId
+↓
+Int
+↓
+CityDetailsViewModelFactory(placeId)
+↓
+CityDetailsViewModel(placeId)
+```
+
+## Miejsca przypisane do miasta
+
+`CityDetailsScreen` prezentuje `uiState.children` w poziomym `LazyRow`.
+
+```text
+CityDetailsScreen
+↓
+LazyRow
+↓
+PlaceListItem
+```
+
+`PlaceListItem` jest osobnym komponentem, ponieważ ma inne zastosowanie niż `CityListItem`.
+
+- `CityListItem` — lista miast w `CitiesScreen`.
+- `PlaceListItem` — małe karty miejsc w `LazyRow` miasta.
+
+`PlaceListItem` również nie wykonuje Navigation samodzielnie. Otrzymuje callback:
+
+```kotlin
+onClick: (Place) -> Unit
+```
+
+## System stron szczegółów
+
+Zarówno `CityDetailsScreen`, jak i `PlaceDetailsScreen` korzystają z `HorizontalPager`.
+
+Dane są przekształcane do listy `CityPage` przez funkcje `createCityPages()` / `createPlacePages()`.
+
+Liczba stron jest wyznaczana na podstawie większej z liczby zdjęć i opisów, z dodatkową stroną `index == 0` na informacje podstawowe:
+
+```kotlin
+val pageCount = maxOf(
+    images.size,
+    descriptions.size
+) + 1
+```
+
+Pierwsza strona:
+
+```text
+index == 0
+↓
+zdjęcie, jeśli istnieje
+↓
+nazwa
+↓
+tłumaczenie
+↓
+snippet
+↓
+LazyRow miejsc (CityDetails)
+```
+
+Kolejne strony:
+
+```text
+index > 0
+↓
+opcjonalne zdjęcie
+↓
+description
+```
+
+Opis dla strony jest pobierany z pozycji `index - 1` listy `placeDescriptions`, natomiast zdjęcie z pozycji `index` listy `placeImages`. Dzięki temu można niezależnie sterować liczbą opisów i zdjęć.
+
+`null` w `placeImages` oznacza pustą przestrzeń zdjęciową na konkretnej stronie:
+
+```text
+Page 1 → image + description
+Page 2 → null + description
+Page 3 → image + description
+```
+
+Brak zdjęcia wynikający z `null` nie wyświetla placeholdera. Placeholder jest używany tylko tam, gdzie `AsyncImage` faktycznie próbuje załadować obraz i występuje błąd lub brak modelu w miejscach, w których przewidziano obsługę fallback.
+
+## Pionowy scroll i collapsing
+
+Każda strona `HorizontalPager` ma własny `rememberScrollState()` i `verticalScroll()`.
+
+```text
+HorizontalPager
+↓
+page
+↓
+rememberScrollState()
+↓
+Column.verticalScroll(scrollState)
+```
+
+Dzięki temu przesuwanie poziome między kartami jest niezależne od pionowego przewijania treści danej karty.
+
+Zdjęcie hero ma maksymalną wysokość `240.dp`. Podczas pionowego scrollowania wysokość zdjęcia jest zmniejszana o aktualną wartość scrolla, aż do zera.
+
+Do przeliczania `dp` i `px` używany jest `LocalDensity.current`:
+
+```kotlin
+val imageHeight = with(density) {
+    (imageMaxHeight.toPx() - scrollState.value)
+        .coerceAtLeast(0f)
+        .toDp()
+}
+```
+
+Schemat działania:
+
+```text
+scrollState.value
+↓
+zmniejszenie wysokości zdjęcia
+↓
+0 dp
+↓
+zdjęcie znika
+↓
+tekst pozostaje i zajmuje dostępne miejsce
+```
+
+Przy powrocie na górę wysokość zdjęcia ponownie rośnie.
+
+## PageIndicator
+
+`PageIndicator` jest wspólnym komponentem UI używanym przez ekrany szczegółów.
+
+Wyświetla serię małych okręgów odpowiadających liczbie stron. Aktywny okrąg wskazuje `pagerState.currentPage`.
+
+```text
+● ○ ○ ○
+```
+
+Komponent przyjmuje:
+
+```kotlin
+pageCount: Int
+currentPage: Int
+modifier: Modifier
+```
+
+`modifier` pozwala rodzicowi określić pozycję wskaźnika, np. przez `align(Alignment.BottomCenter)` w `Box` zawierającym zdjęcie.
+
+## PlaceDetailsScreen
+
+`PlaceDetailsScreen` korzysta z tego samego mechanizmu stron co `CityDetailsScreen`.
+
+```text
+PlaceListItem
+↓
+onClick(place)
+↓
+Navigation
+↓
+place_details/{placeId}
+↓
+PlaceDetailsScreen
+↓
+PlaceDetailsViewModel
+↓
+PlacesRepository.getPlace(placeId)
+```
+
+Na pierwszej stronie pokazuje podstawowe informacje o miejscu. Kolejne strony prezentują `placeDescriptions` oraz opcjonalne zdjęcia.
+
+`PlaceDetailsScreen` ma również:
+- `HorizontalPager`,
+- pionowy scroll każdej strony,
+- collapsing zdjęcia,
+- `PageIndicator`,
+- HTML-owe opisy.
+
+## HTML w opisach
+
+Opisy w `placeDescriptions` są przechowywane jako identyfikatory zasobów `R.string`, ale ich zawartość może zawierać HTML, np.:
+
+```html
+<h4>Etymologia</h4>
+<p>Treść akapitu...</p>
+<b>Ważna informacja</b>
+```
+
+Do konwersji używany jest komponent `HtmlText`.
+
+`HtmlText` wykorzystuje:
+
+```kotlin
+Html.fromHtml(
+    text,
+    Html.FROM_HTML_MODE_LEGACY
+)
+```
+
+Następnie analizowane są spany Androida i przekształcane do `AnnotatedString` Compose.
+
+Obsługiwane są m.in.:
+- `StyleSpan` → `FontWeight.Bold` / `FontStyle.Italic`,
+- `RelativeSizeSpan` → `SpanStyle(fontSize = ...)`,
+- struktura akapitów generowana przez HTML,
+- wyrównanie tekstu przez `TextAlign`.
+
+`HtmlText` przyjmuje parametr:
+
+```kotlin
+textAlign: TextAlign = TextAlign.Justify
+```
+
+Dzięki temu ekran może użyć np. `TextAlign.Justify`, zachowując formatowanie HTML.
+
+## Docelowy przepływ szczegółów
+
+```text
+CitiesScreen
+↓
+CityDetailsScreen
+↓
+HorizontalPager
+├── podstawowe informacje + LazyRow
+├── description + opcjonalne zdjęcie
+├── description + opcjonalne zdjęcie
+└── ...
+        ↓
+   PlaceListItem
+        ↓
+PlaceDetailsScreen
+↓
+HorizontalPager
+├── podstawowe informacje
+├── description + opcjonalne zdjęcie
+├── description + opcjonalne zdjęcie
+└── ...
+```
+
+Miasto i konkretne miejsce mają osobne ekrany szczegółów, ale korzystają z tej samej koncepcji prezentacji treści.
+
+## Obrazy
+
+W listach reprezentacyjne zdjęcie może być wybierane przez:
+
+```kotlin
+place.placeImages.firstOrNull()
+```
+
+Na ekranach szczegółów lista może zawierać `null`, aby zachować kontrolę nad tym, na których stronach ma pojawić się zdjęcie.
+
+Obraz ładuje Coil 3 przez `AsyncImage`.
+
+```text
+placeImages
+↓
+AsyncImage
+↓
+HTTPS / OkHttp
+```
+
+Aplikacja wymaga:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+## UI i layout
+
+`CityListItem` korzysta z `Card`, `Row`, `Column`, `fillMaxWidth()`, `weight(1f)`, `padding()`, zdjęcia 112 dp i `ContentScale.Crop`.
+
+Karta używa:
+
+```kotlin
+shape = MaterialTheme.shapes.medium
+elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+```
+
+Hierarchia tekstu:
+
+```text
+placeName
+↓ 8 dp
+placeTranslate
+↓ 4 dp
+placeSnippet
+```
+
+`placeTranslate` jest wyświetlane kursywą.
+
+Na ekranach szczegółów zdjęcie jest traktowane jako szeroki element typu hero. Tekst poniżej ma własne marginesy, dzięki czemu zdjęcie może wykorzystać pełną szerokość ekranu.
+
+## Zasada odpowiedzialności komponentów
+
+Komponenty UI nie powinny same decydować o Navigation ani pobierać danych z Repository.
+
+```text
+PlaceListItem
+↓
+onClick(place)
+↓
+rodzic
+↓
+Navigation
+```
+
+Navigation przekazuje identyfikatory, a ViewModel pobiera właściwe obiekty domenowe.
+
+## Aktualny etap
+
+Podstawowa architektura list, Navigation, ekranów szczegółów, pagera, scrollowania, collapsing oraz formatowania opisów HTML jest zaimplementowana.
+
+Kolejne planowane obszary:
+
+```text
+dalsze dopracowanie UX
+↓
+Weather
+↓
+Maps
+↓
+Search
+↓
+Favorites
+↓
+Room
+↓
+Hilt
+```
+
+## Zdjęcia i licencje
+
+W przyszłości planowane jest korzystanie m.in. ze zdjęć Wikimedia Commons. Docelowo można rozważyć model zdjęcia zawierający URL, źródło, autora i licencję.
+
+
+## Aktualizacja 30–31 sierpnia 2026
+
+### Wikimedia ImageLoader
+
+Konfiguracja ładowania zdjęć Wikimedia została scentralizowana w `data/image/WikimediaImageLoader.kt`. `createWikimediaImageLoader(context)` tworzy Coil `ImageLoader` wykorzystujący wspólny klient OkHttp z odpowiednim `User-Agent`. Dzięki temu konfiguracja nie jest kopiowana w `CityDetailsScreen`, `PlaceDetailsScreen` i `CityListItem`.
+
+Przepływ: 
+
+```text
+WikimediaRetrofit
+↓
+WikimediaRepository
+↓
+WikimediaViewModel
+↓
+Map<Int, WikimediaImage>
+↓
+createWikimediaImageLoader()
+↓
+AsyncImage
+```
+
+### Wspólny DetailsPager
+
+Logika `CityDetailsScreen` i `PlaceDetailsScreen` została zrefaktoryzowana do `DetailsPager`. Wspólny komponent obsługuje pager, zdjęcia, attribution, collapsing, scroll, PageIndicator, nazwę, tłumaczenie, snippet i descriptions.
+
+```text
+CityDetailsScreen ──┐
+                    ├── DetailsPager
+PlaceDetailsScreen ─┘
+```
+
+Różnice są przekazywane przez opcjonalny slot Compose:
+
+```kotlin
+content: @Composable () -> Unit = {}
+```
+
+City przekazuje `LazyRow` miejsc, Place nie przekazuje dodatkowej zawartości.
+
+### Wspólne tworzenie stron
+
+Wcześniejsze `createCityPages()` i `createPlacePages()` zostały zastąpione wspólnym `createPages()`. Dzięki temu sposób mapowania `WikimediaImageRef`, lokalnych URL-i i opisów jest jeden dla obu ekranów.
+
+### Odpowiedzialność layoutu
+
+W `DetailsPager` `Box` zawiera wyłącznie hero image i elementy nakładane na zdjęcie (`WikimediaAttributionIcon`, `PageIndicator`). Nazwa, translate, snippet, descriptions i opcjonalny `content()` znajdują się w nadrzędnym `Column`, dzięki czemu nie nachodzą na zdjęcie.
+
+### Przyszła Application
+
+Projekt obecnie nie ma własnej klasy `Application`. Jest to świadoma sytuacja na obecnym etapie. Przy planowanym dodaniu map OSM konfiguracja aplikacji może zostać przeniesiona do własnej klasy `Application`, podobnie jak wcześniej w GlobeTrotter.
+
+
+## Aktualizacja 31 sierpnia – 1 września 2026
+
+### Źródła danych online
+
+Do architektury dołączono Wikidata jako źródło dynamicznych danych dla obiektów posiadających `wikidataId`. Wikimedia pozostaje źródłem informacji o zdjęciach i ich attribution.
+
+```text
+Place
+  └── wikidataId
+        ↓
+WikidataRepository
+        ↓
+WikidataInfo
+        ↓
+CityDetails / PlaceDetails
+```
+
+Dla City `WikidataInfo` zawiera obecnie `population`, `area`, `elevation` oraz `inception: WikidataTime?`.
+
+### Repository i cache
+
+Repository jest nadal interfejsem w `domain/repository`, a implementacja znajduje się w `data/repository`. Do danych online dodano interfejsy cache w domenie oraz implementacje pamięciowe w warstwie data.
+
+```text
+domain/repository
+├── WikidataRepository
+├── WikidataCache
+└── WikimediaCache
+
+ data/repository
+├── WikidataRepositoryImpl
+└── WikimediaRepositoryImpl
+
+ data/cache
+├── WikidataMemoryCache
+└── WikimediaMemoryCache
+```
+
+### `MyApp` i współdzielone zależności
+
+Projekt ma już własną klasę `MyApp : Application`. Na obecnym etapie przechowuje wspólne instancje `WikidataMemoryCache` i `WikimediaMemoryCache`. Jest to punkt centralizacji zależności, który w przyszłości może zostać rozszerzony o konfigurację OSM i inne elementy infrastruktury.
+
+### Wspólny klient HTTP
+
+Konfiguracja `User-Agent` została wydzielona do wspólnego klienta HTTP, wykorzystywanego przez usługi Wikimedia/Wikidata oraz Coil. Eliminuje to kolejne duplikaty konfiguracji i centralizuje zachowanie sieciowe.
+
+### Wikimedia -- ograniczenie requestów
+
+`WikimediaViewModel` ogranicza liczbę jednoczesnych requestów do trzech (`Semaphore(3)`) oraz blokuje równoległe ponowne pobieranie tego samego `pageId`. Repository korzysta z `WikimediaCache`, dzięki czemu dane pobrane wcześniej w bieżącej sesji mogą być używane bez kolejnego requestu.
+
+### Loading obrazu
+
+Stan ładowania właściwego pliku obrazu jest obecnie kontrolowany przez Coil w `DetailsPager`, a nie przez stan pobierania metadanych Wikimedia. `LinearProgressIndicator` jest wyświetlany podczas `onLoading` i znika przy `onSuccess`/`onError`.
+
+### Offline
+
+Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po utracie sieci w obrębie tej samej sesji. Cache znika po zakończeniu procesu aplikacji. Trwały storage nie został jeszcze wdrożony. Room pozostaje przyszłym krokiem, kiedy potrzebny będzie offline po restarcie.
+
+### Planowane rozszerzenia
+
+W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model domenowy i przepływy online/offline.

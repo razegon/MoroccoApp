@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Morocco Nature -->
+    <!-- Gibraltar Strait -->
+    <string name="gibraltar_strait_name">Cieśnina Gibraltarska</string>
+    <string name="trans_gibraltar_strait">arab. Jebel al-Tariq</string>
+    <string name="gibraltar_strait_founded" tools:ignore="Typos">ok. 5.3 mln lat temu</string>
+    <string name="gibraltar_strait_dimensions" tools:ignore="Typos">dł. 14 – 44 km, szer. ok. 60 km</string>
+    <string name="gibraltar_strait_deep" tools:ignore="Typos">głębokość ok. 900 m</string>
+    <string name="desc1_gibraltar_strait">
+        &lt;p>\t\tCieśnina Gibraltarska to strategiczny akwen łączący Ocean Atlantycki z Morzem Śródziemnym, oddzielający Europę od Afryki. Znajduje się pomiędzy południowym wybrzeżem Hiszpanii a północnym wybrzeżem Maroka i ma około 14 kilometrów szerokości w najwęższym miejscu. Jest to jeden z najważniejszych szlaków żeglugowych na świecie, przez który codziennie przepływają statki handlowe, tankowce i okręty wojskowe.&lt;/p>
+        &lt;p>\t\tCieśnina od wieków była kluczowym punktem w historii i geografii regionu. W starożytności była znana jako Słupy Herkulesa i stanowiła symboliczną granicę świata znanego Grekom i Rzymianom. W VIII wieku przez cieśninę przeprawili się muzułmańscy najeźdźcy pod wodzą Tarika ibn Zijada, rozpoczynając trwające prawie osiem wieków panowanie Maurów na Półwyspie Iberyjskim. W czasach nowożytnych cieśnina zyskała znaczenie militarne, a w 1704 roku Gibraltar został przejęty przez Brytyjczyków i do dziś pozostaje terytorium zamorskim Wielkiej Brytanii.&lt;/p>
+        &lt;p>\t\tKlimat w rejonie cieśniny jest łagodny, z wpływami zarówno atlantyckimi, jak i śródziemnomorskimi. Cieśnina Gibraltarska jest również ważnym obszarem ekologicznym, gdzie występują delfiny i wieloryby, a sezonowe migracje ptaków między Europą a Afryką przyciągają ornitologów z całego świata.&lt;/p>
+        &lt;p>\t\tObecnie cieśnina jest nie tylko kluczowym węzłem handlowym, ale także popularnym miejscem turystycznym. Turyści odwiedzający Gibraltar mogą podziwiać słynną Skałę Gibraltarską, jaskinię Świętego Michała oraz makaki berberyjskie, jedyne dziko żyjące małpy w Europie. Po stronie marokańskiej interesującym miejscem jest miasto Tanger, które łączy bogatą historię z nowoczesnym klimatem.&lt;/p>
+        &lt;p>\t\tDzięki swojemu strategicznemu położeniu, bogatej historii i przyrodniczym atrakcjom, Cieśnina Gibraltarska pozostaje fascynującym miejscem zarówno dla podróżników, jak i miłośników historii oraz przyrody.&lt;/p>
+    </string>
+    <string name="desc2_gibraltar_strait">
+        &lt;h4>Położenie geograficzne&lt;/h4>
+        &lt;p>\t\tCieśnina Gibraltarska znajduje się między południowym wybrzeżem Hiszpanii a północnym wybrzeżem Maroka. Oddziela Półwysep Iberyjski od Afryki i łączy Ocean Atlantycki z Morzem Śródziemnym.&lt;/p>
+        &lt;ol>
+            &lt;li>\tSzerokość: od 14 do 44 km&lt;/li>
+            &lt;li>\tDługość: około 60 km&lt;/li>
+            &lt;li>\tNajwęższy punkt: 14 km (między Punta de Tarifa w Hiszpanii a Jebel Musa w Maroku)&lt;/li>
+            &lt;li>\tŚrednia głębokość: 300–900 m&lt;/li>
+        &lt;/ol>
+        &lt;h4>Znaczenie strategiczne&lt;/h4>
+        &lt;p>\t\tCieśnina jest jednym z najważniejszych szlaków morskich świata. Codziennie przepływa przez nią około 300 statków, w tym tankowce, kontenerowce i jednostki wojskowe. Kontroluje ją kilka państw, w tym Hiszpania, Maroko i Wielka Brytania, która sprawuje władzę nad Gibraltarem.&lt;/p>
+        &lt;h4>Historia i geologia&lt;/h4>
+        &lt;p>\t\tCieśnina powstała około 5 milionów lat temu podczas tzw. kryzysu messyńskiego, gdy wody Atlantyku przerwały barierę skalną i zalały basen Morza Śródziemnego. W starożytności nazywana była Słupami Herkulesa i uważana za granicę znanego świata.&lt;/p>
+        &lt;h4>Ekosystem i ochrona przyrody&lt;/h4>
+        &lt;p>\t\tCieśnina jest domem dla wielu gatunków morskich, w tym delfinów i wielorybów. Jest także ważnym punktem migracji ptaków między Europą a Afryką. Ochroną objęte są liczne rezerwaty morskie, takie jak Parque Natural del Estrecho w Hiszpanii.&lt;/p>
+        &lt;p>\t\tCieśnina Gibraltarska pozostaje jednym z najważniejszych punktów geostrategicznych świata, łącząc nie tylko kontynenty, ale także kultury i tradycje Europy i Afryki.&lt;/p>
+    </string>
+    <string name="desc3_gibraltar_strait">
+        &lt;p>\t\tNazwa Cieśnina Gibraltarska pochodzi od arabskiego określenia "Jabal Ṭāriq" (جبل طارق), które oznacza "Góra Tarika".&lt;/p>
+        &lt;p>\t\tNazwa ta upamiętnia berberyjskiego wodza Tarika ibn Zijada, który w 711 roku na czele wojsk umajjadzkich przeprawił się przez cieśninę, rozpoczynając muzułmański podbój Półwyspu Iberyjskiego. Jego armia wylądowała na skalistym przylądku, znanym dziś jako Gibraltar, i stąd wzięła się nazwa góry – Jabal Ṭāriq (Góra Tarika).&lt;/p>
+        &lt;p>\t\tZ czasem arabska nazwa Jabal Ṭāriq została zlatynizowana i przekształcona w Gibraltar, a stąd pochodzi współczesne określenie Cieśnina Gibraltarska.&lt;/p>
+        &lt;p>\t\tPrzed tym okresem w czasach starożytnych cieśnina była znana jako Słupy Herkulesa (Columnae Herculis), ponieważ Grecy i Rzymianie uważali ją za granicę znanego świata.&lt;/p>
+    </string>
+
+    <!-- Safran -->
+    <string name="safran_name">Szafran</string>
+    <string name="trans_safran">pers. za\'far</string>
+    <string name="desc1_safran">
+        &lt;h4>Pochodzenie&lt;/h4>
+        &lt;p>Szafran pochodzi z regionu Azji Mniejszej i był uprawiany już w starożytności na terenach dzisiejszego Iranu i Grecji. Obecnie największym producentem szafranu jest Iran, który odpowiada za około 90\% światowej produkcji. Szafran uprawia się również w Indii (region Kaszmiru), Hiszpanii, Grecji, Maroku i Afganistanie.&lt;/p>
+        &lt;p>W kulturze antycznej i średniowiecznej szafran miał znaczenie symboliczne – był używany jako barwnik, lek, przyprawa, a nawet ofiara religijna. Dzięki swojemu prestiżowi i trudnej dostępności stał się symbolem luksusu i bogactwa.&lt;/p>
+        &lt;p>Nazwa \"szafran\" wywodzi się z języków orientalnych i przeszła przez wiele etapów ewolucji językowej:&lt;/p>
+        &lt;ol>
+            &lt;li>\tJęzyk arabski: Słowo \"za\'farān\" oznacza \"żółty\" lub \"barwa żółta\" i odnosi się do charakterystycznego koloru, który szafran nadaje potrawom.&lt;/li>
+            &lt;li>\tJęzyk perski: Możliwe, że słowo to pochodzi z jeszcze wcześniejszego języka perskiego, gdzie określenia związane z kolorem żółtym również były zbliżone do \"za\'far\".&lt;/li>
+            &lt;li>\tJęzyk łaciński: Arabskie określenie zostało zaadaptowane do łacińskiego \"safranum\", co z kolei wpłynęło na języki romańskie.&lt;/li>
+            &lt;li>\tJęzyk francuski i angielski: W średniowieczu słowo przeszło do starofrancuskiego jako \"safran\" i w tej formie zaczęło być używane w Europie, trafiając do języka angielskiego jako \"saffron\".&lt;/li>
+            &lt;li>\tJęzyk polski: Nazwa \"szafran\" pojawiła się w języku polskim prawdopodobnie za pośrednictwem wpływów łacińskich i francuskich, w czasach, gdy przyprawy orientalne zaczęły być importowane do Europy.&lt;/li>
+        &lt;/ol>
+    </string>
+    <string name="desc2_safran">
+        &lt;h4>Proces dojrzewania i zbiory&lt;/h4>
+        &lt;ol>
+            &lt;li>\tUprawa: Krokusy są roślinami wieloletnimi, które kwitną wczesną jesienią. Uprawia się je głównie na glebach piaszczystych i dobrze przepuszczalnych.&lt;/li>
+            &lt;li>\tKwitnienie: Kwiaty krokusa zakwitają bardzo szybko, często w ciągu jednej nocy. Kwiaty muszą być zbierane rano, zanim słońce otworzy płatki – wtedy znamiona są najbardziej aromatyczne.&lt;/li>
+            &lt;li>\tRęczny zbiór: Szafran jest zbierany ręcznie, co jest niezwykle czasochłonne. Każdy kwiat ma tylko trzy delikatne znamiona, które trzeba ręcznie wyciągnąć i wysuszyć.&lt;/li>
+            &lt;li>\tSuszenie: Po zbiorach znamiona są suszone w kontrolowanych warunkach, co nadaje im intensywny aromat i długotrwałość.&lt;/li>
+        &lt;/ol>
+        &lt;h4>Właściwości&lt;/h4>
+        &lt;p>Szafran to przyprawa pozyskiwana z wysuszonych znamion kwiatu krokusa uprawnego (Crocus sativus). Charakteryzuje się intensywnym aromatem, gorzkawym smakiem i pięknym, głębokim, żółto-pomarańczowym kolorem. Jego najważniejsze składniki to:&lt;/p>
+        &lt;ol>
+            &lt;li>\tKrocyna – odpowiada za charakterystyczny żółty kolor.&lt;/li>
+            &lt;li>\tPikrokrocyna – odpowiada za gorzkawy smak.&lt;/li>
+            &lt;li>\tSafranal – daje szafranowi jego wyjątkowy aromat.&lt;/li>
+        &lt;/ol>
+        &lt;p>Szafran jest również znany ze swoich właściwości przeciwutleniających i jest stosowany w medycynie naturalnej, kuchni oraz kosmetyce.&lt;/p>
+    </string>
+    <string name="desc3_safran">
+        &lt;h4>Dlaczego szafran jest najdroższą przyprawą?&lt;/h4>
+        &lt;ol>
+            &lt;li>\tRęczna praca: Cały proces – od sadzenia, przez zbiór, po suszenie – odbywa się ręcznie.&lt;/li>
+            &lt;li>\tNiska wydajność: Do uzyskania 1 kg suszonego szafranu potrzeba aż około 150 000–200 000 kwiatów.&lt;/li>
+            &lt;li>\tKrótki okres zbiorów: Krokusy kwitną zaledwie przez około 2 tygodnie w roku, co ogranicza dostępność surowca.&lt;/li>
+            &lt;li>\tUnikalność: Szafran jest trudny w uprawie, a tylko kilka krajów na świecie może zapewnić idealne warunki klimatyczne.&lt;/li>
+        &lt;/ol>
+        &lt;p>Cena szafranu może sięgać kilkudziesięciu tysięcy dolarów za kilogram.&lt;/p>
+        &lt;p>W 2025 roku cena szafranu w Maroku wynosiła od 50 do 70 dirhamów marokańskich za gram. W przeliczeniu na złotówki, przy kursie 1 dirham = 0,40 zł, daje to około 20–28 zł za gram. W Polsce ceny szafranu są wyższe; na przykład, marokański szafran o wadze 1 grama kosztuje około 40 zł. Różnice w cenach wynikają z kosztów importu oraz dostępności produktu na lokalnym rynku.&lt;/p>
+    </string>
+
+    <!-- Atlas -->
+    <string name="atlas_name">Góry Atlas</string>
+    <string name="trans_atlas">tytan Atlas</string>
+    <string name="atlas_founded">ok. 400 – 65 mln lat</string>
+    <string name="desc1_atlas">
+        &lt;p>\t\tAtlas to rozległy system górski w północno-zachodniej Afryce, rozciągający się na terytoria Maroka, Algierii i Tunezji. Jest to geologicznie złożony region, który obejmuje kilka równoległych pasm oddzielonych dolinami i kotlinami. Najwyższym szczytem Atlasu jest Dżabal Tubkal (4167 m n.p.m.), położony w południowym Maroku. Góry te pełnią kluczową rolę w klimacie regionu, tworząc barierę pomiędzy wilgotnym wybrzeżem a suchym, pustynnym obszarem Sahary.&lt;/p>
+        &lt;p>\t\tAtlas dzieli się na trzy główne części:&lt;/p>
+        &lt;ul>
+            &lt;li>\tAtlas Wysoki&lt;/li>
+            &lt;li>\tAtlas Średni&lt;/li>
+            &lt;li>\tAtlas Saharyjski&lt;/li>
+            &lt;li>\tDodatkowo można wyróżnić Góry Antyatlas oraz Góry Tellski Atlas, które stanowią odrębne pasma w ramach tego rozległego systemu&lt;/li>
+        &lt;/ul>
+        &lt;p>\t\tDla turystów Góry Atlas są popularnym celem podróży, szczególnie w Maroku. Region oferuje malownicze krajobrazy, tradycyjne wioski Berberów, wysokogórskie szlaki oraz możliwość eksplorowania pustynnych krajobrazów. W zimie możliwe jest także uprawianie sportów zimowych, zwłaszcza w regionie Oukaimeden w Maroku.&lt;/p>
+
+    </string>
+    <string name="desc2_atlas">
+        &lt;h4>Atlas Wysoki&lt;/h4>
+         &lt;ul>
+            &lt;li>\tNajwyższy szczyt: Dżabal Tubkal (4167 m n.p.m.)&lt;/li>
+            &lt;li>\tPasmo to rozciąga się na długości około 700 km i stanowi najwyższą część systemu. Występują tu surowe, ostre szczyty, rozległe doliny oraz lodowce.&lt;/li>
+            &lt;li>\tKlimat: Surowy, górski, zimą pokrywa śniegu jest powszechna&lt;/li>
+            &lt;li>\tTurystyka: Popularne szlaki górskie i wspinaczkowe, zwłaszcza w Parku Narodowym Tubkal&lt;/li>
+        &lt;/ul>
+        &lt;h4>Fauna Atlasu Wysokiego&lt;/h4>
+        &lt;p>Atlas Wysoki, najwyższe pasmo tego systemu górskiego, cechuje się surowymi warunkami, z zimnymi zimami i ograniczoną roślinnością. Niemniej jednak, jest zamieszkiwany przez różnorodne zwierzęta.&lt;/p>
+        &lt;h5>Makak berberyjski (Macaca sylvanus)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tJeden z najbardziej znanych mieszkańców Atlasu. Jest to jedyna dzika małpa w Afryce Północnej.&lt;/li>
+            &lt;li>\tŻywi się owocami, liśćmi i nasionami.&lt;/li>
+            &lt;li>\tMakaki są często widywane w lasach cedrowych.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Ryś pardelowy (Lynx pardinus)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tRzadki drapieżnik występujący w regionie, choć jego liczebność jest bardzo ograniczona.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Dziki kot (Felis silvestris lybica)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tPrzodek współczesnych kotów domowych. Prowadzi nocny tryb życia i jest bardzo ostrożny.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Dzika koza (Capra pyrenaica)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tZamieszkuje wyższe partie gór, doskonale przystosowana do stromych terenów.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Szakal złocisty (Canis aureus)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tWszechstronny drapieżnik, występujący na różnych wysokościach.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Orzeł przedni (Aquila chrysaetos)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tDuży drapieżny ptak, często widywany w przestworzach Atlasu Wysokiego.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Żmija rogata (Cerastes cerastes)&lt;/h5>
+        &lt;ul>
+            &lt;li>\tNiebezpieczny wąż zamieszkujący suche obszary na obrzeżach gór.&lt;/li>
+        &lt;/ul>
+    </string>
+    <string name="desc3_atlas">
+        &lt;h4>Atlas Średni&lt;/h4>
+        &lt;p>\t\tAtlas Średni, z łagodniejszymi wzniesieniami i bardziej zalesionymi terenami, jest bogaty w faunę, szczególnie w lasach cedrowych i sosnowych.&lt;/p>
+        &lt;h5>Makak berberyjski (Macaca sylvanus)&lt;/h5>
+         &lt;ul>
+            &lt;li>\tAtlas Średni to jedno z głównych siedlisk tego gatunku. Można je spotkać w rejonie lasów cedrowych wokół Ifrane.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Jeżozwierz północnoafrykański (Hystrix cristata)&lt;/h5>
+         &lt;ul>
+            &lt;li>\tGatunek gryzonia, który zamieszkuje lasy i skaliste tereny. Znany z charakterystycznych igieł na grzbiecie.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Kameleon afrykański (Chamaeleo chamaeleon)&lt;/h5>
+         &lt;ul>
+            &lt;li>\tJaszczurka zdolna do zmiany koloru w zależności od otoczenia.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Lis pustynny (Vulpes rueppellii)&lt;/h5>
+         &lt;ul>
+            &lt;li>\tMały lis o dużych uszach, który występuje również w bardziej zalesionych częściach Atlasu Średniego.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Sęp płowy (Gyps fulvus)&lt;/h5>
+         &lt;ul>
+            &lt;li>\tDuży padlinożerny ptak, często widziany szybujący nad górskimi dolinami.&lt;/li>
+        &lt;/ul>
+        &lt;p>\t\tGady i płazy: W Atlasie Średnim można spotkać liczne gatunki węży, jaszczurek oraz rzadko występujące żaby.&lt;/p>
+    </string>
+    <string name="desc4_atlas">
+        &lt;h4>Antyatlas&lt;/h4>
+        &lt;p>Antyatlas to pasmo górskie w południowo-zachodnim Maroku, stanowiące najdalej na południe wysuniętą część systemu Atlasu. Rozciąga się łukiem od wybrzeża Atlantyku w rejonie Agadiru, przez okolice Tafraoute, aż po obrzeża Sahary w okolicy Tata i Foum Zguid.&lt;/p>
+        &lt;p>&lt;/p>
+        &lt;h5>Budowa geologiczna&lt;/h5>
+        &lt;ul>
+            &lt;li>\tgóry są bardzo stare, powstały w erze paleozoicznej (ponad 300 mln lat temu) i należą do najstarszych struktur górskich w Maroku; dominują tu granity, łupki i piaskowce.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Krajobraz&lt;/h5>
+        &lt;ul>
+            &lt;li>\tpasmo jest niższe niż Wysoki Atlas (najwyższy szczyt Jbel Sirwa ma 3304 m n.p.m.), a jego teren jest bardziej suchy i pustynny, z licznymi skalistymi dolinami, wąwozami i formacjami o niezwykłych kształtach.&lt;/li>
+        &lt;/ul>
+        &lt;h5>Klimat&lt;/h5>
+        &lt;ul>
+            &lt;li>\tKlimat – suchy i półpustynny, z dużymi wahaniami temperatur między dniem a nocą; zimą na wyższych szczytach może pojawić się śnieg.&lt;/li>
+        &lt;/ul>
+    </string>
+
+    <!-- Khettar -->
+    <string name="khettar_name">Khettary</string>
+    <string name="trans_khettar">Kanat, Kariz, Foggara</string>
+    <string name="khettar_founded" tools:ignore="Typos">ok. 1000 r. p.n.e.</string>
+    <string name="desc1_khetter">
+        &lt;h4>Zasada działania&lt;/h4>
+        &lt;p>Kanat dostarcza wodę z wyżej położonej warstwy wodonośnej na niższe tereny. Najważniejszym elementem jest łagodnie opadający tunel, ukryty pod grubą warstwą ziemi. Dzięki temu kanat minimalizuje straty spowodowane parowaniem w pustynnym klimacie, pozwalając transportować wodę na dużo większe odległości niż w przypadku otwartych instalacji wodnych (jak np. akwedukt).&lt;/p>
+        &lt;p>Pozostałością po budowie są pionowe kanały dostępowe, które w trakcie eksploatacji pozwalają też nadzorować stan tunelu i usuwać zatory. Materiał wydobyty z pionu zazwyczaj pozostawiany jest w pobliżu wlotu, dzięki czemu cały kanat na powierzchni widoczny jest jako rząd niewielkich kopców ziemnych.&lt;/p>
+        &lt;p>Ponieważ woda w kanacie jest najczystsza w pobliżu źródła, lepiej sytuowani ludzie zazwyczaj zasiedlali okolice górnego biegu tunelu. W miejscach, gdzie kanat był jeszcze za głęboko by wyprowadzić wodę na powierzchnię, do jej czerpania budowano specjalne studnie. Jedną z form jest studnia perska, w której rolę elementu czerpiącego pełni świder napędzany przez zwierzęta pociągowe, zazwyczaj osły lub muły. Uzyskaną w ten sposób wodę przechowywano w podziemnych cysternach i wykorzystywano również do chłodzenia powietrza w budynkach mieszkalnych.&lt;/p>
+    </string>
+    <string name="desc2_khettar" tools:ignore="Typos">
+        &lt;h4>Dystrybucja wody&lt;/h4>
+        &lt;p>Kanat doprowadzający wodę na tereny miejskie lub rolnicze często rozdzielony jest na szereg mniejszych kanałów, biegnących do poszczególnych odbiorców (lub na oddzielne pola uprawne). Do równego podziału wody służą zbiorniki z szeregiem identycznych otworów na jednakowym poziomie.&lt;/p>
+        &lt;h4>Magazynowanie wody&lt;/h4>
+        &lt;p>W celu przechowywania wody pitnej kanat często zwieńczony jest cysterną. Zazwyczaj są to podziemne zbiorniki, wyposażone w wentylację, ale ze względów higienicznych niedostępne dla ludzi. Pobór wody odbywa się przez krany, eliminując ryzyko związane z zanurzaniem w rezerwuarze przedmiotów niewiadomego pochodzenia.&lt;/p>
+        &lt;p>Znanym i nadal będącym w użyciu przykładem są irańskie cysterny zwane ab anbar, zwieńczone charakterystyczną kopułą i łapaczami wiatru (bagdhir) służącymi wentylacji zbiornika.&lt;/p>
+        &lt;h4>Klimatyzacja&lt;/h4>
+        &lt;p>Kanat w połączeniu z łapaczem wiatru był też niejednokrotnie używany do klimatyzowania piwnic i pomieszczeń mieszkalnych. Łapacz wiatru to wysoka, przypominająca komin konstrukcja, wyposażona we wloty powietrza na szczycie i kanały biegnące przez całą jej wysokość.&lt;/p>
+        &lt;p>Łapacz wychwytuje najdrobniejsze nawet podmuchy wiatru i kieruje je do piwnicy, gdzie przepływają nad wylotem szybu prowadzącego do kanatu. Ruch powietrza wytwarza podciśnienie w szybie (efekt Bernouliego), dzięki czemu zasysane jest powietrze z kanatu. Pochodzi ono z wlotów położonych poza domostwem, zazwyczaj w górnym biegu tunelu, i dzięki kontaktowi z zimną wodą jest mocno schłodzone.&lt;/p>
+        &lt;p>W piwnicy następuje zmieszanie obu rodzajów powietrza: gorącego i suchego z łapacza oraz zimnego i wilgotnego z kanatu. Dodatkowo wilgoć znajdująca się w piwnicy – poprzez parowanie – zmniejsza temperaturę powietrza, zwiększając jednocześnie ilość zawartej w nim pary wodnej.&lt;/p>
+        &lt;p>Efektem jest ciągła wymiana powietrza w piwnicy, co zapobiega gromadzeniu się wilgoci i stęchliźnie. W niektórych domach schłodzone i lekko wilgotne powietrze wypływające z piwnicy rozprowadzano siecią pobocznych kanałów do pomieszczeń mieszkalnych. W uciążliwych, pustynnych warunkach taka forma klimatyzacji dawała mieszkańcom schronienie przed wysoką temperaturą w środku dnia.&lt;/p>
+        &lt;h4>Przechowywanie lodu&lt;/h4>
+        &lt;p>Już w starożytnej Persji kanat wspomagany łapaczami wiatru służył do przechowywania lodu w ciepłych porach roku. Pokaźny zapas lodu zwożony był zimą z gór i umieszczany głęboko pod ziemią w izolowanym pomieszczeniu (zwanym po persku jakczal). Przez ten magazyn przebiegały kanały łączące kanat ze znajdującym się powyżej systemem łapaczy wiatru. Zasysane spod ziemi bardzo chłodne powietrze spowalniało topnienie lodu do tego stopnia, że nawet w pustynnych miastach dostępny był on cały rok.&lt;/p>
+    </string>
+    <string name="desc3_khettar">
+        &lt;p>Tradycyjny kanat budowany jest siłą ludzkich rąk, bez użycia maszyn. Budowniczowie kanatów, zwani mukannis zazwyczaj byli dobrze opłacani i przekazywali zawód swoim potomkom. Zdarzało się też, że rolę wynagrodzenia za budowę kanatu pełnił przywilej uprawiania nawodnionej przezeń ziemi, nawet gdy nie należała do budowniczego.&lt;/p>
+        &lt;h4>Przygotowanie&lt;/h4>
+        &lt;p>Do rozpoczęcia budowy konieczne jest zlokalizowanie źródła wody. Zazwyczaj szuka się ich w miejscu gdzie stożek napływowy spotyka się z podstawą gór lub wzgórz. Budowniczowie, podążając w górę biegu okresowych cieków wodnych, szukają oznak wilgotnego podłoża, takich jak rośliny z głębokim systemem korzeniowym. Jeśli próbna studnia pozwala stwierdzić występowanie odpowiedniej ilości wody, na powierzchni ziemi wytycza się przyszły przebieg tunelu.&lt;/p>
+        &lt;p>Zestaw narzędzi używanych do budowy kanatu zazwyczaj składał się z prostych elementów: pojemników (zazwyczaj były to worki), lin i bloków służących do wynoszenia urobku na powierzchnię, kilofów, łopat, pochodni, oraz poziomnicy i pionu. W zależności od rodzaju gleby, czasami używano wypalanej gliny w celu utwardzenia dna tunelu.&lt;/p>
+        &lt;p>Mimo pozornej prostoty, budowa kanatu wymagała sporych umiejętności inżynierskich. Zbyt łagodny spadek groził niedostatecznym przepływem wody, za stromy zaś – szybką erozją i możliwością zawalenia się tunelu. Złe rozpoznanie gleby mogło skończyć się wypadkiem budowlanym, zagrażającym życiu robotników i wymagającym pracochłonnej odbudowy.&lt;/p>
+        &lt;h4>Kopanie&lt;/h4>
+        &lt;p>Budową zazwyczaj zajmowały się 3- lub 4-osobowe zespoły robotników. W przypadku płytkiego kanatu jeden z nich kopał tunel, drugi wynosił urobek na powierzchnię, a trzeci zajmował się jego usuwaniem z dala od studni.&lt;/p>
+        &lt;p>Kopanie zwykle rozpoczynano od dołu, tzn. od terenu, który miał być docelowo nawodniony, posuwając się stopniowo w stronę próbnej studni wykopanej u stóp gór. Odległość między pionowymi kanałami, wynosząca zazwyczaj 25–30 metrów, była wypadkową ilości pracy potrzebnej do wykopania pionów oraz łączącego ich tunelu. Istotnym czynnikiem, decydującym o rozmieszczeniu pionów, było późniejsze zapewnienie dostępu do działającego już kanatu, w celu wykonywania prac konserwacyjnych. Generalnie, im płytszy był kanat, tym gęściej budowano pionowe kanały. Dłuższe budowy rozpoczynano czasami z obu końców równocześnie. Niekiedy też mniejsze kanaty łączono tak, by odprowadzały wodę do wspólnego, zbiorczego tunelu.&lt;/p>
+        &lt;p>Większość irańskich kanatów nie jest dłuższa niż 5 kilometrów, choć w okolicach Kermanu znajduje się kanat liczący 70 km. Głębokość, na której biegnie główny tunel, zazwyczaj zawiera się w granicach 20–200 metrów, podczas gdy w Chorasanie najgłębszy znany kanat sięga 275 m pod powierzchnię ziemi. W tak okazałych konstrukcjach pionowe kanały były wyposażane w pośrednie platformy, ułatwiające transport nieczystości na powierzchnię.&lt;/p>
+        &lt;p>W najkrótszych konstrukcjach stosunek spadku do długości kanatu mieścił się pomiędzy 1:1000 a 1:1500. Dłuższe instalacje cechował jeszcze łagodniejszy spadek. Najważniejszym warunkiem uwzględnianym przy projektowaniu kanatu było zapewnienie laminarnego przepływu wody. Zbyt duży spadek mógł owocować turbulencjami powodującymi szybką erozję, niebezpieczną dla konstrukcji kanatu. Taką dokładność obliczeń można było bez problemu uzyskać, używając poziomnicy i sznura.&lt;/p>
+        &lt;p>W miejscach gdzie ukształtowanie terenu wymuszało większy spadek, budowano podziemne wodospady, których dno wzmacniano glinianą wykładziną spowalniającą erozję. Czasami odzyskiwano też energię spadającej wody, wykorzystując ją do napędzania podziemnych młynów[6][7]. Jeśli niemożliwe było doprowadzenie wody do celu pod osłoną ziemi, budowano powierzchniowe kanały. Takie rozwiązanie było stosowane tylko w ostateczności, ze względu na zanieczyszczenia, intensywne parowanie i ogrzewanie, nieuniknione przy naziemnym transporcie wody.&lt;/p>
+        &lt;p>Długość budowy zależała przede wszystkim od głębokości przebiegu tunelu. Przy dwudziestometrowej głębokości, czteroosobowy zespół robotników w ciągu dnia był w stanie wykopać 40 metrów tunelu. Gdy wysokość kanału dostępowego wynosiła 40 m, dzienny postęp malał do 20 metrów, a na głębokości 60 m dobowy postęp spadał już do pięciometrowego odcinka. Budowa wielu długich i głębokich kanatów zajmowała całe dekady.&lt;/p>
+        &lt;h4>Konserwacja&lt;/h4>
+        &lt;p>Kanały podlegały okresowemu przeglądowi. Prace konserwacyjne polegały na wzmacnianiu wypłukanych ścian oraz usuwaniu nadmiaru piasku i mułu. Pionowe kanały zakrywano niekiedy, by do kanału nie wpadał niesiony wiatrem piasek. Dlatego też przed wejściem robotników konieczne było wietrzenie fragmentu kanatu.&lt;/p>
+    </string>
+    <string name="desc4_khettar">
+        &lt;h4>Kanaty na Świecie&lt;/h4>
+        &lt;p>Kanat wynaleziono w Persji, w epoce przedislamskiej, prawdopodobnie za panowania Achemenidów, choć niektóre znaleziska w okolicach miasta Jazd sugerują jeszcze wcześniejsze wykorzystanie tej technologii. Stamtąd rozprzestrzeniła się po Bliskim Wschodzie, północnej Afryce i śródziemnomorskiej Europie. Wraz z innymi konstrukcjami hydrotechnicznymi, kanat jest pozostałością arabskiego panowania na Półwyspie Iberyjskim. Wiedza ta została zachowana przez Hiszpanów i wraz z nimi dotarła do Ameryki, czego dowodem są kanaty obecne w Chile, Peru i Meksyku. Przechodzący przez Persję Jedwabny Szlak przecinał głównie pustynne tereny. Dlatego umiejętność budowy kanatu wraz z jego biegiem dotarła do Chin. Szczególnie bogata sieć podziemnych kanałów znajduje się w pobliżu miasta Turpan.&lt;/p>
+        &lt;p>Górzysty teren Maroka sprzyjał rozwojowi kanatu, zwanego w tych rejonach chettara. Technologia prawdopodobnie przybyła wraz z arabską ekspansją na te tereny; nie wiadomo jednakże czy stąd została przeniesiona na tereny obecnej Hiszpanii, czy przebyła odwrotną drogę do Maroka, przez Europę.&lt;/p>
+        &lt;p>Najbardziej rozpowszechniona w okolicach oazy Tafilalt, gdzie zbudowana w XIV wieku podziemna sieć ma około 300 kilometrów długości. Khettara jest owocem pracy specjalnej kasty wywodzącej się z plemienia Haratynów, której członkowie mimo statusu wasali, byli dobrze wynagradzani za swoją niebezpieczną i niezbędną społeczności pracę. W dzisiejszych czasach upowszechnienie studni i automatycznych pomp spowodowało w wielu rejonach Maroka spadek poziomu wód gruntowych, powodujący wysychanie tradycyjnych terenów wodonośnych. W 1996, z oryginalnych 300 km sieci kanałów w okolicy Tafilalt, w użyciu pozostało jedynie 90 km.&lt;/p>
+    </string>
+
+    <!-- Argan -->
+    <string name="argan_name">Sideroxylon kolczasty</string>
+    <string name="trans_argan">Argan</string>
+    <string name="argan_founded">argania żelazna</string>
+    <string name="desc1_argan">
+        &lt;p>\t\tSideroxylon spinosum, znany jako argan, synonim Argania spinosa, to gatunek rośliny kwitnącej. Jest to drzewo pochodzące z wapiennej półpustyni doliny Sous oraz regionów Chiadma i Haha w Maroku, a także niektórych części prowincji Tindouf w południowo- zachodniej Algierii, a także z Mauretanii i Sahary Zachodniej. Drzewa arganowe dorastają do 8–10 m wysokości i żyją do około
+        200 lat. Są cierniste, z sękatymi pniami i szeroko rozpostartą koroną. Korona ma obwód do 70 m , a gałęzie mogą pochylać się ku ziemi.&lt;/p>
+        &lt;h4>Nazwa&lt;/h4>
+        &lt;p>\t\tDawna nazwa naukowa Argania pochodzi od słowa argan, nazwy drzewa w języku Shilha, języku berberyjskim, którym posługuje się większość mieszkańców obszarów, gdzie drzewo to jest endemiczne. Język Shilha Berber posiada bogate słownictwo dotyczące różnych części owocu, etapów jego dojrzewania oraz zbioru i przetwarzania. W średniowiecznych arabskich źródłach farmakologicznych drzewo to znane jest jako harjān, co jest zniekształceniem berberyjskiego słowa argan.&lt;/p>
+        &lt;h4>Opis&lt;/h4>
+        &lt;p>\t\tLiście są małe, 2–4 cm długości, owalne z zaokrąglonym wierzchołkiem. Kwiaty są drobne, z pięcioma bladożółtozielonymi płatkami; kwitną w kwietniu. Owoce mają 2–4 cm długości i 1,5–3 cm szerokości, z grubą, gorzką skórką otaczającą słodko pachnącą, ale nieprzyjemnie aromatyczną warstwę miąższu. Otacza ona bardzo twardy orzech, który zawiera jedno (czasami dwa lub trzy) małe, bogate w olej nasiona. Dojrzewanie owocu trwa ponad rok, dojrzewając od czerwca do lipca następnego roku.&lt;/p>
+        &lt;h4>Uprawa&lt;/h4>
+        &lt;p>\t\tDrzewo arganowe dawniej rosło w całej Afryce Północnej, ale dziś występuje jedynie w południowo- zachodnim Maroku. Argan jest doskonale przystosowany do surowego środowiska tego regionu, wykazując zdolność przetrwania ekstremalnych upałów (powyżej 50°C), suszy i ubogiej gleby. Chociaż populacja maleje, argan jest drugim najliczniej występującym drzewem w marokańskich lasach. W regionie żyje ponad dwadzieścia milionów drzew, które odgrywają kluczową rolę w łańcuchu pokarmowym i środowisku. Korzenie drzewa wnikają głęboko w ziemię w poszukiwaniu wody, która pomaga wiązać glebę i zapobiega erozji. Znaczna część regionu oparła się postępowi Sahary dzięki drzewu arganowemu, a zatem odgrywa ono niezastąpioną rolę w równowadze ekologicznej regionu. &lt;/p>
+        &lt;p>\t\tW Maroku lasy arganowe zajmują obecnie zaledwie około 8280 km² i są wpisane na listę rezerwatów biosfery UNESCO. Ich powierzchnia skurczyła się o połowę w ciągu ostatnich 100 lat z powodu produkcji węgla drzewnego, wypasu, coraz intensywniejszej uprawy i ekspansji osad miejskich i wiejskich. Populacja zwierząt gospodarskich znacznie wzrosła, a w lesie arganowym widoczne są oznaki nadmiernego wypasu i zgryzania. Zgryzanie bezpośrednio szkodzi istniejącym, dojrzałym drzewom arganowym, ponieważ kozy wspinają się wysoko na gałęzie drzewa arganowego, aby dosięgnąć jego owoców. Nadmierny wypas może powodować erozję gleby, wpływa na mikroklimat lasu poprzez zmniejszenie pokrywy gruntowej i wilgotności powierzchniowej oraz wzrost temperatury, a także utrudnia długoterminową regenerację lasu.&lt;/p>
+        &lt;p>\t\tNajwiększą nadzieją na ochronę drzew może być niedawny rozwój kwitnącego rynku eksportowego oleju arganowego jako produktu o wysokiej wartości. Jednak bogactwo płynące z eksportu oleju arganowego stworzyło również zagrożenia dla drzew arganowych w postaci wzrostu populacji kóz. Miejscowi wykorzystują nowo zdobyte bogactwo do zakupu większej liczby kóz, a kozy hamują wzrost drzew arganowych, wspinając się na nie i zjadając ich liście i owoce. Donoszono, że pokazy wspinających się na drzewa kóz są inscenizowane lub sfingowane w obszarach popularnych wśród turystów, ponieważ kozy bardzo rzadko wspinają się na drzewa bez ingerencji człowieka.&lt;/p>
+        &lt;p>\t\tArgan uprawia się również w regionach Arava i Negev w Izraelu (Moroccanoil).&lt;/p>
+        &lt;h4>Zastosowania&lt;/h4>
+        &lt;p>\t\tDrzewo arganowe odgrywało ważną rolę w kulturze Berberów zamieszkujących te tereny od setek lat. Argan to drzewo o wszechstronnym zastosowaniu, a każda jego część może być wykorzystywana jako pożywienie lub źródło dochodu. Owoce drzewa można spożywać, z orzechów można uzyskać olej, a drewno wykorzystać jako paliwo. Drzewo odegrało zatem istotną rolę społeczno- ekonomiczną w lokalnej kulturze i obecnie stanowi istotne źródło pożywienia i dochodu dla około trzech milionów ludzi, z których ponad dwa miliony mieszka na obszarach wiejskich.&lt;/p>
+        &lt;p>\t\tW niektórych częściach Maroka drzewo arganowe zastępuje oliwkę jako źródło paszy , oleju, drewna i paliwa w społeczeństwie Berberów.&lt;/p>
+        &lt;h4>Pasza dla zwierząt&lt;/h4>
+        &lt;p>\t\tDrzewa arganowe stanowią główne źródło paszy dla owiec, kóz, wielbłądów i bydła. Owoce i liście są chętnie spożywane przez zwierzęta gospodarskie. Wytłoki z tłoczenia oleju można również suszyć na słońcu i podawać przeżuwaczom. Pszczoły mogą gniazdować w drzewach arganowych, co czyni je miejscami pozyskiwania miodu.&lt;/p>
+</string>
+    <string name="desc2_argan" tools:ignore="Typos">
+	&lt;h4>Olej arganowy&lt;/h4>
+	&lt;p>\t\tOlej arganowy to olej roślinny wytwarzany z pestek drzewa arganowego ( Argania spinosa L.), które jest rodzime dla Maroka i południowo- zachodniej Algierii. W Maroku olej arganowy jest używany do maczania pieczywa na śniadanie lub do polewania kuskusu i makaronu. Jest również stosowany w celach kosmetycznych.&lt;/p>
+	&lt;h4>Właściwości&lt;/h4>
+	&lt;p>\t\tDziewięćdziesiąt dziewięć procent oleju arganowego składa się z trójglicerydów i powiązanych z nimi pochodnych. Pochodzą one z następujących kwasów tłuszczowych:&lt;/p>
+	&lt;ul>
+		&lt;li>\tkwas oleinowy 42,8\%&lt;/li>
+		&lt;li>\tkwas linolowy 36,8\%&lt;/li>
+		&lt;li>\tkwas palmitynowy 12,0\%&lt;/li>
+		&lt;li>\tkwas stearynowy 6,0\%&lt;/li>
+		&lt;li>\tkwas linolenowy &lt; 0,5\%&lt;/li>
+	&lt;/ul>
+	&lt;p>\t\tOlej arganowy zawiera również śladowe ilości tokoferoli (witaminy E), fenoli, karotenów i skwalenu. Niektóre śladowe ilości fenoli w oleju arganowym obejmują kwas kawowy, oleuropeinę, kwas wanilinowy, tyrozol, katechol, rezorcynę, - epikatechinę i + katechinę. W zależności od metody ekstrakcji olej arganowy może być bardziej odporny na utlenianie niż oliwa z oliwek .&lt;/p>
+	&lt;h4>Kulinaria&lt;/h4>
+	&lt;p>\t\tW Maroku olej arganowy jest wykorzystywany do celów kulinarnych, np. do maczania chleba, jako dressing do sałatek lub do kuskusu. Amlu, gęsta, brązowa pasta o konsystencji podobnej do masła orzechowego, jest lokalnie używana jako dip do chleba. Powstaje ona w wyniku mielenia prażonych migdałów i oleju arganowego na kamieniach, a następnie mieszania pasty z miodem. &lt;/p>
+	&lt;h4>Kosmetyki&lt;/h4>
+	&lt;p>\t\tOd początku XXI wieku olej arganowy jest coraz częściej stosowany w kosmetykach i preparatach do pielęgnacji włosów. Od 2020 roku głównymi produktami kosmetycznymi zawierającymi olej arganowy są kremy do twarzy, błyszczyki do ust, szampony, kremy nawilżające i mydła.&lt;/p>
+	&lt;h4>Ekstrakcja&lt;/h4>
+	&lt;p>\t\tOrzech arganowy zawiera od jednego do trzech bogatych w olej pestek arganii. Ekstrakcja pozwala uzyskać od 30\% do 50\% oleju z pestek, w zależności od metody. Do wyprodukowania zaledwie jednego litra oleju potrzeba około 40 kilogramów suszonych owoców arganii.&lt;/p>
+	&lt;p>\t\tEkstrakcja jest kluczowa w procesie produkcji. Aby wydobyć pestki, pracownicy najpierw suszą owoce arganii na wolnym powietrzu, a następnie usuwają miąższ. Niektórzy producenci usuwają miąższ mechanicznie, bez suszenia owoców. Marokańczycy zazwyczaj wykorzystują miąższ jako paszę dla zwierząt. W niektórych rejonach Maroka istnieje tradycja, zgodnie z którą kozy wspinają się na drzewa arganii, aby swobodnie żerować na owocach. Pestki są następnie odzyskiwane z odchodów kóz, co znacznie zmniejsza nakład pracy związany z ekstrakcją kosztem potencjalnej niechęci smakowej. We współczesnej praktyce skórki usuwa się ręcznie.&lt;/p>
+	&lt;p>\t\tPracownicy delikatnie prażą ziarna, z których będą wytwarzać kulinarny olej arganowy. Po ostygnięciu ziaren arganowych pracownicy mielą je i tłoczą. Z brązowego zacieru wydziela się czysty, niefiltrowany olej arganowy. Na koniec przelewają niefiltrowany olej arganowy do naczyń. Pozostały wytłok jest bogaty w białko i często wykorzystywany jako pasza dla bydła.&lt;/p>
+	&lt;h4>Produkcja&lt;/h4>
+	&lt;p>\t\tPo pierwszej sprzedaży tego produktu kosmetycznego w USA w 2003 roku popyt gwałtownie wzrósł, a produkcja wzrosła. W 2012 roku rząd Maroka zaplanował zwiększenie produkcji z około 2500 ton do 4000 ton do 2020 roku.&lt;/p>
+	&lt;p>\t\tStwierdzono, że zapasy oleju arganowego były rozcieńczane olejami takimi jak olej słonecznikowy, ponieważ proces ekstrakcji czystego oleju arganowego może być trudny i kosztowny. W 2012 roku rząd Maroka zaczął losowo wycofywać dostawy oleju arganowego i testować jego czystość przed eksportem.&lt;/p>
+	&lt;p>\t\tDo 2020 roku produkcja znacznie wzrosła, zwłaszcza po tym, jak badania sugerowały korzyści zdrowotne. Prawie cała ropa pochodzi z Maroka i według prognoz do 2022 roku osiągnie 17 802 tony, w porównaniu z 4387 tonami w 2014 roku; w ujęciu wartościowym 1,79 miliarda dolarów.&lt;/p>
+	&lt;p>\t\tObszar produkcji oleju arganowego się rozszerza: w 2020 r. rozpoczęto go w pobliżu miasta Agadir, 175 kilometrów na południe od tradycyjnego obszaru produkcji oleju arganowego w Essaouirze, a obecnie ma on rozszerzyć się na północ.&lt;/p>
+	&lt;p>\t\tZ 40 kilogramów suszonych owoców arganii uzyskuje się zaledwie litr oleju. Rozpoczęto produkcję oleju metodą mechaniczną, a skala przemysłowa obniża ceny, co wpływa na małe spółdzielnie, gdzie pracę wykonują głównie berberyjskie kobiety w tradycyjny, pracochłonny sposób. Olej produkowany mechanicznie może kosztować zaledwie 22 dolary amerykańskie za litr, czyli mniej niż połowę ceny oleju wytwarzanego przez spółdzielnie. Może to mieć ogromny wpływ społeczny. Jednak ogromna firma kosmetyczna L/\Oréal zobowiązała się do pozyskiwania całego swojego oleju arganowego od małych spółdzielni, które zobowiązały się do przestrzegania zasad sprawiedliwego handlu .&lt;/p>
+</string>
+    <string name="desc3_argan">
+		&lt;h4>Czynnik społeczny&lt;/h4>
+		&lt;p>\t\tProdukcja oleju arganowego zawsze pełniła funkcję społeczno- ekonomiczną. Obecnie jego produkcja utrzymuje około 2,2 miliona ludzi w głównym regionie produkcji oleju arganowego, Arganeraie. Znaczną część produkowanego obecnie oleju arganowego wytwarzają liczne spółdzielnie kobiece. Współfinansowana przez Agencję Rozwoju Społecznego przy wsparciu Unii Europejskiej, UCFA (Union des Cooperatives des Femmes de l\'Arganeraie) jest największym związkiem spółdzielni produkujących olej arganowy w Maroku. Zrzesza 22 spółdzielnie działające w innych częściach regionu.&lt;/p>
+		&lt;p>\t\tW 2020 roku w tym rejonie, około 25 kilometrów w głąb lądu od Essaouiry, na wybrzeżu Atlantyku, działało około 300 małych firm, głównie spółdzielni. Kobiety zajmujące się zbiorem nasion należą głównie do grupy etnicznej Berberów, a ich tradycyjne umiejętności sięgają wielu pokoleń wstecz. Sukces spółdzielni arganowych zachęcił również innych producentów produktów rolnych do przyjęcia modelu spółdzielczego. Powstaniu spółdzielni sprzyjało wsparcie z Maroka, zwłaszcza Fundacji Mohammeda VI na rzecz badań i ochrony drzewa arganowego, a także organizacji międzynarodowych, w tym kanadyjskiego Centrum Badań nad Rozwojem Międzynarodowym i Komisji Europejskiej.&lt;/p>
+		&lt;p>\t\tJednak pomimo tego, że wiele z nich pracuje bardzo długo, kobiety zazwyczaj zarabiają mniej niż 221 USD miesięcznie (a nawet mniej niż 50 USD), co jest poniżej zalecanej w Maroku krajowej płacy minimalnej. Zoubida Charrouf, profesor chemii na Uniwersytecie Mohammeda V w Rabacie, jest zwolenniczką wyższych pensji, a także autorką badań nad korzyściami zdrowotnymi wynikającymi z wyższych pensji. Minister rolnictwa Maroka zwrócił się do Charrouf o pomoc w zmuszeniu firm do przystąpienia do organizacji branżowych i zobowiązania się do płacenia pracownikom płacy minimalnej&lt;/p>
+		&lt;h4>Międzynarodowe uznanie&lt;/h4>
+		&lt;p>\t\tWyjątkowe walory geograficzne regionu skłoniły rząd Maroka do złożenia wniosku do Unii Europejskiej o ochronę Arganum (po francusku „argan”). Wniosek o uznanie Arganum za chronione oznaczenie geograficzne został złożony w październiku 2011 r. do Komisji Europejskiej.&lt;/p>
+		&lt;p>\t\tW 2014 r. Organizacja Narodów Zjednoczonych do spraw Oświaty, Nauki i Kultury (UNESCO) wpisała „Drzewo arganowe, praktyki i wiedzę fachową dotyczące drzewa arganowego” na Listę reprezentatywną niematerialnego dziedzictwa kulturowego ludzkości, na wniosek Maroka, w celu ochrony i zabezpieczenia tradycji, wiedzy, praktyk i rzemiosła związanego z drzewem arganowym.&lt;/p>
+		&lt;p>\t\t3 marca 2021 r. Zgromadzenie Ogólne Organizacji Narodów Zjednoczonych przyjęło rezolucję o ustanowieniu 10 maja Międzynarodowym Dniem Arganii , obchodzonym corocznie. Jednym z motywów tej proklamacji było znaczenie Arganii dla zrównoważonego rozwoju na obszarach, gdzie jest ona endemiczna. Rezolucja ONZ została przedłożona przez Maroko i współsponsorowana przez 113 państw członkowskich Organizacji Narodów Zjednoczonych, zanim została przyjęta jednomyślnie.&lt;/p>
+	</string>
+
+    <!-- Maamora forrest -->
+    <string name="maamora_forest_name">Las Maamora</string>
+    <string name="trans_maamora_forest">żyzny, uprawny</string>
+    <string name="maamora_forest_founded">131 800 ha</string>
+    <string name="desc1_maamora_forest">
+		&lt;p>\t\tLas Al-Mamoura w Maroku jest największym lasem Quercus suber na świecie, o powierzchni 130 000 hektarów. Znajduje się na wybrzeżu Atlantyku między miastami Rabat i Kenitra i składa się głównie z czterech gatunków drzew: Quercus suber (dąb korkowy), eukaliptusa, pinali i akacji. Las jest domem dla różnorodnych gatunków roślin i stanowi ważne siedlisko dla wielu gatunków zwierząt. Jednak równowaga ekologiczna lasu jest zagrożona przez nadmierny wypas i wycinkę. Ekspansja obszarów miejskich i rolniczych wywiera coraz większą presję na las, co prowadzi do zmniejszenia jego powierzchni. W odpowiedzi władze wydały w 2008 r. mapę nieruchomości, jasno określającą granice lasu, aby odstraszyć wszelkie próby jego przejęcia lub nielegalnego posiadania.&lt;/p>
+		&lt;p>\t\tLas Al-Maamora znajduje się w regionie Kenitra w Maroku, pomiędzy miastami Rabat i Kenitra. Znajduje się w północno-zachodnim Maroku, w pobliżu Oceanu Atlantyckiego, rozciągając się od wybrzeża w głąb kraju w kierunku wnętrza kraju. Las rozciąga się na odległość ponad 68 kilometrów w kierunku zachodnim i 38,2 kilometra w kierunku wschodnim, rozciągając się na szerokość 38,2 kilometra z północy na południe. Jego całkowita powierzchnia obejmuje około 131 800 hektarów. Las Al-Maamora jest podzielony na trzy odrębne jednostki geograficzne: Maamora Zachodnia, Maamora Centralna i Maamora Wschodnia. Te trzy regiony znajdują się w granicach administracyjnych prowincji Kenitra, Sidi Slimane i Sidi Kacem.&lt;/p>
+		&lt;p>\t\tLas Maamora jest największy w Królestwie Maroka. Może poszczycić się zróżnicowaną biosferą i dziedzictwem biologicznym, które łącznie czynią go najważniejszym ośrodkiem biologicznym i ekologicznym w Maroku. Roślinność lasu obejmuje mnóstwo głównych gatunków roślin i gatunków rzadkich, w tym dęby, sosny, eukaliptusy, akacje, szarańczyn strąkowy, kamfory, cyprysy, tuje, dzikie drzewa oliwne, a także dąb korkowy. Jest to gatunek dominujący w lesie, pokrywający około połowę całkowitej powierzchni Maamora i rozmieszczony na ponad 60000 ha, co czyni Las Maamora największym lasem na świecie zawierającym dąb korkowy. Oprócz różnorodnych grzybów, najbardziej znane z rodzaju Terfezia (trufle pustynne).&lt;/p>
+		&lt;p>\t\tLas stanowi również siedlisko dla wielu gatunków zwierząt, w tym ponad 40 gatunków ssaków, takich jak dzik i lis rudy, prawie 200 gatunków ptaków oraz licznych gatunków gadów i płazów, wśród których znajduje się kilka rzadkich gatunków żółwi. Występuje w nim również wiele pasożytów, naturalnych szkodników i owadów, w tym koziorożec cerambyx cerdo, błonkówki, mrówki i motyle. Wśród gatunków zwierząt zamieszkujących las znajdują się jeleń berberyjski, orzeł przedni i dzięcioł duży.&lt;/p>
+		&lt;p>\t\tLas stanowi on odpowiednie środowisko życia dla wielu zwierząt i roślin, jest rezerwuarem bioróżnorodności. Chroni również glebę przed erozją i pustynnieniem oraz chroni bioróżnorodność przed wyginięciem. Las jest domem dla najważniejszych źródeł słodkiej wody gruntowej w regionie.&lt;/p>
+		&lt;p>\t\tLas Maamoura jest ważnym obiektem dziedzictwa narodowego, przestrzenią rekreacyjną i naturalnym ujściem dla mieszkańców regionu. Oprócz dostarczania zasobów, takich jak drewno, węgiel drzewny i materiał garbarski dla tradycyjnych rzemieślników, owoce dębu, produkcja korka, drewno opałowe, miód, zioła lecznicze i grzyby, las odgrywa integralną rolę w rozwoju społeczno-gospodarczym regionu. Ponadto las służy jako rozległy obszar pastwiska, zapewniając możliwości zatrudnienia i przyczyniając się do rozwoju społeczno-gospodarczego sąsiednich regionów. W lesie działa ponad 50 przedsiębiorstw zajmujących się działalnością związaną z leśnictwem, 10 jednostek poświęconych przetwórstwu korka, 200 indywidualnych użytkowników lasu i dziewięć grup korzyści ekonomicznych reprezentujących około 34 spółdzielnie leśne. Oprócz funkcji ekonomicznych i środowiskowych las służy również celom społecznym i rekreacyjnym, co czyni go zintegrowaną przestrzenią wielofunkcyjną i katalizatorem rozwoju lokalnego i regionalnego.&lt;/p>
+	</string>
+
+    <!-- Cap Spartel -->
+    <string name="cap_spartel_name">Cap Spartel</string>
+    <string name="trans_cap_spartel">przylądek Spartel</string>
+    <string name="cap_spartel_founded">PN–ND 8:30 – 23:30</string>
+    <string name="desc1_cap_spartel">
+        &lt;p>\t\tPrzylądek Spartel to przylądek w Maroku, położony około 300 metrów nad poziomem morza, u wejścia do Cieśniny Gibraltarskiej, 12 km na zachód od Tangeru. Jest to najbardziej wysunięty na północny zachód punkt kontynentu afrykańskiego. Poniżej przylądka znajdują się Jaskinie Herkulesa. Latarnia morska Przylądek Spartel znajduje się na przylądku o tej samej nazwie, około 14 kilometrów na zachód od Tangeru. To miejsce wyznacza punkt, w którym spotykają się wody Morza Śródziemnego i Atlantyku. Jest to jedna z największych latarni morskich w Afryce, wyznaczająca południowe wejście do Cieśniny Gibraltarskiej od strony Atlantyku. Zgodnie z prawem międzynarodowym, długość geograficzna latarni morskiej Przylądek Spartel (5° 55\' W) jest uznawana za zachodnią granicę Morza Śródziemnego. W okresie kolonialnym utrzymywano go w ruchu dzięki konsorcjum mocarstw zachodnich. Obecnie jest to jedna z najsłynniejszych atrakcji turystycznych północnego Maroka.&lt;/p>
+		&lt;h4>Opis&lt;/h4>
+        &lt;p>\t\tPrzylądek Spartel jest często, lecz niepoprawnie, nazywany najdalej na północ wysuniętym punktem Afryki, podczas gdy w rzeczywistości jest to Ras ben Sakka w Tunezji. Jest to najbardziej wysunięty punkt na północny zachód kontynentu. Przylądek wznosi się na wysokość 326 m na szczycie Dżabal Quebir, gdzie na końcu klifu znajduje się latarnia morska zbudowana w 1864 roku przez sułtana Muhammada IV.&lt;/p>
+		&lt;p>\t\tPoniżej przylądka znajdują się Jaskinie Herkulesa . Są one otwarte dla zwiedzających i można do nich dotrzeć z plaży Robinson\'a. Jaskinie noszą ślady osadnictwa neolitycznego. Zanim stały się atrakcją turystyczną, pełniły funkcję domów publicznych. Historycznie skała była wydobywana, co jest jedną z ważnych przyczyn powstania jaskiń.&lt;/p>
+		&lt;p>\t\tW pobliżu przylądka Spartel znajduje się Spartel Bank , zatopiona wyspa, na której według niektórych hipotez znajduje się legendarna wyspa Atlantyda.&lt;/p>
+		&lt;p>\t\tRenowację całego terenu latarni morskiej Cape Spartel rozpoczęto w 2020 roku, a zakończono w 2021 roku. Obecnie jest ona otwarta dla publiczności i obejmuje muzeum morskie, restaurację, ogród botaniczny oraz przestrzeń eventową. Zwiedzający mogą również wejść na szczyt latarni morskiej, aby podziwiać wspaniały widok na Cieśninę Gibraltarską. Do Cape Spartel można dojechać drogą krajową S701.&lt;/p>
+		&lt;h4>Wydarzenia historyczne&lt;/h4>
+        &lt;p>\t\t17 sierpnia 1670 roku połączone siły angielskiej marynarki wojennej pod dowództwem komandora Richarda Beacha i holenderskiej marynarki wojennej pod dowództwem Willema Josepha van Ghenta zniszczyły sześć statków piratów berberyjskich w pobliżu przylądka Spartel.&lt;/p>
+		&lt;p>\t\tPodczas wojny o sukcesję hiszpańską, dwa hiszpańskie okręty 60-działowe – Porta Coeli i Santa Teresa – zostały przechwycone 23 marca 1704 roku przez angielską eskadrę pod dowództwem wiceadmirała Thomasa Dilkesa u wybrzeży Przylądka Spartel, w skład której wchodziły 70-działowe okręty Kent i Bedford oraz 50-działowy Antelope. Dwa hiszpańskie okręty wojenne, nowo zbudowane w Orio, były załadowane artylerią i zaopatrzeniem wojskowym, a towarzyszył im 24-działowy statek handlowy San Nicolas. Po siedmiogodzinnej bitwie oba okręty zostały zdobyte. Doprowadzono je do Lizbony, ale Santa Teresa zatonęła po drodze.&lt;/p>
+		&lt;p>\t\t20 października 1782 roku, podczas wojny o niepodległość Stanów Zjednoczonych, doszło do nierozstrzygniętej bitwy między flotą brytyjską a francusko-hiszpańską, około 18 mil od wybrzeża, zwanej bitwą pod Przylądkiem Spartel. Bitwa stoczona została między okrętami pod dowództwem admirała Luisa de Córdova y Córdova a flotą brytyjską pod dowództwem admirała Richarda Howe\'a. Bitwa miała na celu zapewnienie brytyjskiego zaopatrzenia dla oblężonej Skały Gibraltarskiej.&lt;/p>
+		&lt;p>\t\tW grudniu 1911 roku liniowiec P&amp;O \„Delhi\” osiadł na mieliźnie w pobliżu przylądka Spartel. Wszyscy pasażerowie zostali uratowani przez okręty Royal Navy i French Navy, ale trzech francuskich ratowników zginęło.&lt;/p>
+		&lt;p>\t\tBitwa u przylądka Spartel była bitwą morską, która miała miejsce 29 września 1936 roku podczas hiszpańskiej wojny domowej . Starcie rozegrało się pomiędzy dwoma krążownikami nacjonalistów a dwoma niszczycielami republikanów i przełamało republikańską blokadę Cieśniny Gibraltarskiej , zabezpieczając nacjonalistom drogę zaopatrzeniową do hiszpańskiego Maroka na wczesnym etapie wojny.&lt;/p>
+	</string>
+
+    <!--
+        &lt;h4>&lt;/h4>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+        &lt;p>\t\t&lt;/p>
+                            -->
+
+</resources>
