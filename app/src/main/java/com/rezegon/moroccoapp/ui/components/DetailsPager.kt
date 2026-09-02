@@ -29,8 +29,8 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
 import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.domain.model.WikimediaImage
 import com.rezegon.moroccoapp.domain.model.WikimediaImageRef
@@ -59,11 +59,14 @@ fun DetailsPager(
 
     val imageMaxHeight = 240.dp
 
-    val context = LocalContext.current
+    // Access the shared application instance.
+    val application = LocalContext.current.applicationContext as MyApp
 
-    val imageLoader = remember {
-        createWikimediaImageLoader(context)
-    }
+    // Use the single ImageLoader shared by the entire application.
+    //
+    // This allows all Wikimedia components to share the same
+    // memory cache, disk cache and HTTP client.
+    val imageLoader = application.wikimediaImageLoader
 
     var attributionImage by remember {
         mutableStateOf<WikimediaImage?>(null)

@@ -10,7 +10,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -19,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
 import com.rezegon.moroccoapp.domain.model.Place
 
 @Composable
@@ -29,6 +28,8 @@ fun CityListItem(
     imageUrl: String?,
     onClick: (Place) -> Unit
 ) {
+    // Card represents a single city in the cities list.
+    // Clicking the card is delegated to the parent screen.
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -40,12 +41,20 @@ fun CityListItem(
                 .padding(16.dp)
         ) {
 
-            val context = LocalContext.current
+            // Access the shared application instance.
+            val application = LocalContext.current.applicationContext as MyApp
 
-            val imageLoader = remember {
-                createWikimediaImageLoader(context)
-            }
+            // Use the single ImageLoader shared by the entire application.
+            //
+            // This allows all Wikimedia components to share the same
+            // memory cache, disk cache and HTTP client.
+            val imageLoader = application.wikimediaImageLoader
 
+            // Display the city's Wikimedia image.
+            //
+            // The imageUrl is provided by the parent screen after
+            // Wikimedia metadata has been loaded.
+            // If the URL is missing or loading fails, use the default image.
             AsyncImage(
                 modifier = Modifier.size(112.dp),
                 model = imageUrl,
@@ -61,12 +70,15 @@ fun CityListItem(
                     .weight(1f)
                     .padding(4.dp),
             ) {
+
+                // City name.
                 Text(
                     text = stringResource(place.placeName),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
+                // Optional translation of the city name.
                 place.placeTranslate?.let {
                     Text(
                         text = stringResource(it),
@@ -76,6 +88,7 @@ fun CityListItem(
                     )
                 }
 
+                // Optional short description of the city.
                 place.placeSnippet?.let {
                     Text(
                         text = stringResource(it),

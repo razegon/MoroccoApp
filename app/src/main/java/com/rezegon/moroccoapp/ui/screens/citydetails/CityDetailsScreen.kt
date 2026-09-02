@@ -1,6 +1,7 @@
 package com.rezegon.moroccoapp.ui.screens.citydetails
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -32,7 +33,12 @@ fun CityDetailsScreen(
     onPlaceClick: (Place) -> Unit
 ) {
 
-    val application = LocalContext.current.applicationContext as Application // <<- pamiętać !!
+    // Get the application context as the base Application object.
+    // <<- pamiętać !!
+    val application = LocalContext.current.applicationContext as Application
+
+    // Factory creates the ViewModel and passes the selected place ID
+    // together with the application instance.
     val factory = CityDetailsViewModelFactory(
         placeId = placeId,
         application = application
@@ -42,12 +48,23 @@ fun CityDetailsScreen(
         factory = factory
     )
 
+    // MyApp contains application-wide dependencies,
+    // including the shared Wikimedia memory cache and Room database.
     val app = application as MyApp
+
+    // Repository responsible for loading Wikimedia image metadata.
+    //
+    // It uses:
+    // - Wikimedia API for remote data,
+    // - shared memory cache for fast access,
+    // - Room DAO for persistent local storage.
     val wikimediaRepository = WikimediaRepositoryImpl(
         api = WikimediaRetrofit.api,
-        cache = app.wikimediaCache
+        cache = app.wikimediaCache,
+        dao = app.database.wikimediaDao()
     )
 
+    // Factory creates the Wikimedia ViewModel using the repository above.
     val wikimediaFactory = WikimediaViewModelFactory(
         wikimediaRepository
     )
@@ -57,35 +74,51 @@ fun CityDetailsScreen(
         factory = wikimediaFactory
     )
 
+    // Contains all Wikimedia metadata already loaded into memory.
     val wikimediaImages by wikimediaViewModel.images.collectAsState()
 
+    // Contains the state of the selected city and its child places.
     val uiState by viewModel.uiState.collectAsState()
 
+    // Request Wikimedia metadata whenever the current city
+    // or its child places change.
     LaunchedEffect(uiState.place, uiState.children) {
 
+        // Load all Wikimedia images assigned to the city itself.
         uiState.place?.wikimediaImages?.forEach { imageRef ->
+
             imageRef?.let {
                 wikimediaViewModel.getImage(it.pageId)
             }
         }
 
+        // Load the first Wikimedia image for each child place.
         uiState.children.forEach { child ->
 
             child.wikimediaImages
                 .firstOrNull()
                 ?.let { imageRef ->
-                wikimediaViewModel.getImage(imageRef.pageId)
-            }
+                    wikimediaViewModel.getImage(imageRef.pageId)
+                }
         }
     }
 
+    // Render the screen only when the selected place is available.
     uiState.place?.let { place ->
 
+        // Build the pages displayed by DetailsPager.
+        // Wikimedia URLs are taken from the loaded metadata map,
+        // while local images can be used as a fallback.
         val pages = createPages(
             wikimediaImages = wikimediaImages,
             images = place.placeImages,
             descriptions = place.placeDescriptions,
             wikimediaRefs = place.wikimediaImages
+        )
+
+        Log.d(
+            "WIKIMEDIA_UI",
+            "children=${uiState.children.size}, images=${wikimediaImages.keys}"
         )
 
         DetailsPager(
@@ -94,22 +127,35 @@ fun CityDetailsScreen(
             wikimediaImages = wikimediaImages
         ) {
 
+            // Display additional Wikidata information
+            // when it has been successfully loaded.
             uiState.wikidataInfo?.let { info ->
                 WikidataInfoSection(
                     info = info
                 )
             }
 
+            // Display the places belonging to the current city.
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 items(uiState.children) { child ->
 
+                    // Prefer the Wikimedia image when its metadata
+                    // has already been loaded. Fall back to the local image.
                     val imageUrl =
                         child.wikimediaImages
                             .firstOrNull()
                             ?.let { wikimediaImages[it.pageId]?.url }
                             ?: child.placeImages.firstOrNull()
+
+                    Log.d(
+                        "WIKIMEDIA_ROW",
+                        "child=${child.placeId}, " +
+                                "imageRef=${child.wikimediaImages.firstOrNull()?.pageId}, " +
+                                "url=$imageUrl"
+                    )
 
                     PlaceListItem(
                         place = child,
@@ -123,4 +169,3 @@ fun CityDetailsScreen(
         }
     }
 }
-

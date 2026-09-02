@@ -1,5 +1,6 @@
 package com.rezegon.moroccoapp.ui.screens.city
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,9 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.ui.components.CityListItem
@@ -37,9 +39,21 @@ fun CitiesScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    // Access the shared application instance.
+    // MyApp contains application-wide dependencies such as
+    // the memory cache and the Room database.
+    val app = LocalContext.current.applicationContext as MyApp
+
+    // Repository responsible for loading Wikimedia image metadata.
+    //
+    // It uses:
+    // - Wikimedia API as the remote data source,
+    // - shared memory cache for fast access,
+    // - Room DAO for persistent local storage.
     val wikimediaRepository = WikimediaRepositoryImpl(
         api = WikimediaRetrofit.api,
-        cache = WikimediaMemoryCache()
+        cache = app.wikimediaCache,
+        dao = app.database.wikimediaDao()
     )
 
     val wikimediaFactory = WikimediaViewModelFactory(
@@ -53,13 +67,15 @@ fun CitiesScreen(
 
     val wikimediaImages by wikimediaViewModel.images.collectAsState()
 
+    // Request image metadata for the first Wikimedia image
+    // associated with each city.
     LaunchedEffect(uiState.places) {
         uiState.places.forEach { place ->
             place.wikimediaImages
                 .firstOrNull()
                 ?.let { imageRef ->
                     wikimediaViewModel.getImage(imageRef.pageId)
-            }
+                }
         }
     }
 
@@ -91,6 +107,8 @@ fun CitiesScreen(
 
             items(uiState.places) { place ->
 
+                // Prefer the Wikimedia image when it is available.
+                // Fall back to the locally defined image otherwise.
                 val imageUrl =
                     place.wikimediaImages
                         .firstOrNull()

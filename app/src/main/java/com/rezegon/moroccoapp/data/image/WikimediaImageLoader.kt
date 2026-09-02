@@ -2,29 +2,29 @@ package com.rezegon.moroccoapp.data.image
 
 import android.content.Context
 import coil3.ImageLoader
+import coil3.disk.DiskCache
+import coil3.disk.directory
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import com.rezegon.moroccoapp.data.network.moroccoHttpClient
 
 /**
- * Wspólny klient HTTP używany do pobierania zdjęć Wikimedia Commons.
+ * Creates an ImageLoader used for downloading images from Wikimedia Commons.
  *
- * Wikimedia wymaga identyfikacji klienta poprzez nagłówek User-Agent.
- * Jego brak może powodować odpowiedź HTTP 403 przy pobieraniu zdjęć.
+ * The loader uses the shared HTTP client, which adds the User-Agent
+ * required by Wikimedia Commons.
+ *
+ * It also uses a persistent Coil disk cache, so downloaded image files
+ * can remain available after the application process is killed.
  *
  * TODO:
- * Po utworzeniu klasy MyApp/Application przenieść konfigurację
- * klienta i ImageLoader do globalnej konfiguracji aplikacji.
- */
-
-/**
- * Tworzy ImageLoader używany do pobierania zdjęć z Wikimedia Commons.
- *
- * Obecnie loader jest tworzony lokalnie w komponentach Compose.
- * Docelowo zostanie przeniesiony do Application/MyApp, gdy dodamy
- * globalną konfigurację aplikacji (m.in. mapy OSM).
+ * Move the ImageLoader to MyApp/Application and share one instance
+ * across the whole application.
  */
 fun createWikimediaImageLoader(context: Context): ImageLoader {
     return ImageLoader.Builder(context)
+
+        // Use the shared HTTP client for Wikimedia requests.
+        // This client contains the required User-Agent header.
         .components {
             add(
                 OkHttpNetworkFetcherFactory(
@@ -32,5 +32,20 @@ fun createWikimediaImageLoader(context: Context): ImageLoader {
                 )
             )
         }
+
+        // Persist downloaded image files on disk.
+        //
+        // cacheDir belongs to the application, so the cache survives
+        // process death but is removed when the app is uninstalled
+        // or its app data is cleared.
+        .diskCache {
+            DiskCache.Builder()
+                .directory(
+                    context.cacheDir.resolve("wikimedia_image_cache")
+                )
+                .maxSizeBytes(300L * 1024L * 1024L) // 300 MB
+                .build()
+        }
+
         .build()
 }
