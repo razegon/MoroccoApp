@@ -2,6 +2,9 @@ package com.rezegon.moroccoapp.data.repository
 
 import android.util.Log
 import com.rezegon.moroccoapp.data.api.WikidataApi
+import com.rezegon.moroccoapp.data.cache.WikidataDao
+import com.rezegon.moroccoapp.data.cache.toDomain
+import com.rezegon.moroccoapp.data.cache.toEntity
 import com.rezegon.moroccoapp.domain.model.WikidataInfo
 import com.rezegon.moroccoapp.domain.model.WikidataTime
 import com.rezegon.moroccoapp.domain.repository.WikidataCache
@@ -9,9 +12,20 @@ import com.rezegon.moroccoapp.domain.repository.WikidataRepository
 
 class WikidataRepositoryImpl(
     private val api: WikidataApi,
-    private val cache: WikidataCache
+    private val cache: WikidataCache,
+    private val dao: WikidataDao
 ) : WikidataRepository {
 
+    /**
+     * Returns Wikidata information for the given entity.
+     *
+     * Data is loaded in the following order:
+     * 1. In-memory cache
+     * 2. Persistent Room database
+     * 3. Wikidata API
+     *
+     * Data received from the API is stored in both Room and memory cache.
+     */
     override suspend fun getInfo(
         wikidataId: String
     ): WikidataInfo? {
@@ -21,11 +35,12 @@ class WikidataRepositoryImpl(
             "START getInfo($wikidataId)"
         )
 
+        // First level cache: fast in-memory cache.
         cache.get(wikidataId)?.let { cachedInfo ->
 
             Log.d(
                 "WIKIDATA_CACHE",
-                "CACHE HIT: $wikidataId"
+                "MEMORY CACHE HIT: $wikidataId"
             )
 
             return cachedInfo
@@ -33,9 +48,44 @@ class WikidataRepositoryImpl(
 
         Log.d(
             "WIKIDATA_CACHE",
-            "CACHE MISS: $wikidataId"
+            "MEMORY CACHE MISS: $wikidataId"
         )
 
+        // Second level cache: persistent Room database.
+        try {
+            dao.get(wikidataId)?.let { entity ->
+
+                val info = entity.toDomain()
+
+                Log.d(
+                    "WIKIDATA_ROOM",
+                    "ROOM CACHE HIT: $wikidataId"
+                )
+
+                // Put the data back into memory cache
+                // so future requests are faster.
+                cache.put(info)
+
+                return info
+            }
+
+            Log.d(
+                "WIKIDATA_ROOM",
+                "ROOM CACHE MISS: $wikidataId"
+            )
+
+        } catch (e: Exception) {
+
+            // A Room failure should not prevent us from trying
+            // the API when an internet connection is available.
+            Log.e(
+                "WIKIDATA_ROOM",
+                "Błąd odczytu z Room dla $wikidataId",
+                e
+            )
+        }
+
+        // Last level: fetch fresh data from the Wikidata API.
         return try {
 
             val response = api.getEntity(wikidataId)
@@ -73,6 +123,27 @@ class WikidataRepositoryImpl(
                 inception = inception
             )
 
+            // Persistent cache.
+            try {
+                dao.upsert(info.toEntity())
+
+                Log.d(
+                    "WIKIDATA_ROOM",
+                    "ROOM CACHE UPDATE: $wikidataId"
+                )
+
+            } catch (e: Exception) {
+
+                // The API result is still valid even if
+                // storing it locally fails.
+                Log.e(
+                    "WIKIDATA_ROOM",
+                    "Błąd zapisu do Room dla $wikidataId",
+                    e
+                )
+            }
+
+            // Fast in-memory cache.
             cache.put(info)
 
             Log.d(
@@ -98,10 +169,10 @@ class WikidataRepositoryImpl(
     }
 
     /**
-     * Pobiera najnowszą nie-deprecated wartość populacji.
+     * Extracts the newest non-deprecated population value.
      *
-     * Jeżeli statement ma qualifier P585 (point in time),
-     * używamy tej daty do wyboru najnowszego pomiaru.
+     * When the statement contains the P585 (point in time)
+     * qualifier, its year is used to determine the newest value.
      */
     private fun extractLatestPopulation(
         claims: Map<*, *>
@@ -160,9 +231,9 @@ class WikidataRepositoryImpl(
     }
 
     /**
-     * Pobiera P2046 tylko wtedy, gdy jednostką jest kilometr kwadratowy.
+     * Extracts P2046 only when the value is expressed in square kilometres.
      *
-     * Wikidata przechowuje jednostkę w polu "unit".
+     * Wikidata stores the unit identifier in the "unit" field.
      */
     private fun extractAreaInSquareKilometers(
         claims: Map<*, *>
@@ -208,19 +279,14 @@ class WikidataRepositoryImpl(
     }
 
     /**
-     * Pobiera wysokość obiektu nad poziomem morza z właściwości P2044 Wikidata.
+     * Extracts elevation from Wikidata property P2044
+     * and converts supported units to metres.
      *
-     * Wikidata może zwrócić wysokość w różnych jednostkach.
-     * Funkcja konwertuje obsługiwane jednostki do metrów.
-     *
-     * Obsługiwane jednostki:
-     * - Q11573  → metr
-     * - Q828224 → kilometr
-     * - Q3710   → stopa
-     * - Q93318  → mila morska
-     *
-     * Zwraca wysokość w metrach lub null, jeśli nie ma poprawnej wartości
-     * albo jednostka nie jest obsługiwana.
+     * Supported units:
+     * Q11573  → metre
+     * Q828224 → kilometre
+     * Q3710   → foot
+     * Q93318  → nautical mile
      */
     private fun extractElevationInMeters(
         claims: Map<*, *>
@@ -284,34 +350,11 @@ class WikidataRepositoryImpl(
         return candidates.firstOrNull()
     }
 
-    private fun extractQuantity(
-        claims: Map<*, *>,
-        property: String
-    ): Double? {
-
-        val statements = claims[property] as? List<*>
-            ?: return null
-
-        val statement = statements.firstOrNull() as? Map<*, *>
-            ?: return null
-
-        val mainsnak = statement["mainsnak"] as? Map<*, *>
-            ?: return null
-
-        val datavalue = mainsnak["datavalue"] as? Map<*, *>
-            ?: return null
-
-        val value = datavalue["value"] as? Map<*, *>
-            ?: return null
-
-        val amount = value["amount"] as? String
-            ?: return null
-
-        return amount
-            .replace("+", "")
-            .toDoubleOrNull()
-    }
-
+    /**
+     * Extracts a time value from the given Wikidata property.
+     *
+     * The raw Wikidata time string, year and precision are preserved.
+     */
     private fun extractTime(
         claims: Map<*, *>,
         property: String
@@ -350,6 +393,12 @@ class WikidataRepositoryImpl(
         )
     }
 
+    /**
+     * Extracts the year from a Wikidata time statement.
+     *
+     * This is used for P585 qualifiers when selecting
+     * the newest population measurement.
+     */
     private fun extractYearFromTimeStatement(
         statement: Any?
     ): Int? {
@@ -358,8 +407,9 @@ class WikidataRepositoryImpl(
             ?: return null
 
         val mainsnak = statementMap["mainsnak"] as? Map<*, *>
+            ?: return null
 
-        val datavalue = mainsnak?.get("datavalue") as? Map<*, *>
+        val datavalue = mainsnak["datavalue"] as? Map<*, *>
             ?: return null
 
         val value = datavalue["value"] as? Map<*, *>
@@ -380,4 +430,3 @@ class WikidataRepositoryImpl(
         val year: Int?
     )
 }
-
