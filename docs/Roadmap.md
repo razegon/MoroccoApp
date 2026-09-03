@@ -253,3 +253,77 @@ DetailsPager
 - Hilt / DI,
 - dalsze UX i Material 3,
 - źródła, autorzy i licencje zdjęć.
+
+## Aktualizacja 2–3 września 2026
+
+### Zrobione -- infrastruktura
+
+- Room 3
+- KSP dla Room
+- `AppDatabase`
+- `WikidataDao` / `WikidataEntity`
+- `WikimediaDao` / `WikimediaEntity`
+- `WikidataMapper`
+- `WikimediaMapper`
+- persistent cache Wikidata
+- persistent cache metadanych Wikimedia
+- Coil persistent `DiskCache` dla obrazów Wikimedia
+- wspólny `WikimediaImageLoader` w `MyApp`
+- test offline po restarcie procesu
+
+### Zrobione -- Git
+
+- Git repository dla projektu
+- GitHub
+- branch `feature/room`
+- logiczne commity dla kolejnych etapów Room/cache
+- merge `feature/room` → `main` przez `Fast-forward`
+- push zaktualizowanego `main` do GitHub
+
+### Zrobione -- Quiz MVP
+
+- `QuizQuestion`
+- `QuizRepository`
+- `QuizRepositoryImpl`
+- `QuizViewModel`
+- `QuizViewModelFactory`
+- `QuizScreen`
+- route `quiz`
+- przycisk Quiz na `HomeScreen`
+- 10 pytań
+- 4 odpowiedzi na pytanie
+- jedna poprawna odpowiedź
+- blokowanie ponownego wyboru odpowiedzi
+- zielone oznaczenie poprawnej odpowiedzi
+- czerwone oznaczenie wybranej błędnej odpowiedzi
+- przechodzenie przez kolejne pytania
+- `PODSUMOWANIE` na ostatnim pytaniu
+
+### Aktualny etap
+
+```text
+feature/quiz
+    ↓
+Quiz MVP ✅
+    ↓
+QuizSummaryScreen
+    ↓
+zapis wyniku w Room
+    ↓
+nickname
+    ↓
+TOP 10 / TOP 20
+```
+
+### Następnie
+
+1. Quiz — ekran podsumowania.
+2. Quiz — zapis wyniku w Room.
+3. Quiz — nickname gracza.
+4. Quiz — ranking TOP 10/20.
+5. Rozbudowa danych quizu i UX.
+6. Mapy OSM.
+7. Search.
+8. Favorites.
+9. Weather.
+10. Hilt / DI.

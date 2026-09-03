@@ -588,3 +588,104 @@ Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po utracie
 ### Planowane rozszerzenia
 
 W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model domenowy i przepływy online/offline.
+
+## Aktualizacja 2–3 września 2026 -- Room, Git i Quiz
+
+### Trwały cache z Room
+
+Do projektu dodano Room 3 oraz KSP. Room przechowuje lokalnie metadane Wikidata i Wikimedia, dzięki czemu dane mogą być odzyskane po zakończeniu procesu aplikacji.
+
+Utworzono:
+- `AppDatabase`
+- `WikidataEntity` / `WikidataDao`
+- `WikimediaEntity` / `WikimediaDao`
+- `WikidataMapper`
+- `WikimediaMapper`
+
+Mechanizm dostępu do danych:
+
+```text
+Wikidata / Wikimedia metadata:
+MemoryCache → Room → API
+API → Room → MemoryCache → UI
+```
+
+Dla obrazów właściwy plik jest niezależnie obsługiwany przez Coil i jego persistent `DiskCache`.
+
+```text
+Wikimedia image URL
+        ↓
+      Coil
+        ↓
+   DiskCache
+```
+
+`MyApp : Application` przechowuje obecnie wspólne MemoryCache, bazę Room oraz współdzielony `WikimediaImageLoader`.
+
+### Test offline po restarcie
+
+Przetestowano działanie persistent cache po zakończeniu procesu aplikacji i ponownym uruchomieniu bez internetu. Logcat wykazał odczyty `ROOM CACHE HIT`, a użytkownik potwierdził wyświetlenie zapisanych zdjęć offline.
+
+### Git i organizacja pracy
+
+Projekt został podłączony do Git i GitHub. Praca nad funkcjami odbywa się na osobnych branchach.
+
+Aktualna historia:
+
+```text
+main
+├── chore: initialize MoroccoApp repository
+├── chore: configure Room and KSP
+├── feat: add persistent Wikidata cache
+└── feat: add persistent Wikimedia cache
+```
+
+Branch `feature/room` został scalony do `main` metodą `Fast-forward`.
+
+Następnie utworzono branch `feature/quiz`.
+
+### Quiz -- aktualna architektura
+
+Pierwsza wersja quizu korzysta z osobnego modelu, Repository i ViewModelu.
+
+```text
+HomeScreen
+    ↓
+Navigation
+    ↓
+QuizScreen
+    ↓
+QuizViewModel
+    ↓
+QuizRepository
+    ↓
+QuizQuestion
+```
+
+Ukończono:
+- `QuizQuestion`
+- `QuizRepository`
+- `QuizRepositoryImpl`
+- `QuizViewModel`
+- `QuizViewModelFactory`
+- `QuizScreen`
+- trasę `quiz` w Navigation
+- przycisk wejścia do quizu na `HomeScreen`
+
+Quiz zawiera obecnie 10 pytań. Każde pytanie ma 4 odpowiedzi i dokładnie jedną poprawną odpowiedź.
+
+Po wybraniu odpowiedzi użytkownik nie może jej zmienić. Poprawna odpowiedź jest oznaczana na zielono, a błędna wybrana odpowiedź na czerwono. Na ostatnim pytaniu przycisk zmienia się z `NASTĘPNE` na `PODSUMOWANIE`.
+
+### Najbliższe elementy quizu
+
+```text
+QuizScreen
+    ↓
+QuizSummaryScreen
+    ↓
+nickname + score + totalQuestions + date
+    ↓
+Room
+    ↓
+TOP 10 / TOP 20
+```

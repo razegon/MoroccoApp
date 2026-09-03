@@ -477,3 +477,83 @@ Trwały offline cache pozostaje na później. Room nie został jeszcze wdrożony
 ### Kolejny kierunek
 
 Po domknięciu obecnego etapu City planowane jest rozszerzenie mechanizmu Wikidata na `PlaceDetails`. Rozważane są także kolejne funkcje aplikacji, m.in. Quiz i mapa. Przy rozwoju infrastruktury dane online powinny korzystać z jednolitego modelu cache/offline.
+
+## 2–3 września 2026 -- Git, Room i rozpoczęcie Quizu
+
+### Git i GitHub
+
+Projekt został podłączony do Git i GitHub. Utworzono branch `feature/room`, na którym wykonano trzy logiczne commity:
+
+```text
+chore: configure Room and KSP
+feat: add persistent Wikidata cache
+feat: add persistent Wikimedia cache
+```
+
+Po testach offline branch `feature/room` został scalony do `main` metodą `Fast-forward`.
+
+Do kontroli historii i zmian wykorzystano:
+
+```bash
+git status
+git log --oneline --graph --decorate --all
+git diff --stat main..feature/room
+git diff --name-status main..feature/room
+git merge feature/room
+git push origin main
+```
+
+### Room -- persistent cache
+
+Do projektu wdrożono Room 3 + KSP. Dane Wikidata i metadane Wikimedia otrzymały warstwę trwałego storage'u.
+
+Powstały encje, DAO, mappery oraz wspólna `AppDatabase`. Repository korzysta teraz z kolejności:
+
+```text
+MemoryCache → Room → API
+```
+
+Po sukcesie API dane są zapisywane do Room i MemoryCache.
+
+Wikimedia obrazy mają dodatkowo cache plików Coil.
+
+Przeprowadzono test po zakończeniu procesu aplikacji i ponownym uruchomieniu bez internetu. Room zwracał zapisane dane, a zdjęcia były dostępne offline.
+
+### Rozpoczęcie Quizu
+
+Utworzono branch `feature/quiz`.
+
+Pierwsza wersja quizu została zbudowana etapami:
+
+1. `QuizQuestion`
+2. `QuizRepository`
+3. `QuizRepositoryImpl`
+4. `QuizViewModel`
+5. `QuizViewModelFactory`
+6. `QuizScreen`
+7. Navigation
+8. przycisk Quiz na `HomeScreen`
+
+Aktualnie quiz ma 10 pytań, 4 odpowiedzi na pytanie i jedną poprawną odpowiedź.
+
+Mechanizm odpowiedzi:
+
+```text
+kliknięcie odpowiedzi
+        ↓
+sprawdzenie poprawności
+        ↓
+poprawna → zielona
+błędna → czerwona
+poprawna odpowiedź → zielona
+        ↓
+blokada dalszego wyboru
+        ↓
+NASTĘPNE / PODSUMOWANIE
+```
+
+Przetestowano przejście przez wszystkie 10 pytań.
+
+### Następny etap
+
+Następnym krokiem jest ekran podsumowania, a następnie zapis wyniku gracza w Room i ranking TOP 10/20.

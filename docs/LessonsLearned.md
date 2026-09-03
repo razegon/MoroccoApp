@@ -435,3 +435,103 @@ Dla kolejnych stron `DetailsPager` korzysta z rzeczywistego aspect ratio obrazu.
 ### Zasada na dalszy rozwój
 
 Przed dodaniem kolejnych funkcji warto najpierw ustabilizować mechanizmy wspólne: sieć, cache, offline i dependency management. Dopiero na takiej bazie warto rozszerzać Wikidata na Places, a następnie dodawać Quiz i mapę.
+
+## Git i praca na branchach
+
+### Branch jako osobny etap funkcji
+
+Funkcję warto rozwijać na osobnym branchu, a następnie scalać ją do `main` dopiero po zakończeniu i przetestowaniu.
+
+W projekcie zastosowano:
+
+```text
+main
+  ↓
+feature/room
+  ↓
+commity + testy
+  ↓
+merge
+  ↓
+main
+```
+
+Następnie rozpoczęto analogiczny etap `feature/quiz`.
+
+### `git diff` a `git log`
+
+`git log --oneline --graph --decorate --all` pokazuje historię commitów i relacje między branchami.
+
+`git diff` pokazuje zawartość zmian. Przy porównaniu całego brancha można użyć:
+
+```bash
+git diff --stat main..feature/room
+git diff --name-status main..feature/room
+```
+
+`--stat` daje podsumowanie rozmiaru zmian, a `--name-status` listę plików wraz ze statusem `A` / `M` / `D`.
+
+### Fast-forward merge
+
+Jeżeli `main` nie ma własnych nowych commitów od momentu utworzenia brancha, Git może wykonać `Fast-forward`. Wtedy nie powstaje dodatkowy commit merge — wskaźnik `main` zostaje przesunięty na ostatni commit brancha.
+
+### Commit message
+
+W projekcie stosowane są komunikaty zgodne z Conventional Commits, m.in.:
+
+```text
+chore: technical / maintenance changes
+feat: new functionality
+```
+
+---
+
+## Room i persistent cache
+
+### MemoryCache a trwały storage
+
+MemoryCache działa tylko w czasie życia procesu aplikacji. Room pozwala zachować dane po zakończeniu procesu.
+
+W projekcie rozdzielono:
+
+```text
+MemoryCache → szybki dostęp w RAM
+Room        → trwałe metadane
+Coil        → cache plików obrazów
+```
+
+### Dwie warstwy cache nie oznaczają tego samego
+
+Metadane Wikimedia (`WikimediaImage`) i właściwy plik JPG/PNG są osobnymi procesami. Zapisanie metadanych w Room nie oznacza automatycznie zapisania pliku obrazu. Dlatego Coil korzysta z własnego `DiskCache`.
+
+---
+
+## Quiz -- modelowanie stanu
+
+Quiz pokazuje praktyczne zastosowanie kilku wartości stanu w ViewModelu:
+
+```text
+currentQuestionIndex
+selectedAnswerIndex
+score
+isAnswerChecked
+```
+
+`selectedAnswerIndex` ma wartość `null`, dopóki użytkownik nie wybierze odpowiedzi.
+
+`isAnswerChecked` blokuje ponowny wybór po udzieleniu odpowiedzi.
+
+`nextQuestion()` zwraca `Boolean`, dzięki czemu ekran może później rozróżnić:
+
+```text
+true  → następne pytanie
+false → koniec quizu / podsumowanie
+```
+
+### Odpowiedzialność QuizViewModel
+
+`QuizScreen` nie powinien samodzielnie obliczać wyniku. ViewModel przechowuje stan quizu i wykonuje logikę wyboru odpowiedzi.
+
+### Factory dla ViewModelu
+
+Ponieważ `QuizViewModel` otrzymuje `QuizRepository` w konstruktorze, do jego utworzenia używany jest `QuizViewModelFactory`.

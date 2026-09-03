@@ -13,5 +13,6 @@
     
     <string name="places_title">Miejsca</string>
     <string name="cities_title">Miasta</string>
+    <string name="quiz_button">Quiz</string>
 
 </resources>

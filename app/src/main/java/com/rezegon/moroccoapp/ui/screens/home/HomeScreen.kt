@@ -29,22 +29,26 @@ import com.rezegon.moroccoapp.ui.model.HeroUi
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onCitiesClick: () -> Unit,
-    onPlacesClick: () -> Unit
+    onPlacesClick: () -> Unit,
+    onQuizClick: () -> Unit
 ) {
 
+    // Contains the texts and labels displayed in the hero section.
     val heroUi = HeroUi(
         title = stringResource(R.string.welcome_title),
         description = stringResource(R.string.started_description),
         citiesButtonText = stringResource(R.string.cities_button),
-        placesButtonText = stringResource(R.string.places_button)
-
+        placesButtonText = stringResource(R.string.places_button),
+        quizButtonText = stringResource(R.string.quiz_button)
     )
 
+    // Passes navigation callbacks to the corresponding buttons.
     HeroSection(
         modifier = modifier,
         heroUi = heroUi,
         onCitiesBtnClick = onCitiesClick,
-        onPlacesBtnClick = onPlacesClick
+        onPlacesBtnClick = onPlacesClick,
+        onQuizBtnClick = onQuizClick
     )
 }
 
@@ -53,7 +57,8 @@ private fun HeroSection(
     modifier: Modifier = Modifier,
     heroUi: HeroUi,
     onCitiesBtnClick: () -> Unit,
-    onPlacesBtnClick: () -> Unit
+    onPlacesBtnClick: () -> Unit,
+    onQuizBtnClick: () -> Unit
 ) {
 
     Box(
@@ -98,10 +103,10 @@ private fun HeroSection(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 Button(
                     onClick = onCitiesBtnClick
                 ) {
-
                     Text(
                         text = heroUi.citiesButtonText
                     )
@@ -112,6 +117,15 @@ private fun HeroSection(
                 ) {
                     Text(
                         text = heroUi.placesButtonText
+                    )
+                }
+
+                // Opens the quiz when the user taps the quiz button.
+                Button(
+                    onClick = onQuizBtnClick
+                ) {
+                    Text(
+                        text = heroUi.quizButtonText
                     )
                 }
 
@@ -139,3 +153,4 @@ fun GradientOverlay() {
             )
     )
 }
+
