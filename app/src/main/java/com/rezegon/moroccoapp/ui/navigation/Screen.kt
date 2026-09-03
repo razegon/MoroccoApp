@@ -16,5 +16,11 @@ sealed class Screen(
 
     data object Quiz : Screen("quiz")
 
+    data object QuizDifficulty : Screen("quiz_difficulty")
+
+    data object QuizGame : Screen("quiz_game")
+
     data object QuizSummary : Screen("quiz_summary")
+
+    data object QuizRanking : Screen("quiz_ranking")
 }
