@@ -327,3 +327,96 @@ TOP 10 / TOP 20
 8. Favorites.
 9. Weather.
 10. Hilt / DI.
+
+## Aktualizacja 14 września 2026
+
+### Zrobione -- Quiz
+
+- `QuizQuestion`
+- `QuizDifficulty`
+- `QuizRepository` / `QuizRepositoryImpl`
+- `QuizQuestionDataSource`
+- `QuizQuestionDto`
+- `QuizQuestionMapper`
+- 50 pytań w `questions.json`
+- 5 poziomów trudności
+- ekran startowy quizu
+- ekran wyboru trudności
+- klasyczny quiz 10 pytań
+- 4 odpowiedzi na pytanie
+- jedna poprawna odpowiedź
+- blokowanie odpowiedzi po wyborze
+- zielone oznaczenie poprawnej odpowiedzi
+- czerwone oznaczenie wybranej błędnej odpowiedzi
+- ekran podsumowania
+- nickname
+- zapis wyników do Room
+- TOP 10
+- poziom trudności wyświetlany obok wyniku
+- możliwość przerwania quizu z potwierdzeniem
+- reset stanu po przerwaniu quizu
+
+### Zrobione -- UI / Theme
+
+- własny Light Theme
+- własny Dark Theme
+- wyłączone dynamic colors
+- wspólne `Shapes`
+- rozszerzona typografia Material 3
+- odświeżony `QuizStartScreen`
+- odświeżony `QuizDifficultyScreen`
+- mały przycisk `X` do opuszczenia quizu
+
+### Zrobione -- Git
+
+- `feature/quiz` rozwijany jako osobny branch
+- logiczne commity
+- testy Build po kolejnych etapach
+- merge `feature/quiz` → `main` przez `Fast-forward`
+- push zaktualizowanego `main` do GitHub
+
+## Aktualny stan aplikacji
+
+```text
+main
+  ↓
+Quiz MVP ✅
+  ↓
+50 pytań JSON ✅
+  ↓
+5 poziomów trudności ✅
+  ↓
+TOP 10 + Room ✅
+  ↓
+Theme Light/Dark ✅
+```
+
+## Następny etap -- Arcade Mode
+
+### Ustalone zasady
+
+```text
+pula pytań: wszystkie dostępne pytania
+czas początkowy: 30 s
+poprawna odpowiedź: +5 s
+błędna odpowiedź: -3 s
+koniec gry: 0 s
+```
+
+Dodatkowe założenia:
+- pytanie nie może powtórzyć się w obrębie jednej rozgrywki,
+- Arcade będzie korzystał z osobnego modelu stanu gry,
+- przed implementacją trzeba ustalić sposób zapisu i rankingu wyników Arcade,
+- trzeba ustalić, czy ranking Arcade będzie oddzielny od klasycznego TOP 10.
+
+### Później
+
+1. Arcade Mode.
+2. Mapy OSM.
+3. Search.
+4. Favorites.
+5. Weather.
+6. dalsze dopracowanie UX całej aplikacji.
+7. Hilt / DI.
+8. przygotowanie architektury pod KMP.
+9. dalsze źródła, autorzy i licencje zdjęć.

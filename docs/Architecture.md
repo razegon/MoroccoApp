@@ -689,3 +689,130 @@ Room
     ↓
 TOP 10 / TOP 20
 ```
+
+## Aktualizacja 14 września 2026 -- aktualny stan po domknięciu Quiz MVP
+
+### Quiz -- źródło pytań
+
+Pytania quizowe nie są już przechowywane jako hardkodowana lista w `QuizRepositoryImpl`. Są przechowywane w pliku:
+
+```text
+app/src/main/assets/quiz/questions.json
+```
+
+Każdy rekord zawiera:
+
+```text
+id
+difficulty
+question
+answers
+correctAnswerIndex
+```
+
+Aktualnie baza zawiera 50 pytań:
+
+```text
+VERY_EASY  → 10
+EASY       → 10
+MEDIUM     → 10
+HARD       → 10
+VERY_HARD  → 10
+```
+
+### Przepływ danych quizu
+
+```text
+questions.json
+      ↓
+QuizQuestionDataSource
+      ↓
+Gson
+      ↓
+QuizQuestionDto
+      ↓
+QuizQuestionMapper
+      ↓
+QuizQuestion
+      ↓
+QuizRepository
+      ↓
+QuizViewModel
+      ↓
+Compose UI
+```
+
+`QuizQuestionDto` odwzorowuje format JSON, natomiast `QuizQuestion` jest modelem domenowym. Konwersja `difficulty` z tekstu JSON do `QuizDifficulty` odbywa się w mapperze.
+
+### Trudność quizu
+
+`QuizDifficulty` znajduje się w `domain/model` i posiada pięć poziomów:
+
+```kotlin
+VERY_EASY
+EASY
+MEDIUM
+HARD
+VERY_HARD
+```
+
+Poziom jest wybierany na osobnym `QuizDifficultyScreen`. `QuizViewModel.startQuiz(difficulty)` zapamiętuje wybrany poziom i pobiera odpowiednie pytania przez Repository.
+
+### Klasyczny quiz
+
+Klasyczny quiz składa się z 10 pytań. Każde pytanie posiada 4 odpowiedzi i dokładnie jedną poprawną. Po udzieleniu odpowiedzi wybór zostaje zablokowany. Poprawna odpowiedź jest oznaczana na zielono, a wybrana błędna odpowiedź na czerwono.
+
+### Przerwanie quizu
+
+`QuizScreen` posiada mały przycisk `X` w prawym górnym rogu. Przed opuszczeniem rozgrywki wyświetlany jest `AlertDialog` z potwierdzeniem.
+
+```text
+X
+↓
+potwierdzenie
+├── ZOSTAŃ → pozostaje w quizie
+└── WYJDŹ → reset stanu + powrót do ekranu startowego quizu
+```
+
+Przerwanie quizu nie zapisuje wyniku. Resetowany jest bieżący stan rozgrywki.
+
+### Wyniki quizu i Room
+
+`QuizResult` zawiera obecnie:
+
+```kotlin
+nickname
+difficulty
+score
+totalQuestions
+date
+```
+
+Wynik jest zapisywany przez `QuizResultRepository` do Room. Ranking jest sortowany przede wszystkim po liczbie poprawnych odpowiedzi (`score DESC`). Poziom trudności jest informacją prezentowaną obok wyniku i nie daje automatycznego bonusu w rankingu.
+
+Przykład:
+
+```text
+10/10 MEDIUM
+9/10 HARD
+```
+
+### Quiz UI i Theme
+
+Dla aplikacji wprowadzono własny Material 3 Theme dla Light i Dark Mode. Dynamic colors są wyłączone.
+
+Wspólne elementy Theme obejmują:
+
+```text
+ColorScheme
+Shapes
+Typography
+```
+
+`Shape.kt` definiuje wspólną skalę zaokrągleń. Ekrany startowy i wyboru trudności korzystają z tej samej hierarchii typografii i spacingu.
+
+### Git
+
+Etap `feature/quiz` został ukończony, przetestowany i scalony do `main` metodą `Fast-forward`. Zaktualizowany `main` został wypchnięty do GitHub.
+
+Następnym etapem będzie osobny branch dla `Arcade Mode`.

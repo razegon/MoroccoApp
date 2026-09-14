@@ -535,3 +535,129 @@ false → koniec quizu / podsumowanie
 ### Factory dla ViewModelu
 
 Ponieważ `QuizViewModel` otrzymuje `QuizRepository` w konstruktorze, do jego utworzenia używany jest `QuizViewModelFactory`.
+
+## Quiz -- JSON jako źródło danych
+
+Pytania zostały oddzielone od logiki aplikacji i przeniesione do `questions.json`.
+
+```text
+questions.json
+    ↓
+QuizQuestionDto
+    ↓
+QuizQuestionMapper
+    ↓
+QuizQuestion
+
+## Quiz -- dane w JSON zamiast hardkodowanej listy
+
+Pytania zostały oddzielone od logiki aplikacji i przeniesione do `questions.json`.
+
+```text
+questions.json
+    ↓
+QuizQuestionDataSource
+    ↓
+QuizQuestionDto
+    ↓
+QuizQuestionMapper
+    ↓
+QuizQuestion
+```
+
+Ważna lekcja: DTO powinno odwzorowywać format danych zewnętrznych, a model domenowy powinien pozostać niezależny od szczegółów formatu JSON.
+
+W praktyce `difficulty` jest tekstem w JSON, ale domena używa `QuizDifficulty`. Mapper wykonuje tę konwersję.
+
+### Dlaczego DataSource?
+
+`QuizRepositoryImpl` nie powinno wiedzieć, jak otwierany jest plik ani jak Gson parsuje JSON. DataSource ukrywa szczegół źródła danych.
+
+```text
+QuizRepositoryImpl
+        ↓
+QuizQuestionDataSource
+        ↓
+questions.json
+```
+
+Dzięki temu późniejsza zmiana źródła danych nie musi zmieniać ViewModelu.
+
+## Quiz -- stan wyjścia z rozgrywki
+
+Przerwanie quizu wymagało rozdzielenia odpowiedzialności:
+
+```text
+QuizScreen
+→ pokazuje dialog i obsługuje wybór użytkownika
+
+MoroccoApp
+→ wykonuje Navigation
+
+QuizViewModel
+→ resetuje stan rozgrywki
+```
+
+## Quiz -- ranking i difficulty
+
+`difficulty` zostało dodane do `QuizResult`, ponieważ ranking musi pokazywać kontekst wyniku.
+
+Poziom trudności nie zmienia kolejności rankingu. Nadal obowiązuje:
+
+```text
+więcej poprawnych odpowiedzi → wyższa pozycja
+```
+
+Poziom jest informacją, np.:
+
+```text
+10/10 MEDIUM
+9/10 HARD
+```
+
+## Material 3 Theme -- centralizacja wyglądu
+
+Zamiast ustawiać wygląd komponentów niezależnie w każdym ekranie, wprowadzono wspólny:
+
+```text
+ColorScheme
+Shapes
+Typography
+```
+
+Wniosek: decyzje wizualne, które mają obowiązywać w całej aplikacji, powinny być centralizowane w Theme. Pojedynczy ekran powinien korzystać z `MaterialTheme.colorScheme`, `MaterialTheme.typography` i `MaterialTheme.shapes` zamiast tworzyć własne wartości bez potrzeby.
+
+## Git -- zakończenie etapu feature
+
+`feature/quiz` zostało przetestowane, scalone do `main` przez `Fast-forward` i wypchnięte na GitHub.
+
+Praktyczny wzorzec pracy:
+
+```text
+feature branch
+    ↓
+małe logiczne zmiany
+    ↓
+Build + testy
+    ↓
+commit
+    ↓
+push branch
+    ↓
+merge do main
+    ↓
+push main
+```
+
+## Planowanie Arcade Mode
+
+Przed rozpoczęciem implementacji warto najpierw zamknąć reguły gry. Obecnie ustalono:
+
+```text
+30 s na start
++5 s za poprawną odpowiedź
+-3 s za błędną odpowiedź
+0 s → koniec gry
+```
+
+W jednej sesji pytania nie powinny się powtarzać. Szczegóły modelu wyniku oraz osobnego rankingu Arcade wymagają zaprojektowania przed kodowaniem.

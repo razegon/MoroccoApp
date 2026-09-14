@@ -557,3 +557,99 @@ Przetestowano przejście przez wszystkie 10 pytań.
 ### Następny etap
 
 Następnym krokiem jest ekran podsumowania, a następnie zapis wyniku gracza w Room i ranking TOP 10/20.
+
+## 14 września 2026 -- Domknięcie Quiz MVP i przygotowanie Arcade
+
+### Quiz
+- rozszerzono quiz do 50 pytań,
+- utworzono 5 poziomów trudności,
+- pytania przeniesiono z hardkodowanej listy do `questions.json`,
+- dodano `QuizQuestionDto`, `QuizQuestionMapper` i `QuizQuestionDataSource`,
+- dodano ekran wyboru trudności,
+- dodano ekran startowy quizu,
+- dodano TOP 10 w Room,
+- wynik zawiera informację o poziomie trudności,
+- dodano możliwość przerwania quizu z potwierdzeniem,
+- przerwanie quizu resetuje stan bieżącej rozgrywki.
+
+### UI / Theme
+- dodano własną paletę Light/Dark,
+- wyłączono dynamic colors,
+- dodano wspólne `Shapes`,
+- rozszerzono typografię Material 3,
+- poprawiono wygląd ekranów startowych quizu,
+- przycisk wyjścia zmieniono na mały `X` w prawym górnym rogu.
+
+### Git
+`feature/quiz` został przetestowany i scalony do `main` przez `Fast-forward`.
+Zaktualizowany `main` został wypchnięty do GitHub.
+
+### Następny etap
+Nowy branch będzie przeznaczony na `Arcade Mode`.
+
+## 14 września 2026 -- zakończenie etapu Quiz i przygotowanie Arcade
+
+Dzisiejszy etap domknął pierwszą pełną wersję quizu i przygotował projekt pod kolejny tryb gry.
+
+### Dane quizu
+
+Pytania zostały przeniesione z kodu Kotlin do:
+
+```text
+app/src/main/assets/quiz/questions.json
+```
+
+Baza zawiera 50 pytań rozłożonych po 10 na każdy poziom trudności: `VERY_EASY`, `EASY`, `MEDIUM`, `HARD` i `VERY_HARD`.
+
+Dodano warstwę danych:
+
+```text
+QuizQuestionDataSource
+QuizQuestionDto
+QuizQuestionMapper
+```
+
+Dzięki temu `QuizRepositoryImpl` nie zawiera już listy pytań, tylko korzysta ze źródła danych JSON.
+
+### Wybór trudności
+
+Dodano `QuizDifficulty` do warstwy domenowej oraz osobny `QuizDifficultyScreen`. Wybrany poziom trafia do `QuizViewModel.startQuiz(difficulty)` i jest zachowywany razem z wynikiem.
+
+### Ranking
+
+`QuizResult` został rozszerzony o `difficulty`. TOP 10 wyświetla teraz poziom obok wyniku. Ranking nadal priorytetowo traktuje liczbę poprawnych odpowiedzi; poziom trudności jest informacją, a nie mnożnikiem punktów.
+
+### Przerwanie rozgrywki
+
+Dodano możliwość wyjścia z quizu podczas pytań. Zamiast dużego przycisku zastosowano mały `X` w prawym górnym rogu. Wyjście wymaga potwierdzenia. Potwierdzone wyjście resetuje stan bieżącej rozgrywki i nie zapisuje wyniku.
+
+### UI / Theme
+
+Rozpoczęto spójny redesign Material 3 dla całej aplikacji:
+- własna paleta Light/Dark,
+- wyłączenie dynamic colors,
+- wspólne `Shapes`,
+- rozszerzona typografia,
+- odświeżony `QuizStartScreen`,
+- odświeżony `QuizDifficultyScreen`,
+- mały przycisk `X` zamiast pełnoszerokiego przycisku wyjścia.
+
+Każda logiczna zmiana była kończona Buildem i testem działania.
+
+### Git
+
+Etap `feature/quiz` został zamknięty po testach i scalony do `main` przez `Fast-forward`. `main` został wypchnięty do GitHub.
+
+### Następny etap -- Arcade Mode
+
+Ustalono wstępne zasady:
+
+```text
+pula: wszystkie pytania
+czas startowy: 30 s
+poprawna odpowiedź: +5 s
+błędna odpowiedź: -3 s
+koniec: 0 s
+```
+
+W jednej rozgrywce pytanie nie powinno pojawić się drugi raz. Szczegóły wyniku i porównywania Arcade z klasycznym rankingiem pozostają do zaprojektowania przed implementacją.
