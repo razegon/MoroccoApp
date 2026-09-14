@@ -112,7 +112,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q178663",
             placeTranslate = R.string.trans_meknes,
-            placeSnippet = R.string.meknes_founded,
             // placeIcon = R.drawable.ic_meknes,
             placeWeather = R.string.meknes_weather,
             latitude = 33.87199,
@@ -135,7 +134,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q7903",
             placeTranslate = R.string.trans_casablanca,
-            placeSnippet = R.string.casablanca_founded,
             // placeIcon = R.drawable.ic_casablanca,
             placeWeather = R.string.casablanca_weather,
             latitude = 33.59606,
@@ -160,7 +158,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q219583",
             placeTranslate = R.string.trans_el_jadida,
-            placeSnippet = R.string.el_jadida_founded,
             // placeIcon = R.drawable.ic_el_jadida,
             placeWeather = R.string.el_jadida_weather,
             latitude = 33.24650,
@@ -183,7 +180,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q216939",
             placeTranslate = R.string.trans_essaouira,
-            placeSnippet = R.string.essaouira_founded,
             // placeIcon = R.drawable.ic_essaouira,
             placeWeather = R.string.essaouira_weather,
             latitude = 31.52060,
@@ -197,10 +193,10 @@ object MoroccoDataSource {
             placeId = 4107,
             placeType = PlaceType.CITY,
             wikimediaImages = listOf(
-//                WikimediaImageRef(),
-//                WikimediaImageRef(),
-//                WikimediaImageRef(),
-//                WikimediaImageRef(),
+                WikimediaImageRef(162395398),
+                WikimediaImageRef(104323865),
+                WikimediaImageRef(48236357),
+                WikimediaImageRef(149015877),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_agadir,
@@ -209,7 +205,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q170525",
             placeTranslate = R.string.trans_agadir,
-            placeSnippet = R.string.agadir_founded,
             //placeIcon = R.drawable.ic_agadir,
             placeWeather = R.string.agadir_weather,
             latitude = 30.43541,
@@ -222,8 +217,12 @@ object MoroccoDataSource {
             placeName = R.string.larache_name,
             placeId = 4108,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://content.cnt.ma/uploads/larache_8b8f19ce57.jpeg",
+            wikimediaImages = listOf(
+                WikimediaImageRef(155554216),
+                WikimediaImageRef(155867488),
+                WikimediaImageRef(157387177),
+                WikimediaImageRef(157385268),
+                WikimediaImageRef(97925153)
             ),
             placeDescriptions = listOf(
                 R.string.desc1_larache,
@@ -233,7 +232,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "@606775",
             placeTranslate = R.string.trans_larache,
-            placeSnippet = R.string.larache_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.larache_weather,
             latitude = 35.1972,
@@ -246,8 +244,11 @@ object MoroccoDataSource {
             placeName = R.string.asilah_name,
             placeId = 4109,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://chicmorocco.com/wp-content/uploads/2023/08/vistas-asilah-muralla.jpg",
+            wikimediaImages = listOf(
+                WikimediaImageRef(7385225),
+                WikimediaImageRef(155885960),
+                WikimediaImageRef(74057618),
+                WikimediaImageRef(7385236),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_asilah,
@@ -256,7 +257,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q730328",
             placeTranslate = R.string.trans_asilah,
-            placeSnippet = R.string.asilah_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.asilah_weather,
             latitude = 35.46676,
@@ -269,8 +269,12 @@ object MoroccoDataSource {
             placeName = R.string.tanger_name,
             placeId = 4110,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://www.civitatis.com/blog/wp-content/uploads/2025/10/tanger-costa-vistas.jpg",
+            wikimediaImages = listOf(
+                WikimediaImageRef(90617827),
+                WikimediaImageRef(156490926),
+                WikimediaImageRef(137562092),
+                WikimediaImageRef(129942646),
+                WikimediaImageRef(86467120),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_tanger,
@@ -280,7 +284,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q126148",
             placeTranslate = R.string.trans_tanger,
-            placeSnippet = R.string.tanger_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.tanger_weather,
             latitude = 35.78837,
@@ -293,8 +296,11 @@ object MoroccoDataSource {
             placeName = R.string.tetouan_name,
             placeId = 4111,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://ulysse.com/news/wp-content/uploads/2025/05/La-ville-de-Tetouan-au-Maroc.jpg",
+            wikimediaImages = listOf(
+                WikimediaImageRef(6154057),
+                WikimediaImageRef(155146685),
+                WikimediaImageRef(157380958),
+                WikimediaImageRef(162986175),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_tetouan,
@@ -303,7 +309,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q185157",
             placeTranslate = R.string.trans_tetouan,
-            placeSnippet = R.string.tetouan_founded,
             //placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.tetouan_weather,
             latitude = 35.57006,
@@ -316,8 +321,11 @@ object MoroccoDataSource {
             placeName = R.string.chefchaouen_name,
             placeId = 4112,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://deih43ym53wif.cloudfront.net/blue-city-chefchaouen-rif-mountains-morocco-shutterstock_302927252_5dff7cbfba.jpeg",
+            wikimediaImages = listOf(
+                WikimediaImageRef(49156478),
+                WikimediaImageRef(139604219),
+                WikimediaImageRef(66006858),
+                WikimediaImageRef(197429545),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_chefchaouen,
@@ -326,7 +334,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q676778",
             placeTranslate = R.string.trans_chefchaouen,
-            placeSnippet = R.string.chefchaouen_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.chefchaouen_weather,
             latitude = 35.168538,
@@ -339,15 +346,15 @@ object MoroccoDataSource {
             placeName = R.string.taroudant_name,
             placeId = 4113,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://cdn.bookaway.com/media/files/6470a4c2482b45933f8e729b.jpeg?quality=50&width=2000"
+            wikimediaImages = listOf(
+                WikimediaImageRef(63619129),
+                WikimediaImageRef(145552226),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_taroudant
             ),
             wikidataId = "Q762727",
             placeTranslate = R.string.trans_taroudant,
-            placeSnippet = R.string.taroudant_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.taroudant_weather,
             latitude = 30.46886,
@@ -360,11 +367,12 @@ object MoroccoDataSource {
             placeName = R.string.ouarzazate_name,
             placeId = 4114,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://cdn.kimkim.com/files/a/images/b9575520130148feadf8b6aef7707e3c72b305d9/big-66720c7c9db140a59577b3511102dd92.jpg",
-                "https://visitdraatafilalet.com/wp-content/uploads/2021/11/Ouarzazate-Web-157-1024x684-2-1.jpg",
-                "https://lifepart2andbeyond.com/wp-content/uploads/2023/03/Atlas-Entrance-1024x769.jpg",
-                "https://themarkaz.org/wp-content/uploads/2023/12/Ouarzazate-Solar-Power-Station-day.jpg"
+            wikimediaImages = listOf(
+                WikimediaImageRef(116752933),
+                WikimediaImageRef(126651110),
+                WikimediaImageRef(49951014),
+                WikimediaImageRef(141565160),
+                WikimediaImageRef(103843880),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_ouarzazate,
@@ -374,7 +382,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q505208",
             placeTranslate = R.string.trans_ouarzazate,
-            placeSnippet = R.string.ouarzazate_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.ouarzazate_weather,
             latitude = 30.920307,
@@ -387,8 +394,10 @@ object MoroccoDataSource {
             placeName = R.string.zagora_name,
             placeId = 4115,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-                "https://www.1001inventions.com/wp-content/uploads/2018/09/timbuktu-01-1.jpg"
+            wikimediaImages = listOf(
+                WikimediaImageRef(40011734),
+                WikimediaImageRef(77170334),
+                WikimediaImageRef(130226162),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_zagora,
@@ -396,7 +405,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q140354",
             placeTranslate = R.string.trans_zagora,
-            placeSnippet = R.string.zagora_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.zagora_weather,
             latitude = 30.32079,
@@ -409,8 +417,11 @@ object MoroccoDataSource {
             placeName = R.string.arfoud_name,
             placeId = 4116,
             placeType = PlaceType.CITY,
-            placeImages = listOf(
-
+            wikimediaImages = listOf(
+                WikimediaImageRef(3062453),
+                WikimediaImageRef(158463206),
+                WikimediaImageRef(157412617),
+                WikimediaImageRef(69716318),
             ),
             placeDescriptions = listOf(
                 R.string.desc1_arfoud,
@@ -419,7 +430,6 @@ object MoroccoDataSource {
             ),
             wikidataId = "Q648987",
             placeTranslate = R.string.trans_arfoud,
-            placeSnippet = R.string.arfoud_founded,
             // placeIcon = R.drawable.ic_morocco_green,
             placeWeather = R.string.arfoud_weather,
             latitude = 31.43522,
