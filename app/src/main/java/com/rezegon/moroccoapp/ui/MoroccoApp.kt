@@ -191,6 +191,15 @@ fun MoroccoApp() {
                     viewModel = quizViewModel,
                     onSummaryClick = {
                         navController.navigate(Screen.QuizSummary.route)
+                    },
+                    onExitClick = {
+                        quizViewModel.restartQuiz()
+
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }

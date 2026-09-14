@@ -6,6 +6,7 @@ import com.rezegon.moroccoapp.domain.model.QuizResult
 fun QuizResultEntity.toDomain(): QuizResult {
     return QuizResult(
         nickname = nickname,
+        difficulty = difficulty,
         score = score,
         totalQuestions = totalQuestions,
         date = date
@@ -17,6 +18,7 @@ fun QuizResultEntity.toDomain(): QuizResult {
 fun QuizResult.toEntity(): QuizResultEntity {
     return QuizResultEntity(
         nickname = nickname,
+        difficulty = difficulty,
         score = score,
         totalQuestions = totalQuestions,
         date = date

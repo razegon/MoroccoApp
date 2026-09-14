@@ -239,369 +239,364 @@
     ],
     "correctAnswerIndex": 0
   },
-  [
-    {
-      "id": 21,
-      "difficulty": "MEDIUM",
-      "question": "Która dynastia założyła Marrakesz w XI wieku?",
-      "answers": [
-        "Almohadzi",
-        "Almorawidzi",
-        "Saadyci",
-        "Marynidzi"
-      ],
-      "correctAnswerIndex": 1
-    },
-    {
-      "id": 22,
-      "difficulty": "MEDIUM",
-      "question": "Które z poniższych miast stało się stolicą Maroka w 1912 roku?",
-      "answers": [
-        "Fez",
-        "Marrakesz",
-        "Meknes",
-        "Rabat"
-      ],
-      "correctAnswerIndex": 3
-    },
-    {
-      "id": 23,
-      "difficulty": "MEDIUM",
-      "question": "Które miasto było stolicą Maroka za panowania sułtana Moulay Ismaila?",
-      "answers": [
-        "Fez",
-        "Rabat",
-        "Meknes",
-        "Marrakesz"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 24,
-      "difficulty": "MEDIUM",
-      "question": "Jbel Toubkal znajduje się w:",
-      "answers": [
-        "Rifie",
-        "Atlasie Średnim",
-        "Atlasie Wysokim",
-        "Anti-Atlasie"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 25,
-      "difficulty": "MEDIUM",
-      "question": "Które z poniższych miast NIE jest jednym z czterech tradycyjnych miast cesarskich Maroka?",
-      "answers": [
-        "Fez",
-        "Rabat",
-        "Casablanca",
-        "Meknes"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 26,
-      "difficulty": "MEDIUM",
-      "question": "Która dynastia była związana z rozbudową Meknesu jako wielkiego ośrodka władzy za panowania Moulay Ismaila?",
-      "answers": [
-        "Almorawidzi",
-        "Almohadzi",
-        "Saadyci",
-        "Alawici"
-      ],
-      "correctAnswerIndex": 3
-    },
-    {
-      "id": 27,
-      "difficulty": "MEDIUM",
-      "question": "Która dynastia panowała w Maroku bezpośrednio przed Saadytami?",
-      "answers": [
-        "Marynidzi",
-        "Wattasydzi",
-        "Almohadzi",
-        "Alawici"
-      ],
-      "correctAnswerIndex": 1
-    },
-    {
-      "id": 28,
-      "difficulty": "MEDIUM",
-      "question": "Która dynastia początkowo miała Fez jako stolicę, a następnie przeniosła centrum władzy do Marrakeszu?",
-      "answers": [
-        "Idrissydzi",
-        "Saadyci",
-        "Almorawidzi",
-        "Alawici"
-      ],
-      "correctAnswerIndex": 1
-    },
-    {
-      "id": 29,
-      "difficulty": "MEDIUM",
-      "question": "Które z poniższych miast było stolicą Maroka przed przeniesieniem stolicy do Rabatu w 1912 roku?",
-      "answers": [
-        "Tanger",
-        "Marrakesz",
-        "Fez",
-        "Meknes"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 30,
-      "difficulty": "MEDIUM",
-      "question": "W którym roku Maroko odzyskało niepodległość po okresie francuskiego protektoratu?",
-      "answers": [
-        "1945",
-        "1952",
-        "1956",
-        "1962"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 31,
-      "difficulty": "HARD",
-      "question": "Który władca Almohadów rozpoczął budowę meczetu Kutubijja w Marrakeszu?",
-      "answers": [
-        "Abd al-Mu’min",
-        "Jusuf ibn Taszfin",
-        "Abu Jusuf Jakub al-Mansur",
-        "Muhammad an-Nasir"
-      ],
-      "correctAnswerIndex": 0
-    },
-    {
-      "id": 32,
-      "difficulty": "HARD",
-      "question": "Który sułtan z dynastii Saadytów zlecił budowę pałacu El Badi w Marrakeszu?",
-      "answers": [
-        "Ahmad al-Mansur",
-        "Abdallah al-Ghalib",
-        "Muhammad asz-Szejch",
-        "Abu Marwan Abd al-Malik I"
-      ],
-      "correctAnswerIndex": 0
-    },
-    {
-      "id": 33,
-      "difficulty": "HARD",
-      "question": "Bitwa Trzech Króli (Alcácer Quibir) z 1578 roku zakończyła się śmiercią:",
-      "answers": [
-        "dwóch monarchów",
-        "trzech monarchów",
-        "jednego monarchy",
-        "żadnego monarchy"
-      ],
-      "correctAnswerIndex": 1
-    },
-    {
-      "id": 34,
-      "difficulty": "HARD",
-      "question": "Który z władców Idrissydów założył Fez jako miasto, które później stało się stolicą dynastii?",
-      "answers": [
-        "Idris I",
-        "Muhammad ibn Idris",
-        "Idris II",
-        "Yahya ibn Muhammad"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 35,
-      "difficulty": "HARD",
-      "question": "Który z tych zespołów architektonicznych znajduje się w Meknesie i jest związany z sułtanem Moulay Ismailem?",
-      "answers": [
-        "Bab Mansour",
-        "Bab Agnaou",
-        "Bab Bou Jeloud",
-        "Bab er-Rouah"
-      ],
-      "correctAnswerIndex": 0
-    },
-    {
-      "id": 36,
-      "difficulty": "HARD",
-      "question": "Które miasto było w średniowieczu jednym z najważniejszych centrów handlu transsaharyjskiego w oazie Tafilalt?",
-      "answers": [
-        "Rissani",
-        "Sijilmasa",
-        "Zagora",
-        "Ouarzazate"
-      ],
-      "correctAnswerIndex": 1
-    },
-    {
-      "id": 37,
-      "difficulty": "HARD",
-      "question": "Który portugalski władca założył w 1506 roku fortecę, z której rozwinęło się portugalskie Mazagan (dzisiejsze El Jadida)?",
-      "answers": [
-        "Manuel I",
-        "Jan II",
-        "Sebastian I",
-        "Alfons V"
-      ],
-      "correctAnswerIndex": 0
-    },
-    {
-      "id": 38,
-      "difficulty": "HARD",
-      "question": "Jak nazywała się miejscowość w Atlasie Wysokim, która stała się jednym z najważniejszych ośrodków wczesnego ruchu Almohadów i miejscem pochówku Ibn Tumarta?",
-      "answers": [
-        "Tinmel",
-        "Sala",
-        "Lixus",
-        "Volubilis"
-      ],
-      "correctAnswerIndex": 0
-    },
-    {
-      "id": 39,
-      "difficulty": "HARD",
-      "question": "Który z poniższych sułtanów Saadytów zginął w Bitwie Trzech Króli?",
-      "answers": [
-        "Ahmad al-Mansur",
-        "Abdallah al-Ghalib",
-        "Abu Marwan Abd al-Malik",
-        "Muhammad asz-Szejch"
-      ],
-      "correctAnswerIndex": 2
-    },
-    {
-      "id": 40,
-      "difficulty": "HARD",
-      "question": "Która z poniższych miejscowości była pierwszą stolicą Idrissydów?",
-      "answers": [
-        "Fez",
-        "Moulay Idriss Zerhoun",
-        "Marrakesz",
-        "Meknes"
-      ],
-      "correctAnswerIndex": 1
-    },
-    [
-      {
-        "id": 41,
-        "difficulty": "VERY_HARD",
-        "question": "Który władca Almohadów zlecił wzniesienie minaretu meczetu Kutubijja w jego zachowanej do dziś formie?",
-        "answers": [
-          "Abd al-Mu’min",
-          "Abu Jusuf Jakub al-Mansur",
-          "Muhammad an-Nasir",
-          "Jusuf al-Mustansir"
-        ],
-        "correctAnswerIndex": 1
-      },
-      {
-        "id": 42,
-        "difficulty": "VERY_HARD",
-        "question": "W którym roku Almohadowie zdobyli Marrakesz, kończąc panowanie Almorawidów nad miastem?",
-        "answers": [
-          "1121",
-          "1130",
-          "1147",
-          "1163"
-        ],
-        "correctAnswerIndex": 2
-      },
-      {
-        "id": 43,
-        "difficulty": "VERY_HARD",
-        "question": "Który władca Almohadów poniósł klęskę w bitwie pod Las Navas de Tolosa w 1212 roku?",
-        "answers": [
-          "Abd al-Mu’min",
-          "Abu Jusuf Jakub al-Mansur",
-          "Muhammad an-Nasir",
-          "Yusuf II al-Mustansir"
-        ],
-        "correctAnswerIndex": 2
-      },
-      {
-        "id": 44,
-        "difficulty": "VERY_HARD",
-        "question": "Który władca Saadytów był odpowiedzialny za zwycięstwo pod Ksar el-Kebir w 1578 roku, ale zmarł w trakcie bitwy?",
-        "answers": [
-          "Ahmad al-Mansur",
-          "Abdallah al-Ghalib",
-          "Abu Marwan Abd al-Malik",
-          "Muhammad asz-Szejch"
-        ],
-        "correctAnswerIndex": 2
-      },
-      {
-        "id": 45,
-        "difficulty": "VERY_HARD",
-        "question": "W którym roku armia marokańska pod dowództwem Judara Paszy pokonała siły Songhaju w bitwie pod Tondibi?",
-        "answers": [
-          "1582",
-          "1591",
-          "1603",
-          "1610"
-        ],
-        "correctAnswerIndex": 1
-      },
-      {
-        "id": 46,
-        "difficulty": "VERY_HARD",
-        "question": "Co było najważniejszym powodem strategicznego znaczenia Sijilmasy w średniowieczu?",
-        "answers": [
-          "Kontrola przełęczy Atlasu Wysokiego",
-          "Położenie na skrzyżowaniu szlaków handlu transsaharyjskiego",
-          "Dostęp do dużych złóż srebra w Atlasie Średnim",
-          "Kontrola cieśniny między Marokiem a Półwyspem Iberyjskim"
-        ],
-        "correctAnswerIndex": 1
-      },
-      {
-        "id": 47,
-        "difficulty": "VERY_HARD",
-        "question": "Który sułtan z dynastii Marynidów ufundował medresę Bu Inania w Fezie, ukończoną w 1355 roku?",
-        "answers": [
-          "Abu al-Hasan Ali ibn Othman",
-          "Abu Inan Faris",
-          "Abu Said Uthman II",
-          "Abu Muhammad Abd al-Haqq II"
-        ],
-        "correctAnswerIndex": 1
-      },
-      {
-        "id": 48,
-        "difficulty": "VERY_HARD",
-        "question": "Które marokańskie miasto było wyjątkowym przykładem ośrodka, w którym społeczność żydowska stanowiła większość mieszkańców jeszcze w pierwszej połowie XX wieku, a znaczna jej część wywodziła się z Żydów sefardyjskich przybyłych z Sewilli?",
-        "answers": [
-          "Debdou",
-          "Sefrou",
-          "Tetuan",
-          "Essaouira"
-        ],
-        "correctAnswerIndex": 0
-      },
-      {
-        "id": 49,
-        "difficulty": "VERY_HARD",
-        "question": "Który z poniższych faktów dotyczących Saadyjskich Grobowców w Marrakeszu jest prawdziwy?",
-        "answers": [
-          "Cały kompleks został zbudowany przez Ahmada al-Mansura od podstaw po zwycięstwie pod Tondibi.",
-          "Najstarsza z zachowanych kopuł została wzniesiona przez Abdallaha al-Ghaliba jako miejsce pochówku jego ojca, Muhammada asz-Szejcha.",
-          "Kompleks został rozbudowany przez Moulay Ismaila, który przekształcił go w główną nekropolię dynastii Alawitów.",
-          "Grobowce powstały dopiero po objęciu władzy przez dynastię Alawitów."
-        ],
-        "correctAnswerIndex": 1
-      },
-      {
-        "id": 50,
-        "difficulty": "VERY_HARD",
-        "question": "Która z poniższych sekwencji dynastii jest chronologicznie poprawna?",
-        "answers": [
-          "Idrissydzi → Almohadzi → Almorawidzi → Marynidzi → Saadyci → Alawici",
-          "Idrissydzi → Almorawidzi → Almohadzi → Marynidzi → Saadyci → Alawici",
-          "Almorawidzi → Idrissydzi → Almohadzi → Saadyci → Marynidzi → Alawici",
-          "Idrissydzi → Marynidzi → Almorawidzi → Almohadzi → Saadyci → Alawici"
-        ],
-        "correctAnswerIndex": 1
-      }
-    ]
-  ]
-
+  {
+    "id": 21,
+    "difficulty": "MEDIUM",
+    "question": "Która dynastia założyła Marrakesz w XI wieku?",
+    "answers": [
+      "Almohadzi",
+      "Almorawidzi",
+      "Saadyci",
+      "Marynidzi"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 22,
+    "difficulty": "MEDIUM",
+    "question": "Które z poniższych miast stało się stolicą Maroka w 1912 roku?",
+    "answers": [
+      "Fez",
+      "Marrakesz",
+      "Meknes",
+      "Rabat"
+    ],
+    "correctAnswerIndex": 3
+  },
+  {
+    "id": 23,
+    "difficulty": "MEDIUM",
+    "question": "Które miasto było stolicą Maroka za panowania sułtana Moulay Ismaila?",
+    "answers": [
+      "Fez",
+      "Rabat",
+      "Meknes",
+      "Marrakesz"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 24,
+    "difficulty": "MEDIUM",
+    "question": "Jbel Toubkal znajduje się w:",
+    "answers": [
+      "Rifie",
+      "Atlasie Średnim",
+      "Atlasie Wysokim",
+      "Anti-Atlasie"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 25,
+    "difficulty": "MEDIUM",
+    "question": "Które z poniższych miast NIE jest jednym z czterech tradycyjnych miast cesarskich Maroka?",
+    "answers": [
+      "Fez",
+      "Rabat",
+      "Casablanca",
+      "Meknes"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 26,
+    "difficulty": "MEDIUM",
+    "question": "Która dynastia była związana z rozbudową Meknesu jako wielkiego ośrodka władzy za panowania Moulay Ismaila?",
+    "answers": [
+      "Almorawidzi",
+      "Almohadzi",
+      "Saadyci",
+      "Alawici"
+    ],
+    "correctAnswerIndex": 3
+  },
+  {
+    "id": 27,
+    "difficulty": "MEDIUM",
+    "question": "Która dynastia panowała w Maroku bezpośrednio przed Saadytami?",
+    "answers": [
+      "Marynidzi",
+      "Wattasydzi",
+      "Almohadzi",
+      "Alawici"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 28,
+    "difficulty": "MEDIUM",
+    "question": "Która dynastia początkowo miała Fez jako stolicę, a następnie przeniosła centrum władzy do Marrakeszu?",
+    "answers": [
+      "Idrissydzi",
+      "Saadyci",
+      "Almorawidzi",
+      "Alawici"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 29,
+    "difficulty": "MEDIUM",
+    "question": "Które z poniższych miast było stolicą Maroka przed przeniesieniem stolicy do Rabatu w 1912 roku?",
+    "answers": [
+      "Tanger",
+      "Marrakesz",
+      "Fez",
+      "Meknes"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 30,
+    "difficulty": "MEDIUM",
+    "question": "W którym roku Maroko odzyskało niepodległość po okresie francuskiego protektoratu?",
+    "answers": [
+      "1945",
+      "1952",
+      "1956",
+      "1962"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 31,
+    "difficulty": "HARD",
+    "question": "Który władca Almohadów rozpoczął budowę meczetu Kutubijja w Marrakeszu?",
+    "answers": [
+      "Abd al-Mu’min",
+      "Jusuf ibn Taszfin",
+      "Abu Jusuf Jakub al-Mansur",
+      "Muhammad an-Nasir"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 32,
+    "difficulty": "HARD",
+    "question": "Który sułtan z dynastii Saadytów zlecił budowę pałacu El Badi w Marrakeszu?",
+    "answers": [
+      "Ahmad al-Mansur",
+      "Abdallah al-Ghalib",
+      "Muhammad asz-Szejch",
+      "Abu Marwan Abd al-Malik I"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 33,
+    "difficulty": "HARD",
+    "question": "Bitwa Trzech Króli (Alcácer Quibir) z 1578 roku zakończyła się śmiercią:",
+    "answers": [
+      "dwóch monarchów",
+      "trzech monarchów",
+      "jednego monarchy",
+      "żadnego monarchy"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 34,
+    "difficulty": "HARD",
+    "question": "Który z władców Idrissydów założył Fez jako miasto, które później stało się stolicą dynastii?",
+    "answers": [
+      "Idris I",
+      "Muhammad ibn Idris",
+      "Idris II",
+      "Yahya ibn Muhammad"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 35,
+    "difficulty": "HARD",
+    "question": "Który z tych zespołów architektonicznych znajduje się w Meknesie i jest związany z sułtanem Moulay Ismailem?",
+    "answers": [
+      "Bab Mansour",
+      "Bab Agnaou",
+      "Bab Bou Jeloud",
+      "Bab er-Rouah"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 36,
+    "difficulty": "HARD",
+    "question": "Które miasto było w średniowieczu jednym z najważniejszych centrów handlu transsaharyjskiego w oazie Tafilalt?",
+    "answers": [
+      "Rissani",
+      "Sijilmasa",
+      "Zagora",
+      "Ouarzazate"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 37,
+    "difficulty": "HARD",
+    "question": "Który portugalski władca założył w 1506 roku fortecę, z której rozwinęło się portugalskie Mazagan (dzisiejsze El Jadida)?",
+    "answers": [
+      "Manuel I",
+      "Jan II",
+      "Sebastian I",
+      "Alfons V"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 38,
+    "difficulty": "HARD",
+    "question": "Jak nazywała się miejscowość w Atlasie Wysokim, która stała się jednym z najważniejszych ośrodków wczesnego ruchu Almohadów i miejscem pochówku Ibn Tumarta?",
+    "answers": [
+      "Tinmel",
+      "Sala",
+      "Lixus",
+      "Volubilis"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 39,
+    "difficulty": "HARD",
+    "question": "Który z poniższych sułtanów Saadytów zginął w Bitwie Trzech Króli?",
+    "answers": [
+      "Ahmad al-Mansur",
+      "Abdallah al-Ghalib",
+      "Abu Marwan Abd al-Malik",
+      "Muhammad asz-Szejch"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 40,
+    "difficulty": "HARD",
+    "question": "Która z poniższych miejscowości była pierwszą stolicą Idrissydów?",
+    "answers": [
+      "Fez",
+      "Moulay Idriss Zerhoun",
+      "Marrakesz",
+      "Meknes"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 41,
+    "difficulty": "VERY_HARD",
+    "question": "Który władca Almohadów zlecił wzniesienie minaretu meczetu Kutubijja w jego zachowanej do dziś formie?",
+    "answers": [
+      "Abd al-Mu’min",
+      "Abu Jusuf Jakub al-Mansur",
+      "Muhammad an-Nasir",
+      "Jusuf al-Mustansir"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 42,
+    "difficulty": "VERY_HARD",
+    "question": "W którym roku Almohadowie zdobyli Marrakesz, kończąc panowanie Almorawidów nad miastem?",
+    "answers": [
+      "1121",
+      "1130",
+      "1147",
+      "1163"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 43,
+    "difficulty": "VERY_HARD",
+    "question": "Który władca Almohadów poniósł klęskę w bitwie pod Las Navas de Tolosa w 1212 roku?",
+    "answers": [
+      "Abd al-Mu’min",
+      "Abu Jusuf Jakub al-Mansur",
+      "Muhammad an-Nasir",
+      "Yusuf II al-Mustansir"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 44,
+    "difficulty": "VERY_HARD",
+    "question": "Który władca Saadytów był odpowiedzialny za zwycięstwo pod Ksar el-Kebir w 1578 roku, ale zmarł w trakcie bitwy?",
+    "answers": [
+      "Ahmad al-Mansur",
+      "Abdallah al-Ghalib",
+      "Abu Marwan Abd al-Malik",
+      "Muhammad asz-Szejch"
+    ],
+    "correctAnswerIndex": 2
+  },
+  {
+    "id": 45,
+    "difficulty": "VERY_HARD",
+    "question": "W którym roku armia marokańska pod dowództwem Judara Paszy pokonała siły Songhaju w bitwie pod Tondibi?",
+    "answers": [
+      "1582",
+      "1591",
+      "1603",
+      "1610"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 46,
+    "difficulty": "VERY_HARD",
+    "question": "Co było najważniejszym powodem strategicznego znaczenia Sijilmasy w średniowieczu?",
+    "answers": [
+      "Kontrola przełęczy Atlasu Wysokiego",
+      "Położenie na skrzyżowaniu szlaków handlu transsaharyjskiego",
+      "Dostęp do dużych złóż srebra w Atlasie Średnim",
+      "Kontrola cieśniny między Marokiem a Półwyspem Iberyjskim"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 47,
+    "difficulty": "VERY_HARD",
+    "question": "Który sułtan z dynastii Marynidów ufundował medresę Bu Inania w Fezie, ukończoną w 1355 roku?",
+    "answers": [
+      "Abu al-Hasan Ali ibn Othman",
+      "Abu Inan Faris",
+      "Abu Said Uthman II",
+      "Abu Muhammad Abd al-Haqq II"
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 48,
+    "difficulty": "VERY_HARD",
+    "question": "Które marokańskie miasto było wyjątkowym przykładem ośrodka, w którym społeczność żydowska stanowiła większość mieszkańców jeszcze w pierwszej połowie XX wieku, a znaczna jej część wywodziła się z Żydów sefardyjskich przybyłych z Sewilli?",
+    "answers": [
+      "Debdou",
+      "Sefrou",
+      "Tetuan",
+      "Essaouira"
+    ],
+    "correctAnswerIndex": 0
+  },
+  {
+    "id": 49,
+    "difficulty": "VERY_HARD",
+    "question": "Który z poniższych faktów dotyczących Saadyjskich Grobowców w Marrakeszu jest prawdziwy?",
+    "answers": [
+      "Cały kompleks został zbudowany przez Ahmada al-Mansura od podstaw po zwycięstwie pod Tondibi.",
+      "Najstarsza z zachowanych kopuł została wzniesiona przez Abdallaha al-Ghaliba jako miejsce pochówku jego ojca, Muhammada asz-Szejcha.",
+      "Kompleks został rozbudowany przez Moulay Ismaila, który przekształcił go w główną nekropolię dynastii Alawitów.",
+      "Grobowce powstały dopiero po objęciu władzy przez dynastię Alawitów."
+    ],
+    "correctAnswerIndex": 1
+  },
+  {
+    "id": 50,
+    "difficulty": "VERY_HARD",
+    "question": "Która z poniższych sekwencji dynastii jest chronologicznie poprawna?",
+    "answers": [
+      "Idrissydzi → Almohadzi → Almorawidzi → Marynidzi → Saadyci → Alawici",
+      "Idrissydzi → Almorawidzi → Almohadzi → Marynidzi → Saadyci → Alawici",
+      "Almorawidzi → Idrissydzi → Almohadzi → Saadyci → Marynidzi → Alawici",
+      "Idrissydzi → Marynidzi → Almorawidzi → Almohadzi → Saadyci → Alawici"
+    ],
+    "correctAnswerIndex": 1
+  }
 ]

@@ -92,6 +92,7 @@ fun QuizSummaryScreen(
             onClick = {
                 val result = QuizResult(
                     nickname = nickname.trim(),
+                    difficulty = viewModel.selectedDifficulty.value!!,
                     score = score,
                     totalQuestions = viewModel.questionCount,
                     date = System.currentTimeMillis()

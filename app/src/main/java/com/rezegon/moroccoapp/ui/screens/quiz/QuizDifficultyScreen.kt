@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +30,22 @@ fun QuizDifficultyScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "WYBIERZ TRUDNOŚĆ",
-            style = MaterialTheme.typography.headlineMedium
+            text = "WYBIERZ POZIOM",
+            style = MaterialTheme.typography.headlineLarge
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        Text(
+            text = "Wybierz poziom trudności quizu.",
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        Spacer(
+            modifier = Modifier.height(28.dp)
+        )
 
         QuizDifficultyButton(
             text = "BARDZO ŁATWY",
@@ -73,7 +85,7 @@ private fun QuizDifficultyButton(
     difficulty: QuizDifficulty,
     onDifficultySelected: (QuizDifficulty) -> Unit
 ) {
-    Button(
+    OutlinedButton(
         onClick = {
             onDifficultySelected(difficulty)
         },

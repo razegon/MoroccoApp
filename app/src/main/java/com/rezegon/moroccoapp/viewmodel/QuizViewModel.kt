@@ -28,6 +28,10 @@ class QuizViewModel(
     private val _score = MutableStateFlow(0)
     val score: StateFlow<Int> = _score
 
+    // Stores the difficulty selected for the current quiz.
+    private val _selectedDifficulty = MutableStateFlow<QuizDifficulty?>(null)
+    val selectedDifficulty: StateFlow<QuizDifficulty?> = _selectedDifficulty
+
     // Becomes true after the user selects an answer.
     // This locks the question until the user moves to the next one.
     private val _isAnswerChecked = MutableStateFlow(false)
@@ -71,6 +75,7 @@ class QuizViewModel(
 
     // Starts a new quiz using questions matching the selected difficulty.
     fun startQuiz(difficulty: QuizDifficulty) {
+        _selectedDifficulty.value = difficulty
         questions = repository.getQuestions(difficulty)
     }
 
@@ -81,6 +86,7 @@ class QuizViewModel(
         _score.value = 0
         _isAnswerChecked.value = false
         _isResultSaved.value = false
+        _selectedDifficulty.value = null
     }
 
     fun markResultAsSaved() {

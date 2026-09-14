@@ -81,7 +81,7 @@ private fun QuizRankingItem(
         )
     ) {
         Text(
-            text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}",
+            text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}    ${result.difficulty}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp)
         )
