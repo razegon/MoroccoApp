@@ -653,3 +653,76 @@ koniec: 0 s
 ```
 
 W jednej rozgrywce pytanie nie powinno pojawić się drugi raz. Szczegóły wyniku i porównywania Arcade z klasycznym rankingiem pozostają do zaprojektowania przed implementacją.
+
+
+## 3 października 2026 -- implementacja Arcade Mode
+
+Po zakończeniu klasycznego Quizu rozpoczęto osobny etap `Arcade Mode`. Arcade został zbudowany jako oddzielny tryb gry, ale korzysta z tej samej puli pytań i istniejącego `QuizRepository`.
+
+### Zasady Arcade
+
+Ustalono i zaimplementowano następujące zasady:
+
+```text
+pula: wszystkie 50 pytań
+czas początkowy: 45 s
+poprawna odpowiedź: +5 s i +1 punkt
+błędna odpowiedź: -5 s
+koniec gry: 0 s
+wynik: liczba poprawnych odpowiedzi
+```
+
+Pytania są losowane bez powtórzeń w obrębie jednej rozgrywki. `ArcadeGameState.usedQuestionIds` przechowuje identyfikatory już wykorzystanych pytań.
+
+### Oddzielny ViewModel i stan gry
+
+Dla Arcade utworzono osobny `ArcadeViewModel` oraz `ArcadeGameState`. Dzięki temu timer, licznik czasu i reguły Arcade nie są mieszane z logiką klasycznego quizu.
+
+Stan obejmuje m.in. aktualne pytanie, wybraną odpowiedź, wynik, pozostały czas, użyte pytania i `isGameOver`.
+
+### Timer i odpowiedzi
+
+Timer jest zarządzany przez `ArcadeViewModel`. Poprawna odpowiedź zwiększa czas o 5 sekund i wynik o 1, a błędna zmniejsza czas o 5 sekund. Osiągnięcie zera kończy grę.
+
+Po udzieleniu odpowiedzi wybór jest blokowany, a kolejne pytanie jest dostępne dopiero po przejściu dalej.
+
+### Wyniki Arcade i Room
+
+Ponieważ wynik Arcade ma inny model niż wynik klasycznego quizu, utworzono osobny zestaw klas:
+
+```text
+ArcadeResult
+ArcadeResultEntity
+ArcadeResultDao
+ArcadeResultMapper
+ArcadeResultRepository
+ArcadeResultRepositoryImpl
+ArcadeResultViewModel
+ArcadeResultViewModelFactory
+```
+
+Ranking Arcade jest przechowywany w osobnej tabeli `ArcadeResultEntity`. Wyniki są sortowane po `score DESC`, a następnie `date ASC`.
+
+### Migracja Room
+
+Dodanie tabeli Arcade wymagało migracji bazy z wersji 1 do 2 (`MIGRATION_1_2`). Migracja tworzy tabelę `ArcadeResultEntity` i zachowuje istniejące dane.
+
+### Zapis wyniku
+
+Wynik jest zapisywany dopiero po zakończeniu gry. Nick ma maksymalnie 15 znaków i nie może być pusty po `trim()`. Po zapisaniu wynik jest blokowany przed kolejnym zapisem w tej samej rozgrywce.
+
+Po poprawnym zapisie pojawiają się przyciski `TOP 10 ARCADE` i `MENU QUIZU`.
+
+### Wyjście z gry
+
+`ArcadeScreen` otrzymał mały przycisk `X` w prawym górnym rogu oraz `AlertDialog`, analogicznie do klasycznego quizu. Potwierdzone wyjście resetuje bieżącą rozgrywkę i nie zapisuje jej do rankingu.
+
+### Navigation
+
+Uruchomienie Arcade wykonuje `arcadeViewModel.startGame()` przed nawigacją do `ArcadeScreen`. Nie uruchamiamy `startGame()` automatycznie w samym route ekranu. Dzięki temu przejście z `ArcadeScreen` do `ArcadeRankingScreen` i powrót nie resetuje trwającej rozgrywki.
+
+### Testy i poprawki
+
+Podczas implementacji wykonano Build po kolejnych zmianach oraz testy manualne. Sprawdzono zapis wyniku, ochronę przed podwójnym zapisem, ranking Arcade oraz nawigację między grą, rankingiem i menu quizu.
+
+Jednym z ważnych błędów było wcześniejsze uruchamianie `startGame()` przy wejściu na route Arcade. Powodowało to rozpoczęcie nowej gry po powrocie z rankingu. Przeniesienie startu gry do akcji `onArcadeClick` usunęło ten problem.

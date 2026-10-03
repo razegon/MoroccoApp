@@ -649,15 +649,117 @@ merge do main
 push main
 ```
 
-## Planowanie Arcade Mode
 
-Przed rozpoczęciem implementacji warto najpierw zamknąć reguły gry. Obecnie ustalono:
+
+## Historyczna wersja planu Arcade
+
+Przed implementacją zapisano robocze założenia `30 s` na start, `+5 s` za poprawną odpowiedź i `-3 s` za błędną odpowiedź. Był to etap planowania, a nie finalna specyfikacja. W trakcie implementacji czas początkowy zmieniono na `45 s`, a kara za błędną odpowiedź na `-5 s`.
+
+Ta zmiana jest dobrym przykładem, dlaczego reguły gry warto trzymać w dokumentacji jako aktualizowaną specyfikację, a wcześniejsze wartości traktować jako historię decyzji.
+
+## Arcade Mode -- projektowanie osobnego stanu gry
+
+Arcade nie powinien być tylko wariantem `QuizViewModel`, ponieważ ma dodatkową oś czasu i inne reguły rozgrywki. Osobny `ArcadeViewModel` i `ArcadeGameState` upraszczają odpowiedzialność obu trybów.
+
+Stan Arcade można opisać jako:
 
 ```text
-30 s na start
-+5 s za poprawną odpowiedź
--3 s za błędną odpowiedź
+currentQuestion
+selectedAnswerIndex
+isAnswerChecked
+score
+remainingTimeSeconds
+usedQuestionIds
+isGameOver
+```
+
+Wniosek: gdy dwa tryby używają tych samych danych wejściowych, ale mają wyraźnie różne reguły stanu, warto współdzielić Repository, a niekoniecznie ViewModel.
+
+## Arcade Mode -- losowanie bez powtórek
+
+W jednej rozgrywce wykorzystano `usedQuestionIds`. Przy wyborze kolejnego pytania dostępna pula jest ograniczana do pytań, których identyfikator nie znajduje się w zbiorze użytych pytań.
+
+```text
+wszystkie pytania
+      ↓
+filtracja po usedQuestionIds
+      ↓
+losowanie
+      ↓
+nowe pytanie
+      ↓
+dodanie ID do zbioru
+```
+
+To jest prostsze i bezpieczniejsze niż losowanie z całej listy i próba wykrywania powtórek dopiero po fakcie.
+
+## Arcade Mode -- timer jako część logiki ViewModelu
+
+Timer nie powinien być liczony w Compose UI. Ekran obserwuje `remainingTimeSeconds`, natomiast `ArcadeViewModel` odpowiada za odliczanie i zmianę czasu po odpowiedzi.
+
+Reguły są jednoznaczne:
+
+```text
+45 s start
++5 s poprawna odpowiedź
+-5 s błędna odpowiedź
 0 s → koniec gry
 ```
 
-W jednej sesji pytania nie powinny się powtarzać. Szczegóły modelu wyniku oraz osobnego rankingu Arcade wymagają zaprojektowania przed kodowaniem.
+Dzięki temu UI pozostaje warstwą prezentacji, a reguły gry można testować niezależnie od layoutu.
+
+## Arcade Mode -- osobny ranking i model wyniku
+
+`ArcadeResult` nie został połączony z `QuizResult`, ponieważ oba tryby zapisują inny zestaw informacji. Klasyczny quiz przechowuje m.in. `difficulty` i `totalQuestions`, natomiast Arcade potrzebuje tylko nicku, wyniku i daty.
+
+Osobny DAO i tabela Room pozwalają również zachować niezależny ranking.
+
+## Room -- migracja zamiast usuwania danych
+
+Dodanie `ArcadeResultEntity` wymagało migracji `MIGRATION_1_2`. Ważna lekcja: przy zmianie schematu bazy należy zmienić wersję i przygotować migrację, zamiast traktować nową tabelę jak świeżą bazę.
+
+```text
+Room v1
+   ↓
+MIGRATION_1_2
+   ↓
+Room v2
+```
+
+Migracja tworzy nową tabelę i pozostawia wcześniejsze dane bez zmian.
+
+## Navigation -- moment rozpoczęcia gry ma znaczenie
+
+Początkowo uruchamianie `startGame()` przy wejściu na route Arcade powodowało problem: powrót z rankingu tworzył nową rozgrywkę. Poprawne rozwiązanie polegało na uruchomieniu gry w akcji przycisku `Arcade` przed nawigacją.
+
+Wniosek: route ekranu nie zawsze jest właściwym miejscem do inicjalizacji operacji, która ma wykonać się tylko raz przy rozpoczęciu konkretnej akcji użytkownika.
+
+## Arcade Mode -- zapis wyniku tylko po zakończeniu
+
+Wynik bieżącej gry nie powinien trafiać do rankingu przed jej zakończeniem. `ArcadeScreen` udostępnia zapis dopiero dla `isGameOver`.
+
+Dodatkowo stan UI `isResultSaved` chroni przed wielokrotnym zapisaniem tego samego wyniku przez wielokrotne kliknięcie przycisku.
+
+## Arcade Mode -- testowanie stanu, nie tylko UI
+
+Przy timerze i losowaniu pytań sam Build nie wystarcza. Test manualny powinien obejmować co najmniej:
+
+```text
+start gry
+↓
+odliczanie
+↓
+poprawna odpowiedź → +5 s / +1 punkt
+↓
+błędna odpowiedź → -5 s
+↓
+brak powtórek pytań
+↓
+0 s → koniec
+↓
+zapis wyniku
+↓
+TOP 10 Arcade
+```
+
+Dodatkowo sprawdzono ochronę przed drugim zapisem oraz zachowanie stanu po powrocie z rankingu.

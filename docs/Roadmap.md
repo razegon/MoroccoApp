@@ -391,9 +391,9 @@ TOP 10 + Room ✅
 Theme Light/Dark ✅
 ```
 
-## Następny etap -- Arcade Mode
+## Historyczna wersja planu Arcade -- stan sprzed implementacji
 
-### Ustalone zasady
+W starszej wersji roadmapy Arcade było jeszcze etapem planowanym. Założenia zapisane wtedy wyglądały następująco:
 
 ```text
 pula pytań: wszystkie dostępne pytania
@@ -403,20 +403,71 @@ błędna odpowiedź: -3 s
 koniec gry: 0 s
 ```
 
-Dodatkowe założenia:
-- pytanie nie może powtórzyć się w obrębie jednej rozgrywki,
-- Arcade będzie korzystał z osobnego modelu stanu gry,
-- przed implementacją trzeba ustalić sposób zapisu i rankingu wyników Arcade,
-- trzeba ustalić, czy ranking Arcade będzie oddzielny od klasycznego TOP 10.
+Zakładano również brak powtórek pytań oraz osobny ranking Arcade. Te wartości były planem roboczym i zostały później zmienione przed ukończeniem implementacji. Aktualne, obowiązujące zasady znajdują się w sekcji poniżej.
 
-### Później
+## Aktualizacja 3 października 2026 -- Arcade Mode ukończony
 
-1. Arcade Mode.
-2. Mapy OSM.
-3. Search.
-4. Favorites.
-5. Weather.
-6. dalsze dopracowanie UX całej aplikacji.
-7. Hilt / DI.
-8. przygotowanie architektury pod KMP.
-9. dalsze źródła, autorzy i licencje zdjęć.
+### Zrobione -- Arcade
+
+- osobny `ArcadeScreen`
+- osobny `ArcadeViewModel`
+- osobny `ArcadeGameState`
+- wykorzystanie wspólnego `QuizRepository`
+- pula wszystkich 50 pytań
+- brak powtórek pytań w jednej rozgrywce
+- timer startujący od 45 sekund
+- `+5 s` za poprawną odpowiedź
+- `-5 s` za błędną odpowiedź
+- `+1 punkt` za poprawną odpowiedź
+- koniec gry przy 0 sekundach
+- blokowanie odpowiedzi po wyborze
+- przycisk `X` i potwierdzenie wyjścia
+- brak zapisu niedokończonej rozgrywki
+
+### Zrobione -- ranking Arcade
+
+- `ArcadeResult`
+- `ArcadeResultEntity`
+- `ArcadeResultDao`
+- `ArcadeResultMapper`
+- `ArcadeResultRepository` / `ArcadeResultRepositoryImpl`
+- `ArcadeResultViewModel` / `ArcadeResultViewModelFactory`
+- osobna tabela Room dla wyników Arcade
+- TOP 10 Arcade
+- sortowanie `score DESC`, następnie `date ASC`
+- nickname ograniczony do 15 znaków
+- blokada wielokrotnego zapisu tego samego wyniku
+- przyciski `TOP 10 ARCADE` i `MENU QUIZU` po zapisaniu wyniku
+
+### Zrobione -- Room i Navigation
+
+- migracja `MIGRATION_1_2`
+- zwiększenie wersji `AppDatabase`
+- zachowanie istniejących danych przy migracji
+- osobna trasa `QuizArcade`
+- osobna trasa `QuizArcadeRanking`
+- start gry wykonywany przed nawigacją do Arcade
+- zachowanie stanu gry po powrocie z rankingu
+
+### Aktualny stan aplikacji
+
+```text
+main
+  ↓
+Quiz klasyczny + TOP 10 + Room ✅
+  ↓
+Theme Light/Dark ✅
+  ↓
+Arcade Mode + TOP 10 Arcade + Room ✅
+```
+
+## Następne etapy
+
+1. Mapy OSM.
+2. Search.
+3. Favorites.
+4. Weather.
+5. Dalsze dopracowanie UX całej aplikacji.
+6. Hilt / DI.
+7. Przygotowanie architektury pod KMP.
+8. Dalsze źródła, autorzy i licencje zdjęć.
