@@ -7,6 +7,7 @@ import com.rezegon.moroccoapp.domain.model.QuizQuestion
 fun QuizQuestionDto.toDomain(): QuizQuestion {
     return QuizQuestion(
         // JSON stores difficulty as text; the domain model uses a type-safe enum.
+        id = id,
         difficulty = QuizDifficulty.valueOf(difficulty),
         question = question,
         answers = answers,

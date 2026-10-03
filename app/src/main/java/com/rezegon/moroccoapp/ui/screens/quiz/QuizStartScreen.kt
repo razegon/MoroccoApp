@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun QuizStartScreen(
     onStartQuizClick: () -> Unit,
+    onArcadeClick: () -> Unit,
     onRankingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -85,6 +86,17 @@ fun QuizStartScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("ROZPOCZNIJ QUIZ")
+        }
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        Button(
+            onClick = onArcadeClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("ARCADE MODE")
         }
 
         Spacer(

@@ -23,4 +23,8 @@ sealed class Screen(
     data object QuizSummary : Screen("quiz_summary")
 
     data object QuizRanking : Screen("quiz_ranking")
+
+    data object QuizArcade : Screen("quiz_arcade")
+
+    data object QuizArcadeRanking : Screen("quiz_arcade_ranking")
 }

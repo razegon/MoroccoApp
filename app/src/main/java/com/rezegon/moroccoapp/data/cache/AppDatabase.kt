@@ -7,9 +7,10 @@ import androidx.room3.RoomDatabase
     entities = [
         WikidataEntity::class,
         WikimediaEntity::class,
-        QuizResultEntity::class
+        QuizResultEntity::class,
+        ArcadeResultEntity::class
                ],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -27,4 +28,9 @@ abstract class AppDatabase : RoomDatabase() {
      * Provides access to persisted Quiz results.
      */
     abstract fun quizResultDao(): QuizResultDao
+
+    /**
+     * Provides access to persisted Arcade results.
+     */
+    abstract fun arcadeResultDao(): ArcadeResultDao
 }

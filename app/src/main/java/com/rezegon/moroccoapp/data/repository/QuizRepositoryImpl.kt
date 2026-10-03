@@ -19,5 +19,12 @@ class QuizRepositoryImpl(
             .map { it.toDomain() }
             .filter { it.difficulty == difficulty }
     }
+
+    // Loads all questions to Arcade Quiz Mode
+    override fun getAllQuestions(): List<QuizQuestion> {
+        return dataSource
+            .loadQuestions()
+            .map { it.toDomain() }
+    }
 }
 

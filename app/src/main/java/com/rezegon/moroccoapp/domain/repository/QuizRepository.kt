@@ -8,4 +8,6 @@ interface QuizRepository {
     fun getQuestions(
         difficulty: QuizDifficulty
     ): List<QuizQuestion>
+
+    fun getAllQuestions(): List<QuizQuestion>
 }

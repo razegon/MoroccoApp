@@ -3,6 +3,7 @@ package com.rezegon.moroccoapp
 import android.app.Application
 import androidx.room3.Room
 import com.rezegon.moroccoapp.data.cache.AppDatabase
+import com.rezegon.moroccoapp.data.cache.MIGRATION_1_2
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
 import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
 import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
@@ -18,7 +19,9 @@ class MyApp : Application() {
         Room.databaseBuilder<AppDatabase>(
             applicationContext,
             "morocco_app_db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     /**

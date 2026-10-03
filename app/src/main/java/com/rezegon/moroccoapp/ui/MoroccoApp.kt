@@ -29,6 +29,14 @@ import com.rezegon.moroccoapp.viewmodel.QuizResultViewModel
 import com.rezegon.moroccoapp.viewmodel.QuizResultViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.QuizViewModel
 import com.rezegon.moroccoapp.viewmodel.QuizViewModelFactory
+import com.rezegon.moroccoapp.viewmodel.ArcadeViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
+import androidx.compose.runtime.LaunchedEffect
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeScreen
+import com.rezegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeRankingScreen
+import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
 
 @Composable
 fun MoroccoApp() {
@@ -41,6 +49,9 @@ fun MoroccoApp() {
 
     // DAO used to store and read completed quiz results.
     val quizResultDao = app.database.quizResultDao()
+
+    // DAO used to store and read completed arcade quiz results.
+    val arcadeResultDao = app.database.arcadeResultDao()
 
     // Shared quiz dependencies used by the quiz and summary screens.
     val quizDataSource = QuizQuestionDataSource(app)
@@ -57,9 +68,24 @@ fun MoroccoApp() {
         factory = quizFactory
     )
 
+    // Factory creates ArcadeViewModel with the shared quiz repository.
+    val arcadeFactory = ArcadeViewModelFactory(
+        repository = quizRepository
+    )
+
+// ViewModel manages the state and logic of the Arcade game.
+    val arcadeViewModel: ArcadeViewModel = viewModel(
+        factory = arcadeFactory
+    )
+
     // Repository handles saving and loading completed quiz results.
     val quizResultRepository = QuizResultRepositoryImpl(
         dao = quizResultDao
+    )
+
+    // Repository handles saving and loading completed arcade results.
+    val arcadeResultRepository = ArcadeResultRepositoryImpl(
+        dao = arcadeResultDao
     )
 
     // Factory creates QuizResultViewModel with the result repository.
@@ -67,9 +93,19 @@ fun MoroccoApp() {
         repository = quizResultRepository
     )
 
+    // Factory creates ArcadeResultViewModel with the result repository.
+    val arcadeResultFactory = ArcadeResultViewModelFactory(
+        repository = arcadeResultRepository
+    )
+
     // ViewModel manages saving and loading completed quiz results.
     val quizResultViewModel: QuizResultViewModel = viewModel(
         factory = quizResultFactory
+    )
+
+    // ViewModel manages saving and loading completed arcade results.
+    val arcadeResultViewModel: ArcadeResultViewModel = viewModel(
+        factory = arcadeResultFactory
     )
 
     Scaffold(
@@ -167,11 +203,58 @@ fun MoroccoApp() {
                 QuizStartScreen(
                     onStartQuizClick = {
                         quizViewModel.restartQuiz()
-                        navController.navigate(Screen.QuizDifficulty.route)
+                        navController.navigate(Screen.QuizDifficulty.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = true
+                            }
+                        }
                     },
+
+                    onArcadeClick = {
+                        arcadeViewModel.startGame()
+                        navController.navigate(Screen.QuizArcade.route)
+                    },
+
                     onRankingClick = {
-                        navController.navigate(Screen.QuizRanking.route)
+                        navController.navigate(Screen.QuizRanking.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = true
+                            }
+                        }
                     }
+                )
+            }
+
+            // Displays the Arcade quiz.
+            composable(Screen.QuizArcade.route) {
+
+                ArcadeScreen(
+                    viewModel = arcadeViewModel,
+                    resultViewModel = arcadeResultViewModel,
+                    onRankingClick = {
+                        navController.navigate(Screen.QuizArcadeRanking.route)
+                    },
+                    onQuizMenuClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
+                    },
+                    onExitClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
+                    }
+                )
+            }
+
+            // Displays the TOP 10 Arcade results.
+            composable(Screen.QuizArcadeRanking.route) {
+                ArcadeRankingScreen(
+                    resultViewModel = arcadeResultViewModel
                 )
             }
 
@@ -180,7 +263,11 @@ fun MoroccoApp() {
                 QuizDifficultyScreen(
                     onDifficultySelected = { difficulty ->
                         quizViewModel.startQuiz(difficulty)
-                        navController.navigate(Screen.QuizGame.route)
+                        navController.navigate(Screen.QuizGame.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -190,14 +277,18 @@ fun MoroccoApp() {
                 QuizScreen(
                     viewModel = quizViewModel,
                     onSummaryClick = {
-                        navController.navigate(Screen.QuizSummary.route)
+                        navController.navigate(Screen.QuizSummary.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
                     },
                     onExitClick = {
                         quizViewModel.restartQuiz()
 
                         navController.navigate(Screen.Quiz.route) {
                             popUpTo(Screen.Quiz.route) {
-                                inclusive = true
+                                inclusive = false
                             }
                         }
                     }
@@ -213,28 +304,32 @@ fun MoroccoApp() {
                         quizViewModel.restartQuiz()
 
                         navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Home.route) {
-                                inclusive = true
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
                             }
                         }
                     },
                     onRankingClick = {
-                        navController.navigate(Screen.QuizRanking.route)
+                        navController.navigate(Screen.QuizRanking.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
                     },
                     onHomeClick = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Home.route) {
-                                inclusive = true
+                                inclusive = false
                             }
                         }
-                    }
+                    },
                 )
             }
 
             // Displays the TOP 10 quiz results.
             composable(Screen.QuizRanking.route) {
                 QuizRankingScreen(
-                    resultViewModel = quizResultViewModel
+                    resultViewModel = quizResultViewModel,
                 )
             }
         }
