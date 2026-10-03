@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -83,14 +84,24 @@ fun ArcadeScreen(
             )
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.CenterEnd
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center
             ) {
+                Text(
+                    text = "${gameState.remainingTimeSeconds}s",
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+
                 IconButton(
                     onClick = {
                         viewModel.pauseTimer()
                         showExitDialog = true
-                    }
+                    },
+                    modifier = Modifier.align(Alignment.TopEnd)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
@@ -102,15 +113,10 @@ fun ArcadeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "${gameState.remainingTimeSeconds}s",
-                    style = MaterialTheme.typography.displayMedium,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
+
             }
         }
 
