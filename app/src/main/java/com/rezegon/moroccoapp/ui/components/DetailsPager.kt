@@ -33,7 +33,7 @@ import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.domain.model.WikimediaImage
-import com.rezegon.moroccoapp.domain.model.WikimediaImageRef
+import com.rezegon.shared.domain.model.WikimediaImageRef
 import com.rezegon.moroccoapp.ui.model.DetailsPage
 
 /**

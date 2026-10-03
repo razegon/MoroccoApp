@@ -2,7 +2,7 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
-import com.rezegon.moroccoapp.domain.model.PlaceType
+import com.rezegon.shared.domain.model.PlaceType
 import com.rezegon.moroccoapp.domain.repository.PlacesRepository
 import com.rezegon.moroccoapp.ui.model.CitiesUiState
 import kotlinx.coroutines.flow.MutableStateFlow

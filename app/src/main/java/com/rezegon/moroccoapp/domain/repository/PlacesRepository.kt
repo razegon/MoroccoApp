@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.domain.repository
 
 import com.rezegon.moroccoapp.domain.model.Place
-import com.rezegon.moroccoapp.domain.model.PlaceType
+import com.rezegon.shared.domain.model.PlaceType
 
 interface PlacesRepository {
 

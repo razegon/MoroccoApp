@@ -1,6 +1,8 @@
 package com.rezegon.moroccoapp.domain.model
 
 import com.rezegon.moroccoapp.R
+import com.rezegon.shared.domain.model.PlaceType
+import com.rezegon.shared.domain.model.WikimediaImageRef
 
 data class Place(
     // val countryId: Int,
@@ -23,5 +25,4 @@ data class Place(
     val longitude: Double? = null,
     val zoom: Float? = null,
     val showMapButton: Boolean = false,
-    val isCity: Boolean = false, // do analizy
 )

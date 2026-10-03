@@ -2,8 +2,8 @@ package com.rezegon.moroccoapp.data.datasource
 
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.domain.model.Place
-import com.rezegon.moroccoapp.domain.model.PlaceType
-import com.rezegon.moroccoapp.domain.model.WikimediaImageRef
+import com.rezegon.shared.domain.model.PlaceType
+import com.rezegon.shared.domain.model.WikimediaImageRef
 
 object MoroccoDataSource {
 

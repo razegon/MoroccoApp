@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.rezegon.moroccoapp"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

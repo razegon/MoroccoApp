@@ -2,7 +2,7 @@ package com.rezegon.moroccoapp.data.repository
 
 import com.rezegon.moroccoapp.data.datasource.MoroccoDataSource
 import com.rezegon.moroccoapp.domain.model.Place
-import com.rezegon.moroccoapp.domain.model.PlaceType
+import com.rezegon.shared.domain.model.PlaceType
 import com.rezegon.moroccoapp.domain.repository.PlacesRepository
 
 class PlacesRepositoryImpl : PlacesRepository {

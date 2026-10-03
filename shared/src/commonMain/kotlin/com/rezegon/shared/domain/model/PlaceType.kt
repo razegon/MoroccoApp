@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
+package com.rezegon.shared.domain.model
 
 enum class PlaceType {
     CITY,

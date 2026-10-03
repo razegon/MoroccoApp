@@ -7,8 +7,6 @@ import com.rezegon.moroccoapp.data.cache.MIGRATION_1_2
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
 import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
 import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
-import kotlin.getValue
-import kotlin.lazy
 
 class MyApp : Application() {
 
