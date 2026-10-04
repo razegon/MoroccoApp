@@ -15,11 +15,9 @@ import kotlinx.coroutines.launch
 
 class CityDetailsViewModel(
     private val placeId: Int,
-    application: Application
+    application: Application,
+    private val repository: PlacesRepository
 ) : AndroidViewModel(application) {
-
-    // Repository responsible for loading places from the local app data source.
-    private val repository: PlacesRepository = PlacesRepositoryImpl()
 
     // Use the shared application-level dependencies from MyApp.
     private val app = application as MyApp

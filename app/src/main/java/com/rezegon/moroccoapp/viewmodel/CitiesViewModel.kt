@@ -8,9 +8,9 @@ import com.rezegon.moroccoapp.ui.model.CitiesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class CitiesViewModel : ViewModel() {
-
-    private val repository: PlacesRepository = PlacesRepositoryImpl()
+class CitiesViewModel(
+    private val repository: PlacesRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CitiesUiState())
 

@@ -25,6 +25,7 @@ import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.CityListItem
 import com.rezegon.moroccoapp.viewmodel.CitiesViewModel
+import com.rezegon.moroccoapp.viewmodel.CitiesViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
@@ -34,7 +35,11 @@ fun CitiesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    val viewModel: CitiesViewModel = viewModel()
+    val context = LocalContext.current
+
+    val viewModel: CitiesViewModel = viewModel(
+        factory = CitiesViewModelFactory(context)
+    )
 
     val uiState by viewModel.uiState.collectAsState()
 

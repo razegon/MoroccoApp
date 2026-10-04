@@ -1,0 +1,38 @@
+{
+  "place": {
+    "placeId": 4100,
+    "placeType": "CITY",
+    "parentPlaceId": null,
+    "wikidataId": "Q101625",
+    "wikimediaImages": [
+      {
+        "pageId": 113679691
+      },
+      {
+        "pageId": 24518813
+      }
+    ],
+    "placeImages": [],
+    "latitude": 31.62823,
+    "longitude": -7.98882,
+    "zoom": 13.0,
+    "showMapButton": false
+  },
+  "content": {
+    "id": "marrakesh",
+    "name": "Marrakesz",
+    "translation": "Ziemia Boga",
+    "snippet": null,
+    "weather": "Marrakesh, MA",
+    "openingHours": null,
+    "descriptions": [
+      "TEST"
+    ],
+    "fallback": {
+      "population": 928850,
+      "area": null,
+      "elevation": 466.0,
+      "founded": "1070 r."
+    }
+  }
+}

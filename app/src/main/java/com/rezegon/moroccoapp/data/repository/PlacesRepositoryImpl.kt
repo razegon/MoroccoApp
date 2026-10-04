@@ -4,11 +4,12 @@ import com.rezegon.moroccoapp.data.datasource.MoroccoDataSource
 import com.rezegon.shared.domain.model.Place
 import com.rezegon.shared.domain.model.PlaceType
 import com.rezegon.moroccoapp.domain.repository.PlacesRepository
+import com.rezegon.shared.data.source.JsonPlaceDataSource
 import com.rezegon.shared.domain.model.PlaceData
 
-class PlacesRepositoryImpl : PlacesRepository {
-
-    private val dataSource = MoroccoDataSource
+class PlacesRepositoryImpl(
+    private val dataSource: JsonPlaceDataSource
+) : PlacesRepository {
 
     override fun getPlaces(): List<PlaceData> {
         return dataSource.getPlaces()

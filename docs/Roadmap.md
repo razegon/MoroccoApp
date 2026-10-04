@@ -471,3 +471,64 @@ Arcade Mode + TOP 10 Arcade + Room ✅
 6. Hilt / DI.
 7. Przygotowanie architektury pod KMP.
 8. Dalsze źródła, autorzy i licencje zdjęć.
+
+## Aktualizacja 4 października 2026 -- rozpoczęcie migracji KMP
+
+### Zrobione -- fundament KMP domeny
+
+- `shared` z modelami domenowymi
+- `Place` przeniesiony do `shared`
+- `PlaceType` w `shared`
+- `WikimediaImageRef` w `shared`
+- `PlaceContent` w `shared`
+- `PlaceFallback` w `shared`
+- `PlaceData` w `shared`
+- rozdzielenie danych strukturalnych (`Place`) od treści (`PlaceContent`)
+- `PlacesRepository` pracujący na `PlaceData`
+- `PlacesRepositoryImpl` pracujący na `PlaceData`
+- `PlacesViewModel` pracujący na `PlaceData`
+- `CitiesViewModel` pracujący na `PlaceData`
+- `PlacesUiState` i `CitiesUiState` dostosowane do `PlaceData`
+- `CityDetailsUiState` dostosowany do `PlaceData`
+- `CitiesScreen` i `CityListItem` dostosowane do `PlaceData`
+- `CityDetailsScreen` dostosowany do `PlaceData`
+- wspólne `createPages()` dostosowane do `String` descriptions
+- `DetailsPage.description` dostosowane do `String?`
+- Build OK po migracji
+- działanie aplikacji sprawdzone po migracji
+
+### Aktualny przepływ
+
+```text
+DataSource
+    ↓
+List<PlaceData>
+    ↓
+Repository
+    ↓
+ViewModel
+    ↓
+UiState
+    ↓
+Compose UI
+```
+
+### Stan przejściowy
+
+`MoroccoDataSource` nadal znajduje się w module `app` i korzysta z `R.string.*`. `PlaceContent` używa obecnie `String` jako tymczasowego rozwiązania pozwalającego zweryfikować nowy przepływ danych.
+
+Nie projektujemy jeszcze finalnego formatu lokalizacji ani akapitów. Zostanie to ustalone podczas migracji treści do JSON.
+
+## Najbliższy etap -- DataSource i JSON
+
+1. Przeanalizować kompletny `MoroccoDataSource`.
+2. Zaprojektować strukturę JSON na podstawie rzeczywistych danych.
+3. Oddzielić dane strukturalne od treści i danych platformowych.
+4. Przenieść treści do JSON.
+5. Zbudować data source w `shared`, który będzie zwracał `List<PlaceData>`.
+6. Zachować istniejący przepływ Repository → ViewModel → UiState → UI.
+7. Dopiero po ustabilizowaniu JSON ustalić finalną strategię lokalizacji i formatowania akapitów.
+
+### Zasada kolejnego etapu
+
+Nie łączyć jednocześnie migracji JSON, lokalizacji, UI i kolejnych funkcji. Najpierw doprowadzić DataSource do poprawnego, platform-independent modelu i po każdym większym kroku wykonać Build oraz test działania aplikacji.

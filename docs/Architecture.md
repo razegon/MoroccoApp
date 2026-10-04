@@ -1006,3 +1006,132 @@ Uruchomienie Arcade wywołuje `arcadeViewModel.startGame()` przed przejściem do
 ### Build i testy
 
 Po kolejnych logicznych zmianach Arcade wykonywano Build i testy ręczne. Sprawdzono m.in. przebieg rozgrywki, brak powtórzeń pytań, zmianę czasu, zapis wyniku, ochronę przed wielokrotnym zapisem, ranking oraz powrót do menu quizu.
+
+## Aktualizacja 4 października 2026 -- KMP: migracja modelu Place do PlaceData
+
+### Cel etapu
+
+Rozpoczęto właściwą migrację domeny do Kotlin Multiplatform. Pierwszym krokiem było oddzielenie danych strukturalnych miejsca od treści prezentacyjnych i usunięcie zależności Android `R` z modelu współdzielonego.
+
+### Współdzielone modele domenowe
+
+Modele platform-independent znajdują się w:
+
+```text
+shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/
+```
+
+Aktualnie znajdują się tam:
+
+- `Place`
+- `PlaceData`
+- `PlaceContent`
+- `PlaceFallback`
+- `PlaceType`
+- `WikimediaImageRef`
+
+`Place` zawiera dane strukturalne miejsca, m.in. `placeId`, `placeType`, `parentPlaceId`, `wikidataId`, referencje Wikimedia, lokalne obrazy oraz dane mapy.
+
+`PlaceContent` zawiera treść prezentacyjną:
+
+```kotlin
+data class PlaceContent(
+    val id: String,
+    val name: String,
+    val translation: String? = null,
+    val snippet: String? = null,
+    val weather: String? = null,
+    val openingHours: String? = null,
+    val descriptions: List<String> = emptyList(),
+    val fallback: PlaceFallback? = null,
+)
+```
+
+`PlaceData` łączy oba modele:
+
+```kotlin
+data class PlaceData(
+    val place: Place,
+    val content: PlaceContent,
+)
+```
+
+### Aktualny przepływ danych
+
+W warstwach, które zostały już zmigrowane, obowiązuje:
+
+```text
+DataSource
+    ↓
+List<PlaceData>
+    ↓
+Repository
+    ↓
+ViewModel
+    ↓
+UiState
+    ↓
+Compose UI
+```
+
+Nie stosujemy mapowania `PlaceData → Place` tylko po to, aby zachować stary przepływ danych.
+
+### Zmigrowane elementy
+
+Do `PlaceData` zostały dostosowane:
+
+- `PlacesRepository`
+- `PlacesRepositoryImpl`
+- `PlacesViewModel`
+- `PlacesUiState`
+- `CitiesViewModel`
+- `CitiesUiState`
+- `CityDetailsUiState`
+- `CitiesScreen`
+- `CityListItem`
+- `CityDetailsScreen`
+- wspólne `createPages()`
+- `DetailsPage`
+
+`CityDetailsUiState` przechowuje obecnie `PlaceData?` dla głównego miasta oraz `List<PlaceData>` dla jego dzieci.
+
+### Treść opisów
+
+`PlaceContent.descriptions` oraz `DetailsPage.description` używają obecnie `String` / `String?` zamiast wcześniejszych identyfikatorów `R.string`.
+
+Jest to rozwiązanie przejściowe. Docelowo treści zostaną przeniesione do JSON. Wtedy zostanie ustalona finalna strategia lokalizacji oraz formatowania akapitów.
+
+### Aktualny DataSource
+
+`MoroccoDataSource` nadal znajduje się w module Android `app` i zawiera odwołania do `R.string.*`. Jest to świadomie pozostawiony kolejny etap migracji.
+
+Docelowy kierunek:
+
+```text
+JSON
+    ↓
+shared data layer
+    ↓
+List<PlaceData>
+    ↓
+Repository
+    ↓
+ViewModel
+    ↓
+Compose UI
+```
+
+Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie zaprojektowany po przeanalizowaniu całego obecnego `MoroccoDataSource`.
+
+### Stan po etapie
+
+- Gradle Sync: OK
+- Build: OK
+- aplikacja uruchamia się poprawnie
+- lista miast działa
+- szczegóły miasta działają
+- zdjęcia Wikimedia działają
+- opisy działają
+- lista miejsc przypisanych do miasta działa
+
+Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do JSON.

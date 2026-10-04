@@ -763,3 +763,96 @@ TOP 10 Arcade
 ```
 
 Dodatkowo sprawdzono ochronę przed drugim zapisem oraz zachowanie stanu po powrocie z rankingu.
+
+## KMP -- migracja `Place` do `PlaceData`
+
+Pierwszy etap migracji do Kotlin Multiplatform pokazał, że model domenowy warto podzielić według odpowiedzialności, zamiast próbować przenosić istniejący model Androida 1:1.
+
+### `Place` nie powinien zawierać Androidowego `R`
+
+Identyfikator `R.string` ma typ `Int`, ale jego znaczenie jest związane z Androidowym systemem zasobów. W modelu `shared` nie powinien być podstawą przechowywania treści.
+
+Dlatego dane zostały rozdzielone:
+
+```text
+Place
+    ↓
+struktura i identyfikatory miejsca
+
+PlaceContent
+    ↓
+treść prezentacyjna
+
+PlaceData
+    ↓
+połączenie obu części
+```
+
+### `PlaceData` jako obiekt przepływu danych
+
+Nie należy po migracji mapować `PlaceData` z powrotem do `Place` tylko dlatego, że starszy kod tego oczekuje. Lepszy przepływ to:
+
+```text
+DataSource
+↓
+PlaceData
+↓
+Repository
+↓
+ViewModel
+↓
+UiState
+↓
+UI
+```
+
+Dzięki temu migracja może przebiegać warstwami, a każda kolejna warstwa jest dostosowywana do nowego modelu.
+
+### Błędy typu są użytecznym sygnałem migracji
+
+Podczas przejścia z `R.string` na `String` pojawiły się błędy typu:
+
+```text
+List<String> ≠ List<Int>
+String? ≠ Int?
+```
+
+Nie należy ich omijać konwersją wsteczną. Warto prześledzić przepływ typu przez kolejne warstwy i usunąć pozostałości starego modelu.
+
+Przykładowo `createPages()` musiało zostać dostosowane z `List<Int>` do `List<String>`, a `DetailsPage.description` z `Int?` do `String?`.
+
+### Nie przenosić wszystkiego naraz
+
+Migracja została wykonana etapami:
+
+```text
+model
+↓
+repository
+↓
+ViewModel / UiState
+↓
+UI
+↓
+Build
+↓
+test działania
+```
+
+Dzięki temu po każdym większym kroku wiadomo, która warstwa jest źródłem kolejnego błędu.
+
+### `String` jako rozwiązanie przejściowe
+
+Zwykłe `String` w `PlaceContent` pozwoliły najpierw zweryfikować architekturę KMP bez jednoczesnego projektowania całego systemu JSON i lokalizacji.
+
+Nie oznacza to, że obecny sposób przechowywania tekstów jest rozwiązaniem finalnym. Przy migracji `MoroccoDataSource` do JSON trzeba osobno zaprojektować:
+
+- strukturę JSON,
+- identyfikatory treści,
+- lokalizację,
+- formatowanie akapitów,
+- sposób przechowywania treści wielojęzycznych.
+
+### Checkpoint przed kolejnym etapem
+
+Po migracji `PlaceData` Build przeszedł, aplikacja działa, a Git status jest czysty. To dobry moment na osobny commit przed rozpoczęciem migracji `MoroccoDataSource`.

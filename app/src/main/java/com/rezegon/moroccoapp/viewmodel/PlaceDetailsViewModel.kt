@@ -8,10 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class PlaceDetailsViewModel(
-    private val placeId: Int
+    private val placeId: Int,
+    private val repository: PlacesRepository
 ) : ViewModel() {
-
-    private val repository: PlacesRepository = PlacesRepositoryImpl()
 
     private val _uiState = MutableStateFlow(PlaceDetailsUiState())
 

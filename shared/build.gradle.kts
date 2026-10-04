@@ -17,6 +17,10 @@ kotlin {
         }
         minSdk = 24
 
+        androidResources {
+            enable = true
+        }
+
         withHostTestBuilder {
         }
 
@@ -101,4 +105,12 @@ kotlin {
         }
     }
 
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.sources.assets?.addStaticSourceDirectory(
+            "src/androidMain/assets"
+        )
+    }
 }

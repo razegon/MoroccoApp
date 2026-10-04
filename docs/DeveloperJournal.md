@@ -726,3 +726,68 @@ Uruchomienie Arcade wykonuje `arcadeViewModel.startGame()` przed nawigacją do `
 Podczas implementacji wykonano Build po kolejnych zmianach oraz testy manualne. Sprawdzono zapis wyniku, ochronę przed podwójnym zapisem, ranking Arcade oraz nawigację między grą, rankingiem i menu quizu.
 
 Jednym z ważnych błędów było wcześniejsze uruchamianie `startGame()` przy wejściu na route Arcade. Powodowało to rozpoczęcie nowej gry po powrocie z rankingu. Przeniesienie startu gry do akcji `onArcadeClick` usunęło ten problem.
+
+## 4 października 2026 -- KMP: migracja Place → PlaceData
+
+Po wcześniejszym przygotowaniu modułu `shared` rozpoczęto migrację właściwego modelu domenowego do Kotlin Multiplatform.
+
+### Rozdzielenie modelu
+
+Dotychczasowy `Place` zawierał również elementy zależne od Androida, m.in. identyfikatory `R.string`. Model został rozdzielony na:
+
+```text
+Place
+├── dane strukturalne miejsca
+└── dane niezależne od Androida
+
+PlaceContent
+├── name
+├── translation
+├── snippet
+├── weather
+├── openingHours
+├── descriptions
+└── fallback
+
+PlaceData
+├── place: Place
+└── content: PlaceContent
+```
+
+W `shared` znajdują się obecnie `Place`, `PlaceData`, `PlaceContent`, `PlaceFallback`, `PlaceType` oraz `WikimediaImageRef`.
+
+### Przepływ PlaceData
+
+Podjęto świadomą decyzję, aby nie mapować danych z powrotem do starego `Place`. Zmigrowane warstwy korzystają bezpośrednio z `PlaceData`:
+
+```text
+DataSource
+    ↓
+List<PlaceData>
+    ↓
+Repository
+    ↓
+ViewModel
+    ↓
+UiState
+    ↓
+Compose UI
+```
+
+Dostosowano m.in. `PlacesRepository`, `PlacesRepositoryImpl`, `PlacesViewModel`, `PlacesUiState`, `CitiesViewModel`, `CitiesUiState` oraz `CityDetailsUiState`.
+
+### Migracja UI
+
+`CitiesScreen`, `CityListItem` i `CityDetailsScreen` zostały dostosowane do nowego modelu. W szczegółach `createPages()` również został zmieniony tak, aby opisy były `String`, a nie `Int` reprezentujący `R.string`.
+
+Podczas migracji pojawiły się oczekiwane błędy typów, np. `List<String>` kontra `List<Int>`. Były one pozostałościami starego modelu i zostały naprawione w miejscach korzystających z opisów.
+
+### Stan po zmianach
+
+Po zakończeniu migracji wykonano Build i uruchomiono aplikację. Wszystkie sprawdzane ekrany działają poprawnie. Git status jest czysty po wykonaniu checkpointu.
+
+### Ważna decyzja dotycząca treści
+
+`PlaceContent` używa obecnie zwykłych `String`. Jest to rozwiązanie przejściowe potrzebne do sprawdzenia architektury. Nie jest to jeszcze finalny system lokalizacji.
+
+Następny etap to migracja obecnego `MoroccoDataSource` do danych niezależnych od Androida, docelowo z wykorzystaniem JSON. Dopiero wtedy zostanie ustalony finalny format treści, lokalizacji i akapitów.

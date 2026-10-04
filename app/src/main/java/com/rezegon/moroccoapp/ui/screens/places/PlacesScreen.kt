@@ -25,6 +25,7 @@ import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.viewmodel.PlacesViewModel
+import com.rezegon.moroccoapp.viewmodel.PlacesViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
@@ -34,8 +35,12 @@ fun PlacesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
+    val context = LocalContext.current
+
     // ViewModel responsible for loading the list of places.
-    val viewModel: PlacesViewModel = viewModel()
+    val viewModel: PlacesViewModel = viewModel(
+        factory = PlacesViewModelFactory(context)
+    )
 
     // Access the custom application instance.
     // MyApp contains application-wide dependencies such as

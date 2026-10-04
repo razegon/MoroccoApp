@@ -20,9 +20,13 @@ import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 fun PlaceDetailsScreen(
     placeId: Int
 ) {
+    val context = LocalContext.current
 
     // Factory creates the ViewModel for the selected place.
-    val factory = PlaceDetailsViewModelFactory(placeId)
+    val factory = PlaceDetailsViewModelFactory(
+        placeId = placeId,
+        context = context
+    )
 
     val viewModel: PlaceDetailsViewModel = viewModel(
         factory = factory
