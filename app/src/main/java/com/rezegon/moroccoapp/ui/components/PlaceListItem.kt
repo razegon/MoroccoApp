@@ -19,15 +19,16 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.domain.model.Place
+import com.rezegon.shared.domain.model.Place
+import com.rezegon.shared.domain.model.PlaceData
 
 @Composable
 fun PlaceListItem(
-    place: Place,
+    placeData: PlaceData,
     modifier: Modifier = Modifier,
     imageHeight: Dp = 180.dp,
     imageUrl: String? = null,
-    onClick: (Place) -> Unit
+    onClick: (PlaceData) -> Unit
 ) {
     // Access the shared application instance.
     val application = LocalContext.current.applicationContext as MyApp
@@ -40,7 +41,7 @@ fun PlaceListItem(
 
     Card(
         modifier = modifier.padding(top = 12.dp),
-        onClick = { onClick(place) }
+        onClick = { onClick(placeData) }
     ) {
         Column {
 
@@ -60,7 +61,7 @@ fun PlaceListItem(
 
             // Displays the place name below the image.
             Text(
-                text = stringResource(place.placeName),
+                text = placeData.content.name,
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

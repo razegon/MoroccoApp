@@ -61,13 +61,13 @@ fun PlaceDetailsScreen(
     // Contains the current state of the selected place.
     val uiState by viewModel.uiState.collectAsState()
 
-    uiState.place?.let { place ->
+    uiState.place?.let { placeData ->
 
         // Request Wikimedia metadata for all images
         // assigned to the current place.
-        LaunchedEffect(place.wikimediaImages) {
+        LaunchedEffect(placeData.place.wikimediaImages) {
 
-            place.wikimediaImages.forEach { imageRef ->
+            placeData.place.wikimediaImages.forEach { imageRef ->
 
                 imageRef?.let {
                     wikimediaViewModel.getImage(it.pageId)
@@ -80,13 +80,13 @@ fun PlaceDetailsScreen(
         // while local images can be used as a fallback.
         val pages = createPages(
             wikimediaImages = wikimediaImages,
-            images = place.placeImages,
-            descriptions = place.placeDescriptions,
-            wikimediaRefs = place.wikimediaImages
+            images = placeData.place.placeImages,
+            descriptions = placeData.content.descriptions,
+            wikimediaRefs = placeData.place.wikimediaImages
         )
 
         DetailsPager(
-            place = place,
+            placeData = placeData,
             pages = pages,
             wikimediaImages = wikimediaImages
         )

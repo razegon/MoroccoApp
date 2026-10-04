@@ -143,7 +143,7 @@ fun MoroccoApp() {
                 CitiesScreen(
                     // Pass the selected city's ID (placeId) to CityDetailsScreen.
                     onPlaceClick = { place ->
-                        navController.navigate("city_details/${place.placeId}")
+                        navController.navigate("city_details/${place.place.placeId}")
                     }
                 )
             }
@@ -161,9 +161,9 @@ fun MoroccoApp() {
                         placeId = placeId,
 
                         // Navigate from a city to details of one of its places.
-                        onPlaceClick = { place ->
+                        onPlaceClick = { placeData ->
                             navController.navigate(
-                                "place_details/${place.placeId}"
+                                "place_details/${placeData.place.placeId}"
                             )
                         }
                     )
@@ -174,9 +174,9 @@ fun MoroccoApp() {
             composable(Screen.Places.route) {
                 PlacesScreen(
                     // Pass the selected place ID to PlaceDetailsScreen.
-                    onPlaceClick = { place ->
+                    onPlaceClick = { placeData ->
                         navController.navigate(
-                            "place_details/${place.placeId}"
+                            "place_details/${placeData.place.placeId}"
                         )
                     }
                 )

@@ -1,6 +1,5 @@
 package com.rezegon.moroccoapp.ui.screens.city
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,24 +15,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.ui.platform.LocalContext
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
-import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.ui.components.CityListItem
 import com.rezegon.moroccoapp.viewmodel.CitiesViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
+import com.rezegon.shared.domain.model.PlaceData
 
 @Composable
 fun CitiesScreen(
     modifier: Modifier = Modifier,
-    onPlaceClick: (Place) -> Unit
+    onPlaceClick: (PlaceData) -> Unit
 ) {
     val viewModel: CitiesViewModel = viewModel()
 
@@ -70,8 +69,8 @@ fun CitiesScreen(
     // Request image metadata for the first Wikimedia image
     // associated with each city.
     LaunchedEffect(uiState.places) {
-        uiState.places.forEach { place ->
-            place.wikimediaImages
+        uiState.places.forEach { placeData ->
+            placeData.place.wikimediaImages
                 .firstOrNull()
                 ?.let { imageRef ->
                     wikimediaViewModel.getImage(imageRef.pageId)
@@ -105,18 +104,18 @@ fun CitiesScreen(
             )
         ) {
 
-            items(uiState.places) { place ->
+            items(uiState.places) { placeData ->
 
                 // Prefer the Wikimedia image when it is available.
                 // Fall back to the locally defined image otherwise.
                 val imageUrl =
-                    place.wikimediaImages
+                    placeData.place.wikimediaImages
                         .firstOrNull()
                         ?.let { wikimediaImages[it.pageId]?.url }
-                        ?: place.placeImages.firstOrNull()
+                        ?: placeData.place.placeImages.firstOrNull()
 
                 CityListItem(
-                    place = place,
+                    placeData = placeData,
                     imageUrl = imageUrl,
                     onClick = onPlaceClick
                 )

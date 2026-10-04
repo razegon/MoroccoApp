@@ -39,18 +39,18 @@ class CityDetailsViewModel(
     init {
 
         // Load the selected city and its child places from the local repository.
-        val place = repository.getPlace(placeId)
+        val placeData = repository.getPlace(placeId)
         val children = repository.getChildren(placeId)
 
         _uiState.value = CityDetailsUiState(
-            place = place,
+            placeData = placeData,
             children = children
         )
 
         // Load additional Wikidata information in the background.
         viewModelScope.launch {
 
-            place?.wikidataId?.let { wikidataId ->
+            placeData?.place?.wikidataId?.let { wikidataId ->
 
                 val wikidataInfo = wikidataRepository.getInfo(
                     wikidataId

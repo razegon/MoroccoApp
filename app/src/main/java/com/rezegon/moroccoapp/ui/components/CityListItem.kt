@@ -20,20 +20,20 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.domain.model.Place
+import com.rezegon.shared.domain.model.PlaceData
 
 @Composable
 fun CityListItem(
-    place: Place,
+    placeData: PlaceData,
     imageUrl: String?,
-    onClick: (Place) -> Unit
+    onClick: (PlaceData) -> Unit
 ) {
     // Card represents a single city in the cities list.
     // Clicking the card is delegated to the parent screen.
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        onClick = { onClick(place) }
+        onClick = { onClick(placeData) }
     ) {
         Row(
             modifier = Modifier
@@ -73,15 +73,15 @@ fun CityListItem(
 
                 // City name.
                 Text(
-                    text = stringResource(place.placeName),
+                    text = placeData.content.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 // Optional translation of the city name.
-                place.placeTranslate?.let {
+                placeData.content.translation?.let {
                     Text(
-                        text = stringResource(it),
+                        text = it,
                         style = MaterialTheme.typography.bodyLarge,
                         fontStyle = FontStyle.Italic,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -89,9 +89,9 @@ fun CityListItem(
                 }
 
                 // Optional short description of the city.
-                place.placeSnippet?.let {
+                placeData.content.snippet?.let {
                     Text(
-                        text = stringResource(it),
+                        text = it,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

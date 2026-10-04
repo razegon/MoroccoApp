@@ -23,16 +23,16 @@ import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
-import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.viewmodel.PlacesViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
+import com.rezegon.shared.domain.model.PlaceData
 
 @Composable
 fun PlacesScreen(
     modifier: Modifier = Modifier,
-    onPlaceClick: (Place) -> Unit
+    onPlaceClick: (PlaceData) -> Unit
 ) {
     // ViewModel responsible for loading the list of places.
     val viewModel: PlacesViewModel = viewModel()
@@ -88,9 +88,9 @@ fun PlacesScreen(
         // Request Wikimedia metadata for the first image
         // associated with each place.
         LaunchedEffect(uiState.places) {
-            uiState.places.forEach { place ->
+            uiState.places.forEach { placeData ->
 
-                place.wikimediaImages
+                placeData.place.wikimediaImages
                     .firstOrNull()
                     ?.let { imageRef ->
                         wikimediaViewModel.getImage(imageRef.pageId)
@@ -105,18 +105,18 @@ fun PlacesScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            items(uiState.places) { place ->
+            items(uiState.places) { placeData ->
 
                 // Prefer the Wikimedia image when its metadata
                 // has already been loaded. Fall back to the local image.
-                val imageUrl = place.wikimediaImages
+                val imageUrl = placeData.place.wikimediaImages
                     .firstOrNull()
                     ?.let { imageRef ->
                         wikimediaImages[imageRef.pageId]?.url
-                    } ?: place.placeImages.firstOrNull()
+                    } ?: placeData.place.placeImages.firstOrNull()
 
                 PlaceListItem(
-                    place = place,
+                    placeData = placeData,
                     imageUrl = imageUrl,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onPlaceClick

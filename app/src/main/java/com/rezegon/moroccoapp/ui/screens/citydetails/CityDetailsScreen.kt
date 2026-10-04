@@ -17,7 +17,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
-import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.ui.components.DetailsPager
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.ui.components.WikidataInfoSection
@@ -26,11 +25,12 @@ import com.rezegon.moroccoapp.viewmodel.CityDetailsViewModel
 import com.rezegon.moroccoapp.viewmodel.CityDetailsViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
+import com.rezegon.shared.domain.model.PlaceData
 
 @Composable
 fun CityDetailsScreen(
     placeId: Int,
-    onPlaceClick: (Place) -> Unit
+    onPlaceClick: (PlaceData) -> Unit
 ) {
 
     // Get the application context as the base Application object.
@@ -82,10 +82,10 @@ fun CityDetailsScreen(
 
     // Request Wikimedia metadata whenever the current city
     // or its child places change.
-    LaunchedEffect(uiState.place, uiState.children) {
+    LaunchedEffect(uiState.placeData, uiState.children) {
 
         // Load all Wikimedia images assigned to the city itself.
-        uiState.place?.wikimediaImages?.forEach { imageRef ->
+        uiState.placeData?.place?.wikimediaImages?.forEach { imageRef ->
 
             imageRef?.let {
                 wikimediaViewModel.getImage(it.pageId)
@@ -95,7 +95,7 @@ fun CityDetailsScreen(
         // Load the first Wikimedia image for each child place.
         uiState.children.forEach { child ->
 
-            child.wikimediaImages
+            child.place.wikimediaImages
                 .firstOrNull()
                 ?.let { imageRef ->
                     wikimediaViewModel.getImage(imageRef.pageId)
@@ -104,16 +104,16 @@ fun CityDetailsScreen(
     }
 
     // Render the screen only when the selected place is available.
-    uiState.place?.let { place ->
+    uiState.placeData?.let { placeData ->
 
         // Build the pages displayed by DetailsPager.
         // Wikimedia URLs are taken from the loaded metadata map,
         // while local images can be used as a fallback.
         val pages = createPages(
             wikimediaImages = wikimediaImages,
-            images = place.placeImages,
-            descriptions = place.placeDescriptions,
-            wikimediaRefs = place.wikimediaImages
+            images = placeData.place.placeImages,
+            descriptions = placeData.content.descriptions,
+            wikimediaRefs = placeData.place.wikimediaImages
         )
 
         Log.d(
@@ -122,7 +122,7 @@ fun CityDetailsScreen(
         )
 
         DetailsPager(
-            place = place,
+            placeData = placeData,
             pages = pages,
             wikimediaImages = wikimediaImages
         ) {
@@ -145,20 +145,20 @@ fun CityDetailsScreen(
                     // Prefer the Wikimedia image when its metadata
                     // has already been loaded. Fall back to the local image.
                     val imageUrl =
-                        child.wikimediaImages
+                        child.place.wikimediaImages
                             .firstOrNull()
                             ?.let { wikimediaImages[it.pageId]?.url }
-                            ?: child.placeImages.firstOrNull()
+                            ?: child.place.placeImages.firstOrNull()
 
                     Log.d(
                         "WIKIMEDIA_ROW",
-                        "child=${child.placeId}, " +
-                                "imageRef=${child.wikimediaImages.firstOrNull()?.pageId}, " +
+                        "child=${child.place.placeId}, " +
+                                "imageRef=${child.place.wikimediaImages.firstOrNull()?.pageId}, " +
                                 "url=$imageUrl"
                     )
 
                     PlaceListItem(
-                        place = child,
+                        placeData = child,
                         imageUrl = imageUrl,
                         modifier = Modifier.width(180.dp),
                         imageHeight = 140.dp,

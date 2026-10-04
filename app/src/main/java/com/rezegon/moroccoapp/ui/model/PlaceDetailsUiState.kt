@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.ui.model
 
-import com.rezegon.moroccoapp.domain.model.Place
+import com.rezegon.shared.domain.model.PlaceData
 
 data class PlaceDetailsUiState(
-    val place: Place? = null
+    val place: PlaceData? = null
 )

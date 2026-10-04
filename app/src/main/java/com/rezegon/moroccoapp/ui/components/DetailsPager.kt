@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.domain.model.Place
 import com.rezegon.moroccoapp.domain.model.WikimediaImage
-import com.rezegon.shared.domain.model.WikimediaImageRef
 import com.rezegon.moroccoapp.ui.model.DetailsPage
+import com.rezegon.shared.domain.model.PlaceData
+import com.rezegon.shared.domain.model.WikimediaImageRef
 
 /**
  * Wspólny pager zdjęć używany przez ekrany szczegółów City i Place.
@@ -44,7 +44,7 @@ import com.rezegon.moroccoapp.ui.model.DetailsPage
  */
 @Composable
 fun DetailsPager(
-    place: Place,
+    placeData: PlaceData,
     pages: List<DetailsPage>,
     wikimediaImages: Map<Int, WikimediaImage>,
     modifier: Modifier = Modifier,
@@ -198,7 +198,7 @@ fun DetailsPager(
             if (page == 0) {
 
                 Text(
-                    text = stringResource(place.placeName),
+                    text = placeData.content.name,
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(
                         start = 20.dp,
@@ -207,10 +207,10 @@ fun DetailsPager(
                     )
                 )
 
-                place.placeTranslate?.let {
+                placeData.content.translation?.let {
 
                     Text(
-                        text = stringResource(it),
+                        text = it,
                         style = MaterialTheme.typography.titleMedium,
                         fontStyle = FontStyle.Italic,
                         modifier = Modifier.padding(
@@ -220,10 +220,10 @@ fun DetailsPager(
                     )
                 }
 
-                place.placeSnippet?.let {
+                placeData.content.snippet?.let {
 
                     Text(
-                        text = stringResource(it),
+                        text = it,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(
                             start = 20.dp,
@@ -248,7 +248,7 @@ fun DetailsPager(
 
                 detailsPage.description?.let {
                     HtmlText(
-                        text = stringResource(it),
+                        text = it,
                         modifier = Modifier.padding(20.dp),
                         textAlign = TextAlign.Justify
                     )
@@ -271,7 +271,7 @@ fun DetailsPager(
 fun createPages(
     wikimediaImages: Map<Int, WikimediaImage>,
     images: List<String?>,
-    descriptions: List<Int>,
+    descriptions: List<String>,
     wikimediaRefs: List<WikimediaImageRef?>
 ): List<DetailsPage> {
 

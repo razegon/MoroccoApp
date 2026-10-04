@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="Typos">
 
     <!-- Morocco Cities -->
+    <!-- Marrakech -->
     <string name="marrakesh_name">Marrakesz</string>
     <string name="trans_marrakesh">Ziemia Boga</string>
     <string name="marrakesh_founded">1070 r.</string>

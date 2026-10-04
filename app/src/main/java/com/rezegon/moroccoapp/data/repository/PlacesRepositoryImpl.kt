@@ -1,37 +1,38 @@
 package com.rezegon.moroccoapp.data.repository
 
 import com.rezegon.moroccoapp.data.datasource.MoroccoDataSource
-import com.rezegon.moroccoapp.domain.model.Place
+import com.rezegon.shared.domain.model.Place
 import com.rezegon.shared.domain.model.PlaceType
 import com.rezegon.moroccoapp.domain.repository.PlacesRepository
+import com.rezegon.shared.domain.model.PlaceData
 
 class PlacesRepositoryImpl : PlacesRepository {
 
     private val dataSource = MoroccoDataSource
 
-    override fun getPlaces(): List<Place> {
+    override fun getPlaces(): List<PlaceData> {
         return dataSource.getPlaces()
     }
 
-    override fun getPlace(placeId: Int): Place? {
+    override fun getPlace(placeId: Int): PlaceData? {
         return dataSource
             .getPlaces()
-            .find { it.placeId == placeId }
+            .find { it.place.placeId == placeId }
     }
 
-    override fun getPlacesByType(placeType: PlaceType): List<Place> {
+    override fun getPlacesByType(placeType: PlaceType): List<PlaceData> {
         return dataSource
             .getPlaces()
-            .filter { it.placeType == placeType }
+            .filter { it.place.placeType == placeType }
     }
 
-    override fun getChildren(parentPlaceId: Int): List<Place> {
+    override fun getChildren(parentPlaceId: Int): List<PlaceData> {
         return dataSource
             .getPlaces()
-            .filter { it.parentPlaceId == parentPlaceId }
+            .filter { it.place.parentPlaceId == parentPlaceId }
     }
 
-    override fun search(query: String): List<Place> {
+    override fun search(query: String): List<PlaceData> {
         TODO("Search will be implemented later")
     }
 

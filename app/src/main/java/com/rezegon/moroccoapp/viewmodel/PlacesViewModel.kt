@@ -15,12 +15,6 @@ class PlacesViewModel : ViewModel() {
 
     private val repository: PlacesRepository = PlacesRepositoryImpl()
 
-//    private val wikimediaRepository: WikimediaRepository =
-//        WikimediaRepositoryImpl(
-//            api = WikimediaRetrofit.api,
-//            cache = WikimediaMemoryCache()
-//        )
-
     private val _uiState = MutableStateFlow(PlacesUiState())
 
     val uiState: StateFlow<PlacesUiState> = _uiState
@@ -32,7 +26,7 @@ class PlacesViewModel : ViewModel() {
     private fun loadPlaces() {
         val places = repository
             .getPlaces()
-            .filter { it.placeType != PlaceType.CITY }
+            .filter { it.place.placeType != PlaceType.CITY }
 
         _uiState.value = PlacesUiState(
             places = places
