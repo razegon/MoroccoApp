@@ -7,9 +7,13 @@ import com.rezegon.moroccoapp.data.cache.MIGRATION_1_2
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
 import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
 import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
+import com.rezegon.moroccoapp.di.AppContainer
 
 class MyApp : Application() {
 
+    val appContainer by lazy {
+        AppContainer(this)
+    }
     val wikidataCache = WikidataMemoryCache()
     val wikimediaCache = WikimediaMemoryCache()
 

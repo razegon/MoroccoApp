@@ -35,17 +35,15 @@ fun PlacesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    val context = LocalContext.current
-
-    // ViewModel responsible for loading the list of places.
-    val viewModel: PlacesViewModel = viewModel(
-        factory = PlacesViewModelFactory(context)
-    )
-
     // Access the custom application instance.
     // MyApp contains application-wide dependencies such as
     // the shared Wikimedia memory cache and Room database.
     val application = LocalContext.current.applicationContext as MyApp
+
+    // ViewModel responsible for loading the list of places.
+    val viewModel: PlacesViewModel = viewModel(
+        factory = PlacesViewModelFactory(application.appContainer)
+    )
 
     // Repository responsible for loading Wikimedia image metadata.
     //

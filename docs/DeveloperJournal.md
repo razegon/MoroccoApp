@@ -791,3 +791,175 @@ Po zakończeniu migracji wykonano Build i uruchomiono aplikację. Wszystkie spra
 `PlaceContent` używa obecnie zwykłych `String`. Jest to rozwiązanie przejściowe potrzebne do sprawdzenia architektury. Nie jest to jeszcze finalny system lokalizacji.
 
 Następny etap to migracja obecnego `MoroccoDataSource` do danych niezależnych od Androida, docelowo z wykorzystaniem JSON. Dopiero wtedy zostanie ustalony finalny format treści, lokalizacji i akapitów.
+
+## 4 października 2026 -- KMP: JSON DataSource
+
+Po migracji modelu rozpoczęto zastępowanie hardcoded `MoroccoDataSource` źródłem JSON.
+
+### DTO
+
+W `shared/commonMain` utworzono DTO:
+
+```text
+PlaceDto
+├── PlaceDtoData
+├── PlaceContentDto
+├── PlaceFallbackDto
+└── WikimediaImageRefDto
+```
+
+DTO służą wyłącznie do deserializacji JSON i nie są używane jako model domenowy UI.
+
+### Mapper
+
+Utworzono `PlaceMapper`, który zamienia:
+
+```text
+PlaceDto
+↓
+PlaceData
+```
+
+Dzięki temu domena pozostaje niezależna od szczegółów formatu JSON.
+
+### JsonResourceReader
+
+Ponieważ `commonMain` nie powinien korzystać bezpośrednio z Androidowego `Context`, utworzono abstrakcję:
+
+```kotlin
+interface JsonResourceReader {
+    fun readText(path: String): String
+}
+```
+
+Androidowa implementacja korzysta z `context.assets.open(path)`.
+
+Schemat:
+
+```text
+commonMain
+    ↓
+JsonResourceReader
+    ↑
+AndroidJsonResourceReader
+    ↓
+Android Context / assets
+```
+
+### JSON
+
+Pierwszy plik:
+
+```text
+shared/src/androidMain/assets/morocco.json
+```
+
+zawiera obecnie jeden rekord -- Marrakesz.
+
+Na czas testu opis został celowo ustawiony na:
+
+```json
+"descriptions": ["TEST"]
+```
+
+Dzięki temu można jednoznacznie sprawdzić, czy aplikacja rzeczywiście korzysta z JSON, a nie ze starego `MoroccoDataSource`.
+
+### Problem z Android assets
+
+Pierwsza próba odczytu kończyła się:
+
+```text
+java.io.FileNotFoundException: morocco.json
+```
+
+Problem nie wynikał z samego parsera JSON. Androidowy asset nie był dostępny w testowym APK.
+
+Po włączeniu:
+
+```kotlin
+androidResources {
+    enable = true
+}
+```
+
+i ponownym Sync test zaczął poprawnie widzieć asset.
+
+`JsonPlaceDataSourceTest` zakończył się sukcesem na fizycznym urządzeniu.
+
+### Weryfikacja end-to-end
+
+Potwierdzono:
+
+```text
+morocco.json
+↓
+AndroidJsonResourceReader
+↓
+JsonPlaceDataSource
+↓
+PlaceDto
+↓
+PlaceMapper
+↓
+PlaceData
+↓
+PlacesRepository
+↓
+ViewModel
+↓
+Compose UI
+```
+
+W aplikacji wyświetlił się Marrakesz, dane Wikimedia i Wikidata oraz testowy opis `TEST`.
+
+### Dependency injection
+
+Podczas podłączania nowego DataSource pojawiła się potrzeba przekazywania `PlacesRepository` do ViewModeli przez konstruktor.
+
+Zamiast:
+
+```kotlin
+PlacesRepositoryImpl()
+```
+
+bezpośrednio wewnątrz ViewModelu stosujemy:
+
+```kotlin
+class PlacesViewModel(
+    private val repository: PlacesRepository
+) : ViewModel()
+```
+
+Na tym etapie jest to ręczne DI realizowane przez factory.
+
+### Wnioski z etapu
+
+Migracja Compose + Android do KMP nie polega wyłącznie na przenoszeniu plików do `commonMain`. Trzeba rozdzielać odpowiedzialności platformowe od wspólnej logiki.
+
+W tym przypadku:
+
+```text
+commonMain
+├── JSON parsing
+├── DTO
+├── mapper
+├── domain
+└── repository logic
+
+androidMain
+└── dostęp do Android assets
+```
+
+To jest jeden z pierwszych praktycznych przykładów rozdzielenia odpowiedzialności między `commonMain` i kod platformowy w tym projekcie.
+
+### Stan po etapie
+
+- Build: OK
+- test `JsonPlaceDataSourceTest`: OK
+- aplikacja: OK
+- Marrakesz ładowany z JSON
+- Wikimedia: OK
+- Wikidata: OK
+- `TEST` z JSON: OK
+
+Kolejny krok to nie rozszerzanie JSON na 40 miejsc, lecz najpierw uporządkowanie ręcznego DI i scentralizowanie tworzenia `PlacesRepository`.

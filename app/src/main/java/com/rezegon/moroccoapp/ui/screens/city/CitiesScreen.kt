@@ -35,18 +35,19 @@ fun CitiesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    val context = LocalContext.current
-
-    val viewModel: CitiesViewModel = viewModel(
-        factory = CitiesViewModelFactory(context)
-    )
-
-    val uiState by viewModel.uiState.collectAsState()
-
     // Access the shared application instance.
     // MyApp contains application-wide dependencies such as
     // the memory cache and the Room database.
     val app = LocalContext.current.applicationContext as MyApp
+
+    // ViewModel responsible for loading the list of cities.
+    val viewModel: CitiesViewModel = viewModel(
+        factory = CitiesViewModelFactory(app.appContainer)
+    )
+
+    val uiState by viewModel.uiState.collectAsState()
+
+
 
     // Repository responsible for loading Wikimedia image metadata.
     //

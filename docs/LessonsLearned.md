@@ -856,3 +856,183 @@ Nie oznacza to, że obecny sposób przechowywania tekstów jest rozwiązaniem fi
 ### Checkpoint przed kolejnym etapem
 
 Po migracji `PlaceData` Build przeszedł, aplikacja działa, a Git status jest czysty. To dobry moment na osobny commit przed rozpoczęciem migracji `MoroccoDataSource`.
+
+## KMP -- rozdzielenie odpowiedzialności
+
+Pierwszy etap migracji do Kotlin Multiplatform pokazał, że nie należy przenosić istniejącego kodu Androidowego do `commonMain` 1:1.
+
+Trzeba najpierw znaleźć elementy zależne od platformy.
+
+Przykład:
+
+```text
+Android
+Context
+AssetManager
+R.string
+```
+
+nie powinny trafiać bezpośrednio do wspólnej warstwy domenowej.
+
+Zamiast tego wspólny kod może definiować abstrakcję:
+
+```kotlin
+interface JsonResourceReader {
+    fun readText(path: String): String
+}
+```
+
+a Android dostarcza implementację:
+
+```text
+JsonResourceReader
+        ↑
+AndroidJsonResourceReader
+        ↓
+Context.assets
+```
+
+Dzięki temu:
+
+```text
+commonMain
+├── logika JSON
+├── DTO
+├── mapper
+├── domain
+└── repository
+
+androidMain
+└── dostęp do Android assets
+```
+
+## DTO a model domenowy
+
+DTO nie powinno automatycznie stawać się modelem używanym przez UI.
+
+W projekcie zastosowano:
+
+```text
+JSON
+↓
+PlaceDto
+↓
+PlaceMapper
+↓
+PlaceData
+↓
+Repository
+↓
+ViewModel
+↓
+UI
+```
+
+Pozwala to zmienić format JSON bez uzależniania całej aplikacji od jego struktury.
+
+## JSON i odpowiedzialność platformowa
+
+Samo parsowanie JSON może być wspólne, natomiast sposób znalezienia pliku zależy od platformy.
+
+Na Androidzie obecnie:
+
+```text
+shared/src/androidMain/assets/morocco.json
+```
+
+jest odczytywany przez `AndroidJsonResourceReader`.
+
+W przyszłości inna platforma będzie mogła dostarczyć własną implementację `JsonResourceReader`, bez zmiany `JsonPlaceDataSource`.
+
+## Problem z assets i testami
+
+Pierwsza próba odczytu `morocco.json` zakończyła się:
+
+```text
+FileNotFoundException: morocco.json
+```
+
+Ważna lekcja: poprawny kod `AssetManager.open()` nie gwarantuje jeszcze, że plik znajduje się w APK testowym.
+
+Po włączeniu:
+
+```kotlin
+androidResources {
+    enable = true
+}
+```
+
+oraz Sync asset został prawidłowo dołączony i test przeszedł.
+
+Czyli w przypadku problemów z zasobami trzeba rozdzielić:
+
+```text
+czy kod otwierający plik jest poprawny?
+        ↓
+czy plik jest faktycznie pakowany do odpowiedniego APK?
+```
+
+## Dependency Injection
+
+Podczas migracji JSON pojawiła się kolejna ważna lekcja.
+
+ViewModel nie powinien sam tworzyć konkretnego Repository:
+
+```kotlin
+PlacesRepositoryImpl()
+```
+
+jeżeli chcemy mieć możliwość łatwego podmieniania zależności.
+
+Lepszy kierunek:
+
+```kotlin
+class PlacesViewModel(
+    private val repository: PlacesRepository
+) : ViewModel()
+```
+
+Wtedy:
+
+```text
+Factory / composition root
+        ↓
+PlacesRepository
+        ↓
+ViewModel
+```
+
+Obecnie stosujemy ręczne DI. Hilt nie został jeszcze wprowadzony.
+
+## Centralizacja zależności
+
+Kolejnym problemem do rozwiązania jest powtarzanie tworzenia `PlacesRepository` w kilku miejscach.
+
+Zanim wprowadzimy Hilt, warto najpierw zrobić to ręcznie i zrozumieć:
+
+- gdzie powstaje zależność,
+- kto jest jej właścicielem,
+- kto ją przekazuje,
+- ile instancji powinno istnieć.
+
+Dopiero potem automatyzacja przez framework DI będzie miała sens.
+
+## Najważniejsza lekcja z pierwszego etapu KMP
+
+KMP nie polega na tym, żeby „przenieść Androida do `commonMain`”.
+
+Lepszy sposób myślenia:
+
+```text
+Co jest logiką aplikacji?
+        ↓
+commonMain
+
+Co jest sposobem komunikacji z platformą?
+        ↓
+androidMain / iosMain / inne platformy
+```
+
+W tym projekcie `JsonPlaceDataSource` jest logiką wspólną, natomiast dostęp do Androidowych assets jest szczegółem platformowym.
+
+To jest dokładnie kierunek, który będzie potrzebny przy kolejnych elementach migracji.

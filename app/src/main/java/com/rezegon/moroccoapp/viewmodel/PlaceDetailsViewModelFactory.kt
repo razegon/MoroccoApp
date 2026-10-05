@@ -3,12 +3,13 @@ package com.rezegon.moroccoapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
+import com.rezegon.moroccoapp.di.AppContainer
 import com.rezegon.shared.data.source.AndroidJsonResourceReader
 import com.rezegon.shared.data.source.JsonPlaceDataSource
 
 class PlaceDetailsViewModelFactory(
     private val placeId: Int,
-    private val context: android.content.Context
+    private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -17,18 +18,9 @@ class PlaceDetailsViewModelFactory(
     ): T {
         if (modelClass.isAssignableFrom(PlaceDetailsViewModel::class.java)) {
 
-            val resourceReader =
-                AndroidJsonResourceReader(context.applicationContext)
-
-            val dataSource =
-                JsonPlaceDataSource(resourceReader)
-
-            val repository =
-                PlacesRepositoryImpl(dataSource)
-
             return PlaceDetailsViewModel(
                 placeId = placeId,
-                repository = repository
+                repository = appContainer.placesRepository
             ) as T
         } else {
             throw IllegalArgumentException("Unknown ViewModel class")

@@ -20,22 +20,20 @@ import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 fun PlaceDetailsScreen(
     placeId: Int
 ) {
-    val context = LocalContext.current
+    // Access the custom application instance.
+    // MyApp contains application-wide dependencies such as
+    // the shared Wikimedia memory cache and Room database.
+    val application = LocalContext.current.applicationContext as MyApp
 
     // Factory creates the ViewModel for the selected place.
     val factory = PlaceDetailsViewModelFactory(
         placeId = placeId,
-        context = context
+        appContainer = application.appContainer
     )
 
     val viewModel: PlaceDetailsViewModel = viewModel(
         factory = factory
     )
-
-    // Access the custom application instance.
-    // MyApp contains application-wide dependencies such as
-    // the shared Wikimedia memory cache and Room database.
-    val application = LocalContext.current.applicationContext as MyApp
 
     // Repository responsible for loading Wikimedia image metadata.
     //

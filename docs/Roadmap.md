@@ -532,3 +532,101 @@ Nie projektujemy jeszcze finalnego formatu lokalizacji ani akapitów. Zostanie t
 ### Zasada kolejnego etapu
 
 Nie łączyć jednocześnie migracji JSON, lokalizacji, UI i kolejnych funkcji. Najpierw doprowadzić DataSource do poprawnego, platform-independent modelu i po każdym większym kroku wykonać Build oraz test działania aplikacji.
+
+## Aktualizacja 4 października 2026 -- JSON DataSource
+
+### Zrobione -- pierwszy etap JSON
+
+- serializowalne DTO w `commonMain`
+- `PlaceDto`
+- `PlaceContentDto`
+- `PlaceFallbackDto`
+- `WikimediaImageRefDto`
+- `PlaceMapper`
+- `JsonPlaceDataSource`
+- `JsonResourceReader`
+- Androidowa implementacja `AndroidJsonResourceReader`
+- `morocco.json` w `shared/src/androidMain/assets`
+- `androidResources { enable = true }`
+- test `JsonPlaceDataSourceTest`
+- poprawne odczytanie JSON na fizycznym urządzeniu
+- pierwszy rekord -- Marrakesz
+- `TEST` jako tymczasowy opis potwierdzający odczyt z JSON
+- poprawne działanie Wikimedia po migracji
+- poprawne działanie Wikidata po migracji
+- Build OK
+
+### Aktualny przepływ
+
+```text
+morocco.json
+    ↓
+AndroidJsonResourceReader
+    ↓
+JsonPlaceDataSource
+    ↓
+PlaceDto
+    ↓
+PlaceMapper
+    ↓
+PlaceData
+    ↓
+PlacesRepository
+    ↓
+ViewModel
+    ↓
+UiState
+    ↓
+Compose UI
+```
+
+### Najbliższy etap -- uporządkowanie DI
+
+1. Scentralizować tworzenie `PlacesRepository`.
+2. Przestać tworzyć `PlacesRepositoryImpl` niezależnie w kilku ViewModel factories.
+3. Przekazywać tę samą konfigurację Repository do ViewModeli.
+4. Wykonać Build i sprawdzić wszystkie ekrany korzystające z `PlacesRepository`.
+
+### Dopiero później -- rozszerzenie JSON
+
+5. Zmienić JSON z jednego obiektu na listę `PlaceDto`.
+6. Dodać kilka miejsc testowych.
+7. Sprawdzić `CITY`, `parentPlaceId`, `null`, Wikimedia i fallbacki.
+8. Dopiero po stabilizacji rozszerzyć JSON do wszystkich miejsc.
+9. Usunąć stary hardcoded `MoroccoDataSource`.
+
+### Jeszcze później -- pełna niezależność platformowa
+
+10. Przygotować odpowiednik `JsonResourceReader` dla iOS.
+11. Sprawdzić ten sam `JsonPlaceDataSource` na iOS.
+12. Dopiero wtedy rozszerzać migrację KMP o kolejne elementy.
+
+### Zasada kolejnego etapu
+
+Nie łączyć jednocześnie:
+
+```text
+DI
++
+pełnej migracji JSON
++
+lokalizacji
++
+kolejnych funkcji
+```
+
+Najpierw jedna odpowiedzialność, Build, test działania, checkpoint.
+
+Najbliższy konkretny cel:
+
+```text
+MyApp / composition root
+        ↓
+PlacesRepository
+        ↓
+ViewModel factories
+        ↓
+ViewModels
+```
+
+Hilt pozostaje na późniejszym etapie. Najpierw ręczne DI ma zostać uporządkowane i zrozumiane.

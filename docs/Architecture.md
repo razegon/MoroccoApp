@@ -1135,3 +1135,133 @@ Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie zaprojektowany p
 - lista miejsc przypisanych do miasta działa
 
 Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do JSON.
+
+## Aktualizacja 4 października 2026 -- JSON DataSource i KMP
+
+### DTO i mapper
+
+W `commonMain` utworzono DTO przeznaczone do deserializacji JSON:
+
+```text
+PlaceDto
+├── PlaceDtoData
+├── PlaceContentDto
+├── PlaceFallbackDto
+└── WikimediaImageRefDto
+```
+
+DTO są mapowane do modeli domenowych przez `PlaceMapper`.
+
+```text
+JSON
+↓
+PlaceDto
+↓
+PlaceMapper
+↓
+PlaceData
+```
+
+### JsonPlaceDataSource
+
+Utworzono wspólny `JsonPlaceDataSource`, który korzysta z `kotlinx.serialization`.
+
+Jego odpowiedzialność ogranicza się do odczytania tekstu JSON, deserializacji DTO oraz mapowania DTO do `PlaceData`.
+
+### Rozdzielenie odpowiedzialności między commonMain i Android
+
+`commonMain` nie korzysta bezpośrednio z Androidowego `Context` ani `AssetManager`.
+
+Zdefiniowano:
+
+```kotlin
+interface JsonResourceReader {
+    fun readText(path: String): String
+}
+```
+
+Android dostarcza implementację:
+
+```text
+commonMain
+    ↓
+JsonResourceReader
+    ↑
+AndroidJsonResourceReader
+    ↓
+Context.assets
+```
+
+Dzięki temu sposób odczytu pliku jest zależnością platformową, a parsowanie JSON i mapowanie danych pozostaje wspólne.
+
+### Aktualna lokalizacja JSON
+
+Obecny plik znajduje się w:
+
+```text
+shared/src/androidMain/assets/morocco.json
+```
+
+W konfiguracji modułu `shared` włączone jest:
+
+```kotlin
+androidResources {
+    enable = true
+}
+```
+
+### Pierwszy zmigrowany rekord
+
+Na tym etapie JSON zawiera jeden rekord -- Marrakesz.
+
+Weryfikacja na fizycznym urządzeniu potwierdziła:
+
+- `JsonPlaceDataSourceTest` poprawnie odczytuje JSON,
+- `placeId = 4100`,
+- nazwa `Marrakesz`,
+- `wikidataId = "Q101625"`,
+- dane Wikimedia,
+- dane Wikidata,
+- opis z JSON wyświetlany jako `TEST`.
+
+Oznacza to, że przepływ działa end-to-end:
+
+```text
+morocco.json
+↓
+AndroidJsonResourceReader
+↓
+JsonPlaceDataSource
+↓
+PlaceDto
+↓
+PlaceMapper
+↓
+PlaceData
+↓
+PlacesRepository
+↓
+ViewModel
+↓
+Compose UI
+```
+
+### Ręczne dependency injection
+
+ViewModel otrzymuje `PlacesRepository` przez konstruktor zamiast samodzielnie tworzyć zależność.
+
+Przykładowy kierunek:
+
+```kotlin
+class PlacesViewModel(
+    private val repository: PlacesRepository
+) : ViewModel()
+```
+
+Na tym etapie używane jest ręczne DI oraz `ViewModelProvider.Factory`. Hilt nie został jeszcze wprowadzony.
+
+### Najbliższy krok architektoniczny
+
+Obecnie kilka factory tworzy `PlacesRepository` niezależnie. Następnym krokiem będzie scentralizowanie tworzenia tej zależności, tak aby wszystkie ViewModel korzystały z tej samej konfiguracji Repository.
+
+Dopiero po uporządkowaniu DI JSON zostanie rozszerzony z jednego rekordu do kilku, a następnie do kompletnego zestawu miejsc.

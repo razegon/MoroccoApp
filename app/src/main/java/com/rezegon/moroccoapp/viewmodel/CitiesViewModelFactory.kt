@@ -1,32 +1,22 @@
 package com.rezegon.moroccoapp.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
-import com.rezegon.shared.data.source.AndroidJsonResourceReader
-import com.rezegon.shared.data.source.JsonPlaceDataSource
+import com.rezegon.moroccoapp.di.AppContainer
 
 class CitiesViewModelFactory(
-    context: Context
+    private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
 
-    private val applicationContext = context.applicationContext
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(
+        modelClass: Class<T>
+    ): T {
         if (modelClass.isAssignableFrom(CitiesViewModel::class.java)) {
 
-            val resourceReader =
-                AndroidJsonResourceReader(applicationContext)
-
-            val dataSource =
-                JsonPlaceDataSource(resourceReader)
-
-            val repository =
-                PlacesRepositoryImpl(dataSource)
-
             @Suppress("UNCHECKED_CAST")
-            return CitiesViewModel(repository) as T
+            return CitiesViewModel(
+                repository = appContainer.placesRepository
+            ) as T
         }
 
         throw IllegalArgumentException(

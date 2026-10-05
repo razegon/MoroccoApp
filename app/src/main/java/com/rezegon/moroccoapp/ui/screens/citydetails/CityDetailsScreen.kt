@@ -1,6 +1,5 @@
 package com.rezegon.moroccoapp.ui.screens.citydetails
 
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.width
@@ -32,25 +31,21 @@ fun CityDetailsScreen(
     placeId: Int,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-
-    // Get the application context as the base Application object.
-    // <<- pamiętać !!
-    val application = LocalContext.current.applicationContext as Application
+    // MyApp contains application-wide dependencies,
+    // including the shared Wikimedia memory cache and Room database.
+    val app = LocalContext.current.applicationContext as MyApp
 
     // Factory creates the ViewModel and passes the selected place ID
     // together with the application instance.
     val factory = CityDetailsViewModelFactory(
         placeId = placeId,
-        application = application
+        application = app,
+        appContainer = app.appContainer
     )
 
     val viewModel: CityDetailsViewModel = viewModel(
         factory = factory
     )
-
-    // MyApp contains application-wide dependencies,
-    // including the shared Wikimedia memory cache and Room database.
-    val app = application as MyApp
 
     // Repository responsible for loading Wikimedia image metadata.
     //
