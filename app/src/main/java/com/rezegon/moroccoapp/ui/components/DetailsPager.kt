@@ -33,6 +33,7 @@ import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.domain.model.WikimediaImage
 import com.rezegon.moroccoapp.ui.model.DetailsPage
+import com.rezegon.shared.data.parser.DescriptionParser
 import com.rezegon.shared.domain.model.PlaceData
 import com.rezegon.shared.domain.model.WikimediaImageRef
 
@@ -247,10 +248,9 @@ fun DetailsPager(
             if (page > 0) {
 
                 detailsPage.description?.let {
-                    HtmlText(
-                        text = it,
-                        modifier = Modifier.padding(20.dp),
-                        textAlign = TextAlign.Justify
+                    DescriptionContent(
+                        blocks = DescriptionParser.parse(it),
+                        //modifier = Modifier.padding(20.dp)
                     )
                 }
             }
