@@ -1,13 +1,12 @@
 package com.rezegon.moroccoapp.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rezegon.moroccoapp.di.AppContainer
+import com.rezegon.shared.presentation.viewmodel.CityDetailsViewModel as SharedCityDetailsViewModel
 
 class CityDetailsViewModelFactory(
     private val placeId: Int,
-    private val application: Application,
     private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
 
@@ -15,15 +14,19 @@ class CityDetailsViewModelFactory(
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {
-        if (modelClass.isAssignableFrom(CityDetailsViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(CityDetailsAndroidViewModel::class.java)) {
 
-            return CityDetailsViewModel(
-                placeId = placeId,
-                application = application,
-                repository = appContainer.placesRepository
+            return CityDetailsAndroidViewModel(
+                sharedViewModel = SharedCityDetailsViewModel(
+                    placeId = placeId,
+                    placesRepository = appContainer.placesRepository,
+                    wikidataRepository = appContainer.wikidataRepository
+                )
             ) as T
-        } else {
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
+
+        throw IllegalArgumentException(
+            "Unknown ViewModel class: ${modelClass.name}"
+        )
     }
 }

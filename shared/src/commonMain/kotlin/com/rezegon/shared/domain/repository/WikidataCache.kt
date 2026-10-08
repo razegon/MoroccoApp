@@ -1,6 +1,6 @@
-package com.rezegon.moroccoapp.domain.repository
+package com.rezegon.shared.domain.repository
 
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
+import com.rezegon.shared.domain.model.WikidataInfo
 
 interface WikidataCache {
 
@@ -10,4 +10,3 @@ interface WikidataCache {
 
     fun clear()
 }
-

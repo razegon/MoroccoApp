@@ -7,8 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
-import com.rezegon.moroccoapp.domain.model.WikidataTime
+import com.rezegon.shared.domain.model.WikidataInfo
+import com.rezegon.shared.domain.model.WikidataTime
 
 @Composable
 fun WikidataInfoSection(

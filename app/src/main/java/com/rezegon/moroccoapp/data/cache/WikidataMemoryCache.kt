@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.data.cache
 
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
-import com.rezegon.moroccoapp.domain.repository.WikidataCache
+import com.rezegon.shared.domain.model.WikidataInfo
+import com.rezegon.shared.domain.repository.WikidataCache
 
 class WikidataMemoryCache : WikidataCache {
 

@@ -20,11 +20,11 @@ import com.rezegon.moroccoapp.ui.components.DetailsPager
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.ui.components.WikidataInfoSection
 import com.rezegon.moroccoapp.ui.components.createPages
-import com.rezegon.moroccoapp.viewmodel.CityDetailsViewModel
 import com.rezegon.moroccoapp.viewmodel.CityDetailsViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
+import com.rezegon.moroccoapp.viewmodel.CityDetailsAndroidViewModel
 
 @Composable
 fun CityDetailsScreen(
@@ -39,11 +39,10 @@ fun CityDetailsScreen(
     // together with the application instance.
     val factory = CityDetailsViewModelFactory(
         placeId = placeId,
-        application = app,
         appContainer = app.appContainer
     )
 
-    val viewModel: CityDetailsViewModel = viewModel(
+    val viewModel: CityDetailsAndroidViewModel = viewModel(
         factory = factory
     )
 

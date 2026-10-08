@@ -1,7 +1,7 @@
-package com.rezegon.moroccoapp.ui.model
+package com.rezegon.shared.presentation.model
 
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
 import com.rezegon.shared.domain.model.PlaceData
+import com.rezegon.shared.domain.model.WikidataInfo
 
 data class CityDetailsUiState(
     val placeData: PlaceData? = null,

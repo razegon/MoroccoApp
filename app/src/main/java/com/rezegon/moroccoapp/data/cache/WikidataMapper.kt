@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.data.cache
 
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
-import com.rezegon.moroccoapp.domain.model.WikidataTime
+import com.rezegon.shared.domain.model.WikidataInfo
+import com.rezegon.shared.domain.model.WikidataTime
 
 /**
  * Maps the Room entity used for local persistence

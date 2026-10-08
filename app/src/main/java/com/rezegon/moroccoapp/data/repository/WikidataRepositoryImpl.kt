@@ -5,10 +5,10 @@ import com.rezegon.moroccoapp.data.api.WikidataApi
 import com.rezegon.moroccoapp.data.cache.WikidataDao
 import com.rezegon.moroccoapp.data.cache.toDomain
 import com.rezegon.moroccoapp.data.cache.toEntity
-import com.rezegon.moroccoapp.domain.model.WikidataInfo
-import com.rezegon.moroccoapp.domain.model.WikidataTime
-import com.rezegon.moroccoapp.domain.repository.WikidataCache
-import com.rezegon.moroccoapp.domain.repository.WikidataRepository
+import com.rezegon.shared.domain.model.WikidataInfo
+import com.rezegon.shared.domain.model.WikidataTime
+import com.rezegon.shared.domain.repository.WikidataCache
+import com.rezegon.shared.domain.repository.WikidataRepository
 
 class WikidataRepositoryImpl(
     private val api: WikidataApi,

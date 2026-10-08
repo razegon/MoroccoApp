@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
+package com.rezegon.shared.domain.model
 
 data class WikidataInfo(
     val wikidataId: String?,
@@ -13,4 +13,3 @@ data class WikidataTime(
     val precision: Int?,
     val raw: String?
 )
-

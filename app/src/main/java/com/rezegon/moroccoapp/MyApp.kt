@@ -10,10 +10,6 @@ import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
 import com.rezegon.moroccoapp.di.AppContainer
 
 class MyApp : Application() {
-
-    val appContainer by lazy {
-        AppContainer(this)
-    }
     val wikidataCache = WikidataMemoryCache()
     val wikimediaCache = WikimediaMemoryCache()
 
@@ -24,6 +20,14 @@ class MyApp : Application() {
         )
             .addMigrations(MIGRATION_1_2)
             .build()
+    }
+
+    val appContainer by lazy {
+        AppContainer(
+            context = this,
+            wikidataCache = wikidataCache,
+            database = database
+        )
     }
 
     /**
