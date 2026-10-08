@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.ui.model
+package com.rezegon.shared.presentation.model
 
 import com.rezegon.shared.domain.model.PlaceData
 

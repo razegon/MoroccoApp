@@ -24,7 +24,7 @@ import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.CityListItem
-import com.rezegon.moroccoapp.viewmodel.CitiesViewModel
+import com.rezegon.moroccoapp.viewmodel.CitiesAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.CitiesViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
@@ -41,7 +41,7 @@ fun CitiesScreen(
     val app = LocalContext.current.applicationContext as MyApp
 
     // ViewModel responsible for loading the list of cities.
-    val viewModel: CitiesViewModel = viewModel(
+    val viewModel: CitiesAndroidViewModel = viewModel(
         factory = CitiesViewModelFactory(app.appContainer)
     )
 

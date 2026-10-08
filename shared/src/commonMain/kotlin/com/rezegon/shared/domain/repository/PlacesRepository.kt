@@ -1,6 +1,5 @@
-package com.rezegon.moroccoapp.domain.repository
+package com.rezegon.shared.domain.repository
 
-import com.rezegon.shared.domain.model.Place
 import com.rezegon.shared.domain.model.PlaceData
 import com.rezegon.shared.domain.model.PlaceType
 

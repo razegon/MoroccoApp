@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,11 +23,12 @@ import com.rezegon.moroccoapp.R
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
-import com.rezegon.moroccoapp.viewmodel.PlacesViewModel
 import com.rezegon.moroccoapp.viewmodel.PlacesViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
+import androidx.compose.foundation.lazy.items
+import com.rezegon.moroccoapp.viewmodel.PlacesAndroidViewModel
 
 @Composable
 fun PlacesScreen(
@@ -41,7 +41,7 @@ fun PlacesScreen(
     val application = LocalContext.current.applicationContext as MyApp
 
     // ViewModel responsible for loading the list of places.
-    val viewModel: PlacesViewModel = viewModel(
+    val viewModel: PlacesAndroidViewModel = viewModel(
         factory = PlacesViewModelFactory(application.appContainer)
     )
 

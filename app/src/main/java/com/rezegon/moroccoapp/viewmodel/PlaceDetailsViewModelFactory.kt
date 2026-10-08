@@ -2,10 +2,7 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
 import com.rezegon.moroccoapp.di.AppContainer
-import com.rezegon.shared.data.source.AndroidJsonResourceReader
-import com.rezegon.shared.data.source.JsonPlaceDataSource
 
 class PlaceDetailsViewModelFactory(
     private val placeId: Int,

@@ -1,11 +1,9 @@
-package com.rezegon.moroccoapp.data.repository
+package com.rezegon.shared.data.repository
 
-import com.rezegon.moroccoapp.data.datasource.MoroccoDataSource
-import com.rezegon.shared.domain.model.Place
-import com.rezegon.shared.domain.model.PlaceType
-import com.rezegon.moroccoapp.domain.repository.PlacesRepository
 import com.rezegon.shared.data.source.JsonPlaceDataSource
 import com.rezegon.shared.domain.model.PlaceData
+import com.rezegon.shared.domain.model.PlaceType
+import com.rezegon.shared.domain.repository.PlacesRepository
 
 class PlacesRepositoryImpl(
     private val dataSource: JsonPlaceDataSource

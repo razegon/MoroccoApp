@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.di
 
 import android.content.Context
-import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
+import com.rezegon.shared.data.repository.PlacesRepositoryImpl
 import com.rezegon.shared.data.source.AndroidJsonResourceReader
 import com.rezegon.shared.data.source.JsonPlaceDataSource
 

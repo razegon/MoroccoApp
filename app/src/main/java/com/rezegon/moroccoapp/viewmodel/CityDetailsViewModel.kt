@@ -5,9 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.data.api.WikidataRetrofit
-import com.rezegon.moroccoapp.data.repository.PlacesRepositoryImpl
 import com.rezegon.moroccoapp.data.repository.WikidataRepositoryImpl
-import com.rezegon.moroccoapp.domain.repository.PlacesRepository
+import com.rezegon.shared.domain.repository.PlacesRepository
 import com.rezegon.moroccoapp.ui.model.CityDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
