@@ -3,6 +3,7 @@ package com.rezegon.moroccoapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rezegon.moroccoapp.di.AppContainer
+import com.rezegon.shared.presentation.viewmodel.PlaceDetailsViewModel as SharedPlaceDetailsViewModel
 
 class PlaceDetailsViewModelFactory(
     private val placeId: Int,
@@ -13,14 +14,18 @@ class PlaceDetailsViewModelFactory(
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {
-        if (modelClass.isAssignableFrom(PlaceDetailsViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(PlaceDetailsAndroidViewModel::class.java)) {
 
-            return PlaceDetailsViewModel(
-                placeId = placeId,
-                repository = appContainer.placesRepository
+            return PlaceDetailsAndroidViewModel(
+                sharedViewModel = SharedPlaceDetailsViewModel(
+                    placeId = placeId,
+                    repository = appContainer.placesRepository
+                )
             ) as T
-        } else {
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
+
+        throw IllegalArgumentException(
+            "Unknown ViewModel class: ${modelClass.name}"
+        )
     }
 }

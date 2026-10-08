@@ -13,7 +13,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.WikimediaImage
+import com.rezegon.shared.domain.model.WikimediaImage
 
 @Composable
 fun WikimediaAttributionDialog(

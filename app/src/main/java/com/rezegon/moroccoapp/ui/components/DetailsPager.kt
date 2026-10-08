@@ -24,14 +24,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.domain.model.WikimediaImage
+import com.rezegon.shared.domain.model.WikimediaImage
 import com.rezegon.moroccoapp.ui.model.DetailsPage
 import com.rezegon.shared.data.parser.DescriptionParser
 import com.rezegon.shared.domain.model.PlaceData

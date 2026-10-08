@@ -1,6 +1,6 @@
 package com.rezegon.moroccoapp.data.cache
 
-import com.rezegon.moroccoapp.domain.model.WikimediaImage
+import com.rezegon.shared.domain.model.WikimediaImage
 
 /**
  * Maps the Room entity to the domain model used by the application.

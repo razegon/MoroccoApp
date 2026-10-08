@@ -11,9 +11,9 @@ import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.DetailsPager
 import com.rezegon.moroccoapp.ui.components.createPages
-import com.rezegon.moroccoapp.viewmodel.PlaceDetailsViewModel
+import com.rezegon.moroccoapp.viewmodel.PlaceDetailsAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.PlaceDetailsViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
+import com.rezegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 
 @Composable
@@ -31,7 +31,7 @@ fun PlaceDetailsScreen(
         appContainer = application.appContainer
     )
 
-    val viewModel: PlaceDetailsViewModel = viewModel(
+    val viewModel: PlaceDetailsAndroidViewModel = viewModel(
         factory = factory
     )
 
@@ -52,7 +52,7 @@ fun PlaceDetailsScreen(
         wikimediaRepository
     )
 
-    val wikimediaViewModel: WikimediaViewModel = viewModel(
+    val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
         key = "wikimediaTest2",
         factory = wikimediaFactory
     )

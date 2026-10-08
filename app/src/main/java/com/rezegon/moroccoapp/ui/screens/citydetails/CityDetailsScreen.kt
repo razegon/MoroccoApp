@@ -21,7 +21,7 @@ import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.ui.components.WikidataInfoSection
 import com.rezegon.moroccoapp.ui.components.createPages
 import com.rezegon.moroccoapp.viewmodel.CityDetailsViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
+import com.rezegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
 import com.rezegon.moroccoapp.viewmodel.CityDetailsAndroidViewModel
@@ -63,7 +63,7 @@ fun CityDetailsScreen(
         wikimediaRepository
     )
 
-    val wikimediaViewModel: WikimediaViewModel = viewModel(
+    val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
         key = "wikimediaCityDetails",
         factory = wikimediaFactory
     )

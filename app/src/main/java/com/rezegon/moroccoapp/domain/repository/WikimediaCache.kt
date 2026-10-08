@@ -1,6 +1,6 @@
 package com.rezegon.moroccoapp.domain.repository
 
-import com.rezegon.moroccoapp.domain.model.WikimediaImage
+import com.rezegon.shared.domain.model.WikimediaImage
 
 interface WikimediaCache {
 

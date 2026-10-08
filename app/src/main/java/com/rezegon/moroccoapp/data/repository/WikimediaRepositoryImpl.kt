@@ -5,9 +5,9 @@ import com.rezegon.moroccoapp.data.api.WikimediaApi
 import com.rezegon.moroccoapp.data.cache.WikimediaDao
 import com.rezegon.moroccoapp.data.cache.toDomain
 import com.rezegon.moroccoapp.data.cache.toEntity
-import com.rezegon.moroccoapp.domain.model.WikimediaImage
+import com.rezegon.shared.domain.model.WikimediaImage
 import com.rezegon.moroccoapp.domain.repository.WikimediaCache
-import com.rezegon.moroccoapp.domain.repository.WikimediaRepository
+import com.rezegon.shared.domain.repository.WikimediaRepository
 
 class WikimediaRepositoryImpl(
     private val api: WikimediaApi,

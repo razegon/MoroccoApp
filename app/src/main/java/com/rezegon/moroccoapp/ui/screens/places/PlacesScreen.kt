@@ -24,11 +24,11 @@ import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
 import com.rezegon.moroccoapp.viewmodel.PlacesViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.WikimediaViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
 import androidx.compose.foundation.lazy.items
 import com.rezegon.moroccoapp.viewmodel.PlacesAndroidViewModel
+import com.rezegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 
 @Composable
 fun PlacesScreen(
@@ -62,7 +62,7 @@ fun PlacesScreen(
         wikimediaRepository
     )
 
-    val wikimediaViewModel: WikimediaViewModel = viewModel(
+    val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
         key = "wikimediaPlaces",
         factory = wikimediaFactory
     )

@@ -1,15 +1,14 @@
-package com.rezegon.moroccoapp.viewmodel
+package com.rezegon.shared.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import com.rezegon.shared.domain.repository.PlacesRepository
-import com.rezegon.moroccoapp.ui.model.PlaceDetailsUiState
+import com.rezegon.shared.presentation.model.PlaceDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class PlaceDetailsViewModel(
     private val placeId: Int,
     private val repository: PlacesRepository
-) : ViewModel() {
+) {
 
     private val _uiState = MutableStateFlow(PlaceDetailsUiState())
 
