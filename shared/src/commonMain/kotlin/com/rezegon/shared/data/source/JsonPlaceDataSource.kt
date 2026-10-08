@@ -14,10 +14,17 @@ class JsonPlaceDataSource(
     }
 
     fun getPlaces(): List<PlaceData> {
-        val text = resourceReader.readText("morocco.json")
+        val files = listOf(
+            "ma_cities.json",
+            "ma_monuments.json",
+            "ma_nature.json"
+        )
 
-        val placeDto = json.decodeFromString<List<PlaceDto>>(text)
-
-        return placeDto.map { it.toDomain() }
+        return files
+            .flatMap { path ->
+                val text = resourceReader.readText(path)
+                json.decodeFromString<List<PlaceDto>>(text)
+            }
+            .map { it.toDomain() }
     }
 }
