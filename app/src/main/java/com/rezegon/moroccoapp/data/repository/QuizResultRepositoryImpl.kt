@@ -3,8 +3,8 @@ package com.rezegon.moroccoapp.data.repository
 import com.rezegon.moroccoapp.data.cache.QuizResultDao
 import com.rezegon.moroccoapp.data.cache.toDomain
 import com.rezegon.moroccoapp.data.cache.toEntity
-import com.rezegon.moroccoapp.domain.model.QuizResult
-import com.rezegon.moroccoapp.domain.repository.QuizResultRepository
+import com.rezegon.shared.domain.model.QuizResult
+import com.rezegon.shared.domain.repository.QuizResultRepository
 
 class QuizResultRepositoryImpl(
     private val dao: QuizResultDao

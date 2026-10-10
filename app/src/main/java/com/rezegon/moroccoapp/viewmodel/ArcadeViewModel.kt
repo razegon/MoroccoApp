@@ -2,8 +2,8 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.rezegon.moroccoapp.domain.model.ArcadeGameState
-import com.rezegon.moroccoapp.domain.model.QuizQuestion
-import com.rezegon.moroccoapp.domain.repository.QuizRepository
+import com.rezegon.shared.domain.model.QuizQuestion
+import com.rezegon.shared.domain.repository.QuizRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.Job
@@ -86,6 +86,13 @@ class ArcadeViewModel(
 
         val availableQuestions = questions.filter {
             it.id !in state.usedQuestionIds
+        }
+
+        if (availableQuestions.isEmpty()) {
+            _gameState.value = state.copy(
+                isGameOver = true
+            )
+            return
         }
 
         val nextQuestion = availableQuestions.random()

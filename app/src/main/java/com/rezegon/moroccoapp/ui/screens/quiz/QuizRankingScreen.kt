@@ -18,17 +18,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.QuizResult
-import com.rezegon.moroccoapp.viewmodel.QuizResultViewModel
+import com.rezegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
+import com.rezegon.shared.domain.model.QuizResult
 
 @Composable
 fun QuizRankingScreen(
-    resultViewModel: QuizResultViewModel,
+    resultViewModel: QuizResultAndroidViewModel,
     modifier: Modifier = Modifier
 ) {
     val results by resultViewModel.topResults.collectAsState()
 
-    // Load the latest TOP 10 results when the ranking screen is opened.
+    // Load the latest TOP 20 results when the ranking screen is opened.
     LaunchedEffect(Unit) {
         resultViewModel.loadTopResults()
     }
@@ -40,7 +40,7 @@ fun QuizRankingScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "TOP 10",
+            text = "TOP 20",
             style = MaterialTheme.typography.headlineMedium
         )
 

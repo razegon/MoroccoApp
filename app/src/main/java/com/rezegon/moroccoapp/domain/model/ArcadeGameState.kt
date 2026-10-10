@@ -1,5 +1,7 @@
 package com.rezegon.moroccoapp.domain.model
 
+import com.rezegon.shared.domain.model.QuizQuestion
+
 data class ArcadeGameState(
     val currentQuestion: QuizQuestion? = null,
     val selectedAnswerIndex: Int? = null,

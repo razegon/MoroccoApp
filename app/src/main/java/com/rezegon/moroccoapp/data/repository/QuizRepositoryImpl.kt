@@ -2,9 +2,9 @@ package com.rezegon.moroccoapp.data.repository
 
 import com.rezegon.moroccoapp.data.quiz.QuizQuestionDataSource
 import com.rezegon.moroccoapp.data.quiz.toDomain
-import com.rezegon.moroccoapp.domain.model.QuizDifficulty
-import com.rezegon.moroccoapp.domain.model.QuizQuestion
-import com.rezegon.moroccoapp.domain.repository.QuizRepository
+import com.rezegon.shared.domain.model.QuizDifficulty
+import com.rezegon.shared.domain.model.QuizQuestion
+import com.rezegon.shared.domain.repository.QuizRepository
 
 class QuizRepositoryImpl(
     private val dataSource: QuizQuestionDataSource

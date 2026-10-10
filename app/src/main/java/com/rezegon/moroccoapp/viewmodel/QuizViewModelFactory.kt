@@ -2,7 +2,8 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.rezegon.moroccoapp.domain.repository.QuizRepository
+import com.rezegon.shared.domain.repository.QuizRepository
+import com.rezegon.shared.presentation.viewmodel.QuizViewModel
 
 class QuizViewModelFactory(
     private val quizRepository: QuizRepository
@@ -12,11 +13,13 @@ class QuizViewModelFactory(
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {
-        if (modelClass.isAssignableFrom(QuizViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return QuizViewModel(
+        if (modelClass.isAssignableFrom(QuizAndroidViewModel::class.java)) {
+            val sharedViewModel = QuizViewModel(
                 repository = quizRepository
-            ) as T
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            return QuizAndroidViewModel(sharedViewModel) as T
         }
 
         throw IllegalArgumentException(

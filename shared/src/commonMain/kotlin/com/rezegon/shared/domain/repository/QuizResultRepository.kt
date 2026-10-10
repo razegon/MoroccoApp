@@ -1,6 +1,6 @@
-package com.rezegon.moroccoapp.domain.repository
+package com.rezegon.shared.domain.repository
 
-import com.rezegon.moroccoapp.domain.model.QuizResult
+import com.rezegon.shared.domain.model.QuizResult
 
 interface QuizResultRepository {
 

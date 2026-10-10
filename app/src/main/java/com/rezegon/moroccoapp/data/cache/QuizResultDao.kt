@@ -15,7 +15,17 @@ interface QuizResultDao {
     @Query(
         """
         SELECT * FROM QuizResultEntity
-        ORDER BY score DESC, date ASC
+        ORDER BY 
+            score DESC, 
+            CASE difficulty
+                WHEN 'VERY_HARD' THEN 5
+                WHEN 'HARD' THEN 4
+                WHEN 'MEDIUM' THEN 3
+                WHEN 'EASY' THEN 2
+                WHEN 'VERY_EASY' THEN 1
+                ELSE 0
+            END DESC,
+            date ASC
         LIMIT :limit
         """
     )

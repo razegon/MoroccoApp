@@ -2,7 +2,7 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.rezegon.moroccoapp.domain.repository.QuizRepository
+import com.rezegon.shared.domain.repository.QuizRepository
 
 class ArcadeViewModelFactory(
     private val repository: QuizRepository

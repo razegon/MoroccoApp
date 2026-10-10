@@ -1,6 +1,6 @@
 package com.rezegon.moroccoapp.data.cache
 
-import com.rezegon.moroccoapp.domain.model.QuizResult
+import com.rezegon.shared.domain.model.QuizResult
 
 // Converts the Room entity into the domain model.
 fun QuizResultEntity.toDomain(): QuizResult {

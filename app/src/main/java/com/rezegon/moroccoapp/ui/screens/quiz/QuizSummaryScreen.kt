@@ -20,14 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.QuizResult
-import com.rezegon.moroccoapp.viewmodel.QuizResultViewModel
-import com.rezegon.moroccoapp.viewmodel.QuizViewModel
+import com.rezegon.moroccoapp.viewmodel.QuizAndroidViewModel
+import com.rezegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
+import com.rezegon.shared.domain.model.QuizResult
 
 @Composable
 fun QuizSummaryScreen(
-    viewModel: QuizViewModel,
-    resultViewModel: QuizResultViewModel,
+    viewModel: QuizAndroidViewModel,
+    resultViewModel: QuizResultAndroidViewModel,
     onRestartClick: () -> Unit,
     onRankingClick: () -> Unit,
     onHomeClick: () -> Unit,

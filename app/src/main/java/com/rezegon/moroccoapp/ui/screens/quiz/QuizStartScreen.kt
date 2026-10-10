@@ -107,7 +107,7 @@ fun QuizStartScreen(
             onClick = onRankingClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("TOP 10")
+            Text("TOP 20")
         }
     }
 }

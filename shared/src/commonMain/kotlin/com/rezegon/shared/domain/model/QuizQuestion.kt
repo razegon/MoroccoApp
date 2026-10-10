@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
+package com.rezegon.shared.domain.model
 
 // Domain model used by the quiz logic and UI.
 data class QuizQuestion(

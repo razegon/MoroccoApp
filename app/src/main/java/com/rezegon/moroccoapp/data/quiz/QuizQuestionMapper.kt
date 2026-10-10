@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.data.quiz
 
-import com.rezegon.moroccoapp.domain.model.QuizDifficulty
-import com.rezegon.moroccoapp.domain.model.QuizQuestion
+import com.rezegon.shared.domain.model.QuizDifficulty
+import com.rezegon.shared.domain.model.QuizQuestion
 
 // Converts the external JSON model into the domain model used by the app.
 fun QuizQuestionDto.toDomain(): QuizQuestion {

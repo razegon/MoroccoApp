@@ -1,15 +1,14 @@
-package com.rezegon.moroccoapp.viewmodel
+package com.rezegon.shared.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
-import com.rezegon.moroccoapp.domain.model.QuizDifficulty
-import com.rezegon.moroccoapp.domain.model.QuizQuestion
-import com.rezegon.moroccoapp.domain.repository.QuizRepository
+import com.rezegon.shared.domain.model.QuizDifficulty
+import com.rezegon.shared.domain.model.QuizQuestion
+import com.rezegon.shared.domain.repository.QuizRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class QuizViewModel(
     private val repository: QuizRepository
-) : ViewModel() {
+) {
 
     // Questions are loaded when the user selects the quiz difficulty.
     private var questions: List<QuizQuestion> = emptyList()
@@ -93,4 +92,3 @@ class QuizViewModel(
         _isResultSaved.value = true
     }
 }
-

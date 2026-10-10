@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
+package com.rezegon.shared.domain.model
 
 // Represents one completed quiz result stored for the player ranking.
 data class QuizResult(

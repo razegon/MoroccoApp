@@ -12,9 +12,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.data.quiz.QuizQuestionDataSource
+import com.rezegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
 import com.rezegon.moroccoapp.data.repository.QuizRepositoryImpl
 import com.rezegon.moroccoapp.data.repository.QuizResultRepositoryImpl
 import com.rezegon.moroccoapp.ui.navigation.Screen
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeRankingScreen
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeScreen
 import com.rezegon.moroccoapp.ui.screens.city.CitiesScreen
 import com.rezegon.moroccoapp.ui.screens.citydetails.CityDetailsScreen
 import com.rezegon.moroccoapp.ui.screens.home.HomeScreen
@@ -25,18 +28,14 @@ import com.rezegon.moroccoapp.ui.screens.quiz.QuizRankingScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizStartScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
-import com.rezegon.moroccoapp.viewmodel.QuizResultViewModel
-import com.rezegon.moroccoapp.viewmodel.QuizResultViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.QuizViewModel
-import com.rezegon.moroccoapp.viewmodel.QuizViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.ArcadeViewModel
-import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
-import androidx.compose.runtime.LaunchedEffect
-import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeScreen
-import com.rezegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
-import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeRankingScreen
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
+import com.rezegon.moroccoapp.viewmodel.ArcadeViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
+import com.rezegon.moroccoapp.viewmodel.QuizAndroidViewModel
+import com.rezegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
+import com.rezegon.moroccoapp.viewmodel.QuizResultViewModelFactory
+import com.rezegon.moroccoapp.viewmodel.QuizViewModelFactory
 
 @Composable
 fun MoroccoApp() {
@@ -64,7 +63,7 @@ fun MoroccoApp() {
 
     // Shared ViewModel used by both QuizScreen and QuizSummaryScreen
     // so that the quiz state and final score are preserved.
-    val quizViewModel: QuizViewModel = viewModel(
+    val quizViewModel: QuizAndroidViewModel = viewModel(
         factory = quizFactory
     )
 
@@ -99,7 +98,7 @@ fun MoroccoApp() {
     )
 
     // ViewModel manages saving and loading completed quiz results.
-    val quizResultViewModel: QuizResultViewModel = viewModel(
+    val quizResultViewModel: QuizResultAndroidViewModel = viewModel(
         factory = quizResultFactory
     )
 
