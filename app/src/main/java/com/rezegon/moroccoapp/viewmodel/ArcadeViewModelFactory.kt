@@ -13,9 +13,9 @@ class ArcadeViewModelFactory(
         modelClass: Class<T>
     ): T {
 
-        if (modelClass.isAssignableFrom(ArcadeViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ArcadeAndroidViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ArcadeViewModel(repository) as T
+            return ArcadeAndroidViewModel(repository) as T
         }
 
         throw IllegalArgumentException(

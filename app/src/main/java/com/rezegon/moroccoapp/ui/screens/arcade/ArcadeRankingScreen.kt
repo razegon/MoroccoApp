@@ -28,7 +28,7 @@ fun ArcadeRankingScreen(
 ) {
     val results by resultViewModel.topResults.collectAsState()
 
-    // Load the latest TOP 10 Arcade results when the ranking screen is opened.
+    // Load the latest TOP 20 Arcade results when the ranking screen is opened.
     LaunchedEffect(Unit) {
         resultViewModel.loadTopResults()
     }
@@ -40,7 +40,7 @@ fun ArcadeRankingScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "TOP 10 ARCADE",
+            text = "TOP 20 ARCADE",
             style = MaterialTheme.typography.headlineMedium
         )
 

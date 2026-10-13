@@ -24,7 +24,7 @@ class ArcadeResultViewModel(
     }
 
     // Loads the best Arcade results from local storage.
-    fun loadTopResults(limit: Int = 10) {
+    fun loadTopResults(limit: Int = 20) {
         viewModelScope.launch {
             _topResults.value = repository.getTopResults(limit)
         }

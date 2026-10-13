@@ -1,20 +1,20 @@
-package com.rezegon.moroccoapp.viewmodel
+package com.rezegon.shared.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
-import com.rezegon.moroccoapp.domain.model.ArcadeGameState
+import com.rezegon.shared.domain.model.ArcadeGameState
 import com.rezegon.shared.domain.model.QuizQuestion
 import com.rezegon.shared.domain.repository.QuizRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
 
 class ArcadeViewModel(
-    private val repository: QuizRepository
-) : ViewModel() {
+    private val repository: QuizRepository,
+    private val scope: CoroutineScope
+) {
 
     // Holds the complete pool of questions used during the current Arcade game.
     private var questions: List<QuizQuestion> = emptyList()
@@ -26,13 +26,10 @@ class ArcadeViewModel(
     private var timerJob: Job? = null
 
     private fun startTimer() {
-
         timerJob?.cancel()
 
-        timerJob = viewModelScope.launch {
-
+        timerJob = scope.launch {
             while (isActive) {
-
                 delay(1000)
 
                 val state = _gameState.value
@@ -49,9 +46,7 @@ class ArcadeViewModel(
                         remainingTimeSeconds = 0,
                         isGameOver = true
                     )
-
                     break
-
                 } else {
 
                     _gameState.value = state.copy(

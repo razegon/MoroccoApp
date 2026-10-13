@@ -1,6 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
-
-import com.rezegon.shared.domain.model.QuizQuestion
+package com.rezegon.shared.domain.model
 
 data class ArcadeGameState(
     val currentQuestion: QuizQuestion? = null,

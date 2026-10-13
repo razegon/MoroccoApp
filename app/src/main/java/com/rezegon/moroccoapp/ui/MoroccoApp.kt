@@ -28,9 +28,9 @@ import com.rezegon.moroccoapp.ui.screens.quiz.QuizRankingScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizStartScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
+import com.rezegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
-import com.rezegon.moroccoapp.viewmodel.ArcadeViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.QuizAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
@@ -73,7 +73,7 @@ fun MoroccoApp() {
     )
 
 // ViewModel manages the state and logic of the Arcade game.
-    val arcadeViewModel: ArcadeViewModel = viewModel(
+    val arcadeViewModel: ArcadeAndroidViewModel = viewModel(
         factory = arcadeFactory
     )
 
