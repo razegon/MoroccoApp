@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.data.quiz
+package com.rezegon.shared.data.quiz
 
 // Data Transfer Object matching the structure of questions.json.
 data class QuizQuestionDto(

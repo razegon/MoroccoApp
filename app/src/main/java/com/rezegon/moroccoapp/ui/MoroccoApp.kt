@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.data.quiz.QuizQuestionDataSource
 import com.rezegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
-import com.rezegon.moroccoapp.data.repository.QuizRepositoryImpl
+import com.rezegon.shared.data.repository.QuizRepositoryImpl
 import com.rezegon.moroccoapp.data.repository.QuizResultRepositoryImpl
 import com.rezegon.moroccoapp.ui.navigation.Screen
 import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeRankingScreen
@@ -30,7 +30,6 @@ import com.rezegon.moroccoapp.ui.screens.quiz.QuizStartScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
 import com.rezegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
-import com.rezegon.shared.presentation.viewmodel.ArcadeResultViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.QuizAndroidViewModel

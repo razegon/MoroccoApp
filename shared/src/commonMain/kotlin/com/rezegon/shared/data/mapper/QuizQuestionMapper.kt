@@ -1,5 +1,6 @@
-package com.rezegon.moroccoapp.data.quiz
+package com.rezegon.shared.data.mapper
 
+import com.rezegon.shared.data.quiz.QuizQuestionDto
 import com.rezegon.shared.domain.model.QuizDifficulty
 import com.rezegon.shared.domain.model.QuizQuestion
 

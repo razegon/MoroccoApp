@@ -1,13 +1,13 @@
-package com.rezegon.moroccoapp.data.repository
+package com.rezegon.shared.data.repository
 
-import com.rezegon.moroccoapp.data.quiz.QuizQuestionDataSource
-import com.rezegon.moroccoapp.data.quiz.toDomain
+import com.rezegon.shared.data.mapper.toDomain
 import com.rezegon.shared.domain.model.QuizDifficulty
 import com.rezegon.shared.domain.model.QuizQuestion
+import com.rezegon.shared.domain.repository.QuizQuestionDataSourceInterface
 import com.rezegon.shared.domain.repository.QuizRepository
 
 class QuizRepositoryImpl(
-    private val dataSource: QuizQuestionDataSource
+    private val dataSource: QuizQuestionDataSourceInterface
 ) : QuizRepository {
 
     // Loads questions from the JSON data source and converts them to domain models.
@@ -27,4 +27,3 @@ class QuizRepositoryImpl(
             .map { it.toDomain() }
     }
 }
-
