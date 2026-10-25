@@ -1,6 +1,6 @@
 package com.rezegon.moroccoapp.data.cache
 
-import com.rezegon.moroccoapp.domain.model.ArcadeResult
+import com.rezegon.shared.domain.model.ArcadeResult
 
 // Converts the Room entity into a domain model so the rest of the app stays independent of Room.
 fun ArcadeResultEntity.toDomain(): ArcadeResult {

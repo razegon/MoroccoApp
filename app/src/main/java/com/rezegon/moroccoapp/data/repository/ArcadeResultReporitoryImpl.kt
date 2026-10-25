@@ -3,8 +3,8 @@ package com.rezegon.moroccoapp.data.repository
 import com.rezegon.moroccoapp.data.cache.ArcadeResultDao
 import com.rezegon.moroccoapp.data.cache.toDomain
 import com.rezegon.moroccoapp.data.cache.toEntity
-import com.rezegon.moroccoapp.domain.model.ArcadeResult
-import com.rezegon.moroccoapp.domain.repository.ArcadeResultRepository
+import com.rezegon.shared.domain.model.ArcadeResult
+import com.rezegon.shared.domain.repository.ArcadeResultRepository
 
 class ArcadeResultRepositoryImpl(
     private val dao: ArcadeResultDao

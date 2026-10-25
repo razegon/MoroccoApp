@@ -18,12 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.ArcadeResult
-import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
+import com.rezegon.shared.domain.model.ArcadeResult
 
 @Composable
 fun ArcadeRankingScreen(
-    resultViewModel: ArcadeResultViewModel,
+    resultViewModel: ArcadeResultAndroidViewModel,
     modifier: Modifier = Modifier
 ) {
     val results by resultViewModel.topResults.collectAsState()

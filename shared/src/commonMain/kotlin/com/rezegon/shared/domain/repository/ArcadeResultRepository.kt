@@ -1,6 +1,6 @@
-package com.rezegon.moroccoapp.domain.repository
+package com.rezegon.shared.domain.repository
 
-import com.rezegon.moroccoapp.domain.model.ArcadeResult
+import com.rezegon.shared.domain.model.ArcadeResult
 
 interface ArcadeResultRepository {
 

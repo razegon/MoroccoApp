@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.model
+package com.rezegon.shared.domain.model
 
 // Represents the final result of one completed Arcade game.
 data class ArcadeResult(

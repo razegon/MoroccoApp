@@ -20,7 +20,7 @@ class QuizResultViewModel(
         repository.saveResult(result)
     }
 
-    // Loads the TOP 20 results from the local database.
+    // Loads the best results from the local database.
     suspend fun loadTopResults() {
         val results = repository.getTopResults(20)
 

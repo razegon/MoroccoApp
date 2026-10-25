@@ -2,7 +2,8 @@ package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.rezegon.moroccoapp.domain.repository.ArcadeResultRepository
+import com.rezegon.shared.domain.repository.ArcadeResultRepository
+import com.rezegon.shared.presentation.viewmodel.ArcadeResultViewModel
 
 class ArcadeResultViewModelFactory(
     private val repository: ArcadeResultRepository
@@ -13,9 +14,13 @@ class ArcadeResultViewModelFactory(
         modelClass: Class<T>
     ): T {
 
-        if (modelClass.isAssignableFrom(ArcadeResultViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ArcadeResultAndroidViewModel::class.java)) {
+            val sharedViewModel = ArcadeResultViewModel(
+                repository = repository
+            )
+
             @Suppress("UNCHECKED_CAST")
-            return ArcadeResultViewModel(repository) as T
+            return ArcadeResultAndroidViewModel(sharedViewModel) as T
         }
 
         throw IllegalArgumentException(

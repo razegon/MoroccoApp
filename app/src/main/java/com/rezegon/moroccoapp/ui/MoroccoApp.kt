@@ -29,7 +29,8 @@ import com.rezegon.moroccoapp.ui.screens.quiz.QuizScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizStartScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
 import com.rezegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
-import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
+import com.rezegon.shared.presentation.viewmodel.ArcadeResultViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.ArcadeViewModelFactory
 import com.rezegon.moroccoapp.viewmodel.QuizAndroidViewModel
@@ -103,7 +104,7 @@ fun MoroccoApp() {
     )
 
     // ViewModel manages saving and loading completed arcade results.
-    val arcadeResultViewModel: ArcadeResultViewModel = viewModel(
+    val arcadeResultViewModel: ArcadeResultAndroidViewModel = viewModel(
         factory = arcadeResultFactory
     )
 
@@ -250,7 +251,7 @@ fun MoroccoApp() {
                 )
             }
 
-            // Displays the TOP 10 Arcade results.
+            // Displays the TOP 20 Arcade results.
             composable(Screen.QuizArcadeRanking.route) {
                 ArcadeRankingScreen(
                     resultViewModel = arcadeResultViewModel

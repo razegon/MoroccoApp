@@ -35,15 +35,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.domain.model.ArcadeResult
 import com.rezegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
-import com.rezegon.moroccoapp.viewmodel.ArcadeResultViewModel
+import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
+import com.rezegon.shared.domain.model.ArcadeResult
 
 
 @Composable
 fun ArcadeScreen(
     viewModel: ArcadeAndroidViewModel,
-    resultViewModel: ArcadeResultViewModel,
+    resultViewModel: ArcadeResultAndroidViewModel,
     onRankingClick: () -> Unit,
     onQuizMenuClick: () -> Unit,
     onExitClick: () -> Unit
