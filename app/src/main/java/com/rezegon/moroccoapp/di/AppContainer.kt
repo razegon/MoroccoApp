@@ -8,6 +8,7 @@ import com.rezegon.moroccoapp.data.api.WikidataRetrofit
 import com.rezegon.moroccoapp.data.cache.AppDatabase
 import com.rezegon.moroccoapp.data.repository.WikidataRepositoryImpl
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
+import com.rezegon.moroccoapp.data.cache.RoomWikidataPersistentCache
 
 class AppContainer(
     context: Context,
@@ -30,6 +31,9 @@ class AppContainer(
         WikidataRepositoryImpl(
             api = WikidataRetrofit.api,
             cache = wikidataCache,
-            dao = database.wikidataDao()
+            persistentCache = RoomWikidataPersistentCache(
+                database.wikidataDao()
+            )
+
         )
 }

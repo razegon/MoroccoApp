@@ -2,18 +2,18 @@ package com.rezegon.moroccoapp.data.repository
 
 import android.util.Log
 import com.rezegon.moroccoapp.data.api.WikidataApi
-import com.rezegon.moroccoapp.data.cache.WikidataDao
 import com.rezegon.moroccoapp.data.cache.toDomain
 import com.rezegon.moroccoapp.data.cache.toEntity
 import com.rezegon.shared.data.parser.WikidataResponseParser
 import com.rezegon.shared.domain.model.WikidataInfo
 import com.rezegon.shared.domain.repository.WikidataCache
+import com.rezegon.shared.domain.repository.WikidataPersistentCache
 import com.rezegon.shared.domain.repository.WikidataRepository
 
 class WikidataRepositoryImpl(
     private val api: WikidataApi,
     private val cache: WikidataCache,
-    private val dao: WikidataDao,
+    private val persistentCache: WikidataPersistentCache,
     private val parser: WikidataResponseParser = WikidataResponseParser()
 ) : WikidataRepository {
 
@@ -54,9 +54,7 @@ class WikidataRepositoryImpl(
 
         // Second level cache: persistent Room database.
         try {
-            dao.get(wikidataId)?.let { entity ->
-
-                val info = entity.toDomain()
+            persistentCache.get(wikidataId)?.let { info ->
 
                 Log.d(
                     "WIKIDATA_ROOM",
@@ -101,7 +99,7 @@ class WikidataRepositoryImpl(
 
             // Persistent cache.
             try {
-                dao.upsert(info.toEntity())
+                persistentCache.put(info)
 
                 Log.d(
                     "WIKIDATA_ROOM",
