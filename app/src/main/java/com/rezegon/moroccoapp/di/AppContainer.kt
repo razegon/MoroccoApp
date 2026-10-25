@@ -6,9 +6,10 @@ import com.rezegon.shared.data.source.AndroidJsonResourceReader
 import com.rezegon.shared.data.source.JsonPlaceDataSource
 import com.rezegon.moroccoapp.data.api.WikidataRetrofit
 import com.rezegon.moroccoapp.data.cache.AppDatabase
-import com.rezegon.moroccoapp.data.repository.WikidataRepositoryImpl
+import com.rezegon.shared.data.repository.WikidataRepositoryImpl
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
 import com.rezegon.moroccoapp.data.cache.RoomWikidataPersistentCache
+import com.rezegon.moroccoapp.data.api.RetrofitWikidataDataSource
 
 class AppContainer(
     context: Context,
@@ -29,7 +30,9 @@ class AppContainer(
 
     val wikidataRepository =
         WikidataRepositoryImpl(
-            api = WikidataRetrofit.api,
+            dataSource = RetrofitWikidataDataSource(
+                WikidataRetrofit.api
+            ),
             cache = wikidataCache,
             persistentCache = RoomWikidataPersistentCache(
                 database.wikidataDao()
