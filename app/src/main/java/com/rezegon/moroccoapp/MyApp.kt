@@ -26,6 +26,7 @@ class MyApp : Application() {
         AppContainer(
             context = this,
             wikidataCache = wikidataCache,
+            wikimediaCache = wikimediaCache,
             database = database
         )
     }

@@ -7,8 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rezegon.moroccoapp.MyApp
+import com.rezegon.moroccoapp.data.api.RetrofitWikimediaDataSource
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
+import com.rezegon.moroccoapp.data.cache.RoomWikimediaPersistentCache
+import com.rezegon.shared.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.DetailsPager
 import com.rezegon.moroccoapp.ui.components.createPages
 import com.rezegon.moroccoapp.viewmodel.PlaceDetailsAndroidViewModel
@@ -36,16 +38,7 @@ fun PlaceDetailsScreen(
     )
 
     // Repository responsible for loading Wikimedia image metadata.
-    //
-    // It uses:
-    // - Wikimedia API for remote data,
-    // - shared memory cache for fast access,
-    // - Room DAO for persistent local storage.
-    val wikimediaRepository = WikimediaRepositoryImpl(
-        api = WikimediaRetrofit.api,
-        cache = application.wikimediaCache,
-        dao = application.database.wikimediaDao()
-    )
+    val wikimediaRepository = application.appContainer.wikimediaRepository
 
     // Factory creates the Wikimedia ViewModel using the repository.
     val wikimediaFactory = WikimediaViewModelFactory(

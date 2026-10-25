@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,15 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.PlaceListItem
+import com.rezegon.moroccoapp.viewmodel.PlacesAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.PlacesViewModelFactory
+import com.rezegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.rezegon.shared.domain.model.PlaceData
-import androidx.compose.foundation.lazy.items
-import com.rezegon.moroccoapp.viewmodel.PlacesAndroidViewModel
-import com.rezegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 
 @Composable
 fun PlacesScreen(
@@ -46,16 +44,7 @@ fun PlacesScreen(
     )
 
     // Repository responsible for loading Wikimedia image metadata.
-    //
-    // It uses:
-    // - Wikimedia API for remote data,
-    // - shared memory cache for fast access,
-    // - Room DAO for persistent local storage.
-    val wikimediaRepository = WikimediaRepositoryImpl(
-        api = WikimediaRetrofit.api,
-        cache = application.wikimediaCache,
-        dao = application.database.wikimediaDao()
-    )
+    val wikimediaRepository = application.appContainer.wikimediaRepository
 
     // Factory creates the Wikimedia ViewModel using the repository.
     val wikimediaFactory = WikimediaViewModelFactory(

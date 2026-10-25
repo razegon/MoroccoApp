@@ -10,10 +10,16 @@ import com.rezegon.shared.data.repository.WikidataRepositoryImpl
 import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
 import com.rezegon.moroccoapp.data.cache.RoomWikidataPersistentCache
 import com.rezegon.moroccoapp.data.api.RetrofitWikidataDataSource
+import com.rezegon.moroccoapp.data.api.RetrofitWikimediaDataSource
+import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
+import com.rezegon.moroccoapp.data.cache.RoomWikimediaPersistentCache
+import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
+import com.rezegon.shared.data.repository.WikimediaRepositoryImpl
 
 class AppContainer(
     context: Context,
     private val wikidataCache: WikidataMemoryCache,
+    private val wikimediaCache: WikimediaMemoryCache,
     private val database: AppDatabase
 ) {
 
@@ -38,5 +44,16 @@ class AppContainer(
                 database.wikidataDao()
             )
 
+        )
+
+    val wikimediaRepository =
+        WikimediaRepositoryImpl(
+            dataSource = RetrofitWikimediaDataSource(
+                WikimediaRetrofit.api
+            ),
+            cache = wikimediaCache,
+            persistentCache = RoomWikimediaPersistentCache(
+                database.wikimediaDao()
+            )
         )
 }

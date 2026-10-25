@@ -1,7 +1,7 @@
 package com.rezegon.moroccoapp.data.cache
 
 import com.rezegon.shared.domain.model.WikimediaImage
-import com.rezegon.moroccoapp.domain.repository.WikimediaCache
+import com.rezegon.shared.domain.repository.WikimediaCache
 
 class WikimediaMemoryCache : WikimediaCache {
 

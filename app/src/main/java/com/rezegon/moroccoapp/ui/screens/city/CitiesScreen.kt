@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rezegon.moroccoapp.MyApp
 import com.rezegon.moroccoapp.R
-import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.CityListItem
 import com.rezegon.moroccoapp.viewmodel.CitiesAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.CitiesViewModelFactory
@@ -50,17 +48,9 @@ fun CitiesScreen(
 
 
     // Repository responsible for loading Wikimedia image metadata.
-    //
-    // It uses:
-    // - Wikimedia API as the remote data source,
-    // - shared memory cache for fast access,
-    // - Room DAO for persistent local storage.
-    val wikimediaRepository = WikimediaRepositoryImpl(
-        api = WikimediaRetrofit.api,
-        cache = app.wikimediaCache,
-        dao = app.database.wikimediaDao()
-    )
+    val wikimediaRepository = app.appContainer.wikimediaRepository
 
+    // Factory creates the Wikimedia ViewModel using the repository above.
     val wikimediaFactory = WikimediaViewModelFactory(
         wikimediaRepository
     )

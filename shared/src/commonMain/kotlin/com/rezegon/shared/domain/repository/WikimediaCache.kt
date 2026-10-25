@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.domain.repository
+package com.rezegon.shared.domain.repository
 
 import com.rezegon.shared.domain.model.WikimediaImage
 
