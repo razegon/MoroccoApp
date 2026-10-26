@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MoroccoApp</string>
+    <string name="home_title">Odkryj Maroko</string>
+
+    <string name="welcome_title">Witaj w Maroku!</string>
+
+    <string name="home_description">Odkryj miasta, monumenty i cudowne miejsca.</string>
+
+    <string name="start_button">Zacznij odkrywać</string>
+    <string name="started_description">Wybierz początek swej podróży.</string>
+    <string name="cities_button">Miasta</string>
+    <string name="places_button">Miejsca</string>
+    
+    <string name="places_title">Miejsca</string>
+    <string name="cities_title">Miasta</string>
+    <string name="quiz_button">Quiz</string>
+
+</resources>

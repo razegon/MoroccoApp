@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.ui.theme
+package com.rezegon.shared.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

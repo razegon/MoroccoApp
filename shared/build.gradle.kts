@@ -75,6 +75,8 @@ kotlin {
                 implementation(libs.compose.foundation)
                 implementation(libs.compose.material3)
                 implementation(libs.compose.ui)
+                implementation(libs.compose.ui.tooling.preview)
+                implementation(libs.compose.resources)
                 // Add KMP dependencies here
             }
         }
@@ -114,10 +116,19 @@ kotlin {
 
 }
 
+dependencies {
+    add("androidRuntimeClasspath", libs.compose.ui.tooling)
+}
+
 androidComponents {
     onVariants { variant ->
         variant.sources.assets?.addStaticSourceDirectory(
             "src/androidMain/assets"
         )
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.rezegon.shared.generated.resources"
 }
