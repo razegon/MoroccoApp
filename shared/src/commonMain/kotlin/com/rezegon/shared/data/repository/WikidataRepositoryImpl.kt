@@ -61,7 +61,6 @@ class WikidataRepositoryImpl(
             try {
                 persistentCache.put(info)
             } catch (e: Exception) {
-            } catch (e: Exception) {
                 onError("Zapis trwałego cache Wikidata: $wikidataId", e)
             }
 

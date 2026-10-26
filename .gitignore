@@ -19,3 +19,6 @@ local.properties
 # Backup / archive files
 *.zip
 
+# Kotlin Multiplatform generated metadata
+.kotlin/
+

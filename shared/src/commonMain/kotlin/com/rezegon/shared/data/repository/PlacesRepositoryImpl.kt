@@ -6,29 +6,25 @@ import com.rezegon.shared.domain.model.PlaceType
 import com.rezegon.shared.domain.repository.PlacesRepository
 
 class PlacesRepositoryImpl(
-    private val dataSource: JsonPlaceDataSource
+    dataSource: JsonPlaceDataSource
 ) : PlacesRepository {
 
+    private val places: List<PlaceData> = dataSource.getPlaces()
+
     override fun getPlaces(): List<PlaceData> {
-        return dataSource.getPlaces()
+        return places
     }
 
     override fun getPlace(placeId: Int): PlaceData? {
-        return dataSource
-            .getPlaces()
-            .find { it.place.placeId == placeId }
+        return places.find { it.place.placeId == placeId }
     }
 
     override fun getPlacesByType(placeType: PlaceType): List<PlaceData> {
-        return dataSource
-            .getPlaces()
-            .filter { it.place.placeType == placeType }
+        return places.filter { it.place.placeType == placeType }
     }
 
     override fun getChildren(parentPlaceId: Int): List<PlaceData> {
-        return dataSource
-            .getPlaces()
-            .filter { it.place.parentPlaceId == parentPlaceId }
+        return places.filter { it.place.parentPlaceId == parentPlaceId }
     }
 
     override fun search(query: String): List<PlaceData> {
