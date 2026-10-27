@@ -91,7 +91,7 @@ fun PlacesScreen(
         }
 
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(12.dp),
