@@ -1265,3 +1265,86 @@ Na tym etapie używane jest ręczne DI oraz `ViewModelProvider.Factory`. Hilt ni
 Obecnie kilka factory tworzy `PlacesRepository` niezależnie. Następnym krokiem będzie scentralizowanie tworzenia tej zależności, tak aby wszystkie ViewModel korzystały z tej samej konfiguracji Repository.
 
 Dopiero po uporządkowaniu DI JSON zostanie rozszerzony z jednego rekordu do kilku, a następnie do kompletnego zestawu miejsc.
+---
+
+## Stan architektury na commit `95fcc35` — przed zmianami `2ba5e36` i `c60215d`
+
+Ta sekcja opisuje stan przyjęty jako baza do finalnego pushu na `main`. Zachowuje wcześniejsze wpisy jako historię etapów migracji; poniższy opis zastępuje nieaktualne plany z pierwszego etapu KMP.
+
+### Granica migracji
+
+W tym stanie projekt ma dwa moduły Gradle:
+
+- `:app` — aplikacja Android, interfejs Compose, nawigacja, integracje platformowe i konfiguracja zależności.
+- `:shared` — moduł Kotlin Multiplatform z logiką domenową, źródłem danych JSON, mapperami, kontraktami i implementacjami repozytoriów oraz współdzielonymi ViewModelami i stanami UI.
+
+**Interfejs Compose pozostaje po stronie `:app`.** Ten opis nie zakłada migracji ekranów do Compose Multiplatform ani wymiany istniejącego UI. Commity `2ba5e36` i `c60215d` nie należą do dokumentowanego punktu bazowego.
+
+### Model domenowy i treści
+
+W `shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/` model jest rozdzielony na:
+
+- `Place` — dane strukturalne miejsca: identyfikator, typ, relacja rodzic–dziecko, identyfikator Wikidata, referencje do Wikimedia, obrazy lokalne i współrzędne.
+- `PlaceContent` — nazwę i teksty prezentacyjne, m.in. tłumaczenie, zajawkę, opisy, godziny otwarcia oraz dane zapasowe.
+- `PlaceData` — połączenie `Place` i `PlaceContent`.
+- `PlaceType`, `PlaceFallback` i `WikimediaImageRef` — typy pomocnicze.
+
+Współdzielony model nie powinien zależeć od Androidowego `R.string`. Teksty są przekazywane jako dane, a DTO JSON nie jest bezpośrednio modelem używanym przez warstwę domenową.
+
+### Aktualne źródło danych miejsc
+
+Źródłem danych jest `JsonPlaceDataSource` w `commonMain`. Ładuje listy rekordów z plików:
+
+```text
+shared/src/androidMain/assets/
+├── ma_cities.json
+├── ma_monuments.json
+└── ma_nature.json
+```
+
+Przepływ danych:
+
+```text
+AndroidJsonResourceReader
+        ↓
+JsonPlaceDataSource
+        ↓
+List<PlaceDto>
+        ↓
+PlaceDto.toDomain()
+        ↓
+List<PlaceData>
+        ↓
+PlacesRepository
+        ↓
+ViewModel / UiState
+        ↓
+Compose UI w :app
+```
+
+`PlaceDto`, DTO zagnieżdżone oraz `PlaceMapper` odpowiadają za deserializację i mapowanie do modelu domenowego. `JsonResourceReader` jest abstrakcją w `commonMain`, natomiast `AndroidJsonResourceReader` korzysta z Androidowego `Context.assets`. Dzięki temu logika odczytu i mapowania jest współdzielona, ale dostęp do zasobów nie jest jeszcze w pełni niezależny od platformy.
+
+### Repozytoria Wikimedia i Wikidata
+
+Implementacje `WikimediaRepositoryImpl` i `WikidataRepositoryImpl` znajdują się w `shared/commonMain`. Współdzielona warstwa definiuje kontrakty źródeł danych i cache. Konkretną komunikację Retrofit oraz trwałe cache oparte na Room dostarcza moduł Android i przekazuje je do repozytoriów przez `AppContainer`.
+
+Typowa kolejność odczytu danych z tych repozytoriów:
+
+1. cache pamięciowy,
+2. cache trwały,
+3. zewnętrzne API.
+
+Błąd odczytu lub zapisu cache nie powinien sam w sobie uniemożliwiać próby pobrania danych z API. Błędy są obsługiwane w repozytoriach, a nie powinny powodować niekontrolowanego przerwania całego ekranu.
+
+### Dependency injection
+
+Zależności są centralizowane w `AppContainer`. Kontener tworzy czytnik zasobów, `JsonPlaceDataSource` i `PlacesRepository`, a także konfiguruje repozytoria Wikimedia/Wikidata z adapterami API i cache.
+
+Jest to **ręczne DI**. Hilt nie jest częścią opisanego stanu.
+
+### Ograniczenia znane na tym etapie
+
+- `PlacesRepository.search()` pozostaje do zaimplementowania.
+- Czytnik JSON jest dostępny dla Androida; odpowiednik dla iOS nie jest jeszcze opisany jako gotowy.
+- Zadeklarowanie targetów iOS w Gradle nie oznacza ukończonej aplikacji iOS ani zweryfikowanego odczytu danych na iOS.
+- UI Compose pozostaje w `:app`; ten punkt bazowy nie dokumentuje migracji ekranów do Compose Multiplatform.
