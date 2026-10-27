@@ -5,15 +5,15 @@ import com.rezegon.shared.data.repository.PlacesRepositoryImpl
 import com.rezegon.shared.data.source.AndroidJsonResourceReader
 import com.rezegon.shared.data.source.JsonPlaceDataSource
 import com.rezegon.moroccoapp.data.api.WikidataRetrofit
-import com.rezegon.moroccoapp.data.cache.AppDatabase
+import com.rezegon.shared.data.cache.AppDatabase
 import com.rezegon.shared.data.repository.WikidataRepositoryImpl
-import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
-import com.rezegon.moroccoapp.data.cache.RoomWikidataPersistentCache
+import com.rezegon.shared.data.cache.WikidataMemoryCache
+import com.rezegon.shared.data.cache.RoomWikidataPersistentCache
 import com.rezegon.moroccoapp.data.api.RetrofitWikidataDataSource
 import com.rezegon.moroccoapp.data.api.RetrofitWikimediaDataSource
 import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.cache.RoomWikimediaPersistentCache
-import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
+import com.rezegon.shared.data.cache.RoomWikimediaPersistentCache
+import com.rezegon.shared.data.cache.WikimediaMemoryCache
 import com.rezegon.shared.data.repository.WikimediaRepositoryImpl
 
 class AppContainer(

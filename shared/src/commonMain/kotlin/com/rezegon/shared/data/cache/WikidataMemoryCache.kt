@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.data.cache
+package com.rezegon.shared.data.cache
 
 import com.rezegon.shared.domain.model.WikidataInfo
 import com.rezegon.shared.domain.repository.WikidataCache
@@ -21,6 +21,3 @@ class WikidataMemoryCache : WikidataCache {
         cache.clear()
     }
 }
-
-
-

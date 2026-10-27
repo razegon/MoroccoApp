@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.android.lint)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room3)
 }
 
 kotlin {
@@ -77,6 +79,8 @@ kotlin {
                 implementation(libs.compose.ui)
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.compose.resources)
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite.bundled)
                 // Add KMP dependencies here
             }
         }
@@ -118,6 +122,10 @@ kotlin {
 
 dependencies {
     add("androidRuntimeClasspath", libs.compose.ui.tooling)
+
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }
 
 androidComponents {
@@ -131,4 +139,8 @@ androidComponents {
 compose.resources {
     publicResClass = true
     packageOfResClass = "com.rezegon.shared.generated.resources"
+}
+
+room3 {
+    schemaDirectory("$projectDir/schemas")
 }

@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.data.cache
+package com.rezegon.shared.data.cache
 
 import androidx.room3.Entity
 import androidx.room3.PrimaryKey

@@ -1,5 +1,4 @@
-
-package com.rezegon.moroccoapp.data.cache
+package com.rezegon.shared.data.cache
 
 import com.rezegon.shared.domain.model.WikimediaImage
 import com.rezegon.shared.domain.repository.WikimediaPersistentCache
@@ -16,5 +15,3 @@ class RoomWikimediaPersistentCache(
         dao.upsert(image.toEntity(pageId))
     }
 }
-
-

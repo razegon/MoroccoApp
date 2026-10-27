@@ -1,7 +1,9 @@
-package com.rezegon.moroccoapp.data.cache
+package com.rezegon.shared.data.cache
 
+import androidx.room3.ConstructedBy
 import androidx.room3.Database
 import androidx.room3.RoomDatabase
+import androidx.room3.RoomDatabaseConstructor
 
 @Database(
     entities = [
@@ -12,6 +14,8 @@ import androidx.room3.RoomDatabase
                ],
     version = 2
 )
+
+@ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
 
     /**
@@ -33,4 +37,10 @@ abstract class AppDatabase : RoomDatabase() {
      * Provides access to persisted Arcade results.
      */
     abstract fun arcadeResultDao(): ArcadeResultDao
+}
+
+@Suppress("KotlinNoActualForExpect")
+expect object AppDatabaseConstructor :
+    RoomDatabaseConstructor<AppDatabase> {
+    override fun initialize(): AppDatabase
 }

@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.data.cache
+package com.rezegon.shared.data.cache
 
 import com.rezegon.shared.domain.model.QuizResult
 

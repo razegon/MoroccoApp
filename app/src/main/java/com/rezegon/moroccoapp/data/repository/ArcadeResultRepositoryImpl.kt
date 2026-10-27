@@ -1,8 +1,8 @@
 package com.rezegon.moroccoapp.data.repository
 
-import com.rezegon.moroccoapp.data.cache.ArcadeResultDao
-import com.rezegon.moroccoapp.data.cache.toDomain
-import com.rezegon.moroccoapp.data.cache.toEntity
+import com.rezegon.shared.data.cache.ArcadeResultDao
+import com.rezegon.shared.data.cache.toDomain
+import com.rezegon.shared.data.cache.toEntity
 import com.rezegon.shared.domain.model.ArcadeResult
 import com.rezegon.shared.domain.repository.ArcadeResultRepository
 
