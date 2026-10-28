@@ -3,7 +3,6 @@ package com.rezegon.moroccoapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rezegon.moroccoapp.di.AppContainer
-import com.rezegon.shared.presentation.viewmodel.CitiesViewModel
 
 class CitiesViewModelFactory(
     private val appContainer: AppContainer
@@ -16,9 +15,7 @@ class CitiesViewModelFactory(
 
             @Suppress("UNCHECKED_CAST")
             return CitiesAndroidViewModel(
-                sharedViewModel = CitiesViewModel(
                     repository = appContainer.placesRepository
-                )
             ) as T
         }
 

@@ -1,11 +1,17 @@
 package com.rezegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.rezegon.shared.presentation.viewmodel.CitiesViewModel as SharedCitiesViewModel
+import androidx.lifecycle.viewModelScope
+import com.rezegon.shared.domain.repository.PlacesRepository
+import com.rezegon.shared.presentation.viewmodel.CitiesViewModel
 
 class CitiesAndroidViewModel(
-    sharedViewModel: SharedCitiesViewModel
+    repository: PlacesRepository
 ) : ViewModel() {
 
+    private val sharedViewModel = CitiesViewModel(
+        repository = repository,
+        scope = viewModelScope
+    )
     val uiState = sharedViewModel.uiState
 }

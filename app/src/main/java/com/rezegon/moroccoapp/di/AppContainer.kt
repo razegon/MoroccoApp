@@ -15,6 +15,9 @@ import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
 import com.rezegon.shared.data.cache.RoomWikimediaPersistentCache
 import com.rezegon.shared.data.cache.WikimediaMemoryCache
 import com.rezegon.shared.data.repository.WikimediaRepositoryImpl
+import com.rezegon.shared.data.quiz.JsonQuizQuestionDataSource
+import com.rezegon.shared.data.source.ComposeJsonResourceReader
+import com.rezegon.shared.data.repository.QuizRepositoryImpl
 
 class AppContainer(
     context: Context,
@@ -56,4 +59,10 @@ class AppContainer(
                 database.wikimediaDao()
             )
         )
+
+    val quizRepository = QuizRepositoryImpl(
+        dataSource = JsonQuizQuestionDataSource(
+            resourceReader = ComposeJsonResourceReader()
+        )
+    )
 }
