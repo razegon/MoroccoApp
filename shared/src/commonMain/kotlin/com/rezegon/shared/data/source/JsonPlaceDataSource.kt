@@ -15,9 +15,9 @@ class JsonPlaceDataSource(
 
     suspend fun getPlaces(): List<PlaceData> {
         val files = listOf(
-            "ma_cities.json",
-            "ma_monuments.json",
-            "ma_nature.json"
+            "files/places/ma_cities.json",
+            "files/places/ma_monuments.json",
+            "files/places/ma_nature.json"
         )
 
         return files

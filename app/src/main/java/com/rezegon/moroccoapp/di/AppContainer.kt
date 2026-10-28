@@ -29,7 +29,7 @@ class AppContainer(
     private val applicationContext = context.applicationContext
 
     private val resourceReader =
-        AndroidJsonResourceReader(applicationContext)
+        ComposeJsonResourceReader()
 
     private val dataSource =
         JsonPlaceDataSource(resourceReader)
