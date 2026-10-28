@@ -15,7 +15,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.rezegon.shared"
+        namespace = "com.razegon.shared"
         compileSdk {
             version = release(37)
         }
@@ -138,7 +138,7 @@ androidComponents {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "com.rezegon.shared.generated.resources"
+    packageOfResClass = "com.razegon.shared.generated.resources"
 }
 
 room3 {
