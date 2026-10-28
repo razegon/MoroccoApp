@@ -11,7 +11,7 @@ class QuizRepositoryImpl(
 ) : QuizRepository {
 
     // Loads questions from the JSON data source and converts them to domain models.
-    override fun getQuestions(
+    override suspend fun getQuestions(
         difficulty: QuizDifficulty
     ): List<QuizQuestion> {
         return dataSource
@@ -21,7 +21,7 @@ class QuizRepositoryImpl(
     }
 
     // Loads all questions to Arcade Quiz Mode
-    override fun getAllQuestions(): List<QuizQuestion> {
+    override suspend fun getAllQuestions(): List<QuizQuestion> {
         return dataSource
             .loadQuestions()
             .map { it.toDomain() }

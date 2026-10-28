@@ -20,4 +20,5 @@ local.properties
 *.zip
 
 # Kotlin Multiplatform generated metadata
+<<<<<<< HEAD
 .kotlin/

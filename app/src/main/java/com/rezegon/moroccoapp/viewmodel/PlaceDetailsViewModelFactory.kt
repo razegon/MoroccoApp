@@ -3,7 +3,6 @@ package com.rezegon.moroccoapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rezegon.moroccoapp.di.AppContainer
-import com.rezegon.shared.presentation.viewmodel.PlaceDetailsViewModel as SharedPlaceDetailsViewModel
 
 class PlaceDetailsViewModelFactory(
     private val placeId: Int,
@@ -17,10 +16,9 @@ class PlaceDetailsViewModelFactory(
         if (modelClass.isAssignableFrom(PlaceDetailsAndroidViewModel::class.java)) {
 
             return PlaceDetailsAndroidViewModel(
-                sharedViewModel = SharedPlaceDetailsViewModel(
-                    placeId = placeId,
-                    repository = appContainer.placesRepository
-                )
+                placeId = placeId,
+                repository = appContainer.placesRepository
+
             ) as T
         }
 

@@ -49,7 +49,7 @@ fun QuizScreen(
     val isAnswerChecked by
     viewModel.isAnswerChecked.collectAsState()
 
-    val question = viewModel.currentQuestion
+    val question = viewModel.currentQuestion ?: return
 
     var showExitDialog by remember {
         mutableStateOf(false)

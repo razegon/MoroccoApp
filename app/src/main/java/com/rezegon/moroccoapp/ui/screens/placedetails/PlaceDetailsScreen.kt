@@ -7,10 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rezegon.moroccoapp.MyApp
-import com.rezegon.moroccoapp.data.api.RetrofitWikimediaDataSource
-import com.rezegon.moroccoapp.data.api.WikimediaRetrofit
-import com.rezegon.moroccoapp.data.cache.RoomWikimediaPersistentCache
-import com.rezegon.shared.data.repository.WikimediaRepositoryImpl
 import com.rezegon.moroccoapp.ui.components.DetailsPager
 import com.rezegon.moroccoapp.ui.components.createPages
 import com.rezegon.moroccoapp.viewmodel.PlaceDetailsAndroidViewModel

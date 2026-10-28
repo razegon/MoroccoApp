@@ -7,6 +7,7 @@ import com.rezegon.shared.domain.model.ArcadeGameState
 import com.rezegon.shared.domain.repository.QuizRepository
 import com.rezegon.shared.presentation.viewmodel.ArcadeViewModel as SharedArcadeViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class ArcadeAndroidViewModel(
     repository: QuizRepository
@@ -19,7 +20,11 @@ class ArcadeAndroidViewModel(
 
     val gameState: StateFlow<ArcadeGameState> = sharedViewModel.gameState
 
-    fun startGame() = sharedViewModel.startGame()
+    fun startGame() {
+        viewModelScope.launch {
+            sharedViewModel.startGame()
+        }
+    }
 
     fun nextQuestion() = sharedViewModel.nextQuestion()
 

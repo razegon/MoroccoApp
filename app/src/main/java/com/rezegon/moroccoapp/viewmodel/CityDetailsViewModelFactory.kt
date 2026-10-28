@@ -17,11 +17,10 @@ class CityDetailsViewModelFactory(
         if (modelClass.isAssignableFrom(CityDetailsAndroidViewModel::class.java)) {
 
             return CityDetailsAndroidViewModel(
-                sharedViewModel = SharedCityDetailsViewModel(
-                    placeId = placeId,
-                    placesRepository = appContainer.placesRepository,
-                    wikidataRepository = appContainer.wikidataRepository
-                )
+                placeId = placeId,
+                placesRepository = appContainer.placesRepository,
+                wikidataRepository = appContainer.wikidataRepository
+
             ) as T
         }
 

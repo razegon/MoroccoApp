@@ -9,29 +9,31 @@ class PlacesRepositoryImpl(
     private val dataSource: JsonPlaceDataSource
 ) : PlacesRepository {
 
-    override fun getPlaces(): List<PlaceData> {
-        return dataSource.getPlaces()
+    private var cachedPlaces: List<PlaceData>? = null
+
+    private suspend fun allPlaces(): List<PlaceData> {
+        return cachedPlaces ?: dataSource.getPlaces().also {
+            cachedPlaces = it
+        }
     }
 
-    override fun getPlace(placeId: Int): PlaceData? {
-        return dataSource
-            .getPlaces()
-            .find { it.place.placeId == placeId }
+    override suspend fun getPlaces(): List<PlaceData> {
+        return allPlaces()
     }
 
-    override fun getPlacesByType(placeType: PlaceType): List<PlaceData> {
-        return dataSource
-            .getPlaces()
-            .filter { it.place.placeType == placeType }
+    override suspend fun getPlace(placeId: Int): PlaceData? {
+        return allPlaces().find { it.place.placeId == placeId }
     }
 
-    override fun getChildren(parentPlaceId: Int): List<PlaceData> {
-        return dataSource
-            .getPlaces()
-            .filter { it.place.parentPlaceId == parentPlaceId }
+    override suspend fun getPlacesByType(placeType: PlaceType): List<PlaceData> {
+        return allPlaces().filter { it.place.placeType == placeType }
     }
 
-    override fun search(query: String): List<PlaceData> {
+    override suspend fun getChildren(parentPlaceId: Int): List<PlaceData> {
+        return allPlaces().filter { it.place.parentPlaceId == parentPlaceId }
+    }
+
+    override suspend fun search(query: String): List<PlaceData> {
         TODO("Search will be implemented later")
     }
 

@@ -6,7 +6,7 @@ class AndroidJsonResourceReader(
     private val context: Context
 ) : JsonResourceReader {
 
-    override fun readText(path: String): String {
+    override suspend fun readText(path: String): String {
         return context.assets
             .open(path)
             .bufferedReader()

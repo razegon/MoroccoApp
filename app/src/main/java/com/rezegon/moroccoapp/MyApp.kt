@@ -1,25 +1,21 @@
 package com.rezegon.moroccoapp
 
 import android.app.Application
-import androidx.room3.Room
-import com.rezegon.moroccoapp.data.cache.AppDatabase
-import com.rezegon.moroccoapp.data.cache.MIGRATION_1_2
-import com.rezegon.moroccoapp.data.cache.WikidataMemoryCache
-import com.rezegon.moroccoapp.data.cache.WikimediaMemoryCache
 import com.rezegon.moroccoapp.data.image.createWikimediaImageLoader
 import com.rezegon.moroccoapp.di.AppContainer
+import com.rezegon.shared.data.cache.WikidataMemoryCache
+import com.rezegon.shared.data.cache.WikimediaMemoryCache
+import com.rezegon.shared.data.cache.createAppDatabase
+import com.rezegon.shared.data.cache.getDatabaseBuilder
 
 class MyApp : Application() {
     val wikidataCache = WikidataMemoryCache()
     val wikimediaCache = WikimediaMemoryCache()
 
     val database by lazy {
-        Room.databaseBuilder<AppDatabase>(
-            applicationContext,
-            "morocco_app_db"
+        createAppDatabase(
+            getDatabaseBuilder(this)
         )
-            .addMigrations(MIGRATION_1_2)
-            .build()
     }
 
     val appContainer by lazy {
