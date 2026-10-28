@@ -1,4 +1,4 @@
-package com.rezegon.moroccoapp.ui.screens.arcade
+package com.rezegon.moroccoapp.ui.screens.rankingquizarcade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,17 +18,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
-import com.rezegon.shared.domain.model.ArcadeResult
+import com.rezegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
+import com.rezegon.shared.domain.model.QuizResult
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun ArcadeRankingScreen(
-    resultViewModel: ArcadeResultAndroidViewModel,
+fun QuizRankingScreen(
+    resultViewModel: QuizResultAndroidViewModel,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val results by resultViewModel.topResults.collectAsState()
 
-    // Load the latest TOP 20 Arcade results when the ranking screen is opened.
+    // Load the latest TOP 20 results when the ranking screen is opened.
     LaunchedEffect(Unit) {
         resultViewModel.loadTopResults()
     }
@@ -39,8 +43,22 @@ fun ArcadeRankingScreen(
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            TextButton(
+                onClick = onBackClick
+            ) {
+                Text(
+                    text = "←",
+                    fontSize = 28.sp
+                )
+            }
+        }
+
         Text(
-            text = "TOP 20 ARCADE",
+            text = "TOP 20",
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -59,7 +77,7 @@ fun ArcadeRankingScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 itemsIndexed(results) { index, result ->
-                    ArcadeRankingItem(
+                    QuizRankingItem(
                         position = index + 1,
                         result = result
                     )
@@ -70,9 +88,9 @@ fun ArcadeRankingScreen(
 }
 
 @Composable
-private fun ArcadeRankingItem(
+private fun QuizRankingItem(
     position: Int,
-    result: ArcadeResult
+    result: QuizResult
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -81,7 +99,7 @@ private fun ArcadeRankingItem(
         )
     ) {
         Text(
-            text = "$position. ${result.nickname}    ${result.score}",
+            text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}    ${result.difficulty}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp)
         )

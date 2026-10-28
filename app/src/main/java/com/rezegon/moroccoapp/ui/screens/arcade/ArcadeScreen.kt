@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.rezegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
 import com.rezegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
 import com.rezegon.shared.domain.model.ArcadeResult
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeInstructionsScreen
 
 
 @Composable

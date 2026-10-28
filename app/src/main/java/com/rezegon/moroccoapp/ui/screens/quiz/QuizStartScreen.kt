@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,8 +20,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun QuizStartScreen(
     onStartQuizClick: () -> Unit,
-    onArcadeClick: () -> Unit,
+    onStartArcadeClick: () -> Unit,
     onRankingClick: () -> Unit,
+    onArcadeRankingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -93,7 +93,7 @@ fun QuizStartScreen(
         )
 
         Button(
-            onClick = onArcadeClick,
+            onClick = onStartArcadeClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("ARCADE MODE")
@@ -103,11 +103,37 @@ fun QuizStartScreen(
             modifier = Modifier.height(12.dp)
         )
 
-        OutlinedButton(
+
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+
+        Text(
+            text = "RANKINGI TOP 20",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        Button(
             onClick = onRankingClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("TOP 20")
+            Text("RANKING QUIZU")
         }
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        Button(
+            onClick = onArcadeRankingClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("RANKING ARCADE")
+        }
+
     }
 }

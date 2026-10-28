@@ -15,10 +15,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rezegon.shared.domain.model.QuizDifficulty
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuizDifficultyScreen(
     onDifficultySelected: (QuizDifficulty) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -26,8 +33,22 @@ fun QuizDifficultyScreen(
             .fillMaxSize()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            TextButton(
+                onClick = onBackClick
+            ) {
+                Text(
+                    text = "←",
+                    fontSize = 28.sp
+                )
+            }
+        }
+
         Text(
             text = "WYBIERZ POZIOM",
             style = MaterialTheme.typography.headlineLarge

@@ -11,12 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rezegon.moroccoapp.MyApp
-import com.rezegon.moroccoapp.data.quiz.QuizQuestionDataSource
 import com.rezegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
-import com.rezegon.shared.data.repository.QuizRepositoryImpl
 import com.rezegon.moroccoapp.data.repository.QuizResultRepositoryImpl
 import com.rezegon.moroccoapp.ui.navigation.Screen
-import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeRankingScreen
+import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeInstructionsScreen
+import com.rezegon.moroccoapp.ui.screens.rankingquizarcade.ArcadeRankingScreen
 import com.rezegon.moroccoapp.ui.screens.arcade.ArcadeScreen
 import com.rezegon.moroccoapp.ui.screens.city.CitiesScreen
 import com.rezegon.moroccoapp.ui.screens.citydetails.CityDetailsScreen
@@ -24,7 +23,7 @@ import com.rezegon.moroccoapp.ui.screens.home.HomeScreen
 import com.rezegon.moroccoapp.ui.screens.placedetails.PlaceDetailsScreen
 import com.rezegon.moroccoapp.ui.screens.places.PlacesScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizDifficultyScreen
-import com.rezegon.moroccoapp.ui.screens.quiz.QuizRankingScreen
+import com.rezegon.moroccoapp.ui.screens.rankingquizarcade.QuizRankingScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizStartScreen
 import com.rezegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
@@ -46,19 +45,17 @@ fun MoroccoApp() {
     // Access the shared application instance and its Room database.
     val app = LocalContext.current.applicationContext as MyApp
 
+    val appContainer = app.appContainer
+
     // DAO used to store and read completed quiz results.
     val quizResultDao = app.database.quizResultDao()
 
     // DAO used to store and read completed arcade quiz results.
     val arcadeResultDao = app.database.arcadeResultDao()
 
-    // Shared quiz dependencies used by the quiz and summary screens.
-    val quizDataSource = QuizQuestionDataSource(app)
-    val quizRepository = QuizRepositoryImpl(quizDataSource)
-
     // Factory creates QuizViewModel with the required repository.
     val quizFactory = QuizViewModelFactory(
-        quizRepository = quizRepository
+        appContainer = appContainer
     )
 
     // Shared ViewModel used by both QuizScreen and QuizSummaryScreen
@@ -69,7 +66,7 @@ fun MoroccoApp() {
 
     // Factory creates ArcadeViewModel with the shared quiz repository.
     val arcadeFactory = ArcadeViewModelFactory(
-        repository = quizRepository
+        appContainer = appContainer
     )
 
 // ViewModel manages the state and logic of the Arcade game.
@@ -209,51 +206,17 @@ fun MoroccoApp() {
                         }
                     },
 
-                    onArcadeClick = {
-                        arcadeViewModel.startGame()
-                        navController.navigate(Screen.QuizArcade.route)
+                    onStartArcadeClick = {
+                        navController.navigate(Screen.ArcadeInstructions.route)
                     },
 
                     onRankingClick = {
-                        navController.navigate(Screen.QuizRanking.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = true
-                            }
-                        }
-                    }
-                )
-            }
+                        navController.navigate(Screen.QuizRanking.route)
+                    },
 
-            // Displays the Arcade quiz.
-            composable(Screen.QuizArcade.route) {
-
-                ArcadeScreen(
-                    viewModel = arcadeViewModel,
-                    resultViewModel = arcadeResultViewModel,
-                    onRankingClick = {
+                    onArcadeRankingClick = {
                         navController.navigate(Screen.QuizArcadeRanking.route)
-                    },
-                    onQuizMenuClick = {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
-                    },
-                    onExitClick = {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
                     }
-                )
-            }
-
-            // Displays the TOP 20 Arcade results.
-            composable(Screen.QuizArcadeRanking.route) {
-                ArcadeRankingScreen(
-                    resultViewModel = arcadeResultViewModel
                 )
             }
 
@@ -267,7 +230,15 @@ fun MoroccoApp() {
                                 inclusive = true
                             }
                         }
-                    }
+                    },
+                    onBackClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Home.route) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    },
                 )
             }
 
@@ -309,11 +280,7 @@ fun MoroccoApp() {
                         }
                     },
                     onRankingClick = {
-                        navController.navigate(Screen.QuizRanking.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.navigate(Screen.QuizRanking.route)
                     },
                     onHomeClick = {
                         navController.navigate(Screen.Home.route) {
@@ -325,13 +292,83 @@ fun MoroccoApp() {
                 )
             }
 
-            // Displays the TOP 10 quiz results.
+            // Displays the TOP 20 quiz results.
             composable(Screen.QuizRanking.route) {
                 QuizRankingScreen(
                     resultViewModel = quizResultViewModel,
+                    onBackClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Home.route) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
+            // Displays the Arcade Instructions.
+            composable(Screen.ArcadeInstructions.route) {
+                ArcadeInstructionsScreen(
+                    onStartClick = {
+                        arcadeViewModel.startGame()
+                        navController.navigate(Screen.QuizArcade.route) {
+                            popUpTo(Screen.ArcadeInstructions.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onBackClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Home.route) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+
+            // Displays the Arcade quiz.
+            composable(Screen.QuizArcade.route) {
+
+                ArcadeScreen(
+                    viewModel = arcadeViewModel,
+                    resultViewModel = arcadeResultViewModel,
+                    onRankingClick = {
+                        navController.navigate(Screen.QuizArcadeRanking.route)
+                    },
+                    onQuizMenuClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
+                    },
+                    onExitClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Quiz.route) {
+                                inclusive = false
+                            }
+                        }
+                    }
+                )
+            }
+
+            // Displays the TOP 20 Arcade results.
+            composable(Screen.QuizArcadeRanking.route) {
+                ArcadeRankingScreen(
+                    resultViewModel = arcadeResultViewModel,
+                    onBackClick = {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(Screen.Home.route) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    },
+                )
+            }
+
         }
     }
 }
-
