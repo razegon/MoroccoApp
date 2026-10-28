@@ -630,3 +630,52 @@ ViewModels
 ```
 
 Hilt pozostaje na późniejszym etapie. Najpierw ręczne DI ma zostać uporządkowane i zrozumiane.
+---
+
+## Aktualny stan przed finalnym pushem — baza `95fcc35`
+
+Ta sekcja jest aktualnym podsumowaniem stanu projektu na potrzeby `main`. Historyczne plany poniżej wcześniejszych wpisów dokumentują poprzednie etapy i nie powinny być odczytywane jako aktualny status zadań.
+
+### Zrealizowane
+
+- Moduł `shared` z kodem domenowym i logiką danych Kotlin Multiplatform.
+- Rozdzielenie danych miejsca na `Place`, `PlaceContent` i `PlaceData`.
+- DTO oraz mapper z JSON do modelu domenowego.
+- Źródło danych `JsonPlaceDataSource`, korzystające z `ma_cities.json`, `ma_monuments.json` i `ma_nature.json`.
+- `PlacesRepository` i jego implementacja oparte na `PlaceData`.
+- Współdzielone implementacje repozytoriów Wikimedia i Wikidata.
+- Przekazywanie platformowych adapterów API i cache do repozytoriów z `AppContainer`.
+- Ręczne, scentralizowane DI bez Hilt.
+- Działanie aplikacji Android i wyświetlanie wszystkich miejsc Maroka — potwierdzone ręcznie przez użytkownika.
+
+### Otwarte zadania
+
+1. **Walidacja przed pushem:** uruchomić build i testy, a asercje testów JSON porównać z aktualnym zestawem rekordów.
+2. Zaimplementować `PlacesRepository.search()` i dodać testy wyszukiwania.
+3. Dodać lub uzupełnić testy mapowania DTO → `PlaceData`, typów miejsc i relacji rodzic–dziecko.
+4. Zaprojektować oraz zaimplementować sposób odczytu zasobów dla iOS; zweryfikować wspólny przepływ danych na każdym zadeklarowanym targetcie.
+5. Ustalić docelową strategię lokalizacji i formatowania treści, jeśli aplikacja ma obsługiwać wiele języków.
+6. Dopiero po ustabilizowaniu danych i granic platformowych rozważyć dalsze etapy migracji UI.
+
+### Poza zakresem tej bazy
+
+- Migracja ekranów do Compose Multiplatform nie jest częścią stanu `95fcc35`; interfejs Androida pozostaje w `app`.
+- Nie należy scalać commitów `2ba5e36` ani `c60215d` tylko po to, by zaktualizować dokumentację.
+- Zadeklarowane targety iOS nie oznaczają ukończonej aplikacji iOS.
+- Hilt nie jest wdrożony.
+
+### Kolejność dalszych prac
+
+```text
+Build + testy na bazie 95fcc35
+        ↓
+weryfikacja spójności JSON i testów
+        ↓
+implementacja i testy wyszukiwania
+        ↓
+platformowy reader zasobów dla iOS
+        ↓
+weryfikacja współdzielonego przepływu na iOS
+        ↓
+dopiero potem decyzje o dalszej migracji UI
+```

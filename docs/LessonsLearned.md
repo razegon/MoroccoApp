@@ -1036,3 +1036,40 @@ androidMain / iosMain / inne platformy
 W tym projekcie `JsonPlaceDataSource` jest logiką wspólną, natomiast dostęp do Androidowych assets jest szczegółem platformowym.
 
 To jest dokładnie kierunek, który będzie potrzebny przy kolejnych elementach migracji.
+---
+
+## Wnioski z migracji KMP i przeniesienia danych do JSON
+
+### Oddzielaj model domenowy od formatu danych
+
+`PlaceDto` opisuje strukturę wejściowego JSON, a `PlaceData` jest modelem domenowym. Mapper jest jedynym miejscem, które powinno odpowiadać za przejście pomiędzy tymi reprezentacjami. Dzięki temu zmiana formatu pliku nie musi automatycznie zmieniać API repozytorium i ViewModeli.
+
+### Nie przenoś zależności platformowych do `commonMain`
+
+Współdzielona logika może korzystać z abstrakcji `JsonResourceReader`, ale nie powinna samodzielnie odwoływać się do Androidowego `Context` ani `R.string`. Implementacja Androidowa znajduje się w `androidMain`; dla iOS potrzebny będzie osobny sposób dostarczania treści zasobów.
+
+Samo zadeklarowanie targetu iOS w Gradle nie potwierdza jeszcze, że wszystkie zależności, zasoby i przepływy danych działają na iOS.
+
+### Rozdzielenie struktury miejsca od treści ułatwia migrację
+
+`Place` przechowuje strukturę i metadane, `PlaceContent` — teksty prezentacyjne, a `PlaceData` scala je na potrzeby przepływu aplikacji. Nie należy wracać do identyfikatorów `R.string` w modelu współdzielonym tylko po to, by zachować stary interfejs API.
+
+### Współdziel repozytorium, pozostaw adaptery platformowe na granicy
+
+Implementacja repozytorium może znajdować się w `shared`, podczas gdy dostęp do Retrofit, Room lub zasobów Androida pozostaje po stronie `app`. Kontrakty źródeł danych i cache pozwalają przekazać te zależności do współdzielonej logiki bez wiązania jej z konkretną platformą.
+
+### Cache nie powinien blokować źródła nadrzędnego
+
+Dla Wikimedia i Wikidata kolejność jest następująca: cache pamięciowy, cache trwały, API. Awaria odczytu lub zapisu cache powinna być obsłużona i nie powinna automatycznie uniemożliwiać pobrania świeżych danych.
+
+### Centralizuj tworzenie zależności
+
+`AppContainer` jest jednym miejscem konfiguracji źródła JSON i repozytoriów. Ręczne DI wystarcza na obecnym etapie i pozwala prześledzić cykl życia zależności. Wprowadzenie frameworka DI powinno być osobną decyzją, a nie warunkiem ukończenia migracji.
+
+### Odróżniaj działający Android od gotowego KMP
+
+Potwierdzenie, że aplikacja Android działa i wyświetla wszystkie miejsca, nie jest równoznaczne z ukończeniem iOS. W aktualnym punkcie bazowym nadal trzeba przygotować i zweryfikować platformowy odczyt zasobów dla iOS. Ponadto `PlacesRepository.search()` jest zadeklarowane, ale niezaimplementowane.
+
+### Nie traktuj historycznego planu jako aktualnego stanu
+
+Wpisy z początku migracji dokumentują to, co było wtedy planowane. Przy aktualizacji Roadmap należy jawnie oznaczać zakończone etapy i pozostawiać jako otwarte tylko zadania, które nadal nie są zaimplementowane.

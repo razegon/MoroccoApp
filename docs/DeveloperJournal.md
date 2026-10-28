@@ -963,3 +963,35 @@ To jest jeden z pierwszych praktycznych przykładów rozdzielenia odpowiedzialno
 - `TEST` z JSON: OK
 
 Kolejny krok to nie rozszerzanie JSON na 40 miejsc, lecz najpierw uporządkowanie ręcznego DI i scentralizowanie tworzenia `PlacesRepository`.
+---
+
+## Stan przed finalnym pushem — commit `95fcc35`
+
+Poniższy zapis porządkuje wynik migracji KMP, który ma trafić na `main`. Wcześniejsze wpisy z 4 października opisują kolejne etapy prac; nie należy traktować ich ówczesnych planów jako aktualnej listy zadań.
+
+### Dane miejsc w JSON
+
+Źródło danych zostało przeniesione z hardkodowanej listy do `JsonPlaceDataSource` w `shared/commonMain`. Dane są rozdzielone na trzy pliki zasobów Androida: `ma_cities.json`, `ma_monuments.json` i `ma_nature.json`.
+
+Współdzielone DTO są deserializowane przez Kotlin Serialization, a `PlaceMapper` mapuje je do `PlaceData`. Dzięki temu kod repozytorium i domeny nie musi znać struktury JSON ani odwoływać się do zasobów Androida.
+
+### Model `PlaceData`
+
+Dane strukturalne miejsca (`Place`) są oddzielone od tekstów (`PlaceContent`), a `PlaceData` łączy obie części. To usuwa zależność modelu domenowego od identyfikatorów `R.string` i pozwala przekazywać teksty jako zwykłe wartości.
+
+### Repozytoria i zależności
+
+- `PlacesRepositoryImpl` korzysta z `JsonPlaceDataSource`.
+- Implementacje repozytoriów Wikimedia i Wikidata znajdują się w module `shared`.
+- Adaptery Retrofit, integracja z Room i konkretne cache Androida pozostają w `app` i są przekazywane do współdzielonych repozytoriów.
+- Tworzenie zależności jest skupione w `AppContainer`; jest to ręczne DI, bez Hilt.
+
+### Zakres UI
+
+Migracja logiki domenowej i repozytoriów nie oznacza migracji ekranów. W bazowym stanie `95fcc35` interfejs Compose i nawigacja Androida pozostają w `app`. Dokumentacja nie przypisuje temu stanowi ekranów Compose Multiplatform ani zmian UI z późniejszych commitów `2ba5e36` i `c60215d`.
+
+### Weryfikacja
+
+Użytkownik potwierdził, że aplikacja uruchamia się i wyświetla wszystkie miejsca Maroka. Jest to potwierdzenie działania aplikacji na urządzeniu, a nie deklaracja pełnego pokrycia testami ani gotowości platformy iOS.
+
+Przed push warto osobno uruchomić testy modułu `shared` i sprawdzić, czy asercje testów źródła JSON odpowiadają aktualnemu zestawowi danych.
