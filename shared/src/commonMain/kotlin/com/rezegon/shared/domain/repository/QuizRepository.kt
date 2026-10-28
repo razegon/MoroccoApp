@@ -5,9 +5,9 @@ import com.rezegon.shared.domain.model.QuizQuestion
 
 interface QuizRepository {
 
-    fun getQuestions(
+    suspend fun getQuestions(
         difficulty: QuizDifficulty
     ): List<QuizQuestion>
 
-    fun getAllQuestions(): List<QuizQuestion>
+    suspend fun getAllQuestions(): List<QuizQuestion>
 }

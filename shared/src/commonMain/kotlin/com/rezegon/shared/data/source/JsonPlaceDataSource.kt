@@ -13,7 +13,7 @@ class JsonPlaceDataSource(
         ignoreUnknownKeys = true
     }
 
-    fun getPlaces(): List<PlaceData> {
+    suspend fun getPlaces(): List<PlaceData> {
         val files = listOf(
             "ma_cities.json",
             "ma_monuments.json",
