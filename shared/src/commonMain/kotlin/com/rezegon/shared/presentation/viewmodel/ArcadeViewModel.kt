@@ -58,7 +58,7 @@ class ArcadeViewModel(
     }
 
     // Starts a new Arcade game using all available questions.
-    fun startGame() {
+    suspend fun startGame() {
         questions = repository.getAllQuestions()
 
         val firstQuestion = questions.random()
