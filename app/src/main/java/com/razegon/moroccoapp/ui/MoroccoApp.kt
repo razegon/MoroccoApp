@@ -19,7 +19,7 @@ import com.razegon.moroccoapp.ui.screens.rankingquizarcade.ArcadeRankingScreen
 import com.razegon.moroccoapp.ui.screens.arcade.ArcadeScreen
 import com.razegon.moroccoapp.ui.screens.city.CitiesScreen
 import com.razegon.moroccoapp.ui.screens.citydetails.CityDetailsScreen
-import com.razegon.moroccoapp.ui.screens.home.HomeScreen
+import com.razegon.shared.ui.screens.home.HomeScreen
 import com.razegon.moroccoapp.ui.screens.placedetails.PlaceDetailsScreen
 import com.razegon.moroccoapp.ui.screens.places.PlacesScreen
 import com.razegon.moroccoapp.ui.screens.quiz.QuizDifficultyScreen
@@ -119,6 +119,7 @@ fun MoroccoApp() {
             // Home screen is the starting destination of the application.
             composable(Screen.Home.route) {
                 HomeScreen(
+                    modifier = Modifier.padding(innerPadding),
                     // Navigate to the list of cities.
                     onCitiesClick = {
                         navController.navigate(Screen.Cities.route)
