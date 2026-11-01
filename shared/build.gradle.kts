@@ -84,6 +84,8 @@ kotlin {
                 implementation(libs.coil.compose.multiplatform)
                 implementation(libs.coil.network.ktor3)
                 implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
                 // Add KMP dependencies here
             }
         }
@@ -91,6 +93,8 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.ktor.client.mock)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
 
