@@ -65,7 +65,7 @@ The project provides two Android variants:
 The project uses the following Git workflow:
 
 ```text
-feature/* → dev → main
+feature/* → main
 ```
 
 Feature branches are merged into `dev` for integration and testing. Changes are promoted to `main` after verification.
