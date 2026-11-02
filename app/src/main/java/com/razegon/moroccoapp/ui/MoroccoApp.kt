@@ -11,8 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
-import com.razegon.moroccoapp.data.repository.QuizResultRepositoryImpl
+
 import com.razegon.moroccoapp.ui.navigation.Screen
 import com.razegon.moroccoapp.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.moroccoapp.ui.screens.rankingquizarcade.ArcadeRankingScreen
@@ -47,11 +46,8 @@ fun MoroccoApp() {
 
     val appContainer = app.appContainer
 
-    // DAO used to store and read completed quiz results.
-    val quizResultDao = app.database.quizResultDao()
-
-    // DAO used to store and read completed arcade quiz results.
-    val arcadeResultDao = app.database.arcadeResultDao()
+    val quizResultRepository = appContainer.quizResultRepository
+    val arcadeResultRepository = appContainer.arcadeResultRepository
 
     // Factory creates QuizViewModel with the required repository.
     val quizFactory = QuizViewModelFactory(
@@ -72,16 +68,6 @@ fun MoroccoApp() {
 // ViewModel manages the state and logic of the Arcade game.
     val arcadeViewModel: ArcadeAndroidViewModel = viewModel(
         factory = arcadeFactory
-    )
-
-    // Repository handles saving and loading completed quiz results.
-    val quizResultRepository = QuizResultRepositoryImpl(
-        dao = quizResultDao
-    )
-
-    // Repository handles saving and loading completed arcade results.
-    val arcadeResultRepository = ArcadeResultRepositoryImpl(
-        dao = arcadeResultDao
     )
 
     // Factory creates QuizResultViewModel with the result repository.
