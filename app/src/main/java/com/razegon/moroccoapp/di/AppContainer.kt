@@ -1,8 +1,8 @@
 package com.razegon.moroccoapp.di
 
 import android.content.Context
-import com.razegon.moroccoapp.data.api.RetrofitWikidataDataSource
-import com.razegon.moroccoapp.data.api.WikidataRetrofit
+
+import com.razegon.shared.data.remote.wikidata.KtorWikidataDataSource
 import com.razegon.shared.data.cache.AppDatabase
 import com.razegon.shared.data.cache.RoomWikidataPersistentCache
 import com.razegon.shared.data.cache.RoomWikimediaPersistentCache
@@ -44,8 +44,8 @@ class AppContainer(
 
     val wikidataRepository =
         WikidataRepositoryImpl(
-            dataSource = RetrofitWikidataDataSource(
-                WikidataRetrofit.api
+            dataSource = KtorWikidataDataSource(
+                httpClient = wikimediaHttpClient
             ),
             cache = wikidataCache,
             persistentCache = RoomWikidataPersistentCache(

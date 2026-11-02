@@ -38,7 +38,7 @@ class CityDetailsViewModel(
                     isLoading = false
                 )
 
-                val wikidataId = placeData?.place?.wikidataId
+                val wikidataId = placeData?.place?.cityWikidataId
                 if (wikidataId != null) {
                     try {
                         val wikidataInfo = wikidataRepository.getInfo(wikidataId)

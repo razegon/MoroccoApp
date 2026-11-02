@@ -35,11 +35,11 @@ class JsonPlaceDataSourceTest {
         assertEquals(4100, marrakesh.place.placeId)
         assertEquals("Marrakesz", marrakesh.content.name)
         assertEquals(PlaceType.CITY, marrakesh.place.placeType)
-        assertEquals("Q101625", marrakesh.place.wikidataId)
+        assertEquals("Q101625", marrakesh.place.cityWikidataId)
 
         assertEquals(4102, fes.place.placeId)
         assertEquals("Fez", fes.content.name)
         assertEquals(PlaceType.CITY, fes.place.placeType)
-        assertEquals("Q80985", fes.place.wikidataId)
+        assertEquals("Q80985", fes.place.cityWikidataId)
     }
 }

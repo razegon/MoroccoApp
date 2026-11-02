@@ -1,8 +1,10 @@
 
 package com.razegon.shared.domain.repository
 
+import kotlinx.serialization.json.JsonObject
+
 interface WikidataDataSource {
-    suspend fun getEntity(wikidataId: String): Map<String, Any>
+    suspend fun getEntity(wikidataId: String): JsonObject
 }
 
 

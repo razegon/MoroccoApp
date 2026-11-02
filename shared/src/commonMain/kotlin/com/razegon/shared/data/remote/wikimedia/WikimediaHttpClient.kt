@@ -8,6 +8,7 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import io.ktor.client.plugins.HttpTimeout
 
 fun createWikimediaHttpClient(
     engine: HttpClientEngine
@@ -18,6 +19,12 @@ fun createWikimediaHttpClient(
                 HttpHeaders.UserAgent,
                 "MoroccoApp/1.0 (kamilo.tranquilo@gmail.com)"
             )
+        }
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = 20_000
+            connectTimeoutMillis = 10_000
+            socketTimeoutMillis = 20_000
         }
 
         install(ContentNegotiation) {
