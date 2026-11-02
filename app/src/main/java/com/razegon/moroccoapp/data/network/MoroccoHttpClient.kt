@@ -7,11 +7,6 @@ import okhttp3.OkHttpClient
  * z usługami Wikimedia/Wikidata.
  *
  * User-Agent identyfikuje MoroccoApp przy wykonywaniu żądań HTTP.
- *
- * TODO:
- * Docelowo konfiguracja klienta może zostać przeniesiona
- * do globalnej konfiguracji Application/MyApp razem z innymi
- * wspólnymi elementami infrastruktury aplikacji.
  */
 val moroccoHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
