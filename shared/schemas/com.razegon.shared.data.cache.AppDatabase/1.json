@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fbef45270fbb71400e8a8189dd47f1cc",
+    "identityHash": "93ccc0e8aac9b21e58ef81775e21f5fd",
     "entities": [
       {
         "tableName": "WikidataEntity",
@@ -54,7 +54,7 @@
       },
       {
         "tableName": "WikimediaEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pageId` INTEGER NOT NULL, `title` TEXT NOT NULL, `url` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `author` TEXT, `license` TEXT, `licenseUrl` TEXT, `credit` TEXT, `filePageUrl` TEXT, PRIMARY KEY(`pageId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pageId` INTEGER NOT NULL, `title` TEXT NOT NULL, `url` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `thumbnailUrl` TEXT, `thumbnailWidth` INTEGER, `thumbnailHeight` INTEGER, `author` TEXT, `license` TEXT, `licenseUrl` TEXT, `credit` TEXT, `filePageUrl` TEXT, PRIMARY KEY(`pageId`))",
         "fields": [
           {
             "fieldPath": "pageId",
@@ -85,6 +85,21 @@
             "columnName": "height",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "thumbnailUrl",
+            "columnName": "thumbnailUrl",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "thumbnailWidth",
+            "columnName": "thumbnailWidth",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "thumbnailHeight",
+            "columnName": "thumbnailHeight",
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "author",
@@ -206,7 +221,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fbef45270fbb71400e8a8189dd47f1cc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93ccc0e8aac9b21e58ef81775e21f5fd')"
     ]
   }
 }

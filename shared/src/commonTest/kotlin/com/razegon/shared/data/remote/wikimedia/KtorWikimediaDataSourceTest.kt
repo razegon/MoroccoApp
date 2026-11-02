@@ -31,6 +31,11 @@ class KtorWikimediaDataSourceTest {
                 request.headers[HttpHeaders.UserAgent]
             )
 
+            assertEquals(
+                "1200",
+                request.url.parameters["iiurlwidth"]
+            )
+
             respond(
                 content = """
                     {
@@ -41,8 +46,11 @@ class KtorWikimediaDataSourceTest {
                             "imageinfo": [
                               {
                                 "url": "https://upload.wikimedia.org/test.jpg",
-                                "width": 1200,
-                                "height": 800,
+                                "width": 2400,
+                                "height": 1600,
+                                "thumburl": "https://upload.wikimedia.org/thumb/test.jpg",
+                                "thumbwidth": 1200,
+                                "thumbheight": 800,
                                 "descriptionurl": "https://commons.wikimedia.org/wiki/File:Test.jpg",
                                 "extmetadata": {
                                   "Artist": {
@@ -77,8 +85,17 @@ class KtorWikimediaDataSourceTest {
         assertNotNull(result)
         assertEquals("File:Test.jpg", result.title)
         assertEquals("https://upload.wikimedia.org/test.jpg", result.url)
-        assertEquals(1200, result.width)
-        assertEquals(800, result.height)
+
+        assertEquals(2400, result.width)
+        assertEquals(1600, result.height)
+
+        assertEquals(
+            "https://upload.wikimedia.org/thumb/test.jpg",
+            result.thumbnailUrl
+        )
+        assertEquals(1200, result.thumbnailWidth)
+        assertEquals(800, result.thumbnailHeight)
+
         assertEquals("Test Author", result.author)
         assertEquals("CC BY-SA 4.0", result.license)
         assertEquals(

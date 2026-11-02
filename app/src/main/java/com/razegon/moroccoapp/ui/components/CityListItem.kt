@@ -1,5 +1,6 @@
 package com.razegon.moroccoapp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,6 +49,8 @@ fun CityListItem(
             // This allows all Wikimedia components to share the same
             // memory cache, disk cache and HTTP client.
             val imageLoader = application.wikimediaImageLoader
+
+            Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
 
             // Display the city's Wikimedia image.
             //

@@ -1,5 +1,6 @@
 package com.razegon.moroccoapp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,6 +44,8 @@ fun PlaceListItem(
     ) {
         Column {
 
+            Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
+
             // Displays the Wikimedia image when imageUrl is available.
             // If loading fails, the default image is shown.
             AsyncImage(
@@ -54,7 +57,16 @@ fun PlaceListItem(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.default_image),
-                fallback = painterResource(R.drawable.default_image)
+                fallback = painterResource(R.drawable.default_image),
+                onError = { state ->
+                    Log.e(
+                        "IMAGE_CHECK",
+                        "Image error: $imageUrl, result=${state.result.throwable}"
+                    )
+                },
+                onSuccess = {
+                    Log.d("IMAGE_CHECK", "Image loaded successfully: $imageUrl")
+                }
             )
 
             // Displays the place name below the image.

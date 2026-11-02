@@ -125,12 +125,17 @@ fun CityDetailsScreen(
 
                 items(uiState.children) { child ->
 
-                    // Prefer the Wikimedia image when its metadata
-                    // has already been loaded. Fall back to the local image.
+                    // Prefer the Wikimedia thumbnail to reduce image loading costs.
+                    // Fall back to the original image if no thumbnail is available,
+                    // then to the local image if Wikimedia metadata has not been loaded.
                     val imageUrl =
                         child.place.wikimediaImages
                             .firstOrNull()
-                            ?.let { wikimediaImages[it.pageId]?.url }
+                            ?.let { imageRef ->
+                                wikimediaImages[imageRef.pageId]?.let { image ->
+                                    image.thumbnailUrl ?: image.url
+                                }
+                            }
                             ?: child.place.placeImages.firstOrNull()
 
                     Log.d(

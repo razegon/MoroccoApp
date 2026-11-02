@@ -28,6 +28,7 @@ class WikimediaRepositoryImpl(
 
         // First level cache: fast in-memory cache.
         cache.get(pageId)?.let { cachedImage ->
+            println("WIKIMEDIA CACHE: MEMORY HIT pageId=$pageId")
 
             return cachedImage
         }
@@ -36,6 +37,7 @@ class WikimediaRepositoryImpl(
         try {
 
             persistentCache.get(pageId)?.let { image ->
+                println("WIKIMEDIA CACHE: ROOM HIT pageId=$pageId")
 
                 // Put the image back into memory cache
                 // so future requests are faster.
@@ -53,6 +55,8 @@ class WikimediaRepositoryImpl(
 
         // Last level: fetch image metadata from Wikimedia API.
         return try {
+
+            println("WIKIMEDIA CACHE: API REQUEST pageId=$pageId")
 
             val result = dataSource.getImage(pageId) ?: return null
 

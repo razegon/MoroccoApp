@@ -22,6 +22,7 @@ class KtorWikimediaDataSource(
             parameter("pageids", pageId)
             parameter("prop", "imageinfo")
             parameter("iiprop", "url|size|extmetadata")
+            parameter("iiurlwidth", 1200)
             parameter("format", "json")
         }.body()
 
@@ -36,6 +37,9 @@ class KtorWikimediaDataSource(
             url = imageInfo.url,
             width = imageInfo.width,
             height = imageInfo.height,
+            thumbnailUrl = imageInfo.thumbnailUrl,
+            thumbnailWidth = imageInfo.thumbnailWidth,
+            thumbnailHeight = imageInfo.thumbnailHeight,
             author = metadata?.artist?.value?.stripHtml(),
             license = metadata?.licenseShortName?.value,
             licenseUrl = metadata?.licenseUrl?.value,

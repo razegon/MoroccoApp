@@ -18,6 +18,11 @@ data class WikimediaEntity(
     val url: String,
     val width: Int,
     val height: Int,
+
+    val thumbnailUrl: String?,
+    val thumbnailWidth: Int?,
+    val thumbnailHeight: Int?,
+
     val author: String?,
     val license: String?,
     val licenseUrl: String?,

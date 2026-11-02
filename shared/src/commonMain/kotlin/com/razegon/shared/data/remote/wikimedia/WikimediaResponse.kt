@@ -16,6 +16,7 @@ data class Query(
 @Serializable
 data class Wikimedia(
     val title: String,
+
     @SerialName("imageinfo")
     val imageInfo: List<ImageInfo>
 )
@@ -25,6 +26,16 @@ data class ImageInfo(
     val url: String,
     val width: Int,
     val height: Int,
+
+    @SerialName("thumburl")
+    val thumbnailUrl: String? = null,
+
+    @SerialName("thumbwidth")
+    val thumbnailWidth: Int? = null,
+
+    @SerialName("thumbheight")
+    val thumbnailHeight: Int? = null,
+
     @SerialName("descriptionurl")
     val descriptionUrl: String? = null,
     @SerialName("extmetadata")
@@ -35,10 +46,13 @@ data class ImageInfo(
 data class ExtMetadata(
     @SerialName("Artist")
     val artist: MetadataValue? = null,
+
     @SerialName("LicenseShortName")
     val licenseShortName: MetadataValue? = null,
+
     @SerialName("LicenseUrl")
     val licenseUrl: MetadataValue? = null,
+
     @SerialName("Credit")
     val credit: MetadataValue? = null
 )
