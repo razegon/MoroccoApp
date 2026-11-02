@@ -1073,3 +1073,68 @@ Potwierdzenie, że aplikacja Android działa i wyświetla wszystkie miejsca, nie
 ### Nie traktuj historycznego planu jako aktualnego stanu
 
 Wpisy z początku migracji dokumentują to, co było wtedy planowane. Przy aktualizacji Roadmap należy jawnie oznaczać zakończone etapy i pozostawiać jako otwarte tylko zadania, które nadal nie są zaimplementowane.
+
+---
+
+## Współbieżność i atomowa aktualizacja StateFlow
+
+### Problem: read–modify–write
+
+Operacja:
+
+```kotlin
+_images.value += (pageId to image)
+```
+
+wygląda jak pojedyncze dodanie elementu, ale logicznie obejmuje trzy kroki:
+
+1. odczyt aktualnej mapy,
+2. utworzenie mapy z nowym wpisem,
+3. zapis nowej mapy.
+
+Jeżeli kilka korutyn wykona te kroki jednocześnie, mogą odczytać ten sam stan początkowy. Późniejszy zapis jednej korutyny może wtedy nadpisać zmianę wykonaną przez inną. To przykład `race condition` i utraconej aktualizacji (*lost update*).
+
+### Rozwiązanie: `MutableStateFlow.update`
+
+Dla współdzielonego stanu modyfikowanego równolegle należy używać atomowej aktualizacji:
+
+```kotlin
+_images.update { current ->
+    current + (pageId to image)
+}
+```
+
+`update` z `kotlinx.coroutines.flow` wykorzystuje mechanizm CAS (*Compare-And-Set*). W uproszczeniu odczytuje stan, oblicza nową wartość i próbuje zatwierdzić ją tylko wtedy, gdy stan nie zmienił się w międzyczasie. Jeśli inna korutyna zdążyła zmienić stan, obliczenie jest ponawiane na aktualnej wartości.
+
+Dzięki temu równoległe dodawanie różnych `pageId` nie powinno powodować wzajemnego nadpisywania wpisów.
+
+### Lambda `update` musi być wolna od efektów ubocznych
+
+Funkcja przekazana do `update` może zostać wywołana więcej niż raz, jeśli CAS musi ponowić próbę. Dlatego wewnątrz niej należy wykonywać wyłącznie obliczenie nowego stanu.
+
+Dobrze:
+
+```kotlin
+_images.update { current ->
+    current + (pageId to image)
+}
+```
+
+Nie należy umieszczać w tej lambdzie operacji, które mają wykonać się dokładnie raz, np. zapisu do bazy, wysłania żądania sieciowego, nawigacji lub logowania zdarzenia biznesowego.
+
+### Rozdziel odpowiedzialności mechanizmów
+
+W `WikimediaViewModel` występują różne mechanizmy i każdy rozwiązuje inny problem:
+
+- `_images: MutableStateFlow<Map<Int, WikimediaImage>>` — przechowuje wyniki i udostępnia je obserwatorom.
+- `_images.update { ... }` — atomowo aktualizuje wspólną mapę.
+- `loadingImagesInternal` — zapobiega uruchamianiu równoległych pobrań tego samego `pageId`; dodawanie wykorzystuje `compareAndSet`, usuwanie `update`.
+- `Semaphore(5)` — ogranicza liczbę równoległych operacji do pięciu. Nie jest mechanizmem ochrony mapy `_images`.
+
+Wniosek: ograniczenie liczby równoległych żądań nie zastępuje atomowości aktualizacji wspólnego stanu. Nawet przy limicie pięciu operacji kilka korutyn może próbować zapisać wyniki niemal jednocześnie.
+
+### Przykład z MoroccoApp
+
+Podczas pobierania metadanych około 50 miejsc część obrazów pojawiała się niestabilnie, mimo że repozytorium odczytywało je z Room lub cache pamięciowego. Po zastąpieniu `_images.value += ...` przez `_images.update { ... }` wszystkie obrazy wyświetlały się w kolejnych testach, także po powrocie z Home i ponownej instalacji aplikacji.
+
+To praktyczny przykład, dlaczego współdzielony stan aktualizowany przez wiele korutyn powinien być modyfikowany atomowo.

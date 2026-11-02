@@ -1,5 +1,6 @@
 package com.razegon.moroccoapp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -131,6 +132,8 @@ fun DetailsPager(
                         )
                     }
 
+                    Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
+
                     AsyncImage(
                         modifier = Modifier.fillMaxWidth(),
                         model = imageUrl,
@@ -158,8 +161,9 @@ fun DetailsPager(
                         }
                     )
 
-                    val wikimediaImage = wikimediaImages.values
-                        .firstOrNull { it.url == imageUrl }
+                    val wikimediaImage = detailsPage.pageId?.let { pageId ->
+                        wikimediaImages[pageId]
+                    }
 
                     if (wikimediaImage != null) {
 
@@ -281,18 +285,13 @@ fun createPages(
 
     return List(pageCount) { index ->
 
-        val imageUrl = when {
-            index < wikimediaRefs.size &&
-                    wikimediaRefs[index] != null -> {
+        val imageRef = wikimediaRefs.getOrNull(index)
 
-                val pageId = wikimediaRefs[index]!!.pageId
-                wikimediaImages[pageId]?.url
+        val imageUrl = imageRef?.let { ref ->
+            wikimediaImages[ref.pageId]?.let { image ->
+                image.thumbnailUrl ?: image.url
             }
-
-            else -> {
-                images.getOrNull(index)
-            }
-        }
+        } ?: images.getOrNull(index)
 
         DetailsPage(
             imageUrl = imageUrl,
@@ -300,7 +299,8 @@ fun createPages(
                 descriptions.getOrNull(index - 1)
             } else {
                 null
-            }
+            },
+            pageId = wikimediaRefs.getOrNull(index)?.pageId
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.razegon.shared.data.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,7 +14,12 @@ data class PlaceDtoData(
     val placeId: Int,
     val placeType: String,
     val parentPlaceId: Int? = null,
-    val wikidataId: String? = null,
+
+    @SerialName("wikidataId")
+    val cityWikidataId: String? = null,
+
+    val urbanAreaWikidataId: String? = null,
+
     val wikimediaImages: List<WikimediaImageRefDto?> = emptyList(),
     val placeImages: List<String?> = emptyList(),
     val latitude: Double? = null,

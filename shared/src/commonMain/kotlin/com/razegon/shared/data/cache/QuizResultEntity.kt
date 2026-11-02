@@ -15,6 +15,3 @@ data class QuizResultEntity(
     val totalQuestions: Int,
     val date: Long
 )
-
-
-

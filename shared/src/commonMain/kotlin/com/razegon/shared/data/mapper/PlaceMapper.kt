@@ -14,7 +14,8 @@ fun PlaceDto.toDomain(): PlaceData {
             placeId = place.placeId,
             placeType = PlaceType.valueOf(place.placeType),
             parentPlaceId = place.parentPlaceId,
-            wikidataId = place.wikidataId,
+            cityWikidataId = place.cityWikidataId,
+            urbanAreaWikidataId = place.urbanAreaWikidataId,
             wikimediaImages = place.wikimediaImages.map { image ->
                 image?.let {
                     WikimediaImageRef(it.pageId)

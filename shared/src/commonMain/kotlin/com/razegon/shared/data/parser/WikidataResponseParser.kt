@@ -3,25 +3,35 @@ package com.razegon.shared.data.parser
 
 import com.razegon.shared.domain.model.WikidataInfo
 import com.razegon.shared.domain.model.WikidataTime
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * Parses a Wikidata API response into the domain model.
  *
- * Keeps the existing extraction rules used by WikidataRepositoryImpl.
+ * Uses kotlinx.serialization JsonObject instead of Map<String, Any>,
+ * allowing the shared module to process JSON independently of Gson.
  */
 class WikidataResponseParser {
 
     fun parse(
         wikidataId: String,
-        response: Map<String, Any>
+        response: JsonObject
     ): WikidataInfo? {
-        val entities = response["entities"] as? Map<*, *>
+
+        val entity = response["entities"]
+            ?.jsonObjectOrNull()
+            ?.get(wikidataId)
+            ?.jsonObjectOrNull()
             ?: return null
 
-        val entity = entities[wikidataId] as? Map<*, *>
-            ?: return null
-
-        val claims = entity["claims"] as? Map<*, *>
+        val claims = entity["claims"]
+            ?.jsonObjectOrNull()
             ?: return null
 
         return WikidataInfo(
@@ -34,29 +44,23 @@ class WikidataResponseParser {
     }
 
     private fun extractLatestPopulation(
-        claims: Map<*, *>
+        claims: JsonObject
     ): Long? {
-        val statements = claims["P1082"] as? List<*>
+
+        val statements = claims["P1082"]
+            ?.jsonArrayOrNull()
             ?: return null
 
         val candidates = statements.mapNotNull { statement ->
-            val statementMap = statement as? Map<*, *>
+
+            val statementObject = statement.jsonObjectOrNull()
                 ?: return@mapNotNull null
 
-            if (statementMap["rank"] == "deprecated") {
+            if (statementObject.rank() == "deprecated") {
                 return@mapNotNull null
             }
 
-            val mainsnak = statementMap["mainsnak"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val datavalue = mainsnak["datavalue"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val value = datavalue["value"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val amount = value["amount"] as? String
+            val amount = statementObject.amount()
                 ?: return@mapNotNull null
 
             val population = amount
@@ -65,11 +69,10 @@ class WikidataResponseParser {
                 ?.toLong()
                 ?: return@mapNotNull null
 
-            val qualifiers = statementMap["qualifiers"] as? Map<*, *>
-            val pointInTimeStatements =
-                qualifiers?.get("P585") as? List<*>
-
-            val year = pointInTimeStatements
+            val year = statementObject["qualifiers"]
+                ?.jsonObjectOrNull()
+                ?.get("P585")
+                ?.jsonArrayOrNull()
                 ?.firstOrNull()
                 ?.let(::extractYearFromTimeStatement)
 
@@ -82,71 +85,58 @@ class WikidataResponseParser {
     }
 
     private fun extractAreaInSquareKilometers(
-        claims: Map<*, *>
+        claims: JsonObject
     ): Double? {
-        val statements = claims["P2046"] as? List<*>
+
+        val statements = claims["P2046"]
+            ?.jsonArrayOrNull()
             ?: return null
 
         val candidates = statements.mapNotNull { statement ->
-            val statementMap = statement as? Map<*, *>
+
+            val statementObject = statement.jsonObjectOrNull()
                 ?: return@mapNotNull null
 
-            if (statementMap["rank"] == "deprecated") {
+            if (statementObject.rank() == "deprecated") {
                 return@mapNotNull null
             }
 
-            val mainsnak = statementMap["mainsnak"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val datavalue = mainsnak["datavalue"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val value = datavalue["value"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val amount = value["amount"] as? String
-                ?: return@mapNotNull null
-
-            val unit = value["unit"] as? String
+            val unit = statementObject.unit()
                 ?: return@mapNotNull null
 
             if (!unit.contains("Q712226")) {
                 return@mapNotNull null
             }
 
-            amount.replace("+", "").toDoubleOrNull()
+            statementObject.amount()
+                ?.replace("+", "")
+                ?.toDoubleOrNull()
         }
 
         return candidates.firstOrNull()
     }
 
     private fun extractElevationInMeters(
-        claims: Map<*, *>
+        claims: JsonObject
     ): Double? {
-        val statements = claims["P2044"] as? List<*>
+
+        val statements = claims["P2044"]
+            ?.jsonArrayOrNull()
             ?: return null
 
         val candidates = statements.mapNotNull { statement ->
-            val statementMap = statement as? Map<*, *>
+
+            val statementObject = statement.jsonObjectOrNull()
                 ?: return@mapNotNull null
 
-            if (statementMap["rank"] == "deprecated") {
+            if (statementObject.rank() == "deprecated") {
                 return@mapNotNull null
             }
 
-            val mainsnak = statementMap["mainsnak"] as? Map<*, *>
+            val unit = statementObject.unit()
                 ?: return@mapNotNull null
 
-            val datavalue = mainsnak["datavalue"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val value = datavalue["value"] as? Map<*, *>
-                ?: return@mapNotNull null
-
-            val amount = value["amount"] as? String
-                ?: return@mapNotNull null
-
-            val unit = value["unit"] as? String
+            val amount = statementObject.amount()
                 ?: return@mapNotNull null
 
             val numericValue = amount
@@ -167,28 +157,28 @@ class WikidataResponseParser {
     }
 
     private fun extractTime(
-        claims: Map<*, *>,
+        claims: JsonObject,
         property: String
     ): WikidataTime? {
-        val statements = claims[property] as? List<*>
+
+        val statements = claims[property]
+            ?.jsonArrayOrNull()
             ?: return null
 
-        val statement = statements.firstOrNull() as? Map<*, *>
+        val statement = statements.firstOrNull()
+            ?.jsonObjectOrNull()
             ?: return null
 
-        val mainsnak = statement["mainsnak"] as? Map<*, *>
+        val value = statement.valueObject()
             ?: return null
 
-        val datavalue = mainsnak["datavalue"] as? Map<*, *>
+        val time = value["time"]
+            ?.primitiveContent()
             ?: return null
 
-        val value = datavalue["value"] as? Map<*, *>
-            ?: return null
-
-        val time = value["time"] as? String
-            ?: return null
-
-        val precision = (value["precision"] as? Number)?.toInt()
+        val precision = value["precision"]
+            ?.primitiveContent()
+            ?.toIntOrNull()
 
         val year = Regex("""^[+-](\d{1,})""")
             .find(time)
@@ -204,21 +194,16 @@ class WikidataResponseParser {
     }
 
     private fun extractYearFromTimeStatement(
-        statement: Any?
+        statement: kotlinx.serialization.json.JsonElement
     ): Int? {
-        val statementMap = statement as? Map<*, *>
+
+        val value = statement
+            .jsonObjectOrNull()
+            ?.valueObject()
             ?: return null
 
-        val mainsnak = statementMap["mainsnak"] as? Map<*, *>
-            ?: return null
-
-        val datavalue = mainsnak["datavalue"] as? Map<*, *>
-            ?: return null
-
-        val value = datavalue["value"] as? Map<*, *>
-            ?: return null
-
-        val time = value["time"] as? String
+        val time = value["time"]
+            ?.primitiveContent()
             ?: return null
 
         return Regex("""[+-](\d{1,})""")
@@ -228,10 +213,48 @@ class WikidataResponseParser {
             ?.toIntOrNull()
     }
 
+    private fun JsonObject.rank(): String? =
+        this["rank"]?.primitiveContent()
+
+    private fun JsonObject.amount(): String? =
+        this["mainsnak"]
+            ?.jsonObjectOrNull()
+            ?.get("datavalue")
+            ?.jsonObjectOrNull()
+            ?.get("value")
+            ?.jsonObjectOrNull()
+            ?.get("amount")
+            ?.primitiveContent()
+
+    private fun JsonObject.unit(): String? =
+        this["mainsnak"]
+            ?.jsonObjectOrNull()
+            ?.get("datavalue")
+            ?.jsonObjectOrNull()
+            ?.get("value")
+            ?.jsonObjectOrNull()
+            ?.get("unit")
+            ?.primitiveContent()
+
+    private fun JsonObject.valueObject(): JsonObject? =
+        this["mainsnak"]
+            ?.jsonObjectOrNull()
+            ?.get("datavalue")
+            ?.jsonObjectOrNull()
+            ?.get("value")
+            ?.jsonObjectOrNull()
+
+    private fun kotlinx.serialization.json.JsonElement.jsonObjectOrNull(): JsonObject? =
+        runCatching { jsonObject }.getOrNull()
+
+    private fun kotlinx.serialization.json.JsonElement.jsonArrayOrNull(): JsonArray? =
+        runCatching { jsonArray }.getOrNull()
+
+    private fun kotlinx.serialization.json.JsonElement.primitiveContent(): String? =
+        (this as? JsonPrimitive)?.contentOrNull
+
     private data class PopulationCandidate(
         val population: Long,
         val year: Int?
     )
 }
-
-

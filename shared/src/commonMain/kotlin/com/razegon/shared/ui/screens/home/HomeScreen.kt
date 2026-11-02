@@ -28,6 +28,7 @@ import com.razegon.shared.generated.resources.places_button
 import com.razegon.shared.generated.resources.quiz_button
 import com.razegon.shared.generated.resources.started_description
 import com.razegon.shared.generated.resources.welcome_title
+import com.razegon.shared.ui.model.HeroUi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -38,12 +39,31 @@ fun HomeScreen(
     onPlacesClick: () -> Unit,
     onQuizClick: () -> Unit
 ) {
-    val title = stringResource(Res.string.welcome_title)
-    val description = stringResource(Res.string.started_description)
-    val citiesButtonText = stringResource(Res.string.cities_button)
-    val placesButtonText = stringResource(Res.string.places_button)
-    val quizButtonText = stringResource(Res.string.quiz_button)
+    val heroUi = HeroUi(
+        title = stringResource(Res.string.welcome_title),
+        description = stringResource(Res.string.started_description),
+        citiesButtonText = stringResource(Res.string.cities_button),
+        placesButtonText = stringResource(Res.string.places_button),
+        quizButtonText = stringResource(Res.string.quiz_button)
+    )
 
+    HeroSection(
+        modifier = modifier,
+        heroUi = heroUi,
+        onCitiesBtnClick = onCitiesClick,
+        onPlacesBtnClick = onPlacesClick,
+        onQuizBtnClick = onQuizClick
+    )
+}
+
+@Composable
+private fun HeroSection(
+    modifier: Modifier = Modifier,
+    heroUi: HeroUi,
+    onCitiesBtnClick: () -> Unit,
+    onPlacesBtnClick: () -> Unit,
+    onQuizBtnClick: () -> Unit
+) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(Res.drawable.morocco_header),
@@ -61,14 +81,14 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = title,
+                text = heroUi.title,
                 style = MaterialTheme.typography.displayMedium
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = description,
+                text = heroUi.description,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.widthIn(max = 500.dp)
             )
@@ -79,16 +99,16 @@ fun HomeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(onClick = onCitiesClick) {
-                    Text(text = citiesButtonText)
+                Button(onClick = onCitiesBtnClick) {
+                    Text(text = heroUi.citiesButtonText)
                 }
 
-                Button(onClick = onPlacesClick) {
-                    Text(text = placesButtonText)
+                Button(onClick = onPlacesBtnClick) {
+                    Text(text = heroUi.placesButtonText)
                 }
 
-                Button(onClick = onQuizClick) {
-                    Text(text = quizButtonText)
+                Button(onClick = onQuizBtnClick) {
+                    Text(text = heroUi.quizButtonText)
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -113,4 +133,3 @@ private fun GradientOverlay() {
             )
     )
 }
-

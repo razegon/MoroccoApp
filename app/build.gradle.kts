@@ -65,12 +65,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.navigation.compose)
-    implementation(libs.coil.compose)
+    implementation(libs.coil.compose.multiplatform)
     implementation(libs.coil.network.okhttp)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.gson)
-
+    implementation(libs.ktor.client.core)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 

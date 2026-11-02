@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.razegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
 import com.razegon.shared.domain.model.ArcadeResult
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun ArcadeRankingScreen(
@@ -88,6 +91,11 @@ fun ArcadeRankingScreen(
     }
 }
 
+private fun formatResultDate(timestamp: Long): String {
+    return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        .format(Date(timestamp))
+}
+
 @Composable
 private fun ArcadeRankingItem(
     position: Int,
@@ -99,10 +107,19 @@ private fun ArcadeRankingItem(
             defaultElevation = 2.dp
         )
     ) {
-        Text(
-            text = "$position. ${result.nickname}    ${result.score}",
-            style = MaterialTheme.typography.bodyLarge,
+        Column(
             modifier = Modifier.padding(16.dp)
-        )
+        ) {
+            Text(
+                text = "$position. ${result.nickname}    ${result.score}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = formatResultDate(result.date),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }

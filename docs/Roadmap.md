@@ -679,3 +679,60 @@ weryfikacja współdzielonego przepływu na iOS
         ↓
 dopiero potem decyzje o dalszej migracji UI
 ```
+
+---
+
+## Aktualizacja 2 listopada 2026 — miniaturki Wikimedia ukończone
+
+### Zrobione
+
+- Rozszerzono `WikimediaImage` o `thumbnailUrl`, `thumbnailWidth` i `thumbnailHeight`.
+- Dodano obsługę pól miniatury w odpowiedzi API / DTO.
+- Dodano pola miniatury do `WikimediaEntity` oraz mapowanie w `WikimediaMapper`.
+- `KtorWikimediaDataSource` żąda miniatur przez `iiurlwidth=1200`.
+- Ekrany list i `DetailsPager` preferują `thumbnailUrl`, z fallbackiem do oryginalnego `url`.
+- Zachowano lokalny fallback zdjęć w listach, gdy metadane Wikimedia nie są jeszcze dostępne.
+- `DetailsPage` przechowuje `pageId`, co pozwala powiązać stronę z metadanymi i atrybucją Wikimedia.
+- Zaktualizowano test `KtorWikimediaDataSourceTest` o parametr żądania i pola miniatury.
+- Poprawiono współbieżną aktualizację mapy obrazów w `WikimediaViewModel` przez `MutableStateFlow.update`.
+- Zachowano kolejność cache: `WikimediaCache` → Room (`WikimediaPersistentCache`) → API.
+- Testy `:shared:testAndroidHostTest` zakończone pomyślnie.
+- Build `:app:assembleDevDebug` zakończony pomyślnie.
+- Testy na urządzeniu potwierdziły poprawne wyświetlanie obrazów po wejściu, powrocie z Home i ponownej instalacji.
+
+### Ważna poprawka współbieżności
+
+Wcześniejszy zapis `_images.value += (pageId to image)` zastąpiono atomowym:
+
+```kotlin
+_images.update { current ->
+    current + (pageId to image)
+}
+```
+
+Zmiana zabezpiecza wspólną mapę przed utratą aktualizacji przy równoległym kończeniu pobrań. W przeprowadzonych testach rozwiązała obserwowany problem niestabilnie brakujących obrazów.
+
+### Aktualny status
+
+```text
+Wikimedia thumbnails
+        ↓
+DTO + mapper + domain model
+        ↓
+Room persistent cache
+        ↓
+Repository: memory → Room → API
+        ↓
+WikimediaViewModel: atomic StateFlow update
+        ↓
+Compose UI: thumbnailUrl → original url
+        ↓
+Attribution preserved
+```
+
+### Następne obszary prac
+
+1. Kontynuować migrację ekranów z `app` do `shared` zgodnie z aktualnym planem KMP.
+2. Podczas przenoszenia ekranów uporządkować tymczasowe logi diagnostyczne dodane przy analizie ładowania Wikimedia.
+3. Kontynuować weryfikację współdzielonych przepływów danych i odpowiedzialności platformowych.
+4. Pozostałe zadania z wcześniejszego planu KMP — m.in. implementacja `PlacesRepository.search()` oraz platformowy odczyt zasobów dla iOS — pozostają otwarte, o ile nie zostały zrealizowane w osobnym etapie.

@@ -23,6 +23,9 @@ import com.razegon.shared.domain.model.QuizResult
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.unit.sp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun QuizRankingScreen(
@@ -87,6 +90,11 @@ fun QuizRankingScreen(
     }
 }
 
+private fun formatResultDate(timestamp: Long): String {
+    return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        .format(Date(timestamp))
+}
+
 @Composable
 private fun QuizRankingItem(
     position: Int,
@@ -98,10 +106,19 @@ private fun QuizRankingItem(
             defaultElevation = 2.dp
         )
     ) {
-        Text(
-            text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}    ${result.difficulty}",
-            style = MaterialTheme.typography.bodyLarge,
+        Column(
             modifier = Modifier.padding(16.dp)
-        )
+        ) {
+            Text(
+                text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}    ${result.difficulty}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = formatResultDate(result.date),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }

@@ -1348,3 +1348,93 @@ Jest to **ręczne DI**. Hilt nie jest częścią opisanego stanu.
 - Czytnik JSON jest dostępny dla Androida; odpowiednik dla iOS nie jest jeszcze opisany jako gotowy.
 - Zadeklarowanie targetów iOS w Gradle nie oznacza ukończonej aplikacji iOS ani zweryfikowanego odczytu danych na iOS.
 - UI Compose pozostaje w `:app`; ten punkt bazowy nie dokumentuje migracji ekranów do Compose Multiplatform.
+
+---
+
+## Aktualizacja 2 listopada 2026 — miniaturki Wikimedia i współbieżność
+
+### Model metadanych obrazu
+
+`WikimediaImage` przechowuje zarówno oryginalny adres pliku, jak i dane miniatury:
+
+```kotlin
+data class WikimediaImage(
+    val title: String,
+    val url: String,
+    val width: Int,
+    val height: Int,
+    val thumbnailUrl: String?,
+    val thumbnailWidth: Int?,
+    val thumbnailHeight: Int?,
+    val author: String?,
+    val license: String?,
+    val licenseUrl: String?,
+    val filePageUrl: String?,
+    val credit: String?
+)
+```
+
+Pola miniatury są nullable, ponieważ API nie musi zwrócić miniatury dla każdego pliku. Informacje o miniaturze są przenoszone przez cały przepływ danych: DTO Wikimedia → mapper → `WikimediaImage` → `WikimediaEntity` w Room. `WikimediaMapper` mapuje je w obie strony.
+
+`KtorWikimediaDataSource` wysyła parametr `iiurlwidth=1200`. Wikimedia może zwrócić najbliższy dostępny wariant, dlatego rzeczywista szerokość pliku miniatury może różnić się od żądanej.
+
+### Wybór adresu obrazu w UI
+
+Listy miejsc i miast oraz `DetailsPager` preferują miniaturę, a w razie jej braku używają oryginalnego URL:
+
+```kotlin
+image.thumbnailUrl ?: image.url
+```
+
+W ekranach list lokalne `placeImages` pozostają dodatkowym fallbackiem, gdy metadane Wikimedia nie są jeszcze dostępne. W `DetailsPage` przechowywany jest `pageId`, aby `DetailsPager` mógł pobrać właściwe metadane i nadal wyświetlać atrybucję Wikimedia. Wybór miniatury nie usuwa informacji o autorze, licencji ani stronie pliku.
+
+### Cache metadanych Wikimedia
+
+`WikimediaRepositoryImpl` korzysta z trzech poziomów źródła danych, w tej kolejności:
+
+1. `WikimediaCache` — cache w pamięci,
+2. `WikimediaPersistentCache` — trwały cache oparty na Room,
+3. `WikimediaDataSource` — API Wikimedia, jeśli danych nie ma w obu cache.
+
+Wynik API jest zapisywany w Room i cache pamięciowym. Odczyt z Room uzupełnia również cache pamięciowy. Błąd odczytu lub zapisu Room jest obsługiwany i nie powinien blokować próby pobrania z API.
+
+### Bezpieczna aktualizacja stanu obrazów
+
+`WikimediaViewModel` przechowuje wyniki w:
+
+```kotlin
+private val _images =
+    MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
+
+val images: StateFlow<Map<Int, WikimediaImage>> = _images
+```
+
+Wiele korutyn może kończyć pobieranie w zbliżonym czasie. Aktualizacja mapy musi więc być atomowa:
+
+```kotlin
+if (image != null) {
+    _images.update { current ->
+        current + (pageId to image)
+    }
+}
+```
+
+Nie należy zastępować tego operacją odczyt–modyfikacja–zapis:
+
+```kotlin
+_images.value += (pageId to image)
+```
+
+Przy równoległych zapisach taka operacja może utracić aktualizację innej korutyny. `update` używa mechanizmu CAS i ponawia obliczenie, jeżeli stan zmienił się między odczytem a zatwierdzeniem. Lambda przekazana do `update` powinna być wolna od efektów ubocznych, ponieważ może zostać wykonana więcej niż raz.
+
+`loadingImagesInternal` jest osobnym stanem zbioru identyfikatorów aktualnie pobieranych obrazów. Dodawanie identyfikatora wykorzystuje `compareAndSet`, a jego usuwanie `update`. `Semaphore(5)` ogranicza liczbę równoległych operacji repozytorium do pięciu; pozostałe korutyny oczekują na permit.
+
+### Weryfikacja
+
+- Test `:shared:testAndroidHostTest` zakończył się `BUILD SUCCESSFUL`.
+- Build `:app:assembleDevDebug` zakończył się `BUILD SUCCESSFUL`.
+- Testy na urządzeniu potwierdziły wyświetlanie miniaturek na listach i ekranach szczegółów.
+- Diagnostyczne logi potwierdziły odczyty `ROOM HIT` oraz `MEMORY HIT`; przy ponownym wejściu do Places nie było potrzeby ponownego pobierania metadanych z API.
+- Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update` obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach, także po ponownej instalacji aplikacji.
+
+Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów. Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie należy jednak traktować pojedynczej serii testów jako formalnego dowodu braku wszystkich możliwych problemów współbieżności.

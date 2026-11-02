@@ -12,7 +12,7 @@ import androidx.room3.RoomDatabaseConstructor
         QuizResultEntity::class,
         ArcadeResultEntity::class
                ],
-    version = 2
+    version = 1
 )
 
 @ConstructedBy(AppDatabaseConstructor::class)

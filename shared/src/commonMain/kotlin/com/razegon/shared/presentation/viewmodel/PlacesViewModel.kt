@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.razegon.shared.domain.model.PlaceType
 
 class PlacesViewModel(
     private val repository: PlacesRepository,
@@ -27,6 +28,7 @@ class PlacesViewModel(
 
             try {
                 val places = repository.getPlaces()
+                    .filter { it.place.placeType != PlaceType.CITY }
                 _uiState.value = PlacesUiState(
                     places = places,
                     isLoading = false

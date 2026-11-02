@@ -1,5 +1,6 @@
 package com.razegon.moroccoapp.ui.screens.places
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -97,15 +98,30 @@ fun PlacesScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            items(uiState.places) { placeData ->
+            items(
+                items = uiState.places,
+                key = { placeData -> placeData.place.placeId }
+            ) { placeData ->
 
-                // Prefer the Wikimedia image when its metadata
-                // has already been loaded. Fall back to the local image.
+                // Prefer the Wikimedia thumbnail to reduce image loading costs.
+                // Fall back to the original image if no thumbnail is available,
+                // then to the local image if Wikimedia metadata has not been loaded.
                 val imageUrl = placeData.place.wikimediaImages
                     .firstOrNull()
                     ?.let { imageRef ->
-                        wikimediaImages[imageRef.pageId]?.url
+                        wikimediaImages[imageRef.pageId]?.let { image ->
+                            image.thumbnailUrl ?: image.url
+                        }
                     } ?: placeData.place.placeImages.firstOrNull()
+
+                Log.d(
+                    "IMAGE_CHECK",
+                    "Place=${placeData.content.name}, " +
+                            "refs=${placeData.place.wikimediaImages.map { it?.pageId }}, " +
+                            "loaded=${placeData.place.wikimediaImages.map { it?.pageId in wikimediaImages.keys }}, " +
+                            "local=${placeData.place.placeImages.firstOrNull()}, " +
+                            "displayed=$imageUrl"
+                )
 
                 PlaceListItem(
                     placeData = placeData,

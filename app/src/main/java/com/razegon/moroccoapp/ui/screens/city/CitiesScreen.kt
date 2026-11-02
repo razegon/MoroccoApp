@@ -102,12 +102,17 @@ fun CitiesScreen(
 
             items(uiState.places) { placeData ->
 
-                // Prefer the Wikimedia image when it is available.
-                // Fall back to the locally defined image otherwise.
+                // Prefer the Wikimedia thumbnail to reduce image loading costs.
+                // Fall back to the original image if no thumbnail is available,
+                // then to the local image if Wikimedia metadata has not been loaded.
                 val imageUrl =
                     placeData.place.wikimediaImages
                         .firstOrNull()
-                        ?.let { wikimediaImages[it.pageId]?.url }
+                        ?.let { imageRef ->
+                            wikimediaImages[imageRef.pageId]?.let { image ->
+                                image.thumbnailUrl ?: image.url
+                            }
+                        }
                         ?: placeData.place.placeImages.firstOrNull()
 
                 CityListItem(

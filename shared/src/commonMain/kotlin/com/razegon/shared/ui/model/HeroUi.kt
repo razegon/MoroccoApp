@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.model
+package com.razegon.shared.ui.model
 
 data class HeroUi(
     val title: String,

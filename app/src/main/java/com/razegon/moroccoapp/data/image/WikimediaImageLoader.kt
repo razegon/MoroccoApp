@@ -15,10 +15,6 @@ import com.razegon.moroccoapp.data.network.moroccoHttpClient
  *
  * It also uses a persistent Coil disk cache, so downloaded image files
  * can remain available after the application process is killed.
- *
- * TODO:
- * Move the ImageLoader to MyApp/Application and share one instance
- * across the whole application.
  */
 fun createWikimediaImageLoader(context: Context): ImageLoader {
     return ImageLoader.Builder(context)

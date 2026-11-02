@@ -995,3 +995,60 @@ Migracja logiki domenowej i repozytoriów nie oznacza migracji ekranów. W bazow
 Użytkownik potwierdził, że aplikacja uruchamia się i wyświetla wszystkie miejsca Maroka. Jest to potwierdzenie działania aplikacji na urządzeniu, a nie deklaracja pełnego pokrycia testami ani gotowości platformy iOS.
 
 Przed push warto osobno uruchomić testy modułu `shared` i sprawdzić, czy asercje testów źródła JSON odpowiadają aktualnemu zestawowi danych.
+
+---
+
+## 2 listopada 2026 — miniaturki Wikimedia i poprawa współbieżności
+
+### Miniaturki zamiast pobierania pełnych plików
+
+Rozszerzono `WikimediaImage` o nullable pola `thumbnailUrl`, `thumbnailWidth` i `thumbnailHeight`. Pola zostały dodane również do `WikimediaResponse` / DTO, `WikimediaEntity` oraz `WikimediaMapper`, dzięki czemu informacja o miniaturze przechodzi przez API, model domenowy i Room.
+
+`KtorWikimediaDataSource` wysyła `iiurlwidth=1200`. API może zwrócić najbliższy dostępny wariant, np. plik o szerokości 1280 px. Nie należy zakładać, że zwrócona szerokość będzie dokładnie równa wartości parametru.
+
+Na ekranach `PlacesScreen`, `CitiesScreen`, `CityDetailsScreen` i w `DetailsPager` preferowany jest `thumbnailUrl`, a gdy go nie ma — oryginalny `url`. W listach zachowany jest również fallback do lokalnego `placeImages`, jeśli metadane Wikimedia nie są jeszcze dostępne. `DetailsPage` przechowuje `pageId`, aby `DetailsPager` mógł odszukać metadane właściwego zdjęcia i wyświetlić atrybucję.
+
+### Diagnostyka cache
+
+Sprawdzono kolejność działania `WikimediaRepositoryImpl`:
+
+```text
+WikimediaCache (pamięć)
+        ↓ brak
+WikimediaPersistentCache (Room)
+        ↓ brak
+WikimediaDataSource (API)
+```
+
+Logi z urządzenia pokazały `ROOM HIT` przy odczycie z bazy oraz `MEMORY HIT` przy kolejnych odczytach. Przy ponownym wejściu na Places metadane były dostępne w cache i nie wymagały ponownego pobierania z API.
+
+### Problem z równoległą aktualizacją mapy
+
+Podczas testów lista około 50 miejsc wyświetlała za każdym razem inną liczbę brakujących obrazów. Metadane były dostępne w Room, a mimo to część obrazów nie trafiała stabilnie do stanu ViewModelu.
+
+W `WikimediaViewModel` zmieniono zapis:
+
+```kotlin
+_images.value += (pageId to image)
+```
+
+na atomową aktualizację:
+
+```kotlin
+_images.update { current ->
+    current + (pageId to image)
+}
+```
+
+Powodem jest możliwość równoległego zakończenia kilku korutyn. Operacja `_images.value += ...` jest logicznie sekwencją odczytu, modyfikacji i zapisu. Dwie korutyny mogą odczytać ten sam stary stan i nadpisać sobie nawzajem wynik. `update` chroni aktualizację przed takim utraceniem zmian.
+
+Wartość diagnostyczna `total` w logach pokazała, że mapa otrzymywała ponad 50 wpisów. Po zmianie na `update` wszystkie obrazy wyświetlały się w kolejnych próbach: po pierwszym wejściu, po powrocie z Home oraz po ponownej instalacji.
+
+### Weryfikacja etapu
+
+- `:shared:testAndroidHostTest` — `BUILD SUCCESSFUL`.
+- `:app:assembleDevDebug` — `BUILD SUCCESSFUL`.
+- Testy ręczne na urządzeniu — miniaturki wyświetlały się poprawnie.
+- Cache Room i cache pamięciowy potwierdzone logami.
+
+Wniosek: obserwowany problem był zgodny z race condition podczas aktualizacji wspólnej mapy wyników. Atomowe `StateFlow.update` rozwiązało problem w przeprowadzonych testach. Diagnostyczne logi użyte podczas analizy są tymczasowe i powinny zostać usunięte przy późniejszym porządkowaniu ekranów oraz warstwy danych.
