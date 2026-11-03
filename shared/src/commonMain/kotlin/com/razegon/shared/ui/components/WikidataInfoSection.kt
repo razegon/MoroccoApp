@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -25,7 +25,7 @@ fun WikidataInfoSection(
 
         info.population?.let {
             Text(
-                text = "Ludność: %,d".format(it),
+                text = "Ludność: $it",
                 style = MaterialTheme.typography.bodyLarge
             )
         }

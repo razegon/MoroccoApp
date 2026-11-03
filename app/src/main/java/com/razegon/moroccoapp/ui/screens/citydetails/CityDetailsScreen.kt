@@ -1,28 +1,18 @@
 package com.razegon.moroccoapp.ui.screens.citydetails
 
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.ui.components.DetailsPager
-import com.razegon.moroccoapp.ui.components.PlaceListItem
-import com.razegon.moroccoapp.ui.components.WikidataInfoSection
-import com.razegon.moroccoapp.ui.components.createPages
 import com.razegon.moroccoapp.viewmodel.CityDetailsAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.CityDetailsViewModelFactory
 import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.razegon.shared.domain.model.PlaceData
+import com.razegon.shared.ui.screens.citydetails.CityDetailsContent
 
 @Composable
 fun CityDetailsScreen(
@@ -89,71 +79,13 @@ fun CityDetailsScreen(
     // Render the screen only when the selected place is available.
     uiState.placeData?.let { placeData ->
 
-        // Build the pages displayed by DetailsPager.
-        // Wikimedia URLs are taken from the loaded metadata map,
-        // while local images can be used as a fallback.
-        val pages = createPages(
-            wikimediaImages = wikimediaImages,
-            images = placeData.place.placeImages,
-            descriptions = placeData.content.descriptions,
-            wikimediaRefs = placeData.place.wikimediaImages
-        )
-
-        Log.d(
-            "WIKIMEDIA_UI",
-            "children=${uiState.children.size}, images=${wikimediaImages.keys}"
-        )
-
-        DetailsPager(
+        CityDetailsContent(
             placeData = placeData,
-            pages = pages,
-            wikimediaImages = wikimediaImages
-        ) {
-
-            // Display additional Wikidata information
-            // when it has been successfully loaded.
-            uiState.wikidataInfo?.let { info ->
-                WikidataInfoSection(
-                    info = info
-                )
-            }
-
-            // Display the places belonging to the current city.
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-
-                items(uiState.children) { child ->
-
-                    // Prefer the Wikimedia thumbnail to reduce image loading costs.
-                    // Fall back to the original image if no thumbnail is available,
-                    // then to the local image if Wikimedia metadata has not been loaded.
-                    val imageUrl =
-                        child.place.wikimediaImages
-                            .firstOrNull()
-                            ?.let { imageRef ->
-                                wikimediaImages[imageRef.pageId]?.let { image ->
-                                    image.thumbnailUrl ?: image.url
-                                }
-                            }
-                            ?: child.place.placeImages.firstOrNull()
-
-                    Log.d(
-                        "WIKIMEDIA_ROW",
-                        "child=${child.place.placeId}, " +
-                                "imageRef=${child.place.wikimediaImages.firstOrNull()?.pageId}, " +
-                                "url=$imageUrl"
-                    )
-
-                    PlaceListItem(
-                        placeData = child,
-                        imageUrl = imageUrl,
-                        modifier = Modifier.width(180.dp),
-                        imageHeight = 140.dp,
-                        onClick = onPlaceClick
-                    )
-                }
-            }
-        }
+            children = uiState.children,
+            wikidataInfo = uiState.wikidataInfo,
+            wikimediaImages = wikimediaImages,
+            imageLoader = app.wikimediaImageLoader,
+            onPlaceClick = onPlaceClick
+        )
     }
 }

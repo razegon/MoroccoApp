@@ -1,6 +1,5 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,40 +10,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import coil3.compose.AsyncImage
-import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.R
 import com.razegon.shared.domain.model.PlaceData
 
 @Composable
 fun PlaceListItem(
     placeData: PlaceData,
+    imageLoader: ImageLoader,
     modifier: Modifier = Modifier,
     imageHeight: Dp = 180.dp,
     imageUrl: String? = null,
     onClick: (PlaceData) -> Unit
 ) {
-    // Access the shared application instance.
-    val application = LocalContext.current.applicationContext as MyApp
-
-    // Use the single ImageLoader shared by the entire application.
-    //
-    // This allows PlaceListItem to use the same memory cache,
-    // disk cache and HTTP client as the other Wikimedia components.
-    val imageLoader = application.wikimediaImageLoader
-
     Card(
         modifier = modifier.padding(top = 12.dp),
         onClick = { onClick(placeData) }
     ) {
         Column {
-
-            Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
 
             // Displays the Wikimedia image when imageUrl is available.
             // If loading fails, the default image is shown.
@@ -56,17 +42,6 @@ fun PlaceListItem(
                 imageLoader = imageLoader,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.default_image),
-                fallback = painterResource(R.drawable.default_image),
-                onError = { state ->
-                    Log.e(
-                        "IMAGE_CHECK",
-                        "Image error: $imageUrl, result=${state.result.throwable}"
-                    )
-                },
-                onSuccess = {
-                    Log.d("IMAGE_CHECK", "Image loaded successfully: $imageUrl")
-                }
             )
 
             // Displays the place name below the image.

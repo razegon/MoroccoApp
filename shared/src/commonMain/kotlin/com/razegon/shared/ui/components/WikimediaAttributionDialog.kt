@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

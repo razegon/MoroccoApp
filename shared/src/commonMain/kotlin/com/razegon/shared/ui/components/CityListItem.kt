@@ -1,6 +1,5 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,19 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.R
 import com.razegon.shared.domain.model.PlaceData
+import coil3.ImageLoader
 
 @Composable
 fun CityListItem(
     placeData: PlaceData,
     imageUrl: String?,
+    imageLoader: ImageLoader,
     onClick: (PlaceData) -> Unit
 ) {
     // Card represents a single city in the cities list.
@@ -41,17 +38,6 @@ fun CityListItem(
                 .padding(16.dp)
         ) {
 
-            // Access the shared application instance.
-            val application = LocalContext.current.applicationContext as MyApp
-
-            // Use the single ImageLoader shared by the entire application.
-            //
-            // This allows all Wikimedia components to share the same
-            // memory cache, disk cache and HTTP client.
-            val imageLoader = application.wikimediaImageLoader
-
-            Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
-
             // Display the city's Wikimedia image.
             //
             // The imageUrl is provided by the parent screen after
@@ -63,8 +49,6 @@ fun CityListItem(
                 imageLoader = imageLoader,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.default_image),
-                fallback = painterResource(R.drawable.default_image)
             )
 
             Column(

@@ -7,12 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.ui.components.DetailsPager
-import com.razegon.moroccoapp.ui.components.createPages
 import com.razegon.moroccoapp.viewmodel.PlaceDetailsAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.PlaceDetailsViewModelFactory
 import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.WikimediaViewModelFactory
+import com.razegon.shared.ui.screens.placedetails.PlaceDetailsContent
 
 @Composable
 fun PlaceDetailsScreen(
@@ -66,20 +65,10 @@ fun PlaceDetailsScreen(
             }
         }
 
-        // Build the pages displayed by DetailsPager.
-        // Wikimedia metadata provides the remote image URLs,
-        // while local images can be used as a fallback.
-        val pages = createPages(
-            wikimediaImages = wikimediaImages,
-            images = placeData.place.placeImages,
-            descriptions = placeData.content.descriptions,
-            wikimediaRefs = placeData.place.wikimediaImages
-        )
-
-        DetailsPager(
+        PlaceDetailsContent(
             placeData = placeData,
-            pages = pages,
-            wikimediaImages = wikimediaImages
+            wikimediaImages = wikimediaImages,
+            imageLoader = application.wikimediaImageLoader
         )
     }
 }
