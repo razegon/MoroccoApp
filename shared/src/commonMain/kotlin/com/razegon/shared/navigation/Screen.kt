@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.navigation
+package com.razegon.shared.navigation
 
 // Defines all navigation routes used by the application.
 sealed class Screen(
