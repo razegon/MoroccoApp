@@ -18,7 +18,7 @@ data class Wikimedia(
     val title: String,
 
     @SerialName("imageinfo")
-    val imageInfo: List<ImageInfo>
+    val imageInfo: List<ImageInfo> = emptyList()
 )
 
 @Serializable
