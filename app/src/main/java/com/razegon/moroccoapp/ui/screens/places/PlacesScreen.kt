@@ -1,5 +1,6 @@
 package com.razegon.moroccoapp.ui.screens.places
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -67,6 +68,6 @@ fun PlacesScreen(
         imageLoader = application.wikimediaImageLoader,
         title = stringResource(R.string.places_title),
         onPlaceClick = onPlaceClick,
-        modifier = modifier
+        modifier = modifier.statusBarsPadding()
     )
 }

@@ -57,7 +57,7 @@ fun DetailsPager(
         }
     )
 
-    val imageMaxHeight = 240.dp
+    val imageMaxHeight = 256.dp
 
     var attributionImage by remember {
         mutableStateOf<WikimediaImage?>(null)
