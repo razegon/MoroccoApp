@@ -736,3 +736,51 @@ Attribution preserved
 2. Podczas przenoszenia ekranów uporządkować tymczasowe logi diagnostyczne dodane przy analizie ładowania Wikimedia.
 3. Kontynuować weryfikację współdzielonych przepływów danych i odpowiedzialności platformowych.
 4. Pozostałe zadania z wcześniejszego planu KMP — m.in. implementacja `PlacesRepository.search()` oraz platformowy odczyt zasobów dla iOS — pozostają otwarte, o ile nie zostały zrealizowane w osobnym etapie.
+
+
+---
+
+## Aktualizacja 3 listopada 2026 — etap `feature/kmp-ui-migration`
+
+### Zrealizowane i wypchnięte
+
+- Przeniesiono definicje tras `Screen.kt` do `shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt`.
+- Usunięto pusty placeholder `shared/.../MoroccoApp.kt`.
+- Wprowadzono poprawki edge-to-edge w Android UI (`MainActivity`, `CitiesScreen`, `PlacesScreen`, `DetailsPager`).
+- Ustawiono domyślną wartość `emptyList()` dla `WikimediaResponse.imageInfo`, aby obsłużyć brak pola w odpowiedzi API.
+- Dodano Android `network_security_config.xml` i odwołanie do niego w manifeście.
+- Przetestowano konfigurację na Huawei z Androidem 7. Wersja z globalnym zaufaniem do systemowych i użytkownikowych CA wyświetla zdjęcia; testowana wersja ograniczona do domen Wikimedia nie wyświetlała części zdjęć.
+- Cztery commity zostały wypchnięte na `origin/feature/kmp-ui-migration`.
+
+### Commity etapu
+
+```text
+b90c59e Add Android network security config for user certificates
+4801d34 Handle missing Wikimedia image info
+3a48cf1 Improve Android edge-to-edge UI handling
+cbdbb36 Move navigation routes to shared module
+```
+
+### Ważne ostrzeżenie bezpieczeństwa
+
+Aktualny Android `network_security_config.xml` zawiera `src="user"` w `base-config`. Oznacza to zaufanie do CA zainstalowanych przez użytkownika dla połączeń aplikacji objętych konfiguracją, a nie wyłącznie dla domen Wikimedia. Jest to świadomy kompromis dla kompatybilności z tabletem Huawei z Androidem 7. Konfiguracja Androida nie ustawia polityki TLS dla iOS.
+
+### Aktualny zakres KMP
+
+Definicje tras są już w `shared/commonMain`, ale nie oznacza to ukończenia wspólnej nawigacji ani migracji wszystkich ekranów do Compose Multiplatform. Poprawki edge-to-edge dotyczą Android UI w `app`.
+
+### Następne kroki
+
+1. Zaktualizować dokumentację i zatwierdzić ją osobnym commitem.
+2. Sprawdzić stan lokalnego `main` oraz `origin/main` i porównać je z `feature/kmp-ui-migration`.
+3. Uzgodnić bezpieczny sposób integracji brancha z `main`; przed merge nie zakładać, że historia obu gałęzi jest identyczna.
+4. Po integracji przygotować pełny ZIP projektu do audytu architektury, z wyłączeniem sekretów, plików lokalnych i artefaktów builda.
+5. W audycie zweryfikować, które pozostałe elementy `app` mogą zostać przeniesione do `shared`, w tym granice wspólnego UI, ViewModeli, nawigacji i adapterów platformowych.
+
+### Nadal nieuznawane za ukończone
+
+- Pełna migracja ekranów do Compose Multiplatform.
+- Pełna wspólna nawigacja iOS/Android.
+- Uruchomienie i weryfikacja aplikacji na iOS.
+- Platformowy odczyt zasobów i pozostałe otwarte zadania wymienione w poprzednich etapach.
+- `PlacesRepository.search()` — o ile nie został zaimplementowany w późniejszej, nieudokumentowanej zmianie.

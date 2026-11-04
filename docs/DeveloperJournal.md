@@ -1052,3 +1052,42 @@ Wartość diagnostyczna `total` w logach pokazała, że mapa otrzymywała ponad 
 - Cache Room i cache pamięciowy potwierdzone logami.
 
 Wniosek: obserwowany problem był zgodny z race condition podczas aktualizacji wspólnej mapy wyników. Atomowe `StateFlow.update` rozwiązało problem w przeprowadzonych testach. Diagnostyczne logi użyte podczas analizy są tymczasowe i powinny zostać usunięte przy późniejszym porządkowaniu ekranów oraz warstwy danych.
+
+
+---
+
+## 3 listopada 2026 — `feature/kmp-ui-migration`
+
+### Definicje tras w `shared`
+
+Przeniesiono `Screen.kt` do `shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt`. Definicje tras nawigacyjnych znajdują się teraz w `commonMain`, a więc mogą być współdzielone przez platformy.
+
+Usunięto pusty placeholder `shared/src/commonMain/kotlin/com/razegon/shared/MoroccoApp.kt`. Samo przeniesienie `Screen.kt` nie oznacza jeszcze przeniesienia całego kontrolera nawigacji ani wszystkich ekranów do wspólnego modułu.
+
+Commit: `cbdbb36 Move navigation routes to shared module`.
+
+### Poprawki Android UI
+
+Wprowadzono poprawki obsługi edge-to-edge w `MainActivity.kt` oraz w powiązanych elementach UI: `CitiesScreen.kt`, `PlacesScreen.kt` i `DetailsPager.kt`.
+
+Commit: `3a48cf1 Improve Android edge-to-edge UI handling`.
+
+### Brakujące `imageInfo` w odpowiedzi Wikimedia
+
+Pole `imageInfo` w `WikimediaResponse.kt` otrzymało domyślną wartość `emptyList()`. Dzięki temu brak pola w odpowiedzi API jest obsługiwany jako pusta lista, zamiast wymagać obecności wartości.
+
+Commit: `4801d34 Handle missing Wikimedia image info`.
+
+### Network Security Config i test na Huawei Android 7
+
+Dodano wskazanie konfiguracji `@xml/network_security_config` w `AndroidManifest.xml` oraz plik konfiguracji z bazowym zaufaniem do certyfikatów systemowych i certyfikatów CA zainstalowanych przez użytkownika.
+
+Podczas testów na tablecie Huawei z Androidem 7 zawężona konfiguracja, która dopuszczała certyfikaty użytkownika tylko dla hostów Wikimedia, powodowała brak części zdjęć (wyświetlał się obraz zastępczy). Po przywróceniu globalnego `base-config` z `src="system"` i `src="user"` wszystkie zdjęcia ponownie się wyświetlały.
+
+**Ostrzeżenie:** globalne `src="user"` rozszerza zaufanie TLS aplikacji na CA zainstalowane przez użytkownika. To świadomy kompromis kompatybilności, a nie ograniczenie zaufania wyłącznie do Wikimedia. Konfiguracja dotyczy Androida; nie ustawia polityki TLS dla iOS.
+
+Commit: `b90c59e Add Android network security config for user certificates`.
+
+### Stan Git
+
+Cztery powyższe commity zostały wypchnięte na `origin/feature/kmp-ui-migration`. Branch śledzi zdalny odpowiednik. Następnym krokiem po aktualizacji dokumentacji jest sprawdzenie synchronizacji z `main` i dopiero potem uzgodnienie sposobu integracji.

@@ -1138,3 +1138,30 @@ Wniosek: ograniczenie liczby równoległych żądań nie zastępuje atomowości 
 Podczas pobierania metadanych około 50 miejsc część obrazów pojawiała się niestabilnie, mimo że repozytorium odczytywało je z Room lub cache pamięciowego. Po zastąpieniu `_images.value += ...` przez `_images.update { ... }` wszystkie obrazy wyświetlały się w kolejnych testach, także po powrocie z Home i ponownej instalacji aplikacji.
 
 To praktyczny przykład, dlaczego współdzielony stan aktualizowany przez wiele korutyn powinien być modyfikowany atomowo.
+
+
+---
+
+## KMP — współdziel definicje tras, ale nie utożsamiaj ich z całą nawigacją
+
+Przeniesienie `Screen.kt` do `shared/commonMain` pozwala współdzielić definicje tras między platformami. Nie dowodzi jednak, że kontroler nawigacji, integracja z cyklem życia ani ekrany zostały przeniesione do `commonMain`.
+
+W dokumentacji i planie migracji rozróżniaj:
+- wspólne modele/definicje tras,
+- wspólną logikę nawigacji,
+- platformowy punkt wejścia i integrację,
+- wspólne ekrany Compose Multiplatform.
+
+Każdy z tych zakresów wymaga osobnej weryfikacji.
+
+## Android Network Security Config — zakres `src="user"`
+
+`<certificates src="user" />` oznacza zaufanie do certyfikatów CA zainstalowanych przez użytkownika. Umieszczenie tego wpisu w `base-config` rozszerza zaufanie na połączenia aplikacji objęte konfiguracją, a nie tylko na wskazane serwisy.
+
+Zawężenie `user` do `domain-config` może być bezpieczniejsze, ale musi uwzględniać rzeczywiste hosty i zachowanie połączeń. Nie należy dopisywać domen na podstawie przypuszczeń. W przypadku MoroccoApp test na Huawei z Androidem 7 wykazał, że konfiguracja globalna działała, a testowana konfiguracja ograniczona powodowała brak części obrazów. Przyjęte ustawienie jest więc kompromisem kompatybilności i powinno być jawnie opisane jako decyzja bezpieczeństwa.
+
+Konfiguracja Android Network Security Config nie konfiguruje zaufania TLS na iOS.
+
+## Nie utożsamiaj wspólnych tras z ukończonym UI KMP
+
+Przeniesienie `Screen.kt` do `shared/commonMain` jest konkretnym krokiem w kierunku wspólnej architektury. Nie należy na tej podstawie deklarować ukończenia migracji ekranów, nawigacji ani aplikacji iOS. Zakres migracji trzeba oceniać na podstawie rzeczywistej lokalizacji i zależności kodu.
