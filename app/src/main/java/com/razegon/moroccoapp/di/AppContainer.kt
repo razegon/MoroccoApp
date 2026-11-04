@@ -16,6 +16,8 @@ import com.razegon.shared.data.repository.PlacesRepositoryImpl
 import com.razegon.shared.data.repository.QuizRepositoryImpl
 import com.razegon.shared.data.repository.WikidataRepositoryImpl
 import com.razegon.shared.data.repository.WikimediaRepositoryImpl
+import com.razegon.shared.data.repository.QuizResultRepositoryImpl
+import com.razegon.shared.data.repository.ArcadeResultRepositoryImpl
 import com.razegon.shared.data.source.ComposeJsonResourceReader
 import com.razegon.shared.data.source.JsonPlaceDataSource
 
@@ -30,8 +32,6 @@ class AppContainer(
         createWikimediaHttpClient(
             engine = createWikimediaEngine()
         )
-
-    private val applicationContext = context.applicationContext
 
     private val resourceReader =
         ComposeJsonResourceReader()
@@ -69,5 +69,13 @@ class AppContainer(
         dataSource = JsonQuizQuestionDataSource(
             resourceReader = ComposeJsonResourceReader()
         )
+    )
+
+    val quizResultRepository = QuizResultRepositoryImpl(
+        dao = database.quizResultDao()
+    )
+
+    val arcadeResultRepository = ArcadeResultRepositoryImpl(
+        dao = database.arcadeResultDao()
     )
 }

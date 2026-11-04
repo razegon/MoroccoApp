@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.data.repository
+package com.razegon.shared.data.repository
 
 import com.razegon.shared.data.cache.ArcadeResultDao
 import com.razegon.shared.data.cache.toDomain
