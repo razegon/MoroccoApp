@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.screens.quiz
+package com.razegon.shared.ui.screens.quiz
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

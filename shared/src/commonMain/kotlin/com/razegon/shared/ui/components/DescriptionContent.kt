@@ -1,4 +1,4 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
 import androidx.compose.runtime.Composable
 import com.razegon.shared.domain.model.DescriptionBlock

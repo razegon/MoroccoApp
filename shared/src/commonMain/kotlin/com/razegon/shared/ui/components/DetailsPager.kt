@@ -1,6 +1,5 @@
-package com.razegon.moroccoapp.ui.components
+package com.razegon.shared.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -22,19 +21,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.R
 import com.razegon.shared.domain.model.WikimediaImage
-import com.razegon.moroccoapp.ui.model.DetailsPage
+import com.razegon.shared.ui.model.DetailsPage
 import com.razegon.shared.data.parser.DescriptionParser
 import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.WikimediaImageRef
+import coil3.ImageLoader
+import org.jetbrains.compose.resources.painterResource
+import com.razegon.shared.generated.resources.Res
+import com.razegon.shared.generated.resources.default_image
 
 /**
  * Wspólny pager zdjęć używany przez ekrany szczegółów City i Place.
@@ -47,6 +46,7 @@ fun DetailsPager(
     placeData: PlaceData,
     pages: List<DetailsPage>,
     wikimediaImages: Map<Int, WikimediaImage>,
+    imageLoader: ImageLoader,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {},
 ) {
@@ -57,16 +57,7 @@ fun DetailsPager(
         }
     )
 
-    val imageMaxHeight = 240.dp
-
-    // Access the shared application instance.
-    val application = LocalContext.current.applicationContext as MyApp
-
-    // Use the single ImageLoader shared by the entire application.
-    //
-    // This allows all Wikimedia components to share the same
-    // memory cache, disk cache and HTTP client.
-    val imageLoader = application.wikimediaImageLoader
+    val imageMaxHeight = 256.dp
 
     var attributionImage by remember {
         mutableStateOf<WikimediaImage?>(null)
@@ -132,8 +123,6 @@ fun DetailsPager(
                         )
                     }
 
-                    Log.d("IMAGE_CHECK", "Displayed URL: $imageUrl")
-
                     AsyncImage(
                         modifier = Modifier.fillMaxWidth(),
                         model = imageUrl,
@@ -142,7 +131,7 @@ fun DetailsPager(
                         contentScale = if (page == 0) {
                             ContentScale.FillWidth
                         } else ContentScale.Fit,
-                        error = painterResource(R.drawable.default_image),
+                        error = painterResource(Res.drawable.default_image),
                         onLoading = {
                             isImageLoading = true
                         },

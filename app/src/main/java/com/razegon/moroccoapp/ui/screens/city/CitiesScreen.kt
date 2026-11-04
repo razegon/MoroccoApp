@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
 import com.razegon.moroccoapp.R
-import com.razegon.moroccoapp.ui.components.CityListItem
+import com.razegon.shared.ui.components.CityListItem
 import com.razegon.moroccoapp.viewmodel.CitiesAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.CitiesViewModelFactory
 import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.razegon.shared.domain.model.PlaceData
+import com.razegon.shared.ui.screens.cities.CitiesContent
 
 @Composable
 fun CitiesScreen(
@@ -74,53 +76,12 @@ fun CitiesScreen(
         }
     }
 
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-
-        Text(
-            text = stringResource(R.string.cities_title),
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(
-                start = 20.dp,
-                top = 16.dp,
-                end = 20.dp,
-                bottom = 8.dp
-            )
-        )
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            )
-        ) {
-
-            items(uiState.places) { placeData ->
-
-                // Prefer the Wikimedia thumbnail to reduce image loading costs.
-                // Fall back to the original image if no thumbnail is available,
-                // then to the local image if Wikimedia metadata has not been loaded.
-                val imageUrl =
-                    placeData.place.wikimediaImages
-                        .firstOrNull()
-                        ?.let { imageRef ->
-                            wikimediaImages[imageRef.pageId]?.let { image ->
-                                image.thumbnailUrl ?: image.url
-                            }
-                        }
-                        ?: placeData.place.placeImages.firstOrNull()
-
-                CityListItem(
-                    placeData = placeData,
-                    imageUrl = imageUrl,
-                    onClick = onPlaceClick
-                )
-            }
-        }
-    }
+    CitiesContent(
+        places = uiState.places,
+        wikimediaImages = wikimediaImages,
+        imageLoader = app.wikimediaImageLoader,
+        title = stringResource(R.string.cities_title),
+        onPlaceClick = onPlaceClick,
+        modifier = modifier.statusBarsPadding()
+    )
 }

@@ -68,7 +68,7 @@ The project uses the following Git workflow:
 feature/* → main
 ```
 
-Feature branches are merged into `dev` for integration and testing. Changes are promoted to `main` after verification.
+Feature branches are merged directly into `main` after integration and testing.
 
 ## Project Status
 

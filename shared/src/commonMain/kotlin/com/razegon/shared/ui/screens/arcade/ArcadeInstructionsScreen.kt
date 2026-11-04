@@ -1,5 +1,4 @@
-
-package com.razegon.moroccoapp.ui.screens.arcade
+package com.razegon.shared.ui.screens.arcade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

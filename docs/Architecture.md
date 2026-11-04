@@ -1438,3 +1438,62 @@ Przy równoległych zapisach taka operacja może utracić aktualizację innej ko
 - Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update` obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach, także po ponownej instalacji aplikacji.
 
 Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów. Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie należy jednak traktować pojedynczej serii testów jako formalnego dowodu braku wszystkich możliwych problemów współbieżności.
+
+
+---
+
+## Aktualizacja 3 listopada 2026 — etap `feature/kmp-ui-migration`
+
+### Wspólne definicje tras
+
+Definicje tras nawigacyjnych zostały przeniesione z modułu Android `app` do:
+
+```text
+shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt
+```
+
+Dzięki temu definicje `Screen` są dostępne w kodzie wspólnym. Samo przeniesienie tras **nie oznacza jeszcze**, że cała implementacja nawigacji ani wszystkie ekrany zostały przeniesione do `shared`. Należy rozróżniać współdzielone definicje tras od platformowej integracji nawigacji i UI.
+
+W ramach tego etapu usunięto również pusty placeholder `shared/.../MoroccoApp.kt`, aby nie pozostawiać w module wspólnym pliku, który nie reprezentował rzeczywistego punktu wejścia aplikacji.
+
+### Android UI
+
+W module `app` wprowadzono poprawki obsługi edge-to-edge w `MainActivity` oraz powiązanych ekranach/komponentach UI (`CitiesScreen`, `PlacesScreen`, `DetailsPager`). Są to zmiany warstwy Android UI; nie należy na ich podstawie wnioskować, że te ekrany są już wspólne dla Androida i iOS.
+
+### Odporność odpowiedzi Wikimedia
+
+W `WikimediaResponse.kt` pole `imageInfo` otrzymało domyślną wartość pustej listy. Odpowiedź API, w której brakuje tego pola, może dzięki temu zostać zdeserializowana bez traktowania braku `imageInfo` jako błędu wymagającego wartości nie-null.
+
+### Android Network Security Config — kompromis kompatybilności
+
+Manifest Androida wskazuje `@xml/network_security_config`. Aktualna konfiguracja bazowa ufa zarówno systemowym certyfikatom CA, jak i certyfikatom CA zainstalowanym przez użytkownika:
+
+```xml
+<base-config>
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
+```
+
+Takie ustawienie zostało zachowane po teście na tablecie Huawei z Androidem 7: przy tej konfiguracji obrazy wyświetlały się poprawnie, natomiast zawężona konfiguracja dopuszczająca certyfikaty użytkownika tylko dla `commons.wikimedia.org` i `upload.wikimedia.org` powodowała, że część zdjęć nie była wyświetlana.
+
+**Ostrzeżenie bezpieczeństwa:** `src="user"` w `base-config` oznacza zaufanie do certyfikatów CA zainstalowanych przez użytkownika dla połączeń objętych konfiguracją aplikacji, a nie wyłącznie do jednego wskazanego certyfikatu lub jednej domeny. Jest to świadomy kompromis przyjęty dla kompatybilności ze starym urządzeniem. Nie należy opisywać tej konfiguracji jako ograniczonej wyłącznie do Wikimedia.
+
+Jest to konfiguracja Android Network Security Config. Nie konfiguruje ona zaufania TLS na iOS; platforma iOS ma odrębny mechanizm polityki połączeń sieciowych.
+
+### Stan gałęzi i zakres potwierdzonych zmian
+
+Zmiany etapu zostały zapisane na branchu `feature/kmp-ui-migration` i wypchnięte do `origin/feature/kmp-ui-migration`.
+
+Potwierdzone commity:
+
+```text
+b90c59e Add Android network security config for user certificates
+4801d34 Handle missing Wikimedia image info
+3a48cf1 Improve Android edge-to-edge UI handling
+cbdbb36 Move navigation routes to shared module
+```
+
+Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.

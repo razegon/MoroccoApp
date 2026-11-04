@@ -13,8 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import com.razegon.moroccoapp.MyApp
 import com.razegon.moroccoapp.data.repository.ArcadeResultRepositoryImpl
 import com.razegon.moroccoapp.data.repository.QuizResultRepositoryImpl
-import com.razegon.moroccoapp.ui.navigation.Screen
-import com.razegon.moroccoapp.ui.screens.arcade.ArcadeInstructionsScreen
+import com.razegon.shared.navigation.Screen
+import com.razegon.shared.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.moroccoapp.ui.screens.rankingquizarcade.ArcadeRankingScreen
 import com.razegon.moroccoapp.ui.screens.arcade.ArcadeScreen
 import com.razegon.moroccoapp.ui.screens.city.CitiesScreen
@@ -22,10 +22,10 @@ import com.razegon.moroccoapp.ui.screens.citydetails.CityDetailsScreen
 import com.razegon.shared.ui.screens.home.HomeScreen
 import com.razegon.moroccoapp.ui.screens.placedetails.PlaceDetailsScreen
 import com.razegon.moroccoapp.ui.screens.places.PlacesScreen
-import com.razegon.moroccoapp.ui.screens.quiz.QuizDifficultyScreen
+import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.moroccoapp.ui.screens.rankingquizarcade.QuizRankingScreen
 import com.razegon.moroccoapp.ui.screens.quiz.QuizScreen
-import com.razegon.moroccoapp.ui.screens.quiz.QuizStartScreen
+import com.razegon.shared.ui.screens.quiz.QuizStartScreen
 import com.razegon.moroccoapp.ui.screens.quiz.QuizSummaryScreen
 import com.razegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
@@ -35,6 +35,10 @@ import com.razegon.moroccoapp.viewmodel.QuizAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultViewModelFactory
 import com.razegon.moroccoapp.viewmodel.QuizViewModelFactory
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 
 @Composable
 fun MoroccoApp() {
@@ -105,7 +109,10 @@ fun MoroccoApp() {
     )
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.safeDrawing.only(
+            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+        )
     ) { innerPadding ->
 
         // Defines all application routes and the screen
@@ -119,7 +126,7 @@ fun MoroccoApp() {
             // Home screen is the starting destination of the application.
             composable(Screen.Home.route) {
                 HomeScreen(
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = Modifier,
                     // Navigate to the list of cities.
                     onCitiesClick = {
                         navController.navigate(Screen.Cities.route)
