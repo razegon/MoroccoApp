@@ -1,4 +1,3 @@
-
 package com.razegon.shared.presentation.viewmodel
 
 import com.razegon.shared.domain.repository.PlacesRepository
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Shared ViewModel responsible for loading place details.
 class PlaceDetailsViewModel(
     private val placeId: Int,
     private val repository: PlacesRepository,

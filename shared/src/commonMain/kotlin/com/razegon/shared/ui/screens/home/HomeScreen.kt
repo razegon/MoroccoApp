@@ -1,4 +1,3 @@
-
 package com.razegon.shared.ui.screens.home
 
 import androidx.compose.foundation.Image
@@ -32,6 +31,7 @@ import com.razegon.shared.ui.model.HeroUi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+// Shared home screen with navigation to cities, places and quiz.
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,

@@ -1,4 +1,3 @@
-
 package com.razegon.shared.presentation.viewmodel
 
 import com.razegon.shared.domain.repository.PlacesRepository
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Shared ViewModel responsible for loading city details and Wikidata information.
 class CityDetailsViewModel(
     private val placeId: Int,
     private val placesRepository: PlacesRepository,
@@ -48,7 +48,7 @@ class CityDetailsViewModel(
                     } catch (e: CancellationException) {
                         throw e
                     } catch (_: Exception) {
-                        // Dane miasta pozostają dostępne, nawet jeśli Wikidata nie odpowie.
+                        // Keep city data available even if Wikidata fails.
                     }
                 }
             } catch (e: CancellationException) {

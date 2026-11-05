@@ -22,7 +22,7 @@ fun WikidataInfoSection(
             end = 20.dp
         )
     ) {
-
+        // Display population when available.
         info.population?.let {
             Text(
                 text = "Ludność: $it",
@@ -30,6 +30,7 @@ fun WikidataInfoSection(
             )
         }
 
+        // Display area when available.
         info.area?.let {
             Text(
                 text = "Powierzchnia: $it km²",
@@ -37,6 +38,7 @@ fun WikidataInfoSection(
             )
         }
 
+        // Display elevation when available.
         info.elevation?.let {
             Text(
                 text = "Wysokość: ${it.toInt()} m n.p.m.",
@@ -44,6 +46,7 @@ fun WikidataInfoSection(
             )
         }
 
+        // Display the founding date when available.
         info.inception?.let {
             Text(
                 text = "Założenie: ${formatWikidataTime(it)}",
@@ -53,20 +56,14 @@ fun WikidataInfoSection(
     }
 }
 
-private fun formatWikidataTime(
-    time: WikidataTime
-): String {
-
+// Format a Wikidata time value according to its precision.
+private fun formatWikidataTime(time: WikidataTime): String {
     val year = time.year ?: return time.raw.orEmpty()
 
     return when (time.precision) {
         9 -> year.toString()
-
         8 -> "około $year"
-
         7 -> "około $year"
-
         else -> year.toString()
     }
 }
-

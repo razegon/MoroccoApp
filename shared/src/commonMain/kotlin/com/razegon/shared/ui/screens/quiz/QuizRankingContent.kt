@@ -1,5 +1,6 @@
 
 package com.razegon.shared.ui.screens.quiz
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.razegon.shared.domain.model.QuizResult
 
+// Shared quiz ranking UI displaying player results and dates.
 @Composable
 fun QuizRankingContent(
     results: List<QuizResult>,
@@ -93,9 +95,25 @@ private fun QuizRankingItem(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "$position. ${result.nickname}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = "${result.score}/${result.totalQuestions}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
             Text(
-                text = "$position. ${result.nickname}    ${result.score}/${result.totalQuestions}    ${result.difficulty}",
-                style = MaterialTheme.typography.bodyLarge
+                text = result.difficulty.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Text(

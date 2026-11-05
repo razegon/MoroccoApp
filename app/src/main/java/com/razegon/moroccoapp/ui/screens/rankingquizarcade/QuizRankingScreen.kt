@@ -19,7 +19,7 @@ fun QuizRankingScreen(
 ) {
     val results by resultViewModel.topResults.collectAsState()
 
-    // Load the latest TOP 20 results when the ranking screen is opened.
+    // Load the latest quiz results when the ranking screen is opened.
     LaunchedEffect(Unit) {
         resultViewModel.loadTopResults()
     }

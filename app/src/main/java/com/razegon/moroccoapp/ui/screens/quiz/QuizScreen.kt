@@ -14,6 +14,8 @@ fun QuizScreen(
     onSummaryClick: () -> Unit,
     onExitClick: () -> Unit
 ) {
+    val questions by viewModel.questions.collectAsState()
+
     val currentQuestionIndex by
     viewModel.currentQuestionIndex.collectAsState()
 
@@ -26,12 +28,12 @@ fun QuizScreen(
     val isAnswerChecked by
     viewModel.isAnswerChecked.collectAsState()
 
-    val question = viewModel.currentQuestion ?: return
+    val question = questions.getOrNull(currentQuestionIndex) ?: return
 
     QuizGameScreen(
         currentQuestion = question,
         currentQuestionIndex = currentQuestionIndex,
-        questionCount = viewModel.questionCount,
+        questionCount = questions.size,
         selectedAnswerIndex = selectedAnswerIndex,
         score = score,
         isAnswerChecked = isAnswerChecked,

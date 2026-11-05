@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Shared ViewModel responsible for loading cities and managing their UI state.
 class CitiesViewModel(
     private val repository: PlacesRepository,
     private val scope: CoroutineScope
@@ -22,6 +23,7 @@ class CitiesViewModel(
         loadCities()
     }
 
+    // Loads all cities from the repository and updates the UI state.
     fun loadCities() {
         scope.launch {
             _uiState.value = CitiesUiState(isLoading = true)

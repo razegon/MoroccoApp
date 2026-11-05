@@ -6,7 +6,7 @@ import com.razegon.shared.domain.repository.PlacesRepository
 import com.razegon.shared.domain.repository.WikidataRepository
 import com.razegon.shared.presentation.viewmodel.CityDetailsViewModel as SharedCityDetailsViewModel
 
-
+// Android lifecycle adapter for the shared CityDetailsViewModel.
 class CityDetailsAndroidViewModel(
     placeId: Int,
     placesRepository: PlacesRepository,

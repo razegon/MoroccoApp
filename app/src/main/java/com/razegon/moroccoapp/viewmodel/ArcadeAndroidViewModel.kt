@@ -9,6 +9,7 @@ import com.razegon.shared.presentation.viewmodel.ArcadeViewModel as SharedArcade
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+// Android lifecycle adapter for the shared ArcadeViewModel.
 class ArcadeAndroidViewModel(
     repository: QuizRepository
 ) : ViewModel() {

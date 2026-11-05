@@ -17,17 +17,18 @@ import com.razegon.shared.ui.screens.placedetails.PlaceDetailsContent
 fun PlaceDetailsScreen(
     placeId: Int
 ) {
-    // Access the custom application instance.
-    // MyApp contains application-wide dependencies such as
-    // the shared Wikimedia memory cache and Room database.
+    // Access application-wide dependencies through MyApp,
+    // including the shared AppContainer and platform-specific image loader.
     val application = LocalContext.current.applicationContext as MyApp
 
-    // Factory creates the ViewModel for the selected place.
+    // Create the ViewModel factory with the selected place ID
+    // and the shared application dependencies.
     val factory = PlaceDetailsViewModelFactory(
         placeId = placeId,
         appContainer = application.appContainer
     )
 
+    // Create the Android Wikimedia ViewModel using the shared repository.
     val viewModel: PlaceDetailsAndroidViewModel = viewModel(
         factory = factory
     )
@@ -41,7 +42,7 @@ fun PlaceDetailsScreen(
     )
 
     val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
-        key = "wikimediaTest2",
+        key = "wikimediaPlaceDetails",
         factory = wikimediaFactory
     )
 

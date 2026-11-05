@@ -2,13 +2,13 @@ package com.razegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.razegon.moroccoapp.di.AppContainer
+import com.razegon.shared.di.AppContainer
 
 class ArcadeViewModelFactory(
     private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
 
-    // Creates ArcadeViewModel with the repository required by the game logic.
+    // Android ViewModel factory providing the shared quiz repository to ArcadeAndroidViewModel.
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {

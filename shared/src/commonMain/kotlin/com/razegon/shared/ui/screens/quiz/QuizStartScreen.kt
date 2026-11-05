@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+// Shared quiz and arcade start screen with navigation to both rankings.
 @Composable
 fun QuizStartScreen(
     onStartQuizClick: () -> Unit,
@@ -98,11 +99,6 @@ fun QuizStartScreen(
         ) {
             Text("ARCADE MODE")
         }
-
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
-
 
         Spacer(
             modifier = Modifier.height(20.dp)

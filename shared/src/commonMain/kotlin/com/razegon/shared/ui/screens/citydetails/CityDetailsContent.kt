@@ -16,6 +16,7 @@ import com.razegon.shared.ui.components.PlaceListItem
 import com.razegon.shared.ui.components.WikidataInfoSection
 import com.razegon.shared.ui.components.createPages
 
+// Shared city details UI with Wikidata information and a list of child places.
 @Composable
 fun CityDetailsContent(
     placeData: PlaceData,

@@ -1,4 +1,3 @@
-
 package com.razegon.shared.ui.screens.cities
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +18,7 @@ import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.ui.components.CityListItem
 
+// Shared cities list UI with Wikimedia thumbnails and place navigation.
 @Composable
 fun CitiesContent(
     places: List<PlaceData>,
@@ -75,4 +75,3 @@ fun CitiesContent(
         }
     }
 }
-

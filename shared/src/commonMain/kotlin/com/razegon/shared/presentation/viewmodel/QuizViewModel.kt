@@ -1,4 +1,3 @@
-
 package com.razegon.shared.presentation.viewmodel
 
 import com.razegon.shared.domain.model.QuizDifficulty
@@ -11,11 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Shared ViewModel responsible for quiz state and game flow.
 class QuizViewModel(
     private val repository: QuizRepository,
     private val scope: CoroutineScope
 ) {
-    private var questions: List<QuizQuestion> = emptyList()
+    private val _questions = MutableStateFlow<List<QuizQuestion>>(emptyList())
+    val questions: StateFlow<List<QuizQuestion>> = _questions.asStateFlow()
 
     private val _currentQuestionIndex = MutableStateFlow(0)
     val currentQuestionIndex: StateFlow<Int> = _currentQuestionIndex.asStateFlow()
@@ -42,17 +43,17 @@ class QuizViewModel(
     val error: StateFlow<String?> = _error.asStateFlow()
 
     val currentQuestion: QuizQuestion?
-        get() = questions.getOrNull(_currentQuestionIndex.value)
+        get() = _questions.value.getOrNull(_currentQuestionIndex.value)
 
     val questionCount: Int
-        get() = questions.size
+        get() = _questions.value.size
 
     fun startQuiz(difficulty: QuizDifficulty) {
         scope.launch {
             _isLoading.value = true
             _error.value = null
             _selectedDifficulty.value = difficulty
-            questions = emptyList()
+            _questions.value = emptyList()
             _currentQuestionIndex.value = 0
             _selectedAnswerIndex.value = null
             _score.value = 0
@@ -60,9 +61,9 @@ class QuizViewModel(
             _isResultSaved.value = false
 
             try {
-                questions = repository.getQuestions(difficulty).shuffled()
+                _questions.value = repository.getQuestions(difficulty).shuffled()
 
-                if (questions.isEmpty()) {
+                if (_questions.value.isEmpty()) {
                     _error.value = "Brak pytań dla wybranego poziomu trudności."
                 }
             } catch (e: CancellationException) {
@@ -92,7 +93,7 @@ class QuizViewModel(
     fun nextQuestion(): Boolean {
         if (!_isAnswerChecked.value) return false
 
-        return if (_currentQuestionIndex.value < questions.lastIndex) {
+        return if (_currentQuestionIndex.value < _questions.value.lastIndex) {
             _currentQuestionIndex.value += 1
             _selectedAnswerIndex.value = null
             _isAnswerChecked.value = false
@@ -103,7 +104,7 @@ class QuizViewModel(
     }
 
     fun restartQuiz() {
-        questions = emptyList()
+        _questions.value = emptyList()
         _currentQuestionIndex.value = 0
         _selectedAnswerIndex.value = null
         _score.value = 0

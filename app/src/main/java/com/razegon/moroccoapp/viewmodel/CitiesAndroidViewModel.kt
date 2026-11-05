@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.razegon.shared.domain.repository.PlacesRepository
 import com.razegon.shared.presentation.viewmodel.CitiesViewModel
 
+// Android lifecycle adapter for the shared CitiesViewModel.
 class CitiesAndroidViewModel(
     repository: PlacesRepository
 ) : ViewModel() {

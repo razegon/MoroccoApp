@@ -18,6 +18,7 @@ import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.ui.components.PlaceListItem
 
+// Shared places list UI with Wikimedia thumbnails and place navigation.
 @Composable
 fun PlacesContent(
     places: List<PlaceData>,

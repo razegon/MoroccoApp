@@ -7,10 +7,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.R
+import com.razegon.shared.generated.resources.Res
+import com.razegon.shared.generated.resources.places_title
+import org.jetbrains.compose.resources.stringResource
 import com.razegon.moroccoapp.viewmodel.PlacesAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.PlacesViewModelFactory
 import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
@@ -23,12 +24,11 @@ fun PlacesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    // Access the custom application instance.
-    // MyApp contains application-wide dependencies such as
-    // the shared Wikimedia memory cache and Room database.
+    // Access application-wide dependencies through MyApp,
+    // including the shared AppContainer and platform-specific image loader.
     val application = LocalContext.current.applicationContext as MyApp
 
-    // ViewModel responsible for loading the list of places.
+    // Android ViewModel providing access to the shared places state.
     val viewModel: PlacesAndroidViewModel = viewModel(
         factory = PlacesViewModelFactory(application.appContainer)
     )
@@ -41,6 +41,7 @@ fun PlacesScreen(
         wikimediaRepository
     )
 
+    // Create the Android Wikimedia ViewModel using the shared repository.
     val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
         key = "wikimediaPlaces",
         factory = wikimediaFactory
@@ -52,6 +53,7 @@ fun PlacesScreen(
     // Contains the current state of the Places screen.
     val uiState by viewModel.uiState.collectAsState()
 
+    // Load metadata for the first Wikimedia image associated with each place.
     LaunchedEffect(uiState.places) {
         uiState.places.forEach { placeData ->
             placeData.place.wikimediaImages
@@ -66,7 +68,7 @@ fun PlacesScreen(
         places = uiState.places,
         wikimediaImages = wikimediaImages,
         imageLoader = application.wikimediaImageLoader,
-        title = stringResource(R.string.places_title),
+        title = stringResource(Res.string.places_title),
         onPlaceClick = onPlaceClick,
         modifier = modifier.statusBarsPadding()
     )

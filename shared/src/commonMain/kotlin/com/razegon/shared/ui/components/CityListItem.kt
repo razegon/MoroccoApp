@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import com.razegon.shared.domain.model.PlaceData
-import coil3.ImageLoader
 
 @Composable
 fun CityListItem(
@@ -26,7 +26,6 @@ fun CityListItem(
     onClick: (PlaceData) -> Unit
 ) {
     // Card represents a single city in the cities list.
-    // Clicking the card is delegated to the parent screen.
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -37,34 +36,27 @@ fun CityListItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-
-            // Display the city's Wikimedia image.
-            //
-            // The imageUrl is provided by the parent screen after
-            // Wikimedia metadata has been loaded.
-            // If the URL is missing or loading fails, use the default image.
+            // Display the city's Wikimedia image when available.
             AsyncImage(
                 modifier = Modifier.size(112.dp),
                 model = imageUrl,
                 imageLoader = imageLoader,
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop
             )
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(4.dp),
+                    .padding(4.dp)
             ) {
-
-                // City name.
                 Text(
                     text = placeData.content.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                // Optional translation of the city name.
+                // Display the translated city name when available.
                 placeData.content.translation?.let {
                     Text(
                         text = it,
@@ -74,7 +66,7 @@ fun CityListItem(
                     )
                 }
 
-                // Optional short description of the city.
+                // Display the short description when available.
                 placeData.content.snippet?.let {
                     Text(
                         text = it,

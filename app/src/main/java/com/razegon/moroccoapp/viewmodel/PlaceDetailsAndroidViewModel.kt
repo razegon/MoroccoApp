@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.razegon.shared.domain.repository.PlacesRepository
 import com.razegon.shared.presentation.viewmodel.PlaceDetailsViewModel as SharedPlaceDetailsViewModel
 
+// Android lifecycle adapter for the shared PlaceDetailsViewModel.
 class PlaceDetailsAndroidViewModel(
     placeId: Int,
-    repository: PlacesRepository,
+    repository: PlacesRepository
 
 ) : ViewModel() {
 

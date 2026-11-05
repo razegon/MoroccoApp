@@ -3,37 +3,30 @@ package com.razegon.shared.presentation.viewmodel
 import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.domain.repository.WikimediaRepository
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 
+// Shared ViewModel responsible for loading and caching Wikimedia images.
 class WikimediaViewModel(
-    private val repository: WikimediaRepository
+    private val repository: WikimediaRepository,
+    private val scope: CoroutineScope
 ) {
 
-    private val scope = CoroutineScope(
-        SupervisorJob() + Dispatchers.Default
-    )
-
-    private val _images =
-        MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
-
-    val images: StateFlow<Map<Int, WikimediaImage>> = _images
+    private val _images = MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
+    val images: StateFlow<Map<Int, WikimediaImage>> = _images.asStateFlow()
 
     private val loadingImagesInternal = MutableStateFlow<Set<Int>>(emptySet())
 
     fun getImage(pageId: Int) {
 
-        println("WIKIMEDIA: request pageId=$pageId")
-
         if (_images.value.containsKey(pageId)) return
 
-        // Atomowo dodajemy ID. Jeśli już istnieje, inne żądanie pobiera ten obraz.
+        // Atomically register the page ID to prevent duplicate requests.
         while (true) {
             val current = loadingImagesInternal.value
 
@@ -47,21 +40,11 @@ class WikimediaViewModel(
         scope.launch {
             try {
                 requestSemaphore.withPermit {
-                    println("WIKIMEDIA: loading pageId=$pageId")
-
                     val image = repository.getImage(pageId)
-
-                    println("WIKIMEDIA: result pageId=$pageId, found=${image != null}")
 
                     if (image != null) {
                         _images.update { current ->
-                            val updated = current + (pageId to image)
-
-                            println(
-                                "WIKIMEDIA STATE: pageId=$pageId, total=${updated.size}"
-                            )
-
-                            updated
+                            current + (pageId to image)
                         }
                     }
                 }

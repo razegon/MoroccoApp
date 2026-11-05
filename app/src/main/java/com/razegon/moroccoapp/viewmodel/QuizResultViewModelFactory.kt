@@ -9,7 +9,7 @@ class QuizResultViewModelFactory(
     private val repository: QuizResultRepository
 ) : ViewModelProvider.Factory {
 
-    // Creates QuizResultViewModel with the required repository.
+    // Creates the shared QuizResultViewModel and wraps it in an Android adapter.
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {

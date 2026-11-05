@@ -1,58 +1,44 @@
 package com.razegon.moroccoapp.ui.screens.city
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
-import com.razegon.moroccoapp.R
-import com.razegon.shared.ui.components.CityListItem
 import com.razegon.moroccoapp.viewmodel.CitiesAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.CitiesViewModelFactory
 import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.ui.screens.cities.CitiesContent
+import com.razegon.shared.generated.resources.Res
+import com.razegon.shared.generated.resources.cities_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CitiesScreen(
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    // Access the shared application instance.
-    // MyApp contains application-wide dependencies such as
-    // the memory cache and the Room database.
+    // Access the Android application instance to obtain shared dependencies
+    // and the platform-specific image loader.
     val app = LocalContext.current.applicationContext as MyApp
 
-    // ViewModel responsible for loading the list of cities.
+    // Android ViewModel wrapper providing access to the shared cities state.
     val viewModel: CitiesAndroidViewModel = viewModel(
         factory = CitiesViewModelFactory(app.appContainer)
     )
 
     val uiState by viewModel.uiState.collectAsState()
 
-
-
-    // Repository responsible for loading Wikimedia image metadata.
+    // Obtain the shared Wikimedia repository.
     val wikimediaRepository = app.appContainer.wikimediaRepository
 
-    // Factory creates the Wikimedia ViewModel using the repository above.
+    // Create the Android ViewModel wrapper for Wikimedia image loading.
     val wikimediaFactory = WikimediaViewModelFactory(
         wikimediaRepository
     )
@@ -64,8 +50,8 @@ fun CitiesScreen(
 
     val wikimediaImages by wikimediaViewModel.images.collectAsState()
 
-    // Request image metadata for the first Wikimedia image
-    // associated with each city.
+    // Load metadata for the first Wikimedia image associated with each city.
+    // Re-run when the list of cities changes.
     LaunchedEffect(uiState.places) {
         uiState.places.forEach { placeData ->
             placeData.place.wikimediaImages
@@ -76,11 +62,12 @@ fun CitiesScreen(
         }
     }
 
+    // Render the shared cities UI with data and platform-specific dependencies.
     CitiesContent(
         places = uiState.places,
         wikimediaImages = wikimediaImages,
         imageLoader = app.wikimediaImageLoader,
-        title = stringResource(R.string.cities_title),
+        title = stringResource(Res.string.cities_title),
         onPlaceClick = onPlaceClick,
         modifier = modifier.statusBarsPadding()
     )

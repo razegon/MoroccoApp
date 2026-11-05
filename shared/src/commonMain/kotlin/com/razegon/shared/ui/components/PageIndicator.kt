@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
+// Shared page indicator showing the current position in a pager.
 @Composable
 fun PageIndicator(
     pageCount: Int,
@@ -23,16 +24,16 @@ fun PageIndicator(
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         repeat(pageCount) { index ->
-
             Box(
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
                     .background(
-                        if (index == currentPage)
+                        if (index == currentPage) {
                             MaterialTheme.colorScheme.primary
-                        else
+                        } else {
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        }
                     )
             )
         }

@@ -1,4 +1,3 @@
-
 package com.razegon.shared.ui
 
 import androidx.compose.foundation.layout.WindowInsets
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.savedstate.read
 import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.QuizDifficulty
 import com.razegon.shared.navigation.Screen
@@ -20,8 +20,8 @@ import com.razegon.shared.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.shared.ui.screens.home.HomeScreen
 import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.shared.ui.screens.quiz.QuizStartScreen
-import androidx.savedstate.read
 
+// Shared application entry point and navigation graph for the common UI.
 @Composable
 fun MoroccoApp(
     onStartQuiz: () -> Unit,
@@ -110,13 +110,15 @@ fun MoroccoApp(
                 }
             }
 
+            // Keep the quiz menu as the entry point for the entire quiz flow.
             composable(Screen.Quiz.route) {
                 QuizStartScreen(
                     onStartQuizClick = {
                         onStartQuiz()
+
                         navController.navigate(Screen.QuizDifficulty.route) {
                             popUpTo(Screen.Quiz.route) {
-                                inclusive = true
+                                inclusive = false
                             }
                         }
                     },
@@ -137,19 +139,15 @@ fun MoroccoApp(
                     onDifficultySelected = { difficulty ->
                         onDifficultySelected(difficulty)
 
+                        // Remove the difficulty screen while keeping the quiz menu.
                         navController.navigate(Screen.QuizGame.route) {
                             popUpTo(Screen.Quiz.route) {
-                                inclusive = true
+                                inclusive = false
                             }
                         }
                     },
                     onBackClick = {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Home.route) {
-                                inclusive = false
-                            }
-                            launchSingleTop = true
-                        }
+                        navController.popBackStack()
                     }
                 )
             }
@@ -157,6 +155,7 @@ fun MoroccoApp(
             composable(Screen.QuizGame.route) {
                 quizGameScreen(
                     {
+                        // Remove the game screen and keep the quiz menu below the summary.
                         navController.navigate(Screen.QuizSummary.route) {
                             popUpTo(Screen.Quiz.route) {
                                 inclusive = false
@@ -165,11 +164,10 @@ fun MoroccoApp(
                     },
                     {
                         onStartQuiz()
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.popBackStack(
+                            Screen.Quiz.route,
+                            inclusive = false
+                        )
                     }
                 )
             }
@@ -177,34 +175,31 @@ fun MoroccoApp(
             composable(Screen.QuizSummary.route) {
                 quizSummaryScreen(
                     {
+                        // Reset the quiz and return to the existing quiz menu.
                         onStartQuiz()
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.popBackStack(
+                            Screen.Quiz.route,
+                            inclusive = false
+                        )
                     },
                     {
                         navController.navigate(Screen.QuizRanking.route)
                     },
                     {
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Home.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.popBackStack(
+                            Screen.Home.route,
+                            inclusive = false
+                        )
                     }
                 )
             }
 
             composable(Screen.QuizRanking.route) {
                 quizRankingScreen {
-                    navController.navigate(Screen.Quiz.route) {
-                        popUpTo(Screen.Home.route) {
-                            inclusive = false
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack(
+                        Screen.Quiz.route,
+                        inclusive = false
+                    )
                 }
             }
 
@@ -212,6 +207,7 @@ fun MoroccoApp(
                 ArcadeInstructionsScreen(
                     onStartClick = {
                         onStartArcade()
+
                         navController.navigate(Screen.QuizArcade.route) {
                             popUpTo(Screen.ArcadeInstructions.route) {
                                 inclusive = true
@@ -219,12 +215,10 @@ fun MoroccoApp(
                         }
                     },
                     onBackClick = {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Home.route) {
-                                inclusive = false
-                            }
-                            launchSingleTop = true
-                        }
+                        navController.popBackStack(
+                            Screen.Quiz.route,
+                            inclusive = false
+                        )
                     }
                 )
             }
@@ -235,33 +229,28 @@ fun MoroccoApp(
                         navController.navigate(Screen.QuizArcadeRanking.route)
                     },
                     {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.popBackStack(
+                            Screen.Quiz.route,
+                            inclusive = false
+                        )
                     },
                     {
-                        navController.navigate(Screen.Quiz.route) {
-                            popUpTo(Screen.Quiz.route) {
-                                inclusive = false
-                            }
-                        }
+                        navController.popBackStack(
+                            Screen.Quiz.route,
+                            inclusive = false
+                        )
                     }
                 )
             }
 
             composable(Screen.QuizArcadeRanking.route) {
                 arcadeRankingScreen {
-                    navController.navigate(Screen.Quiz.route) {
-                        popUpTo(Screen.Home.route) {
-                            inclusive = false
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack(
+                        Screen.Quiz.route,
+                        inclusive = false
+                    )
                 }
             }
         }
     }
 }
-

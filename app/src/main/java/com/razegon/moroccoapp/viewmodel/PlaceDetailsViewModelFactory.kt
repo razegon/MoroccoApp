@@ -2,8 +2,10 @@ package com.razegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.razegon.moroccoapp.di.AppContainer
+import com.razegon.shared.di.AppContainer
 
+// Android ViewModel factory providing the places repository and place ID
+// to PlaceDetailsAndroidViewModel.
 class PlaceDetailsViewModelFactory(
     private val placeId: Int,
     private val appContainer: AppContainer
@@ -18,7 +20,6 @@ class PlaceDetailsViewModelFactory(
             return PlaceDetailsAndroidViewModel(
                 placeId = placeId,
                 repository = appContainer.placesRepository
-
             ) as T
         }
 

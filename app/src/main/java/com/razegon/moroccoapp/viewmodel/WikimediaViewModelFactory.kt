@@ -3,8 +3,8 @@ package com.razegon.moroccoapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.razegon.shared.domain.repository.WikimediaRepository
-import com.razegon.shared.presentation.viewmodel.WikimediaViewModel as SharedWikimediaViewModel
 
+// Android ViewModel factory providing the repository to WikimediaAndroidViewModel.
 class WikimediaViewModelFactory(
     private val repository: WikimediaRepository
 ) : ViewModelProvider.Factory {
@@ -14,11 +14,8 @@ class WikimediaViewModelFactory(
         modelClass: Class<T>
     ): T {
         if (modelClass.isAssignableFrom(WikimediaAndroidViewModel::class.java)) {
-
             return WikimediaAndroidViewModel(
-                sharedViewModel = SharedWikimediaViewModel(
-                    repository = repository
-                )
+                repository = repository
             ) as T
         }
 
@@ -26,5 +23,4 @@ class WikimediaViewModelFactory(
             "Unknown ViewModel class: ${modelClass.name}"
         )
     }
-
 }

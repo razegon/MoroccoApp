@@ -2,13 +2,13 @@ package com.razegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.razegon.moroccoapp.di.AppContainer
+import com.razegon.shared.di.AppContainer
 
 class QuizViewModelFactory(
     private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
 
-    // Creates QuizViewModel and injects the repository it needs.
+    // Android ViewModel factory providing the quiz repository to QuizAndroidViewModel.
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {

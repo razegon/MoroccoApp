@@ -19,12 +19,12 @@ fun CityDetailsScreen(
     placeId: Int,
     onPlaceClick: (PlaceData) -> Unit
 ) {
-    // MyApp contains application-wide dependencies,
-    // including the shared Wikimedia memory cache and Room database.
+    // Access application-wide dependencies through MyApp,
+    // including the shared AppContainer and platform-specific image loader.
     val app = LocalContext.current.applicationContext as MyApp
 
-    // Factory creates the ViewModel and passes the selected place ID
-    // together with the application instance.
+    // Create the ViewModel factory with the selected place ID
+    // and the shared application dependencies.
     val factory = CityDetailsViewModelFactory(
         placeId = placeId,
         appContainer = app.appContainer

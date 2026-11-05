@@ -1,4 +1,3 @@
-
 package com.razegon.moroccoapp.ui.screens.arcade
 
 import androidx.compose.runtime.Composable
@@ -12,6 +11,7 @@ import com.razegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
 import com.razegon.shared.domain.model.ArcadeResult
 import com.razegon.shared.ui.screens.arcade.ArcadeGameScreen
 
+// Android adapter connecting the shared arcade game UI with Android ViewModels.
 @Composable
 fun ArcadeScreen(
     viewModel: ArcadeAndroidViewModel,

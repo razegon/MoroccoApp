@@ -4,16 +4,16 @@ import com.razegon.shared.domain.model.QuizResult
 import com.razegon.shared.domain.repository.QuizResultRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
+// Shared ViewModel responsible for managing quiz results.
 class QuizResultViewModel(
     private val repository: QuizResultRepository
 ) {
 
     // Contains the current TOP 20 quiz results.
-    private val _topResults =
-        MutableStateFlow<List<QuizResult>>(emptyList())
-
-    val topResults: StateFlow<List<QuizResult>> = _topResults
+    private val _topResults = MutableStateFlow<List<QuizResult>>(emptyList())
+    val topResults: StateFlow<List<QuizResult>> = _topResults.asStateFlow()
 
     // Saves a completed quiz result in the local database.
     suspend fun saveResult(result: QuizResult) {

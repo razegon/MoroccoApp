@@ -18,7 +18,7 @@ fun QuizSummaryScreen(
     onHomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Observe the final quiz score.
+    // Android adapter connecting the shared quiz summary UI with Android ViewModels.
     val score by viewModel.score.collectAsState()
 
     val isResultSaved by viewModel.isResultSaved.collectAsState()

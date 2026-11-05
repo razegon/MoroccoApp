@@ -1,16 +1,16 @@
-
 package com.razegon.shared.presentation.viewmodel
 
 import com.razegon.shared.domain.repository.PlacesRepository
 import com.razegon.shared.presentation.model.PlacesUiState
+import com.razegon.shared.domain.model.PlaceType
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import com.razegon.shared.domain.model.PlaceType
 
+// Shared ViewModel responsible for loading and filtering places.
 class PlacesViewModel(
     private val repository: PlacesRepository,
     private val scope: CoroutineScope

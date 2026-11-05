@@ -24,23 +24,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import coil3.compose.AsyncImage
-import com.razegon.shared.domain.model.WikimediaImage
-import com.razegon.shared.ui.model.DetailsPage
 import com.razegon.shared.data.parser.DescriptionParser
 import com.razegon.shared.domain.model.PlaceData
+import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.domain.model.WikimediaImageRef
-import coil3.ImageLoader
-import org.jetbrains.compose.resources.painterResource
 import com.razegon.shared.generated.resources.Res
 import com.razegon.shared.generated.resources.default_image
+import com.razegon.shared.ui.model.DetailsPage
+import org.jetbrains.compose.resources.painterResource
 
-/**
- * Wspólny pager zdjęć używany przez ekrany szczegółów City i Place.
- *
- * Obsługuje zdjęcia Wikimedia oraz zwykłe adresy URL, przewijanie zdjęcia,
- * wskaźnik stron oraz informacje o źródle zdjęcia.
- */
+// Shared image pager used by city and place details screens.
+// Supports Wikimedia images, descriptions, page indicators and image attribution.
 @Composable
 fun DetailsPager(
     placeData: PlaceData,
@@ -50,11 +46,8 @@ fun DetailsPager(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {},
 ) {
-
     val pagerState = rememberPagerState(
-        pageCount = {
-            pages.size
-        }
+        pageCount = { pages.size }
     )
 
     val imageMaxHeight = 256.dp
@@ -68,7 +61,6 @@ fun DetailsPager(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top
     ) { page ->
-
         val detailsPage = pages[page]
         val scrollState = rememberScrollState()
 
@@ -82,29 +74,31 @@ fun DetailsPager(
             mutableStateOf(imageUrl != null)
         }
 
-        val imageHeight = if (page == 0) {
+        val imageHeight = with(LocalDensity.current) {
+            (imageMaxHeight.toPx() - scrollState.value)
+                .coerceAtLeast(0f)
+                .toDp()
+        }
 
-            with(LocalDensity.current) {
-                (imageMaxHeight.toPx() - scrollState.value)
-                    .coerceAtLeast(0f)
-                    .toDp()
+        // Parse the description only when its content changes.
+        val descriptionBlocks = remember(detailsPage.description) {
+            detailsPage.description?.let {
+                DescriptionParser.parse(it)
             }
-        } else null
+        }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-
             if (imageUrl != null) {
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .then(
                             if (page == 0) {
-                                Modifier.height(imageHeight!!)
+                                Modifier.height(imageHeight)
                             } else {
                                 imageAspectRatio?.let {
                                     Modifier.aspectRatio(it)
@@ -112,9 +106,7 @@ fun DetailsPager(
                             }
                         )
                 ) {
-
                     if (isImageLoading) {
-
                         LinearProgressIndicator(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -130,13 +122,14 @@ fun DetailsPager(
                         contentDescription = null,
                         contentScale = if (page == 0) {
                             ContentScale.FillWidth
-                        } else ContentScale.Fit,
+                        } else {
+                            ContentScale.Fit
+                        },
                         error = painterResource(Res.drawable.default_image),
                         onLoading = {
                             isImageLoading = true
                         },
                         onSuccess = { state ->
-
                             isImageLoading = false
 
                             val size = state.painter.intrinsicSize
@@ -150,12 +143,12 @@ fun DetailsPager(
                         }
                     )
 
+                    // Show attribution when the image has Wikimedia metadata.
                     val wikimediaImage = detailsPage.pageId?.let { pageId ->
                         wikimediaImages[pageId]
                     }
 
                     if (wikimediaImage != null) {
-
                         WikimediaAttributionIcon(
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
@@ -170,7 +163,6 @@ fun DetailsPager(
                     }
 
                     if (pages.size > 1) {
-
                         PageIndicator(
                             pageCount = pages.size,
                             currentPage = pagerState.currentPage,
@@ -182,13 +174,9 @@ fun DetailsPager(
                 }
             }
 
-            /*
-             * Wspólne informacje City i Place.
-             * Na pierwszej stronie wyświetlamy nazwę,
-             * tłumaczenie oraz krótki opis.
-             */
+            // Display the place name, translation and additional content
+            // on the first page only.
             if (page == 0) {
-
                 Text(
                     text = placeData.content.name,
                     style = MaterialTheme.typography.headlineMedium,
@@ -200,7 +188,6 @@ fun DetailsPager(
                 )
 
                 placeData.content.translation?.let {
-
                     Text(
                         text = it,
                         style = MaterialTheme.typography.titleMedium,
@@ -213,7 +200,6 @@ fun DetailsPager(
                 }
 
                 placeData.content.snippet?.let {
-
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodyLarge,
@@ -224,32 +210,20 @@ fun DetailsPager(
                     )
                 }
 
-                /*
-                 * Dodatkowa zawartość przekazana przez ekran.
-                 *
-                 * CityDetailsScreen przekazuje tutaj LazyRow
-                 * z miejscami należącymi do miasta.
-                 *
-                 * PlaceDetailsScreen nie przekazuje content,
-                 * więc domyślnie nic tutaj nie zostanie wyświetlone.
-                 */
+                // Additional content supplied by the parent screen.
+                // City details can use this slot to display child places.
                 content()
             }
 
             if (page > 0) {
-
-                detailsPage.description?.let {
-                    DescriptionContent(
-                        blocks = DescriptionParser.parse(it),
-                        //modifier = Modifier.padding(20.dp)
-                    )
+                descriptionBlocks?.let {
+                    DescriptionContent(blocks = it)
                 }
             }
         }
     }
 
     attributionImage?.let { image ->
-
         WikimediaAttributionDialog(
             image = image,
             onDismiss = {
@@ -259,6 +233,8 @@ fun DetailsPager(
     }
 }
 
+// Creates pager pages by combining Wikimedia images,
+// regular image URLs and descriptions.
 fun createPages(
     wikimediaImages: Map<Int, WikimediaImage>,
     images: List<String?>,
@@ -273,7 +249,6 @@ fun createPages(
     )
 
     return List(pageCount) { index ->
-
         val imageRef = wikimediaRefs.getOrNull(index)
 
         val imageUrl = imageRef?.let { ref ->

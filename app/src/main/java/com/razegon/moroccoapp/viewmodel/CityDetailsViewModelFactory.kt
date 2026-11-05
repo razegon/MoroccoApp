@@ -2,8 +2,9 @@ package com.razegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.razegon.moroccoapp.di.AppContainer
+import com.razegon.shared.di.AppContainer
 
+// Android ViewModel factory providing the repositories and place ID to CityDetailsAndroidViewModel.
 class CityDetailsViewModelFactory(
     private val placeId: Int,
     private val appContainer: AppContainer

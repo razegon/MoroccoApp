@@ -1,7 +1,5 @@
 package com.razegon.shared.ui.components
 
-import androidx.compose.runtime.Composable
-import com.razegon.shared.domain.model.DescriptionBlock
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -19,7 +18,9 @@ import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.razegon.shared.domain.model.DescriptionBlock
 
+// Shared component for rendering structured description content.
 @Composable
 fun DescriptionContent(
     blocks: List<DescriptionBlock>
@@ -28,6 +29,7 @@ fun DescriptionContent(
         blocks.forEach { block ->
             when (block) {
                 is DescriptionBlock.Paragraph -> {
+                    // Render a paragraph with bold and italic text formatting.
                     Text(
                         text = buildAnnotatedString {
                             block.parts.forEach { part ->
@@ -62,6 +64,7 @@ fun DescriptionContent(
                 }
 
                 is DescriptionBlock.Heading3 -> {
+                    // Render a level-three heading.
                     Text(
                         text = buildAnnotatedString {
                             block.parts.forEach { part ->
@@ -90,6 +93,7 @@ fun DescriptionContent(
                 }
 
                 is DescriptionBlock.Heading4 -> {
+                    // Render a level-four heading.
                     Text(
                         text = buildAnnotatedString {
                             block.parts.forEach { part ->
@@ -118,6 +122,7 @@ fun DescriptionContent(
                 }
 
                 is DescriptionBlock.Heading5 -> {
+                    // Render a level-five heading.
                     Text(
                         text = buildAnnotatedString {
                             block.parts.forEach { part ->
@@ -146,6 +151,7 @@ fun DescriptionContent(
                 }
 
                 is DescriptionBlock.BulletList -> {
+                    // Render a bulleted list with inline text formatting.
                     Column(
                         modifier = Modifier.padding(
                             start = 12.dp,

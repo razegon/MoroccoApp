@@ -20,30 +20,26 @@ fun WikimediaAttributionDialog(
     image: WikimediaImage,
     onDismiss: () -> Unit
 ) {
+    // Provides a platform-independent handler for opening external links.
     val uriHandler = LocalUriHandler.current
 
     AlertDialog(
         onDismissRequest = onDismiss,
-
         title = {
             Text("Informacje o zdjęciu")
         },
-
         text = {
             Column {
-
+                // Display the image author when available.
                 image.author?.let {
                     Text("Autor: $it")
                 }
 
+                // Display the license information and its link when available.
                 image.license?.let { license ->
-
-                    Spacer(
-                        modifier = Modifier.height(8.dp)
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     image.licenseUrl?.let { url ->
-
                         Text(
                             text = buildAnnotatedString {
                                 append("Licencja: ")
@@ -60,32 +56,26 @@ fun WikimediaAttributionDialog(
                                 }
                             }
                         )
-
                     } ?: Text(
                         text = "Licencja: $license"
                     )
                 }
 
+                // Display additional image attribution when available.
                 image.credit?.let {
-
-                    Spacer(
-                        modifier = Modifier.height(8.dp)
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = "Credit: $it"
                     )
                 }
 
+                // Provide a link to the original Wikimedia Commons file page.
                 image.filePageUrl?.let { url ->
-
-                    Spacer(
-                        modifier = Modifier.height(8.dp)
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = buildAnnotatedString {
-
                             withLink(
                                 LinkAnnotation.Url(
                                     url = url,
@@ -101,7 +91,6 @@ fun WikimediaAttributionDialog(
                 }
             }
         },
-
         confirmButton = {
             TextButton(
                 onClick = onDismiss

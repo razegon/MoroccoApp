@@ -1,4 +1,3 @@
-
 package com.razegon.shared.ui.screens.arcade
 
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.razegon.shared.domain.model.ArcadeResult
 
+// Shared Arcade ranking UI displaying player results and dates.
 @Composable
 fun ArcadeRankingContent(
     results: List<ArcadeResult>,

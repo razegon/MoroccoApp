@@ -3,6 +3,7 @@ package com.razegon.shared.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -31,9 +32,7 @@ fun PlaceListItem(
         onClick = { onClick(placeData) }
     ) {
         Column {
-
-            // Displays the Wikimedia image when imageUrl is available.
-            // If loading fails, the default image is shown.
+            // Display the place image when an image URL is available.
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -41,10 +40,10 @@ fun PlaceListItem(
                 model = imageUrl,
                 imageLoader = imageLoader,
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop
             )
 
-            // Displays the place name below the image.
+            // Display the place name below the image.
             Text(
                 text = placeData.content.name,
                 style = MaterialTheme.typography.titleMedium,
@@ -52,7 +51,7 @@ fun PlaceListItem(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .heightIn(min = 56.dp)
                     .padding(
                         horizontal = 12.dp,
                         vertical = 5.dp

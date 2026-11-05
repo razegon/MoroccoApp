@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.razegon.shared.domain.repository.QuizRepository
 import com.razegon.shared.presentation.viewmodel.QuizViewModel as SharedQuizViewModel
 
+// Android lifecycle adapter for the shared QuizViewModel.
 class QuizAndroidViewModel(
     repository: QuizRepository
 ) : ViewModel() {
@@ -18,11 +19,10 @@ class QuizAndroidViewModel(
     val score = sharedViewModel.score
     val selectedDifficulty = sharedViewModel.selectedDifficulty
     val isAnswerChecked = sharedViewModel.isAnswerChecked
+    val questions = sharedViewModel.questions
     val currentQuestion get() = sharedViewModel.currentQuestion
     val questionCount get() = sharedViewModel.questionCount
     val isResultSaved = sharedViewModel.isResultSaved
-    val isLoading = sharedViewModel.isLoading
-    val error = sharedViewModel.error
 
     fun selectAnswer(answerIndex: Int) {
         sharedViewModel.selectAnswer(answerIndex)

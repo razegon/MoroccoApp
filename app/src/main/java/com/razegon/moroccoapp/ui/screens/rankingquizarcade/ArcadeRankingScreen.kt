@@ -19,7 +19,7 @@ fun ArcadeRankingScreen(
 ) {
     val results by resultViewModel.topResults.collectAsState()
 
-    // Load the latest TOP 20 Arcade results when the ranking screen is opened.
+    // Load the latest arcade results when the ranking screen is opened.
     LaunchedEffect(Unit) {
         resultViewModel.loadTopResults()
     }
@@ -33,9 +33,4 @@ fun ArcadeRankingScreen(
         },
         modifier = modifier
     )
-
-
-
-
 }
-

@@ -14,11 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.razegon.shared.domain.model.QuizDifficulty
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.unit.sp
+import com.razegon.shared.domain.model.QuizDifficulty
 
+// Shared quiz difficulty selection screen.
 @Composable
 fun QuizDifficultyScreen(
     onDifficultySelected: (QuizDifficulty) -> Unit,

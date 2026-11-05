@@ -8,6 +8,7 @@ import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.ui.components.DetailsPager
 import com.razegon.shared.ui.components.createPages
 
+// Shared place details UI that prepares content pages and displays them in a pager.
 @Composable
 fun PlaceDetailsContent(
     placeData: PlaceData,

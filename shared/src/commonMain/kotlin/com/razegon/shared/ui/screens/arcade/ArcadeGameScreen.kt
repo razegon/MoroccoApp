@@ -1,4 +1,3 @@
-
 package com.razegon.shared.ui.screens.arcade
 
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.razegon.shared.domain.model.ArcadeGameState
 
+// Shared Arcade game UI handling questions, answers, timer controls and result submission.
 @Composable
 fun ArcadeGameScreen(
     gameState: ArcadeGameState,

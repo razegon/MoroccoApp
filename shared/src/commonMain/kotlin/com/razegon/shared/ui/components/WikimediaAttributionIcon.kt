@@ -11,15 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
 import com.razegon.shared.generated.resources.Res
 import com.razegon.shared.generated.resources.ic_info
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun WikimediaAttributionIcon(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    // Provide a clickable information icon for Wikimedia image attribution.
     IconButton(
         onClick = onClick,
         modifier = modifier.size(36.dp)

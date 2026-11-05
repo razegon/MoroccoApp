@@ -2,8 +2,9 @@ package com.razegon.moroccoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.razegon.moroccoapp.di.AppContainer
+import com.razegon.shared.di.AppContainer
 
+// Android ViewModel factory providing the places repository to CitiesAndroidViewModel.
 class CitiesViewModelFactory(
     private val appContainer: AppContainer
 ) : ViewModelProvider.Factory {
@@ -15,7 +16,7 @@ class CitiesViewModelFactory(
 
             @Suppress("UNCHECKED_CAST")
             return CitiesAndroidViewModel(
-                    repository = appContainer.placesRepository
+                repository = appContainer.placesRepository
             ) as T
         }
 

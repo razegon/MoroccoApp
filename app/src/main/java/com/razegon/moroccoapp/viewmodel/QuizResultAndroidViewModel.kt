@@ -6,6 +6,7 @@ import com.razegon.shared.domain.model.QuizResult
 import com.razegon.shared.presentation.viewmodel.QuizResultViewModel as SharedQuizResultViewModel
 import kotlinx.coroutines.launch
 
+// Android lifecycle adapter for the shared QuizResultViewModel.
 class QuizResultAndroidViewModel(
     private val sharedViewModel: SharedQuizResultViewModel
 ) : ViewModel() {

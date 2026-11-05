@@ -11,18 +11,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+// Shared ViewModel responsible for Arcade game state, question flow and timer management.
 class ArcadeViewModel(
     private val repository: QuizRepository,
     private val scope: CoroutineScope
 ) {
 
-    // Holds the complete pool of questions used during the current Arcade game.
+    // Stores all questions available during the current game.
     private var questions: List<QuizQuestion> = emptyList()
 
-    // Exposes the current Arcade state to the UI while keeping mutations inside the ViewModel.
+    // Exposes the current game state as a read-only StateFlow.
     private val _gameState = MutableStateFlow(ArcadeGameState())
     val gameState: StateFlow<ArcadeGameState> = _gameState
 
+    // Starts the countdown timer, cancelling any previously running timer.
     private var timerJob: Job? = null
 
     private fun startTimer() {
@@ -57,9 +59,16 @@ class ArcadeViewModel(
         }
     }
 
-    // Starts a new Arcade game using all available questions.
+    // Starts a new Arcade game by loading all available questions.
     suspend fun startGame() {
         questions = repository.getAllQuestions()
+
+        if (questions.isEmpty()) {
+            _gameState.value = ArcadeGameState(
+                isGameOver = true
+            )
+            return
+        }
 
         val firstQuestion = questions.random()
 
@@ -72,6 +81,7 @@ class ArcadeViewModel(
 
     }
 
+    // Advances to a randomly selected question that has not been used yet.
     fun nextQuestion() {
         val state = _gameState.value
 
@@ -100,6 +110,7 @@ class ArcadeViewModel(
         )
     }
 
+    // Checks the selected answer and updates the score and remaining time.
     fun selectAnswer(answerIndex: Int) {
 
         val state = _gameState.value
@@ -132,13 +143,19 @@ class ArcadeViewModel(
             remainingTimeSeconds = newTime,
             isGameOver = newTime == 0
         )
+
+        if (newTime == 0) {
+            pauseTimer()
+        }
     }
 
+    // Stops the countdown timer.
     fun pauseTimer() {
         timerJob?.cancel()
         timerJob = null
     }
 
+    // Resumes the countdown timer if the game is still active.
     fun resumeTimer() {
         if (_gameState.value.isGameOver) {
             return

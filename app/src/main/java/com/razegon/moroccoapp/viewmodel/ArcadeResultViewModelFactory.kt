@@ -5,11 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.razegon.shared.domain.repository.ArcadeResultRepository
 import com.razegon.shared.presentation.viewmodel.ArcadeResultViewModel
 
+// Android ViewModel factory providing the repository to ArcadeResultViewModel.
 class ArcadeResultViewModelFactory(
     private val repository: ArcadeResultRepository
 ) : ViewModelProvider.Factory {
 
-    // Creates ArcadeResultViewModel with the repository required for result storage.
+    // Creates the shared ArcadeResultViewModel and wraps it in an Android adapter.
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     ): T {

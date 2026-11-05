@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Shared Arcade instructions screen with start and back navigation.
 @Composable
 fun ArcadeInstructionsScreen(
     onStartClick: () -> Unit,
@@ -88,3 +89,4 @@ fun ArcadeInstructionsScreen(
         }
     }
 }
+
