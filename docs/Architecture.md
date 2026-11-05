@@ -1497,3 +1497,86 @@ cbdbb36 Move navigation routes to shared module
 ```
 
 Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.
+---
+
+## Aktualizacja 5 listopada 2026 — zakończenie głównego etapu migracji KMP
+
+### Aktualny stan architektury
+
+Główna część migracji istniejącego projektu do Kotlin Multiplatform została scalona z `main` i wypchnięta do `origin/main`.
+
+Potwierdzone commity:
+
+```text
+b8db742 Move app navigation and result repositories to shared
+67248a5 Complete shared UI and ViewModel migration
+```
+
+Po scaleniu lokalny `main` i `origin/main` wskazywały na `67248a5`, a `git status` potwierdzał czyste i zsynchronizowane repozytorium.
+
+W ramach tego etapu:
+- przeniesiono dalszą część nawigacji do `shared`;
+- przeniesiono repozytoria wyników Quiz i Arcade do `shared`;
+- przeniesiono wspólne ekrany Compose i ViewModele do `shared`;
+- pozostawiono w module Android elementy wymagające integracji z platformą Android;
+- dodano wspólny `AppContainer` w `shared`, który składa współdzielone repozytoria i otrzymuje zależności platformowe, takie jak `AppDatabase` oraz `HttpClientEngine`.
+
+Przepływ zależności jest obecnie organizowany wokół wspólnego modułu, a platforma dostarcza elementy, których `commonMain` nie może samodzielnie utworzyć.
+
+Schemat odpowiedzialności:
+
+```text
+Android application
+    ├── platform entry point / Activity
+    ├── platform database creation
+    ├── platform HTTP engine
+    └── platform-specific integrations
+             ↓
+        shared AppContainer
+             ↓
+    shared repositories / ViewModels / Compose UI
+```
+
+### Granica między kodem wspólnym i platformowym
+
+Nowy kod funkcjonalny należy projektować najpierw z myślą o `commonMain`. Kod zależny od Android SDK, UIKit, konkretnego silnika systemowego lub platformowego cyklu życia powinien pozostać w odpowiednim source secie i być udostępniany przez możliwie wąski interfejs.
+
+Nie oznacza to, że każdy plik musi znajdować się w `commonMain`. Celem jest współdzielenie logiki, modeli, stanu i UI tam, gdzie jest to uzasadnione, przy zachowaniu jawnych granic platformowych.
+
+### Co nie jest jeszcze potwierdzone
+
+Scalenie migracji z `main` nie jest równoznaczne z ukończeniem iOS. Na dzień tej aktualizacji:
+- nie potwierdzono builda i uruchomienia aplikacji na iOS;
+- nie zweryfikowano wszystkich zachowań na rzeczywistym urządzeniu iOS;
+- nie wykonano końcowego audytu wszystkich zależności i plików pozostawionych w `app`;
+- nie zakończono porządków po migracji.
+
+Dlatego migrację istniejącego kodu do wspólnej architektury można uznać za zaawansowaną i w głównej części zakończoną, ale gotowość produkcyjna obu platform wymaga osobnej weryfikacji.
+
+### Planowana funkcjonalność map
+
+Mapy będą projektowane od początku jako funkcjonalność KMP. Nie należy najpierw tworzyć implementacji opartej wyłącznie na Androidowym `MapFragment`, Google Maps SDK lub `osmdroid`, a następnie planować jej przepisywania.
+
+Pierwszy zakres funkcjonalny:
+
+1. **Mapa w Place Details** — na pierwszej stronie szczegółów miejsca ma pojawić się mapa z granicami danego obszaru. Geometria będzie pochodzić z danych GeoJSON, o ile jest dostępna dla danego miejsca.
+2. **Mapa miasta w City Details** — w późniejszym etapie użytkownik będzie mógł przełączać widok pomiędzy obecnym `LazyRow` kart miejsc a mapą miasta z markerami miejsc.
+3. **Interakcja z markerem** — marker ma udostępniać tytuł oraz krótki snippet (albo sam tytuł); wybranie miejsca ma umożliwiać przejście do jego `Place Details`.
+
+### Zasady architektoniczne dla map
+
+- Geometrie GeoJSON, współrzędne, identyfikatory miejsc i relacje miasto–miejsce powinny być niezależne od biblioteki renderującej mapę.
+- Wspólna logika wyboru miejsca, filtrowania markerów, stanu kamery i prezentacji informacji powinna być umieszczona w `shared`, jeśli nie wymaga API platformowego.
+- Renderowanie mapy i integracje wymagające konkretnej platformy należy odizolować za wspólnym API lub komponentem.
+- Nie należy uzależniać modeli domenowych od klas SDK mapowego.
+- Obsługa braku geometrii lub współrzędnych musi być jawna; brak danych geograficznych nie może powodować awarii ekranu szczegółów.
+
+**MapLibre Compose jest kandydatem do sprawdzenia**, ponieważ jest rozwijany z myślą o Compose Multiplatform. Przed przyjęciem go jako docelowego silnika trzeba zweryfikować aktualne wersje, status Android/iOS, wymagane source sety, dostępność potrzebnych funkcji (GeoJSON, poligony, markery, zdarzenia, style, gesty) oraz sposób obsługi offline. Nie traktować trybu offline ani pełnej zgodności funkcji obu platform jako potwierdzonych, dopóki nie zostaną przetestowane.
+
+### Najbliższe działania techniczne
+
+1. Wykonać audyt pozostałych zależności Android-only i elementów w `app`.
+2. Sprawdzić odłożone porządki po migracji: `AndroidJsonResourceReader`, stary Androidowy `QuizQuestionDataSource` oraz rejestrację Android assets — usuwać wyłącznie po sprawdzeniu referencji.
+3. Zweryfikować aktualne konfiguracje `shared` i `app` oraz testy.
+4. Przygotować osobny branch dla map dopiero po zatwierdzeniu aktualizacji dokumentacji na `main`.
+5. Przetestować MapLibre Compose na Androidzie jako pierwszy pionowy wycinek funkcjonalny, ale od razu z kodem i modelem danych zaprojektowanymi pod KMP.

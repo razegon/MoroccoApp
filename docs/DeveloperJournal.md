@@ -1091,3 +1091,92 @@ Commit: `b90c59e Add Android network security config for user certificates`.
 ### Stan Git
 
 Cztery powyższe commity zostały wypchnięte na `origin/feature/kmp-ui-migration`. Branch śledzi zdalny odpowiednik. Następnym krokiem po aktualizacji dokumentacji jest sprawdzenie synchronizacji z `main` i dopiero potem uzgodnienie sposobu integracji.
+---
+
+## 5 listopada 2026 — zakończenie głównego etapu migracji KMP
+
+### Przeniesienie nawigacji i repozytoriów wyników
+
+W ramach commita `b8db742` przeniesiono dalszą część nawigacji oraz repozytoria wyników do modułu `shared`.
+
+```text
+b8db742 Move app navigation and result repositories to shared
+```
+
+### Wspólne UI i ViewModele
+
+W ramach commita `67248a5` zakończono kolejny etap przenoszenia wspólnych ekranów Compose i ViewModeli do `shared`.
+
+```text
+67248a5 Complete shared UI and ViewModel migration
+```
+
+Wspólny moduł zawiera obecnie znacznie większą część przepływu aplikacji: UI, ViewModele, nawigację, repozytoria oraz logikę danych. Androidowy moduł `app` nadal pełni rolę platformowej warstwy uruchomieniowej i integracyjnej.
+
+### AppContainer i składanie zależności
+
+Dodano `AppContainer` w `shared`. Kontener tworzy współdzielone repozytoria, korzystając z zależności przekazanych z platformy, m.in. `AppDatabase` oraz `HttpClientEngine`.
+
+Istotna zasada: wspólny kontener może składać zależności wspólne, ale tworzenie obiektów wymagających Android SDK lub konkretnej implementacji platformowej pozostaje po stronie platformy.
+
+### Integracja z Git
+
+Etap został scalony do `main` przez fast-forward i wypchnięty na GitHub.
+
+```text
+main
+  ├── b8db742 Move app navigation and result repositories to shared
+  └── 67248a5 Complete shared UI and ViewModel migration
+```
+
+Po wykonaniu:
+
+```bash
+git push origin main
+git status
+git log --oneline --graph --decorate -8
+```
+
+potwierdzono:
+- `main` i `origin/main` wskazują na `67248a5`;
+- `feature/kmp-navigation` również wskazuje na `67248a5`;
+- working tree jest czysty;
+- lokalny `main` jest zsynchronizowany z `origin/main`.
+
+### Ocena etapu
+
+Główna część migracji istniejącej logiki, UI i ViewModeli do wspólnego modułu jest wykonana. Nie należy jednak utożsamiać tego z potwierdzoną gotowością iOS: build i uruchomienie na iOS wymagają środowiska Apple oraz osobnej weryfikacji.
+
+Pozostają audyt zależności i porządki po migracji, w tym sprawdzenie, czy można usunąć:
+- `AndroidJsonResourceReader`;
+- stary Androidowy `QuizQuestionDataSource`;
+- nieużywaną rejestrację Android assets.
+
+Nie usuwać tych elementów bez sprawdzenia wszystkich referencji i poprawnego builda.
+
+---
+
+## Następny etap — mapy zaprojektowane od początku jako KMP
+
+Przed rozpoczęciem implementacji map zaktualizowano zakres funkcjonalny.
+
+### Etap 1 — mapa w Place Details
+
+Pierwsza karta `Place Details` ma prezentować mapę z granicami danego miejsca. Granice powinny być dostarczane jako geometria GeoJSON. Należy sprawdzić, dla których obiektów dane granic są rzeczywiście dostępne; nie zakładać, że każde miejsce ma polygon.
+
+### Etap 2 — mapa miasta w City Details
+
+W `City Details` planowany jest przełącznik pomiędzy obecnym poziomym `LazyRow` kart miejsc a mapą miasta. Mapa będzie pokazywać markery miejsc należących do miasta.
+
+Marker ma udostępniać tytuł i krótki snippet (lub sam tytuł). Wybranie miejsca powinno prowadzić do jego istniejącego ekranu `Place Details`, z użyciem identyfikatora miejsca, a nie przekazywania całego obiektu przez nawigację.
+
+### Kierunek technologiczny
+
+MapLibre Compose jest kandydatem do prototypu, ponieważ jest rozwiązaniem rozwijanym dla Compose Multiplatform. Przed uznaniem go za docelową zależność należy sprawdzić aktualne API i status obu platform, zgodność z używanymi wersjami Kotlin/Compose, obsługę GeoJSON/polygonów/markerów oraz ograniczenia trybu offline.
+
+Implementacja ma od początku zachować podział:
+- wspólne modele geograficzne i stan w `shared`;
+- wspólny UI i zachowanie tam, gdzie pozwala na to API KMP;
+- platformowe szczegóły renderowania odizolowane od logiki domenowej.
+
+Na tym etapie mapy są planem — nie zostały jeszcze zaimplementowane ani zweryfikowane na iOS.

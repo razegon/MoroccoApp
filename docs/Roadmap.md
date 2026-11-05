@@ -784,3 +784,86 @@ Definicje tras są już w `shared/commonMain`, ale nie oznacza to ukończenia ws
 - Uruchomienie i weryfikacja aplikacji na iOS.
 - Platformowy odczyt zasobów i pozostałe otwarte zadania wymienione w poprzednich etapach.
 - `PlacesRepository.search()` — o ile nie został zaimplementowany w późniejszej, nieudokumentowanej zmianie.
+---
+
+## Aktualizacja 5 listopada 2026 — migracja KMP scalona z main
+
+### Zakończone — główny etap migracji KMP
+
+Zmiany zostały scalone do `main` i wypchnięte na GitHub.
+
+```text
+b8db742 Move app navigation and result repositories to shared
+67248a5 Complete shared UI and ViewModel migration
+```
+
+Potwierdzony stan Git po scaleniu:
+- `main` i `origin/main` wskazują na `67248a5`;
+- `feature/kmp-navigation` wskazuje na ten sam commit;
+- working tree jest czysty;
+- lokalny `main` jest zsynchronizowany z `origin/main`.
+
+Zakres zakończonego etapu:
+- dalsza migracja nawigacji do `shared`;
+- repozytoria wyników Quiz i Arcade w `shared`;
+- wspólne ekrany Compose i ViewModele w `shared`;
+- wspólny `AppContainer` składający współdzielone repozytoria z użyciem zależności przekazanych przez platformę.
+
+### Pozostałe prace po migracji
+
+To są zadania audytowe i porządkowe, a nie kolejny duży etap przenoszenia funkcjonalności:
+
+1. Sprawdzić, czy `AndroidJsonResourceReader` nie ma już aktywnych referencji.
+2. Sprawdzić, czy stary Androidowy `QuizQuestionDataSource` jest nadal używany.
+3. Sprawdzić, czy rejestracja Android assets w konfiguracji Gradle `shared` jest nadal potrzebna.
+4. Przejrzeć zależności w `app` i `shared`, oddzielając rzeczywiście platformowe od wspólnych.
+5. Uruchomić dostępne buildy i testy po porządkach.
+
+Elementów z punktów 1–3 nie usuwać przed sprawdzeniem referencji oraz poprawnym buildem.
+
+### Ważne rozróżnienie: migracja a gotowość iOS
+
+Główna migracja kodu istniejącej aplikacji do wspólnego modułu jest w dużej części wykonana. Nie oznacza to jeszcze ukończonej aplikacji iOS. Nadal potrzebne będą:
+- konfiguracja iOS oraz platformowych zależności;
+- build i uruchomienie na iOS;
+- testy integracji platformowych;
+- weryfikacja UI, zasobów, sieci i trwałego przechowywania danych na iOS.
+
+### Następny etap — Maps KMP
+
+Mapy będą tworzone od początku z myślą o Androidzie i iOS. Nie planujemy implementacji Android-only z późniejszym przepisywaniem.
+
+#### Etap 1 — mapa w Place Details
+
+- Dodać mapę na pierwszej stronie `Place Details`.
+- Wyświetlić granice danego miejsca na podstawie GeoJSON, jeżeli geometria jest dostępna.
+- Dopasować kamerę do granic lub lokalizacji miejsca.
+- Obsłużyć brak geometrii bez awarii i bez wymyślania granic.
+
+#### Etap 2 — mapa miasta w City Details
+
+- Dodać przełącznik pomiędzy istniejącym `LazyRow` kart miejsc a mapą.
+- Wyświetlić markery miejsc przypisanych do miasta.
+- Po wybraniu markera pokazać tytuł i snippet (lub sam tytuł).
+- Umożliwić przejście do `Place Details` z użyciem `placeId`.
+
+#### Decyzje architektoniczne
+
+- Dane geograficzne (współrzędne, GeoJSON, identyfikatory i relacje) pozostają niezależne od silnika mapowego.
+- Stan i logika mapy powinny być wspólne w `shared`, o ile nie wymagają API platformowego.
+- Renderowanie i integracje platformowe należy odizolować od modeli domenowych i repozytoriów.
+- MapLibre Compose jest kandydatem do prototypu, a nie jeszcze zatwierdzoną i zweryfikowaną zależnością.
+- Przed decyzją o pełnym użyciu sprawdzić obsługę Android/iOS, GeoJSON, polygonów, markerów, zdarzeń, stylów, gestów i offline. Nie zakładać parytetu funkcji ani działania offline bez testów.
+
+### Kolejność najbliższych prac
+
+1. Dokończyć audyt i porządki po migracji.
+2. Utworzyć branch dla funkcjonalności map po zatwierdzeniu dokumentacji.
+3. Zweryfikować MapLibre Compose i wykonać minimalny prototyp mapy w `Place Details`.
+4. Dodać granice GeoJSON i dopasowanie kamery.
+5. Dopiero po potwierdzeniu podstawowego działania rozbudować `City Details` o przełącznik LazyRow/mapa i markery.
+6. Po uzyskaniu dostępu do środowiska Apple zweryfikować wspólny kod oraz renderowanie na iOS.
+
+### Zadania historyczne wymagające ponownego sprawdzenia
+
+W starszych sekcjach roadmapy znajdują się pozycje takie jak `PlacesRepository.search()`, Weather, Favorites, Hilt i platformowy reader zasobów dla iOS. Ich status należy sprawdzić względem aktualnego kodu przed ponownym wpisaniem ich do bieżącego planu. Starsze listy zachowano jako zapis historyczny; nie są automatycznie aktualną kolejnością prac.

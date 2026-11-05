@@ -1165,3 +1165,59 @@ Konfiguracja Android Network Security Config nie konfiguruje zaufania TLS na iOS
 ## Nie utożsamiaj wspólnych tras z ukończonym UI KMP
 
 Przeniesienie `Screen.kt` do `shared/commonMain` jest konkretnym krokiem w kierunku wspólnej architektury. Nie należy na tej podstawie deklarować ukończenia migracji ekranów, nawigacji ani aplikacji iOS. Zakres migracji trzeba oceniać na podstawie rzeczywistej lokalizacji i zależności kodu.
+---
+
+## KMP — wnioski z migracji wspólnego UI i ViewModeli
+
+### Wspólny kod nie oznacza braku kodu platformowego
+
+Kotlin Multiplatform pozwala współdzielić logikę, modele, ViewModele i UI Compose, ale nie usuwa potrzeby integracji z platformą. Obiekty wymagające Android SDK, konkretnego silnika HTTP, bazy danych lub cyklu życia platformy powinny być tworzone po stronie platformy i przekazywane do kodu wspólnego.
+
+### Wstrzykuj zależności platformowe do wspólnego kontenera
+
+`AppContainer` w `shared` może tworzyć wspólne repozytoria, jeśli otrzyma wymagane zależności z platformy, np. bazę danych i `HttpClientEngine`. Dzięki temu repozytoria nie muszą samodzielnie znać sposobu tworzenia zasobów Androida.
+
+### Nie oceniaj gotowości iOS wyłącznie na podstawie kompilacji commonMain
+
+Poprawna kompilacja kodu wspólnego nie potwierdza:
+- poprawnego linkowania i uruchomienia aplikacji iOS;
+- zgodności wszystkich zależności z iOS;
+- poprawnego zachowania integracji platformowych;
+- kompletności zasobów i konfiguracji aplikacji na iOS.
+
+Te elementy wymagają osobnej weryfikacji na docelowej platformie.
+
+### Przed usunięciem starego kodu sprawdź referencje
+
+Po przeniesieniu implementacji do `shared` stare klasy Androidowe mogą nadal być używane przez testy, konfigurację Gradle lub kod platformowy. Usuwanie powinno następować dopiero po wyszukaniu referencji i przeprowadzeniu builda/testów.
+
+Dotyczy to w szczególności odłożonych elementów:
+- `AndroidJsonResourceReader`;
+- starego Androidowego `QuizQuestionDataSource`;
+- rejestracji Android assets w konfiguracji `shared`.
+
+---
+
+## KMP — zasady projektowania funkcji mapowych
+
+### Oddziel dane geograficzne od silnika mapy
+
+Wspólne modele powinny przechowywać dane domenowe, np. identyfikator miejsca, współrzędne i geometrię GeoJSON. Nie powinny przechowywać obiektów specyficznych dla SDK mapowego.
+
+### Oddziel stan mapy od renderowania
+
+Stan, taki jak wybrane miejsce, widoczne kategorie, identyfikator markera lub docelowy obszar kamery, powinien być współdzielony, jeśli nie zależy od platformowego API. Samo rysowanie mapy może wymagać warstwy specyficznej dla platformy.
+
+### Brak geometrii to prawidłowy stan danych
+
+Nie każde miejsce musi mieć granice administracyjne lub polygon GeoJSON. UI powinno obsłużyć brak geometrii, np. przez pokazanie mapy z punktem lokalizacji albo czytelnego stanu bez granic. Nie należy tworzyć fikcyjnych granic.
+
+### Nie zakładaj parytetu funkcji mapowych bez testów
+
+Biblioteka deklarująca wsparcie KMP nie gwarantuje automatycznie identycznego zestawu funkcji, stabilności ani zachowania offline na Androidzie i iOS. Przed wyborem silnika należy sprawdzić wymagane funkcje na obu platformach.
+
+Dla MoroccoApp MapLibre Compose jest kandydatem do prototypu. Obsługę GeoJSON, polygonów, markerów, popupów, gestów, stylów, wydajności i offline trzeba potwierdzić w praktycznym teście.
+
+### Nawigacja z markera
+
+Marker powinien identyfikować miejsce przez stabilny `placeId`. Po wybraniu markera ekran mapy może pokazać tytuł i snippet, a przejście do `Place Details` powinno korzystać z istniejącego mechanizmu nawigacji opartego na identyfikatorze, nie na przekazywaniu całego obiektu domenowego.
