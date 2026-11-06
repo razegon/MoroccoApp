@@ -3,6 +3,7 @@ package com.razegon.shared.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,13 +45,12 @@ fun DetailsPager(
     pages: List<DetailsPage>,
     wikimediaImages: Map<Int, WikimediaImage>,
     imageLoader: ImageLoader,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = {},
-) {
-    val pagerState = rememberPagerState(
+    pagerState: PagerState = rememberPagerState(
         pageCount = { pages.size }
-    )
-
+    ),
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {}
+) {
     val imageMaxHeight = 256.dp
 
     var attributionImage by remember {
@@ -58,7 +59,7 @@ fun DetailsPager(
 
     HorizontalPager(
         state = pagerState,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxSize(),
         verticalAlignment = Alignment.Top
     ) { page ->
         val detailsPage = pages[page]

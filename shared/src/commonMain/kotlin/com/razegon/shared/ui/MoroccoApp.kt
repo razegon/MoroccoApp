@@ -20,6 +20,7 @@ import com.razegon.shared.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.shared.ui.screens.home.HomeScreen
 import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.shared.ui.screens.quiz.QuizStartScreen
+import com.razegon.shared.ui.screens.placedetails.PlaceMapSection
 
 // Shared application entry point and navigation graph for the common UI.
 @Composable
@@ -31,7 +32,10 @@ fun MoroccoApp(
     citiesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
     cityDetailsScreen: @Composable (Int, (PlaceData) -> Unit) -> Unit,
     placesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
-    placeDetailsScreen: @Composable (Int) -> Unit,
+    placeDetailsScreen: @Composable (
+        Int,
+        (Double, Double, Float) -> Unit
+    ) -> Unit,
 
     quizGameScreen: @Composable (() -> Unit, () -> Unit) -> Unit,
     quizSummaryScreen: @Composable (() -> Unit, () -> Unit, () -> Unit) -> Unit,
@@ -52,7 +56,9 @@ fun MoroccoApp(
         NavHost(
             navController = navController,
             startDestination = Screen.Home.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         ) {
 
             composable(Screen.Home.route) {
@@ -106,7 +112,38 @@ fun MoroccoApp(
                 }?.toIntOrNull()
 
                 if (placeId != null) {
-                    placeDetailsScreen(placeId)
+                    placeDetailsScreen(placeId) { latitude, longitude, zoom ->
+                        navController.navigate(
+                            "place_map/$latitude/$longitude/$zoom"
+                        )
+                    }
+                }
+            }
+
+            composable(Screen.PlaceMapFullScreen.route) { backStackEntry ->
+
+                val latitude = backStackEntry.arguments
+                    ?.read { getString("latitude") }
+                    ?.toDoubleOrNull()
+
+                val longitude = backStackEntry.arguments
+                    ?.read { getString("longitude") }
+                    ?.toDoubleOrNull()
+
+                val zoom = backStackEntry.arguments
+                    ?.read { getString("zoom") }
+                    ?.toFloatOrNull()
+
+                if (latitude != null && longitude != null) {
+                    PlaceMapSection(
+                        latitude = latitude,
+                        longitude = longitude,
+                        zoom = zoom ?: 12f,
+                        modifier = Modifier.fillMaxSize(),
+                        onExpandClick = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
             }
 

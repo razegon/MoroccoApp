@@ -88,6 +88,8 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.maplibre.compose)
+
                 api(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 // Add KMP dependencies here
@@ -104,6 +106,10 @@ kotlin {
 
         androidMain {
             dependencies {
+                runtimeOnly(
+                    "org.maplibre.compose:maplibre-compose-runtime-opengl-android:0.20.0"
+                )
+
                 implementation(libs.ktor.client.okhttp)
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP

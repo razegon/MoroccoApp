@@ -1,5 +1,6 @@
 [
   {
+    "_comment": "========== VOLUBILIS ==========",
     "place": {
       "placeId": 4000,
       "placeType": "MONUMENT",
@@ -30,9 +31,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.07196,
-      "longitude": -5.85721,
-      "zoom": 18.0,
+      "latitude": 34.0734,
+      "longitude": -5.5551,
+      "zoom": 15.0,
       "showMapButton": false
     },
     "content": {
@@ -60,6 +61,7 @@
     }
   },
   {
+    "_comment": "========== BAHIA PALACE ==========",
     "place": {
       "placeId": 4001,
       "placeType": "MONUMENT",
@@ -80,9 +82,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.621858,
-      "longitude": -7.981985,
-      "zoom": 18.0,
+      "latitude": 31.62154,
+      "longitude": -7.98267,
+      "zoom": 16.0,
       "showMapButton": false
     },
     "content": {
@@ -106,6 +108,7 @@
     }
   },
   {
+    "_comment": "========== JARDIN SECRET ==========",
     "place": {
       "placeId": 4002,
       "placeType": "MONUMENT",
@@ -126,8 +129,8 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.63086,
-      "longitude": -7.98968,
+      "latitude": 31.63083,
+      "longitude": -7.98992,
       "zoom": 18.0,
       "showMapButton": false
     },
@@ -152,6 +155,7 @@
     }
   },
   {
+    "_comment": "========== QUBBA ALMORAVID ==========",
     "place": {
       "placeId": 4003,
       "placeType": "MONUMENT",
@@ -173,8 +177,8 @@
       ],
       "placeImages": [],
       "latitude": 31.63158,
-      "longitude": -7.98718,
-      "zoom": 18.0,
+      "longitude": -7.98719,
+      "zoom": 19.0,
       "showMapButton": false
     },
     "content": {
@@ -198,6 +202,7 @@
     }
   },
   {
+    "_comment": "========== HASSAN TOWER ==========",
     "place": {
       "placeId": 4004,
       "placeType": "MONUMENT",
@@ -236,6 +241,7 @@
     }
   },
   {
+    "_comment": "========== MAUSOLEUM MOHAMMED V ==========",
     "place": {
       "placeId": 4005,
       "placeType": "MONUMENT",
@@ -250,8 +256,8 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.02393,
-      "longitude": -6.82278,
+      "latitude": 34.02275,
+      "longitude": -6.82140,
       "zoom": 18.0,
       "showMapButton": false
     },
@@ -274,6 +280,7 @@
     }
   },
   {
+    "_comment": "========== HASSAN II MOSQUE ==========",
     "place": {
       "placeId": 4006,
       "placeType": "MONUMENT",
@@ -298,9 +305,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.6060597,
-      "longitude": -7.6307139,
-      "zoom": 18.0,
+      "latitude": 33.60703,
+      "longitude": -7.63235,
+      "zoom": 16.0,
       "showMapButton": false
     },
     "content": {
@@ -326,6 +333,7 @@
     }
   },
   {
+    "_comment": "========== MEDERSA BEN YOUSSEF ==========",
     "place": {
       "placeId": 4007,
       "placeType": "MONUMENT",
@@ -343,8 +351,8 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.63205,
-      "longitude": -7.9888,
+      "latitude": 31.63202,
+      "longitude": -7.98628,
       "zoom": 18.0,
       "showMapButton": false
     },
@@ -352,11 +360,11 @@
       "id": "medersa_ben_youssef",
       "name": "Medersa Ben Youssef",
       "translation": "szkoła religijna",
-      "snippet": "XIV wiek n.e.",
+      "snippet": "XVI wiek n.e.",
       "weather": "Marrakesh, MA",
       "openingHours": "PN–ND 9:00 – 20:00",
       "descriptions": [
-        "\n        <p>Medresa Ben Youssefa t(ransliterowane również jako Bin Yusuf lub Ibn Yusuf Madrasa) to islamska medresa (uczelnia) w Marrakeszu w Maroku. Nazwa medresy pochodzi od sąsiadującego meczetu Ben Youssefa. Jej budowa została zlecona w latach 1564–65 n.e. przez sułtana Saadytów Abdallaha al-Ghaliba. Funkcjonująca obecnie jako obiekt historyczny, medresa Ben Youssefa była największą islamską uczelnią w Maghrebie w okresie jej świetności i jest powszechnie uznawana za szczyt architektury Saadytów i Maroka .</p>\n        <h4>Historia</h4>\n        <p>\\t\\tMedresa została nazwana na cześć sąsiadującego z nią Meczetu Ben Youssefa, który pierwotnie był głównym meczetem miasta, założonym przez sułtana Almorawidów Alego ibn Jusufa (panującego w latach 1106–1142 n.e.).</p>\n        <p>\\t\\tWedług źródeł historycznych, zwłaszcza al-Ifrani, pierwsza madrasa w tym miejscu została założona w czasach dynastii Marynidów przez sułtana Abu al-Hasana (pan. 1331–1348). Dynastia ta, znana z utrwalania sztuki i literatury, rządziła z Fezu w XIII–XV wieku i była odpowiedzialna za budowę wielu madras w całym Maroku. Historycznie madrasy w Maghrebie służyły do kształcenia ulama (uczonych islamskich) w Malakickim prawie islamskim, sądownictwa (fiqh) i wariantach odczytań (qira\\'at) Koranu.</p>\n        <p>\\t\\tDynastia Saadytów, która cieszyła się statusem szarifów (potomków Mahometa), była mniej zależna od budowy medres, aby utrzymać swoją legitymację i wsparcie ulamów niż ich poprzednicy z dynastii Marynidów. Niemniej jednak wznieśli wiele nowych pomników, w tym medresy, w swojej stolicy Marrakeszu</p>\n        <p>\\t\\tMedresa Ben Youssefa została zbudowana przez sułtana Saadytów Abdallaha al-Ghaliba (pan. 1557–1574 n.e.), jednego z głównych budowniczych swoich czasów. Jej budowa prawdopodobnie rozpoczęła się wkrótce po objęciu przez niego władzy. Została ukończona w latach 1564–1565 n.e. (972 roku Hidżry). Jak odnotowuje inskrypcja, zgodnie ze stylem ustanowionym w okresie wcześniejszej dynastii Marynidów. Po ukończeniu była największą medresą w Maghrebie . Podobno mogła pomieścić ponad 800 uczniów.</p>\n        <p>\\t\\tZamknięty w 1960 roku budynek został odnowiony i ponownie otwarty dla publiczności jako obiekt historyczny w 1982 roku. [ 12 ] Medresa Ben Youssefa przyciąga obecnie tysiące turystów każdego roku i pozostaje jednym z najważniejszych obiektów historycznych w Marrakeszu. [ 13 ] Został ponownie zamknięty z powodu renowacji w listopadzie 2018 roku i ponownie otwarty dla publiczności w kwietniu 2022 roku.</p>\n    ",
+        "\n        <p>Medresa Ben Youssefa transliterowane również jako Bin Yusuf lub Ibn Yusuf Madrasa) to islamska medresa (uczelnia) w Marrakeszu w Maroku. Nazwa medresy pochodzi od sąsiadującego meczetu Ben Youssefa. Jej budowa została zlecona w latach 1564–65 n.e. przez sułtana Saadytów Abdallaha al-Ghaliba. Funkcjonująca obecnie jako obiekt historyczny, medresa Ben Youssefa była największą islamską uczelnią w Maghrebie w okresie jej świetności i jest powszechnie uznawana za szczyt architektury Saadytów i Maroka .</p>\n        <h4>Historia</h4>\n        <p>\\t\\tMedresa została nazwana na cześć sąsiadującego z nią Meczetu Ben Youssefa, który pierwotnie był głównym meczetem miasta, założonym przez sułtana Almorawidów Alego ibn Jusufa (panującego w latach 1106–1142 n.e.).</p>\n        <p>\\t\\tWedług źródeł historycznych, zwłaszcza al-Ifrani, pierwsza madrasa w tym miejscu została założona w czasach dynastii Marynidów przez sułtana Abu al-Hasana (pan. 1331–1348). Dynastia ta, znana z utrwalania sztuki i literatury, rządziła z Fezu w XIII–XV wieku i była odpowiedzialna za budowę wielu madras w całym Maroku. Historycznie madrasy w Maghrebie służyły do kształcenia ulama (uczonych islamskich) w Malakickim prawie islamskim, sądownictwa (fiqh) i wariantach odczytań (qira\\'at) Koranu.</p>\n        <p>\\t\\tDynastia Saadytów, która cieszyła się statusem szarifów (potomków Mahometa), była mniej zależna od budowy medres, aby utrzymać swoją legitymację i wsparcie ulamów niż ich poprzednicy z dynastii Marynidów. Niemniej jednak wznieśli wiele nowych pomników, w tym medresy, w swojej stolicy Marrakeszu</p>\n        <p>\\t\\tMedresa Ben Youssefa została zbudowana przez sułtana Saadytów Abdallaha al-Ghaliba (pan. 1557–1574 n.e.), jednego z głównych budowniczych swoich czasów. Jej budowa prawdopodobnie rozpoczęła się wkrótce po objęciu przez niego władzy. Została ukończona w latach 1564–1565 n.e. (972 roku Hidżry). Jak odnotowuje inskrypcja, zgodnie ze stylem ustanowionym w okresie wcześniejszej dynastii Marynidów. Po ukończeniu była największą medresą w Maghrebie . Podobno mogła pomieścić ponad 800 uczniów.</p>\n        <p>\\t\\tZamknięty w 1960 roku budynek został odnowiony i ponownie otwarty dla publiczności jako obiekt historyczny w 1982 roku. [ 12 ] Medresa Ben Youssefa przyciąga obecnie tysiące turystów każdego roku i pozostaje jednym z najważniejszych obiektów historycznych w Marrakeszu. [ 13 ] Został ponownie zamknięty z powodu renowacji w listopadzie 2018 roku i ponownie otwarty dla publiczności w kwietniu 2022 roku.</p>\n    ",
         "\n        <h4>Architektura</h4>\n        <p>\\t\\tPlan medresy zajmuje niemal kwadratową przestrzeń o wymiarach około 40 na 43 metry. Do budynku wchodzi się przez pojedyncze wejście od ulicy, przed którym znajduje się kwadratowe sklepienie rzeźbione muqarnas. Od wejścia wąski korytarz prowadzi do przedsionka, który z jednej strony daje dostęp do centralnego dziedzińca. Ten proces wejścia, jak w wielu budynkach islamskich, jest starannie zaprojektowany, aby inspirować objawienie i zdziwienie w nieoczekiwanym otwarciu przestrzeni na główny dziedziniec. Układ budynku koncentruje się wokół głównego dziedzińca, który jest otoczony wschodnią i zachodnią galerią oraz bursami na górnym i dolnym poziomie. Podobnie jak w wielu budynkach islamskich, dziedziniec sam w sobie jest skupiony wokół dużego, płytkiego basenu o wymiarach około 3 na 7 metrów. Na południowo - wschodnim krańcu dziedzińca znajduje się kolejna duża komnata, która służyła jako sala modlitewna, wyposażona w mihrab (niszę wskazującą kierunek modlitwy) o wyjątkowo bogatej dekoracji stiukowej.</p>\n        <p>\\t\\tPodobnie jak w klasycznych medresach Marynidów zbudowanych w tym stuleciu, układ medresy Ben Youssefa zawiera cele studenckie skupione wokół pierwszego i drugiego poziomu centralnego dziedzińca. Komnata przedsionka medresy zapewnia dostęp do dwóch drugorzędnych korytarzy, które okrążają dziedziniec, zapewniając dostęp do sypialni na parterze, podczas gdy dwie klatki schodowe z przedsionka zapewniają dostęp do podobnych korytarzy na pierwszym piętrze. Pokoje studenckie są dodatkowo rozmieszczone wokół serii sześciu małych dziedzińców (trzy w skrzydle północno - wschodnim, trzy w skrzydle południowo - zachodnim), które otwierają się na oba piętra z tych korytarzy. Medresa składała się ze 130 pokoi studenckich i mogła pomieścić do 800 uczniów, co czyniło ją największą medresą w Maroku.</p>\n        <p>\\t\\tNa parterze wschodni korytarz z przedsionka prowadzi również do komnaty ablucyjnej w północno - wschodnim narożniku budynku. Komnata ma kwadratowy plan z czterema marmurowymi kolumnami podtrzymującymi cztery łuki pod centralną kopułą muqarnas (podobną do tej przed wejściem do medresy). Środek komnaty zajmuje kwadratowy zbiornik na wodę, a wokół obwodu komnaty dostępny jest szereg pomieszczeń latrynowych. Co znamienne, to właśnie w tej komnacie Jean Gallotti (inspektor historii sztuki pracujący dla francuskiego Protektoratu) po raz pierwszy zauważył w 1921 roku marmurową misę z Kordoby z XI wieku.</p>\n        <p>\\t\\tOrnamentyka medresy Ben Youssefa wywodzi się ściśle z wcześniejszej architektury marokańskiej i andaluzyjskiej, która wykorzystuje baseny, ogrody, fontanny i powierzchnie pokryte zelliż (mozaiką) oraz misternie rzeźbionym stiukiem i drewnem. W szczególności, układ dekoracyjny podąża za tradycjami architektonicznymi ustanowionymi we wcześniejszych medresach Marynidów: płytki zelliż są stosowane wzdłuż dolnych ścian, fryzy kaligraficzne są obecne na wysokości oczu, a środkowe i górne obszary ścian są pokryte dekoracją stiukową, zanim przejdą w elementy drewniane, w tym bogato rzeźbione okapy. Łuki galerii na parterze na dziedzińcu mają również konsole stiukowe podtrzymujące rzeźbione drewniane nadproża, które łączą odległości między każdym filarem. Główny centralny dziedziniec medresy komunikuje silne wrażenia wizualne dla odwiedzających i studentów za pośrednictwem tych ozdobnych elementów i ich symetrycznego układu. Na dziedziniec ten wchodzi się z przedsionka przez drewnianą przegrodę (maszarabijja) pod monumentalnym łukiem, który sam jest ozdobiony rzeźbionym stiukiem. Chociaż cele studenckie otaczające dziedziniec mają mało lub wcale nie mają wewnętrznych elementów dekoracyjnych, małe, drugorzędne dziedzińce, które zapewniają do nich dostęp, noszą pewne dekoracje stiukowe i drewniane. Motywy rzeźbione w drewnie i stiuku obejmują tradycyjne elementy, takie jak arabeski, sebka (lub ciemny wa ktaf). Są również inskrypcje kaligraficzne i muqarnasy, a także bardziej charakterystyczne motywy z epoki Saadytów, takie jak szyszki sosnowe.</p>\n        <p>\\t\\tWejście do medresy od strony ulicy jest osłonięte misternym sklepieniem muqarnasów (stalaktytowym lub przypominającym plaster miodu) przed wejściem, podczas gdy kolejna kopuła muqarnasów znajduje się w komnacie ablucyjnej. Drzwi medresy są pokryte brązem tworzącym przeplatający się geometryczny wzór i wzbogacone płytko rzeźbionymi motywami arabeskowymi. Nadproże z drewna cedrowego nad drzwiami jest rzeźbione arabskim napisem na arabeskowym tle. Napis wymienia i wychwala sułtana Abdallaha jako budowniczego medresy. Liczne inne napisy znajdują się również w całym budynku na różnych powierzchniach, często składających się z wersetów Koranu. Duży napis kuficki wokół łuku mihrabu obejmuje basmalę i tasliyya, po których następuje werset 36 i początek wersetu 37 z sury an-Nur.</p>\n        <h4>Andaluzyjski basen ablucyjny</h4>\n        <p>\\t\\tW medresie można dziś oglądać misternie rzeźbioną marmurową misę z czasów kalifatu Kordobańskiego (w dzisiejszej Hiszpanii). Wykonano ją w Madinat al-Zahra w latach 1002–1007, aby służyła jako misa do ablucji i poświęcono ją Abd al-Malikowi, synowi al-Mansura. Wcześniej, przez stulecia, przechowywano ją w medresie Ben Youssefa, a historycy po raz pierwszy zwrócili na nią uwagę w 1923 roku. Uczona Mariam Rosser-Owen zasugerowała, że misę pierwotnie sprowadził do Marrakeszu Ali Ibn Joussuf, który w XII wieku włączył do Meczetu Ben Youssefa szereg marmurowych elementów pochodzących ze zrujnowanych pałaców Kordoby. Basen zostałby następnie ponownie wykorzystany w medresie Ben Youssefa, którą zbudowano w tym samym miejscu znacznie później, po tym jak meczet popadł w zaniedbanie. W XX wieku basen został przeniesiony w celu przeprowadzenia badań i do niedawna przechowywany był w Muzeum Dar Si Said. Po niedawnej renowacji medresy i reorganizacji Muzeum Dar Si Said basen został ponownie przeniesiony i obecnie jest eksponowany w sali modlitewnej medresy.</p>\n    "
       ],
       "fallback": {
@@ -368,6 +376,7 @@
     }
   },
   {
+    "_comment": "========== DAR EL BACHA ==========",
     "place": {
       "placeId": 4008,
       "placeType": "MONUMENT",
@@ -383,9 +392,9 @@
         null
       ],
       "placeImages": [],
-      "latitude": 31.6314376,
-      "longitude": -7.9970531,
-      "zoom": 18.0,
+      "latitude": 31.63130,
+      "longitude": -7.99255,
+      "zoom": 17.0,
       "showMapButton": false
     },
     "content": {
@@ -408,6 +417,7 @@
     }
   },
   {
+    "_comment": "========== JEMAA EL FNAA ==========",
     "place": {
       "placeId": 4009,
       "placeType": "MONUMENT",
@@ -430,7 +440,7 @@
       "placeImages": [],
       "latitude": 31.62578,
       "longitude": -7.9892,
-      "zoom": 18.0,
+      "zoom": 17.0,
       "showMapButton": false
     },
     "content": {
@@ -454,6 +464,7 @@
     }
   },
   {
+    "_comment": "========== MAUSOLEUM MOULAY ISMAIL ==========",
     "place": {
       "placeId": 4010,
       "placeType": "MONUMENT",
@@ -471,8 +482,8 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.8907148,
-      "longitude": -5.5663948,
+      "latitude": 33.89099,
+      "longitude": -5.56289,
       "zoom": 18.0,
       "showMapButton": true
     },
@@ -496,6 +507,7 @@
     }
   },
   {
+    "_comment": "========== KASBAH OUDAYAS ==========",
     "place": {
       "placeId": 4012,
       "placeType": "MONUMENT",
@@ -513,9 +525,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0311698,
-      "longitude": -6.8368932,
-      "zoom": 18.0,
+      "latitude": 34.031468802698576,
+      "longitude": -6.83599700336644,
+      "zoom": 15.0,
       "showMapButton": false
     },
     "content": {
@@ -538,6 +550,7 @@
     }
   },
   {
+    "_comment": "========== MELLAH FES ==========",
     "place": {
       "placeId": 4013,
       "placeType": "MONUMENT",
@@ -560,7 +573,7 @@
       "placeImages": [],
       "latitude": 34.0520091,
       "longitude": -4.9918905,
-      "zoom": 18.0,
+      "zoom": 15.0,
       "showMapButton": false
     },
     "content": {
@@ -584,6 +597,7 @@
     }
   },
   {
+    "_comment": "========== CHOUARA TENNERY ==========",
     "place": {
       "placeId": 4014,
       "placeType": "MONUMENT",
@@ -598,9 +612,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0659713,
-      "longitude": -4.9712981,
-      "zoom": 18.0,
+      "latitude": 34.066103406683396,
+      "longitude": -4.970922664027198,
+      "zoom": 17.0,
       "showMapButton": false
     },
     "content": {
@@ -622,6 +636,7 @@
     }
   },
   {
+    "_comment": "========== AL-QARAWIYYIN ==========",
     "place": {
       "placeId": 4015,
       "placeType": "MONUMENT",
@@ -640,9 +655,9 @@
         null
       ],
       "placeImages": [],
-      "latitude": 34.0640168,
-      "longitude": -4.9748402,
-      "zoom": 18.0,
+      "latitude": 34.064723295403375,
+      "longitude":  -4.97333999685769,
+      "zoom": 17.0,
       "showMapButton": false
     },
     "content": {
@@ -666,6 +681,7 @@
     }
   },
   {
+    "_comment": "========== MAZAGAN ==========",
     "place": {
       "placeId": 4016,
       "placeType": "MONUMENT",
@@ -683,9 +699,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.256732,
-      "longitude": -8.502583,
-      "zoom": 18.0,
+      "latitude": 33.256673984323996,
+      "longitude":  -8.50267478983588,
+      "zoom": 15.5,
       "showMapButton": false
     },
     "content": {
@@ -742,7 +758,7 @@
     }
   },
   {
-    "_comment": "========== MOULAY IDRIS ii MAUSOLEUM ==========",
+    "_comment": "========== MOULAY IDRIS II MAUSOLEUM ==========",
     "place": {
       "placeId": 4018,
       "placeType": "MONUMENT",

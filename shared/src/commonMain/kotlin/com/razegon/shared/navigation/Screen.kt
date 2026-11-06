@@ -29,4 +29,7 @@ sealed class Screen(
     data object ArcadeInstructions : Screen("arcade_instructions")
 
     data object QuizArcadeRanking : Screen("quiz_arcade_ranking")
+
+    data object PlaceMapFullScreen :
+        Screen("place_map/{latitude}/{longitude}/{zoom}")
 }

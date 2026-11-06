@@ -15,7 +15,8 @@ import com.razegon.shared.ui.screens.placedetails.PlaceDetailsContent
 
 @Composable
 fun PlaceDetailsScreen(
-    placeId: Int
+    placeId: Int,
+    onOpenMap: (Double, Double, Float) -> Unit
 ) {
     // Access application-wide dependencies through MyApp,
     // including the shared AppContainer and platform-specific image loader.
@@ -69,7 +70,8 @@ fun PlaceDetailsScreen(
         PlaceDetailsContent(
             placeData = placeData,
             wikimediaImages = wikimediaImages,
-            imageLoader = application.wikimediaImageLoader
+            imageLoader = application.wikimediaImageLoader,
+            onOpenMap = onOpenMap
         )
     }
 }
