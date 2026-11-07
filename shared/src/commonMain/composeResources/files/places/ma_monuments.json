@@ -1,5 +1,36 @@
 [
   {
+    "_comment": "========== GPS TEST POINT WARSAW ==========",
+    "place": {
+      "placeId": 99001,
+      "placeType": "MONUMENT",
+      "parentPlaceId": null,
+      "wikidataId": null,
+      "wikimediaImages": [],
+      "placeImages": [],
+      "latitude": 52.20521010760696,
+      "longitude": 21.012269770733454,
+      "zoom": 17.0
+    },
+    "content": {
+      "id": "gps_test_point_warsaw",
+      "name": "GPS Test Point – Warszawa",
+      "translation": "Punkt testowy GPS – Warszawa",
+      "snippet": "Tymczasowy punkt służący do testowania lokalizacji GPS i wykrywania obecności użytkownika w granicach mapy.",
+      "weather": "Warsaw, PL",
+      "openingHours": null,
+      "descriptions": [
+        "<h3>Punkt testowy GPS</h3><p>To tymczasowy obiekt utworzony na potrzeby testowania mechanizmu lokalizacji w aplikacji MoroccoApp.</p><p>Jego współrzędne geograficzne służą do sprawdzania, czy użytkownik znajduje się w granicach aktualnie wyświetlanego obszaru mapy.</p><h3>Testowanie lokalizacji</h3><p>Podczas testów można zmieniać współrzędne punktu, aby symulować różne sytuacje: użytkownik znajduje się wewnątrz obszaru, poza jego granicami lub w pobliżu granicy.</p><p>Obiekt nie reprezentuje rzeczywistej atrakcji turystycznej i powinien zostać usunięty po zakończeniu testów GPS.</p>"
+      ],
+      "fallback": {
+        "population": null,
+        "area": null,
+        "elevation": null,
+        "founded": null
+      }
+    }
+  },
+  {
     "_comment": "========== VOLUBILIS ==========",
     "place": {
       "placeId": 4000,
@@ -33,8 +64,7 @@
       "placeImages": [],
       "latitude": 34.0734,
       "longitude": -5.5551,
-      "zoom": 15.0,
-      "showMapButton": false
+      "zoom": 15.0
     },
     "content": {
       "id": "volubilis",
@@ -84,8 +114,7 @@
       "placeImages": [],
       "latitude": 31.62154,
       "longitude": -7.98267,
-      "zoom": 16.0,
-      "showMapButton": false
+      "zoom": 16.0
     },
     "content": {
       "id": "bahia_palace",
@@ -131,8 +160,7 @@
       "placeImages": [],
       "latitude": 31.63083,
       "longitude": -7.98992,
-      "zoom": 18.0,
-      "showMapButton": false
+      "zoom": 18.0
     },
     "content": {
       "id": "jardin_secret",
@@ -178,8 +206,7 @@
       "placeImages": [],
       "latitude": 31.63158,
       "longitude": -7.98719,
-      "zoom": 19.0,
-      "showMapButton": false
+      "zoom": 19.0
     },
     "content": {
       "id": "qubba",
@@ -219,8 +246,7 @@
       "placeImages": [],
       "latitude": 34.02393,
       "longitude": -6.82278,
-      "zoom": 18.0,
-      "showMapButton": false
+      "zoom": 18.0
     },
     "content": {
       "id": "hassan_tower",
@@ -258,8 +284,7 @@
       "placeImages": [],
       "latitude": 34.02275,
       "longitude": -6.82140,
-      "zoom": 18.0,
-      "showMapButton": false
+      "zoom": 18.0
     },
     "content": {
       "id": "mausoleum_muhammed_v",
@@ -307,8 +332,7 @@
       "placeImages": [],
       "latitude": 33.60703,
       "longitude": -7.63235,
-      "zoom": 16.0,
-      "showMapButton": false
+      "zoom": 16.0
     },
     "content": {
       "id": "hassan_II_mosque",
@@ -353,8 +377,7 @@
       "placeImages": [],
       "latitude": 31.63202,
       "longitude": -7.98628,
-      "zoom": 18.0,
-      "showMapButton": false
+      "zoom": 18.0
     },
     "content": {
       "id": "medersa_ben_youssef",
@@ -394,8 +417,7 @@
       "placeImages": [],
       "latitude": 31.63130,
       "longitude": -7.99255,
-      "zoom": 17.0,
-      "showMapButton": false
+      "zoom": 17.0
     },
     "content": {
       "id": "dar_el_bacha",
@@ -440,8 +462,7 @@
       "placeImages": [],
       "latitude": 31.62578,
       "longitude": -7.9892,
-      "zoom": 17.0,
-      "showMapButton": false
+      "zoom": 17.0
     },
     "content": {
       "id": "jemaa_el_fnaa",
@@ -484,8 +505,7 @@
       "placeImages": [],
       "latitude": 33.89099,
       "longitude": -5.56289,
-      "zoom": 18.0,
-      "showMapButton": true
+      "zoom": 18.0
     },
     "content": {
       "id": "mausoleum_moulay_ismail",
@@ -527,8 +547,7 @@
       "placeImages": [],
       "latitude": 34.031468802698576,
       "longitude": -6.83599700336644,
-      "zoom": 15.0,
-      "showMapButton": false
+      "zoom": 15.0
     },
     "content": {
       "id": "kasbah_oudayas",
@@ -573,8 +592,7 @@
       "placeImages": [],
       "latitude": 34.0520091,
       "longitude": -4.9918905,
-      "zoom": 15.0,
-      "showMapButton": false
+      "zoom": 15.0
     },
     "content": {
       "id": "mellah_fes",
@@ -614,8 +632,7 @@
       "placeImages": [],
       "latitude": 34.066103406683396,
       "longitude": -4.970922664027198,
-      "zoom": 17.0,
-      "showMapButton": false
+      "zoom": 17.0
     },
     "content": {
       "id": "chouara_tennery",
@@ -657,8 +674,7 @@
       "placeImages": [],
       "latitude": 34.064723295403375,
       "longitude":  -4.97333999685769,
-      "zoom": 17.0,
-      "showMapButton": false
+      "zoom": 17.0
     },
     "content": {
       "id": "qarawiyyin",
@@ -701,8 +717,7 @@
       "placeImages": [],
       "latitude": 33.256673984323996,
       "longitude":  -8.50267478983588,
-      "zoom": 15.5,
-      "showMapButton": false
+      "zoom": 15.5
     },
     "content": {
       "id": "mazagan",
@@ -739,10 +754,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.00667,
-      "longitude": -6.82028,
-      "zoom": 17.0,
-      "showMapButton": true
+      "latitude": 34.00699876473481,
+      "longitude": -6.82139469395293,
+      "zoom": 15.5
     },
     "content": {
       "id": "chellah",
@@ -773,10 +787,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0647,
-      "longitude": -4.9731,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 34.064876389060096,
+      "longitude": -4.974795419046708,
+      "zoom": 18.0
     },
     "content": {
       "id": "moulay_idris_ii",
@@ -812,10 +825,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0708,
-      "longitude": -4.9818,
-      "zoom": 17.0,
-      "showMapButton": true
+      "latitude": 34.06227380349169,
+      "longitude": -4.982831411853693,
+      "zoom": 18.0
     },
     "content": {
       "id": "bou_inania",
@@ -851,10 +863,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0649,
-      "longitude": -4.9738,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 34.06404030413036,
+      "longitude": -4.973920995901072,
+      "zoom": 18.0
     },
     "content": {
       "id": "medersa_cherratine",
@@ -892,8 +903,7 @@
       "placeImages": [],
       "latitude": 34.0709,
       "longitude": -4.9992,
-      "zoom": 17.0,
-      "showMapButton": true
+      "zoom": 17.0
     },
     "content": {
       "id": "borj_nord_sud",
@@ -929,10 +939,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0705,
-      "longitude": -4.9869,
-      "zoom": 17.0,
-      "showMapButton": true
+      "latitude": 34.06983873500272,
+      "longitude": -4.9794903318323165,
+      "zoom": 17.0
     },
     "content": {
       "id": "groby_marynidow",
@@ -968,10 +977,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 34.0634,
-      "longitude": -4.9731,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 34.06480046319427,
+      "longitude": -4.975880404912717,
+      "zoom": 18.0
     },
     "content": {
       "id": "muzeum_nejjarine",
@@ -1015,8 +1023,7 @@
       "placeImages": [],
       "latitude": 34.0525,
       "longitude": -4.9915,
-      "zoom": 17.0,
-      "showMapButton": true
+      "zoom": 17.0
     },
     "content": {
       "id": "ceramika_zellige_fez",
@@ -1056,8 +1063,7 @@
       "placeImages": [],
       "latitude": 33.89261,
       "longitude": -5.56464,
-      "zoom": 18.0,
-      "showMapButton": true
+      "zoom": 18.0
     },
     "content": {
       "id": "bab_mansour",
@@ -1093,10 +1099,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.880222,
-      "longitude": -5.557917,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 33.880099146439846,
+      "longitude": -5.558406548750989,
+      "zoom": 16.2
     },
     "content": {
       "id": "heri_es_souani",
@@ -1132,10 +1137,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.88065,
-      "longitude": -5.5572,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude":33.881612951039536,
+      "longitude": -5.560315325570115,
+      "zoom": 15.5
     },
     "content": {
       "id": "sahrij_es_swani",
@@ -1171,10 +1175,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.89113,
-      "longitude": -5.56462,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 33.89118303766232,
+      "longitude": -5.564630842255237,
+      "zoom": 17.0
     },
     "content": {
       "id": "prison_kara",
@@ -1212,8 +1215,7 @@
       "placeImages": [],
       "latitude": 33.89366,
       "longitude": -5.56658,
-      "zoom": 18.0,
-      "showMapButton": true
+      "zoom": 18.0
     },
     "content": {
       "id": "dar_jamai",
@@ -1255,10 +1257,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.58925,
-      "longitude": -7.65405,
-      "zoom": 16.0,
-      "showMapButton": true
+      "latitude": 33.600574285396874,
+      "longitude": -7.619930952573702,
+      "zoom": 15.0
     },
     "content": {
       "id": "anfa",
@@ -1299,10 +1300,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.57493,
-      "longitude": -7.60185,
-      "zoom": 17.0,
-      "showMapButton": true
+      "latitude": 33.57777090236787,
+      "longitude": -7.608706718956298,
+      "zoom": 15.0
     },
     "content": {
       "id": "habous_new_medina",
@@ -1344,8 +1344,7 @@
       "placeImages": [],
       "latitude": 33.578549,
       "longitude": -7.606574,
-      "zoom": 18.0,
-      "showMapButton": true
+      "zoom": 17.0
     },
     "content": {
       "id": "mahkama_du_pacha",
@@ -1385,10 +1384,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.605033,
-      "longitude": -7.620393,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 33.605053830517065,
+      "longitude": -7.620249379882006,
+      "zoom": 18.0
     },
     "content": {
       "id": "ricks_cafe",
@@ -1425,10 +1423,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 33.256733,
-      "longitude": -8.502738,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 33.25666391337356,
+      "longitude": -8.502647200293474,
+      "zoom": 18.0
     },
     "content": {
       "id": "portuguese_cistern",
@@ -1464,10 +1461,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.515374,
-      "longitude": -9.772145,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 31.514523870897612,
+      "longitude": -9.772195460425408,
+      "zoom": 16.7
     },
     "content": {
       "id": "skala_de_la_kasbah",
@@ -1503,10 +1499,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.50973,
-      "longitude": -9.77056,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 31.510152934134364,
+      "longitude": -9.773935387437286,
+      "zoom": 17.0
     },
     "content": {
       "id": "skala_du_port",
@@ -1542,10 +1537,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.510000,
-      "longitude": -9.770000,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 31.50880698660271,
+      "longitude": -9.77446002759361,
+      "zoom": 16.0
     },
     "content": {
       "id": "essaouira_port",
@@ -1581,10 +1575,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 31.51676,
-      "longitude": -9.76593,
-      "zoom": 18.0,
-      "showMapButton": true
+      "latitude": 31.515285591027666,
+      "longitude": -9.76759115708155,
+      "zoom": 16.0
     },
     "content": {
       "id": "mellah_essaouira",
@@ -1620,10 +1613,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 30.42939,
-      "longitude": -9.62419,
-      "zoom": 15.0,
-      "showMapButton": true
+      "latitude": 30.430195073519606,
+      "longitude": -9.62448811444046,
+      "zoom": 16.0
     },
     "content": {
       "id": "agadir_oufella",
@@ -1659,10 +1651,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 30.42934,
-      "longitude": -9.62353,
-      "zoom": 15.0,
-      "showMapButton": true
+      "latitude": 30.425943955590053,
+      "longitude":  -9.606065337106202,
+      "zoom": 17.0
     },
     "content": {
       "id": "teleferic_agadir",
@@ -1700,8 +1691,7 @@
       "placeImages": [],
       "latitude": 30.378794,
       "longitude": -9.572304,
-      "zoom": 16.0,
-      "showMapButton": true
+      "zoom": 16.0
     },
     "content": {
       "id": "medina_polizzi",
@@ -1739,8 +1729,7 @@
       "placeImages": [],
       "latitude": 30.416190,
       "longitude": -9.597077,
-      "zoom": 17.0,
-      "showMapButton": true
+      "zoom": 17.0
     },
     "content": {
       "id": "amazigh_heritage_museum_agadir",
@@ -1776,10 +1765,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 30.42211,
-      "longitude": -9.63595,
-      "zoom": 15.0,
-      "showMapButton": true
+      "latitude": 30.425391563543,
+      "longitude": -9.641449214493777,
+      "zoom": 13.0
     },
     "content": {
       "id": "port_agadir",
@@ -1817,8 +1805,7 @@
       "placeImages": [],
       "latitude": 30.41278,
       "longitude": -9.57959,
-      "zoom": 16.0,
-      "showMapButton": true
+      "zoom": 16.0
     },
     "content": {
       "id": "souk_el_had_agadir",
@@ -1860,10 +1847,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": 30.38833,
-      "longitude": -9.48361,
-      "zoom": 15.0,
-      "showMapButton": true
+      "latitude": 30.388952686972964,
+      "longitude": -9.484116021747415,
+      "zoom": 16.0
     },
     "content": {
       "id": "crocoparc_agadir",
@@ -1903,8 +1889,7 @@
       "placeImages": [],
       "latitude": 30.424603,
       "longitude": -9.597080,
-      "zoom": 17.0,
-      "showMapButton": true
+      "zoom": 17.0
     },
     "content": {
       "id": "jardin_olhao_agadir",

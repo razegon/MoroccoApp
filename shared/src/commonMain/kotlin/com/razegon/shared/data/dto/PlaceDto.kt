@@ -25,7 +25,7 @@ data class PlaceDtoData(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val zoom: Float? = null,
-    val showMapButton: Boolean = false
+    val mapArea: MapAreaDto? = null
 )
 
 @Serializable
@@ -51,4 +51,14 @@ data class PlaceFallbackDto(
     val area: Double? = null,
     val elevation: Double? = null,
     val founded: String? = null
+)
+
+@Serializable
+data class MapAreaDto(
+    val south: Double,
+    val west: Double,
+    val north: Double,
+    val east: Double,
+    val minZoom: Double,
+    val maxZoom: Double
 )

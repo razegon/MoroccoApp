@@ -28,7 +28,7 @@ import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.Position
 
 private const val MAP_STYLE_URL =
-    "https://tiles.openfreemap.org/styles/liberty"
+    "https://tiles.openfreemap.org/styles/bright"
 
 @Composable
 fun PlaceMapSection(

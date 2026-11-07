@@ -1,6 +1,7 @@
 package com.razegon.shared.data.mapper
 
 import com.razegon.shared.data.dto.PlaceDto
+import com.razegon.shared.domain.model.MapArea
 import com.razegon.shared.domain.model.Place
 import com.razegon.shared.domain.model.PlaceContent
 import com.razegon.shared.domain.model.PlaceData
@@ -25,7 +26,16 @@ fun PlaceDto.toDomain(): PlaceData {
             latitude = place.latitude,
             longitude = place.longitude,
             zoom = place.zoom,
-            showMapButton = place.showMapButton
+            mapArea = place.mapArea?.let {
+                MapArea(
+                    south = it.south,
+                    west = it.west,
+                    north = it.north,
+                    east = it.east,
+                    minZoom = it.minZoom,
+                    maxZoom = it.maxZoom
+                )
+            }
         ),
         content = PlaceContent(
             id = content.id,

@@ -1,7 +1,7 @@
 [
   {
     "place": {
-      "_comment": "==========  ==========",
+      "_comment": "========== GIBRALTAR STRAIT ==========",
       "placeId": 4200,
       "placeType": "NATURE",
       "parentPlaceId": null,
@@ -21,10 +21,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": null,
-      "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "latitude": 35.94509286367176,
+      "longitude": -5.664622610944215,
+      "zoom": 8
     },
     "content": {
       "id": "gibraltar_strait",
@@ -70,8 +69,7 @@
       "placeImages": [],
       "latitude": null,
       "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "zoom": null
     },
     "content": {
       "id": "safran",
@@ -115,8 +113,7 @@
       "placeImages": [],
       "latitude": null,
       "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "zoom": null
     },
     "content": {
       "id": "atlas",
@@ -140,7 +137,7 @@
     }
   },
   {
-    "_comment": "==========  ==========",
+    "_comment": "========== KHETTARA ==========",
     "place": {
       "placeId": 4203,
       "placeType": "NATURE",
@@ -164,10 +161,9 @@
         null,
         null
       ],
-      "latitude": null,
-      "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "latitude": 31.53082592489485,
+      "longitude":  -4.490815794840806,
+      "zoom": 17
     },
     "content": {
       "id": "khettar",
@@ -214,8 +210,7 @@
       "placeImages": [],
       "latitude": null,
       "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "zoom": null
     },
     "content": {
       "id": "argan",
@@ -255,8 +250,7 @@
       "placeImages": [],
       "latitude": null,
       "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "zoom": null
     },
     "content": {
       "id": "maamora_forest",
@@ -277,7 +271,7 @@
     }
   },
   {
-    "_comment": "==========  ==========",
+    "_comment": "========== CAP SPARTEL ==========",
     "place": {
       "placeId": 4206,
       "placeType": "NATURE",
@@ -292,10 +286,9 @@
         }
       ],
       "placeImages": [],
-      "latitude": null,
-      "longitude": null,
-      "zoom": null,
-      "showMapButton": false
+      "latitude": 35.790663057127546,
+      "longitude": -5.923627238873146,
+      "zoom": 16
     },
     "content": {
       "id": "cap_spartel",
@@ -333,8 +326,7 @@
       "placeImages": [],
       "latitude": 33.2289,
       "longitude": -8.5540,
-      "zoom": 16.0,
-      "showMapButton": true
+      "zoom": 16.0
     },
     "content": {
       "id": "sidi_bouzid_beach",

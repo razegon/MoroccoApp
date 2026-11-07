@@ -23,8 +23,7 @@
       "placeImages": [],
       "latitude": 31.62823,
       "longitude": -7.98882,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "marrakesh",
@@ -70,8 +69,7 @@
       "placeImages": [],
       "latitude": 34.018078,
       "longitude": -6.854858,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "rabat",
@@ -117,8 +115,7 @@
       "placeImages": [],
       "latitude": 34.02092,
       "longitude": -5.0079,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "fes",
@@ -165,8 +162,7 @@
       "placeImages": [],
       "latitude": 33.87199,
       "longitude": -5.53926,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "meknes",
@@ -216,8 +212,7 @@
       "placeImages": [],
       "latitude": 33.59606,
       "longitude": -7.57482,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "casablanca",
@@ -263,8 +258,7 @@
       "placeImages": [],
       "latitude": 33.24650,
       "longitude": -8.50771,
-      "zoom": 13.0,
-      "showMapButton": true
+      "zoom": 13.0
     },
     "content": {
       "id": "el_jadida",
@@ -310,8 +304,7 @@
       "placeImages": [],
       "latitude": 31.52060,
       "longitude": -9.76382,
-      "zoom": 13.0,
-      "showMapButton": true
+      "zoom": 13.0
     },
     "content": {
       "id": "essaouira",
@@ -360,8 +353,7 @@
       "placeImages": [],
       "latitude": 30.43541,
       "longitude": -9.62756,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "agadir",
@@ -411,8 +403,7 @@
       "placeImages": [],
       "latitude": 35.1972,
       "longitude": -6.15216,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "larache",
@@ -459,8 +450,7 @@
       "placeImages": [],
       "latitude": 35.46676,
       "longitude": -6.036128,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "asilah",
@@ -509,8 +499,7 @@
       "placeImages": [],
       "latitude": 35.78837,
       "longitude": -5.81244,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "tanger",
@@ -557,8 +546,7 @@
       "placeImages": [],
       "latitude": 35.57006,
       "longitude": -5.37427,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "tetouan",
@@ -604,8 +592,7 @@
       "placeImages": [],
       "latitude": 35.168538,
       "longitude": -5.26192,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "chefchaouen",
@@ -645,8 +632,7 @@
       "placeImages": [],
       "latitude": 30.46886,
       "longitude": -8.87795,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "taroudant",
@@ -693,8 +679,7 @@
       "placeImages": [],
       "latitude": 30.920307,
       "longitude": -6.89974,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "ouarzazate",
@@ -738,8 +723,7 @@
       "placeImages": [],
       "latitude": 30.32079,
       "longitude": -5.84009,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "zagora",
@@ -784,8 +768,7 @@
       "placeImages": [],
       "latitude": 31.43522,
       "longitude": -4.23325,
-      "zoom": 13.0,
-      "showMapButton": false
+      "zoom": 13.0
     },
     "content": {
       "id": "arfoud",

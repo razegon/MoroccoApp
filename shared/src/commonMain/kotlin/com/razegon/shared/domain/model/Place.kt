@@ -11,5 +11,5 @@ data class Place(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val zoom: Float? = null,
-    val showMapButton: Boolean = false,
+    val mapArea: MapArea? = null,
 )
