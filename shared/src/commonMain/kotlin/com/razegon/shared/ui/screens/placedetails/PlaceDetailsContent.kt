@@ -14,6 +14,7 @@ import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.ui.components.DetailsPager
 import com.razegon.shared.ui.components.createPages
+import com.razegon.shared.ui.screens.map.PlaceMapSection
 
 // Shared place details UI that prepares content pages and displays them in a pager.
 // The map is displayed separately from HorizontalPager to avoid gesture conflicts.
@@ -41,9 +42,6 @@ fun PlaceDetailsContent(
     val longitude = placeData.place.longitude
     val zoom = placeData.place.zoom ?: 12f
 
-    val hasCoordinates = latitude != null && longitude != null
-    val showMap = pagerState.currentPage == 0 && hasCoordinates
-
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -58,21 +56,22 @@ fun PlaceDetailsContent(
                 .weight(1f)
         )
 
-        if (showMap) {
+        if (pagerState.currentPage == 0 && latitude != null && longitude != null) {
             Spacer(
                 modifier = Modifier.height(12.dp)
             )
 
             PlaceMapSection(
-                latitude = latitude!!,
-                longitude = longitude!!,
+                latitude = latitude,
+                longitude = longitude,
                 zoom = zoom,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
                 onExpandClick = {
                     onOpenMap(latitude, longitude, zoom)
-                }
+                },
+                placeId = placeData.place.placeId
             )
         }
     }

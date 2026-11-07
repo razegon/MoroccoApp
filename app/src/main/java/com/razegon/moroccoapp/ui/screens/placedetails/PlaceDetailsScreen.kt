@@ -71,7 +71,9 @@ fun PlaceDetailsScreen(
             placeData = placeData,
             wikimediaImages = wikimediaImages,
             imageLoader = application.wikimediaImageLoader,
-            onOpenMap = onOpenMap
+            onOpenMap = onOpenMap,
+
+
         )
     }
 }

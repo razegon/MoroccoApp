@@ -31,5 +31,5 @@ sealed class Screen(
     data object QuizArcadeRanking : Screen("quiz_arcade_ranking")
 
     data object PlaceMapFullScreen :
-        Screen("place_map/{latitude}/{longitude}/{zoom}")
+        Screen("place_map/{latitude}/{longitude}/{zoom}/{placeId}")
 }

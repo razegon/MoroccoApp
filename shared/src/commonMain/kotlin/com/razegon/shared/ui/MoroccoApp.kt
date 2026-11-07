@@ -18,9 +18,9 @@ import com.razegon.shared.domain.model.QuizDifficulty
 import com.razegon.shared.navigation.Screen
 import com.razegon.shared.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.shared.ui.screens.home.HomeScreen
+import com.razegon.shared.ui.screens.map.FullscreenMapScreen
 import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.shared.ui.screens.quiz.QuizStartScreen
-import com.razegon.shared.ui.screens.placedetails.PlaceMapSection
 
 // Shared application entry point and navigation graph for the common UI.
 @Composable
@@ -114,7 +114,7 @@ fun MoroccoApp(
                 if (placeId != null) {
                     placeDetailsScreen(placeId) { latitude, longitude, zoom ->
                         navController.navigate(
-                            "place_map/$latitude/$longitude/$zoom"
+                            "place_map/$latitude/$longitude/$zoom/$placeId"
                         )
                     }
                 }
@@ -134,13 +134,17 @@ fun MoroccoApp(
                     ?.read { getString("zoom") }
                     ?.toFloatOrNull()
 
-                if (latitude != null && longitude != null) {
-                    PlaceMapSection(
+                val placeId = backStackEntry.arguments
+                    ?.read { getString("placeId") }
+                    ?.toIntOrNull()
+
+                if (latitude != null && longitude != null && placeId != null) {
+                    FullscreenMapScreen(
                         latitude = latitude,
                         longitude = longitude,
                         zoom = zoom ?: 12f,
-                        modifier = Modifier.fillMaxSize(),
-                        onExpandClick = {
+                        placeId = placeId,
+                        onBackClick = {
                             navController.popBackStack()
                         }
                     )

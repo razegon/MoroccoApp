@@ -1,4 +1,4 @@
-package com.razegon.shared.ui.screens.placedetails
+package com.razegon.shared.ui.screens.map
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,14 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.razegon.shared.domain.config.MapConfig
+import com.razegon.shared.domain.config.MapConfig.GIBRALTAR_STRAIT_ID
 import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.map.CameraConstraints
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.rememberMapState
 import org.maplibre.compose.overlay.MapOverlay
 import org.maplibre.compose.overlay.include
 import org.maplibre.compose.style.BaseStyle
+import org.maplibre.compose.location.LocationState
+import org.maplibre.compose.layers.LocationIndicatorLayer
+import org.maplibre.compose.map.LocalMapState
+import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 
 private const val MAP_STYLE_URL =
@@ -37,8 +43,17 @@ fun PlaceMapSection(
     zoom: Float,
     modifier: Modifier = Modifier,
     onExpandClick: () -> Unit = {},
-    isFullscreen: Boolean = false
+    isFullscreen: Boolean = false,
+    placeId: Int,
+    locationState: LocationState? = null
 ) {
+
+    val mapArea = MapConfig.areaAround(
+        latitude = latitude,
+        longitude = longitude,
+        minZoom = if (placeId == GIBRALTAR_STRAIT_ID) 8.0 else 15.0
+    )
+
     val mapState = rememberMapState(
         baseStyle = BaseStyle.Uri(MAP_STYLE_URL),
         initialCameraPosition = CameraPosition(
@@ -48,7 +63,28 @@ fun PlaceMapSection(
             ),
             zoom = zoom.toDouble()
         )
-    )
+    ) {
+        checkNotNull(LocalMapState.current)
+
+        locationState?.let { state ->
+            LocationIndicatorLayer(
+                id = "user-location",
+                locationState = state
+            )
+        }
+    }
+
+    val cameraConstraints = CameraConstraints {
+        boundingBox = BoundingBox(
+            west = mapArea.west,
+            south = mapArea.south,
+            east = mapArea.east,
+            north = mapArea.north
+        )
+        minZoom = mapArea.minZoom
+        maxZoom = mapArea.maxZoom
+
+    } ?: CameraConstraints.Standard
 
     Box(
         modifier = modifier
@@ -57,7 +93,8 @@ fun PlaceMapSection(
     ) {
         MaplibreMap(
             state = mapState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            cameraConstraints = cameraConstraints
         ) {
             include(MapOverlay.None)
 
@@ -102,17 +139,5 @@ private fun FullscreenIcon(
         },
         tint = Color.DarkGray,
         modifier = Modifier.size(24.dp)
-    )
-}
-
-@Preview
-@Composable
-private fun PlaceMapSectionPreview() {
-    PlaceMapSection(
-        latitude = 34.07196,
-        longitude = -5.85721,
-        zoom = 16f,
-        modifier = Modifier
-            .fillMaxSize()
     )
 }

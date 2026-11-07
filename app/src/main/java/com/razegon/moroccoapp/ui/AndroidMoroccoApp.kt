@@ -81,7 +81,8 @@ fun AndroidMoroccoApp() {
         placeDetailsScreen = { placeId: Int, onOpenMap: (Double, Double, Float) -> Unit ->
             PlaceDetailsScreen(
                 placeId = placeId,
-                onOpenMap = onOpenMap
+                onOpenMap = onOpenMap,
+
             )
         },
 

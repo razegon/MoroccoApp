@@ -101,6 +101,7 @@ androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.r
 
 # Maps
 maplibre-compose = { module = "org.maplibre.compose:maplibre-compose", version.ref = "maplibreCompose" }
+maplibre-compose-location-gms = { module = "org.maplibre.compose:location-runtime-gms", version.ref = "maplibreCompose" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
