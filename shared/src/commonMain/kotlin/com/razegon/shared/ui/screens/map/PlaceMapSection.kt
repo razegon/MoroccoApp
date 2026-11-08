@@ -21,17 +21,18 @@ import androidx.compose.ui.unit.dp
 import com.razegon.shared.domain.config.MapConfig
 import com.razegon.shared.domain.config.MapConfig.GIBRALTAR_STRAIT_ID
 import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.layers.LocationIndicatorLayer
+import org.maplibre.compose.location.LocationState
 import org.maplibre.compose.map.CameraConstraints
+import org.maplibre.compose.map.LocalMapState
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.rememberMapState
 import org.maplibre.compose.overlay.MapOverlay
 import org.maplibre.compose.overlay.include
 import org.maplibre.compose.style.BaseStyle
-import org.maplibre.compose.location.LocationState
-import org.maplibre.compose.layers.LocationIndicatorLayer
-import org.maplibre.compose.map.LocalMapState
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.International.Meters
 
 private const val MAP_STYLE_URL =
     "https://tiles.openfreemap.org/styles/bright"
@@ -67,9 +68,17 @@ fun PlaceMapSection(
         checkNotNull(LocalMapState.current)
 
         locationState?.let { state ->
+            val accuracyMeters = state.lastLocation
+                ?.horizontalAccuracy
+                ?.toDouble(Meters)
+
+            val accuracyColor = getGpsAccuracyColor(accuracyMeters)
+
             LocationIndicatorLayer(
                 id = "user-location",
-                locationState = state
+                locationState = state,
+                accuracyRadiusColor = accuracyColor.copy(alpha = 0.15f),
+                accuracyRadiusBorderColor = accuracyColor
             )
         }
     }
@@ -98,14 +107,23 @@ fun PlaceMapSection(
         ) {
             include(MapOverlay.None)
 
+            locationState?.lastLocation?.horizontalAccuracy?.let { accuracy ->
+                LocationAccuracyIndicator(
+                    horizontalAccuracy = accuracy.toDouble(Meters),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(
+                            start = 8.dp,
+                            bottom = 8.dp
+                        )
+                )
+            }
+
             Surface(
                 onClick = onExpandClick,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(
-                        top = 24.dp,
-                        end = 8.dp
-                    )
+                    .padding(top = 24.dp, end = 8.dp)
                     .size(32.dp),
                 shape = CircleShape,
                 color = Color.White,

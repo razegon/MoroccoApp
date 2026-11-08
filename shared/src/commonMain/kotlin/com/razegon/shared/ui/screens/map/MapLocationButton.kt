@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.razegon.shared.ui.theme.MaterialBlue700
 import kotlinx.coroutines.launch
 import org.maplibre.compose.location.LocationPermission
 
@@ -56,7 +57,7 @@ fun MapLocationButton(
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (canRequest) {
-                        Color(0xFF1976D2)
+                        MaterialBlue700
                     } else {
                         Color.LightGray
                     },

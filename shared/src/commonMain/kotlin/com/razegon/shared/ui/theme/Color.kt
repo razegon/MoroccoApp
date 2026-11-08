@@ -20,3 +20,12 @@ val TerracottaLight = Color(0xFFE59678)
 val TextLight = Color(0xFFF3EEE5)
 val LightBlueDarkTheme = Color(0xFF72BCE8)
 val LightBlueDarkThemeContainer = Color(0xFF4A90C2)
+
+// Material
+val MaterialBlue700 = Color(0xFF1976D2)
+
+// GPS accuracy colors
+val GpsAccuracyGood = Color(0xFF16A34A)
+val GpsAccuracyMedium = Color(0xFFEAB308)
+val GpsAccuracyPoor = Color(0xFFDC2626)
+val GpsAccuracyUnknown = Color(0xFF808080)
