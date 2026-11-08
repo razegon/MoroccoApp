@@ -3,101 +3,112 @@
 ## Zrobione
 
 ### Fundament
-- Place
-- PlaceType
-- MoroccoDataSource
-- Repository
-- RepositoryImpl
-- ViewModel
-- StateFlow
+
+-   Place
+-   PlaceType
+-   MoroccoDataSource
+-   Repository
+-   RepositoryImpl
+-   ViewModel
+-   StateFlow
 
 ### Lista miast
-- CitiesScreen
-- LazyColumn
-- CityListItem
-- obsługa kliknięć
-- Material 3
-- Card / Row / Column
-- typografia i hierarchia tekstu
-- spacing i layout
-- Card shape i elevation
+
+-   CitiesScreen
+-   LazyColumn
+-   CityListItem
+-   obsługa kliknięć
+-   Material 3
+-   Card / Row / Column
+-   typografia i hierarchia tekstu
+-   spacing i layout
+-   Card shape i elevation
 
 ### Obrazy
-- Coil 3
-- AsyncImage
-- obrazy HTTPS
-- `INTERNET` permission
-- `ContentScale.Crop` dla kart listy
-- `ContentScale.Inside` dla zdjęć szczegółów
-- `error` i `fallback`
-- default image
-- test poprawnego URL, braku zdjęcia i błędnego URL
+
+-   Coil 3
+-   AsyncImage
+-   obrazy HTTPS
+-   `INTERNET` permission
+-   `ContentScale.Crop` dla kart listy
+-   `ContentScale.Inside` dla zdjęć szczegółów
+-   `error` i `fallback`
+-   default image
+-   test poprawnego URL, braku zdjęcia i błędnego URL
 
 ### Navigation i CityDetails
-- `Screen` jako sealed class
-- `city_details/{cityId}`
-- przekazywanie `placeId`
-- CityDetailsScreen
-- CityDetailsUiState
-- CityDetailsViewModel
-- CityDetailsViewModelFactory
-- `getPlace(placeId)`
-- `getChildren(parentPlaceId)`
+
+-   `Screen` jako sealed class
+-   `city_details/{cityId}`
+-   przekazywanie `placeId`
+-   CityDetailsScreen
+-   CityDetailsUiState
+-   CityDetailsViewModel
+-   CityDetailsViewModelFactory
+-   `getPlace(placeId)`
+-   `getChildren(parentPlaceId)`
 
 ### Miejsca miasta
-- LazyRow
-- PlaceListItem
-- osobny komponent kart miejsc
-- kontrolowana szerokość kart
-- odstępy między kartami
-- zdjęcia i nazwy miejsc
-- kliknięcie i przejście do `PlaceDetailsScreen`
+
+-   LazyRow
+-   PlaceListItem
+-   osobny komponent kart miejsc
+-   kontrolowana szerokość kart
+-   odstępy między kartami
+-   zdjęcia i nazwy miejsc
+-   kliknięcie i przejście do `PlaceDetailsScreen`
 
 ### PlaceDetails
-- `PlaceDetailsUiState`
-- `PlaceDetailsViewModel`
-- `PlaceDetailsViewModelFactory`
-- Navigation `place_details/{placeId}`
-- PlaceDetailsScreen
-- prezentacja nazwy, tłumaczenia i snippet
+
+-   `PlaceDetailsUiState`
+-   `PlaceDetailsViewModel`
+-   `PlaceDetailsViewModelFactory`
+-   Navigation `place_details/{placeId}`
+-   PlaceDetailsScreen
+-   prezentacja nazwy, tłumaczenia i snippet
 
 ### System stron szczegółów
-- `CityPage`
-- `createCityPages()`
-- `createPlacePages()`
-- `HorizontalPager`
-- pierwsza strona z podstawowymi informacjami
-- kolejne strony z opisami
-- niezależna liczba zdjęć i opisów
-- `placeImages: List<String?>`
-- `null` jako świadomy brak zdjęcia na konkretnej stronie
+
+-   `CityPage`
+-   `createCityPages()`
+-   `createPlacePages()`
+-   `HorizontalPager`
+-   pierwsza strona z podstawowymi informacjami
+-   kolejne strony z opisami
+-   niezależna liczba zdjęć i opisów
+-   `placeImages: List<String?>`
+-   `null` jako świadomy brak zdjęcia na konkretnej stronie
 
 ### Scroll i collapsing
-- `rememberScrollState()` dla każdej strony
-- `verticalScroll(scrollState)`
-- zdjęcie hero o maksymalnej wysokości 240 dp
-- zmniejszanie zdjęcia podczas scrollowania
-- zdjęcie znika po osiągnięciu 0 dp
-- powrót zdjęcia przy scrollowaniu do góry
-- `LocalDensity.current` do przeliczania px/dp
+
+-   `rememberScrollState()` dla każdej strony
+-   `verticalScroll(scrollState)`
+-   zdjęcie hero o maksymalnej wysokości 240 dp
+-   zmniejszanie zdjęcia podczas scrollowania
+-   zdjęcie znika po osiągnięciu 0 dp
+-   powrót zdjęcia przy scrollowaniu do góry
+-   `LocalDensity.current` do przeliczania px/dp
 
 ### Wskaźnik stron
-- wspólny `PageIndicator`
-- aktywny punkt dla `pagerState.currentPage`
-- umieszczenie wskaźnika na dole zdjęcia przez `Box` i `Alignment.BottomCenter`
+
+-   wspólny `PageIndicator`
+-   aktywny punkt dla `pagerState.currentPage`
+-   umieszczenie wskaźnika na dole zdjęcia przez `Box` i
+    `Alignment.BottomCenter`
 
 ### HTML w opisach
-- `HtmlText`
-- `Html.fromHtml(..., FROM_HTML_MODE_LEGACY)`
-- konwersja `StyleSpan` do Compose `SpanStyle`
-- obsługa pogrubienia i kursywy
-- `RelativeSizeSpan` dla nagłówków
-- obsługa akapitów HTML
-- `TextAlign.Justify`
+
+-   `HtmlText`
+-   `Html.fromHtml(..., FROM_HTML_MODE_LEGACY)`
+-   konwersja `StyleSpan` do Compose `SpanStyle`
+-   obsługa pogrubienia i kursywy
+-   `RelativeSizeSpan` dla nagłówków
+-   obsługa akapitów HTML
+-   `TextAlign.Justify`
 
 ## Aktualny stan
 
-```text
+``` text
 CitiesScreen
 ↓
 CityListItem
@@ -123,45 +134,50 @@ HorizontalPager
 └── ...
 ```
 
-Oba ekrany szczegółów mają pionowy scroll oraz collapsing zdjęcia. Oba wykorzystują `PageIndicator` i HTML-owe opisy.
+Oba ekrany szczegółów mają pionowy scroll oraz collapsing zdjęcia. Oba
+wykorzystują `PageIndicator` i HTML-owe opisy.
 
 ## Następnie
 
-1. Dalsze dopracowanie UX ekranów szczegółów.
-2. Weather.
-3. Maps.
-4. Search.
-5. Favorites.
-6. Room.
-7. Hilt.
+1.  Dalsze dopracowanie UX ekranów szczegółów.
+2.  Weather.
+3.  Maps.
+4.  Search.
+5.  Favorites.
+6.  Room.
+7.  Hilt.
 
 ## Później
 
-- źródła, autorzy i licencje zdjęć, szczególnie Wikimedia Commons
-- ewentualne rozszerzenie modelu zdjęcia o URL, źródło, autora i licencję
-- dalsze dopracowanie UX i Material 3
-- stany loading/error
+-   źródła, autorzy i licencje zdjęć, szczególnie Wikimedia Commons
+-   ewentualne rozszerzenie modelu zdjęcia o URL, źródło, autora i
+    licencję
+-   dalsze dopracowanie UX i Material 3
+-   stany loading/error
 
-
-## Aktualizacja 30–31 sierpnia 2026
+## Aktualizacja 30--31 sierpnia 2026
 
 ### Nowo ukończone
-- centralny `WikimediaImageLoader`
-- wspólny klient OkHttp z `User-Agent` dla Wikimedia
-- zdjęcia Wikimedia dla City i children
-- fallback zdjęcia Wikimedia → `placeImages`
-- `WikimediaAttributionIcon` i `WikimediaAttributionDialog` w obu ekranach szczegółów
-- wspólny `DetailsPager` dla City i Place
-- wspólne `createPages()` zamiast `createCityPages()` / `createPlacePages()`
-- opcjonalny slot `content()` w `DetailsPager`
-- `LazyRow` miejsc przekazywany do City przez `content()`
-- descriptions obsługiwane wspólnie przez `DetailsPager`
-- poprawiona hierarchia `Box` / `Column`, bez nakładania tekstu i LazyRow na zdjęcie
-- build po zakończeniu refactoru
+
+-   centralny `WikimediaImageLoader`
+-   wspólny klient OkHttp z `User-Agent` dla Wikimedia
+-   zdjęcia Wikimedia dla City i children
+-   fallback zdjęcia Wikimedia → `placeImages`
+-   `WikimediaAttributionIcon` i `WikimediaAttributionDialog` w obu
+    ekranach szczegółów
+-   wspólny `DetailsPager` dla City i Place
+-   wspólne `createPages()` zamiast `createCityPages()` /
+    `createPlacePages()`
+-   opcjonalny slot `content()` w `DetailsPager`
+-   `LazyRow` miejsc przekazywany do City przez `content()`
+-   descriptions obsługiwane wspólnie przez `DetailsPager`
+-   poprawiona hierarchia `Box` / `Column`, bez nakładania tekstu i
+    LazyRow na zdjęcie
+-   build po zakończeniu refactoru
 
 ## Aktualny stan
 
-```text
+``` text
 CitiesScreen
 ↓
 CityListItem
@@ -186,40 +202,42 @@ DetailsPager
 
 ## Najbliższy etap
 
-1. Dalsze dopracowanie UX ekranów szczegółów.
-2. Uporządkowanie loading/error.
-3. Weather.
-4. Maps — w tym przygotowanie konfiguracji `Application` i map OSM.
-5. Search.
-6. Favorites.
-7. Room.
-8. Hilt.
+1.  Dalsze dopracowanie UX ekranów szczegółów.
+2.  Uporządkowanie loading/error.
+3.  Weather.
+4.  Maps --- w tym przygotowanie konfiguracji `Application` i map OSM.
+5.  Search.
+6.  Favorites.
+7.  Room.
+8.  Hilt.
 
-
-## Aktualizacja 31 sierpnia – 1 września 2026
+## Aktualizacja 31 sierpnia -- 1 września 2026
 
 ### Zrobione od poprzedniej wersji
-- `wikidataId` dodane do `Place` dla 17 miast.
-- `WikidataApi` i `WikidataRetrofit`.
-- `WikidataRepository` / `WikidataRepositoryImpl`.
-- `WikidataInfo` i `WikidataTime`.
-- live data City: population, area, elevation, inception.
-- `CityDetailsUiState.wikidataInfo`.
-- `WikidataInfoSection`.
-- wspólny `MoroccoHttpClient` z `User-Agent`.
-- `MyApp : Application`.
-- `WikidataMemoryCache` i `WikimediaMemoryCache`.
-- obsługa błędów Wikimedia bez crashu.
-- ograniczenie Wikimedia do 3 równoległych requestów.
-- ochrona przed równoległym pobieraniem tego samego `pageId`.
-- loading indicator Coil w `DetailsPager`.
-- `HorizontalPager.verticalAlignment = Alignment.Top`.
-- naturalne proporcje zdjęć na kolejnych stronach; zdjęcia panoramiczne mogą wykorzystywać szerokość ekranu, a pionowe są przewijalne.
-- testy offline w obrębie jednej sesji.
+
+-   `wikidataId` dodane do `Place` dla 17 miast.
+-   `WikidataApi` i `WikidataRetrofit`.
+-   `WikidataRepository` / `WikidataRepositoryImpl`.
+-   `WikidataInfo` i `WikidataTime`.
+-   live data City: population, area, elevation, inception.
+-   `CityDetailsUiState.wikidataInfo`.
+-   `WikidataInfoSection`.
+-   wspólny `MoroccoHttpClient` z `User-Agent`.
+-   `MyApp : Application`.
+-   `WikidataMemoryCache` i `WikimediaMemoryCache`.
+-   obsługa błędów Wikimedia bez crashu.
+-   ograniczenie Wikimedia do 3 równoległych requestów.
+-   ochrona przed równoległym pobieraniem tego samego `pageId`.
+-   loading indicator Coil w `DetailsPager`.
+-   `HorizontalPager.verticalAlignment = Alignment.Top`.
+-   naturalne proporcje zdjęć na kolejnych stronach; zdjęcia
+    panoramiczne mogą wykorzystywać szerokość ekranu, a pionowe są
+    przewijalne.
+-   testy offline w obrębie jednej sesji.
 
 ### Aktualny stan City
 
-```text
+``` text
 CitiesScreen
 ↓
 CityDetailsScreen
@@ -239,69 +257,73 @@ DetailsPager
 ```
 
 ### Najbliższy etap
-1. Domknięcie infrastruktury cache Wikimedia/Wikidata i dalsze testy offline.
-2. Uporządkowanie wspólnego sposobu dostępu do `MyApp`/zależności przed większym wzrostem projektu.
-3. Rozszerzenie live data na `PlaceDetails`.
-4. Quiz.
-5. Mapy OSM.
+
+1.  Domknięcie infrastruktury cache Wikimedia/Wikidata i dalsze testy
+    offline.
+2.  Uporządkowanie wspólnego sposobu dostępu do `MyApp`/zależności przed
+    większym wzrostem projektu.
+3.  Rozszerzenie live data na `PlaceDetails`.
+4.  Quiz.
+5.  Mapy OSM.
 
 ### Później
-- trwały cache/offline po restarcie, najprawdopodobniej z Room,
-- Search,
-- Favorites,
-- Weather,
-- Hilt / DI,
-- dalsze UX i Material 3,
-- źródła, autorzy i licencje zdjęć.
 
-## Aktualizacja 2–3 września 2026
+-   trwały cache/offline po restarcie, najprawdopodobniej z Room,
+-   Search,
+-   Favorites,
+-   Weather,
+-   Hilt / DI,
+-   dalsze UX i Material 3,
+-   źródła, autorzy i licencje zdjęć.
+
+## Aktualizacja 2--3 września 2026
 
 ### Zrobione -- infrastruktura
 
-- Room 3
-- KSP dla Room
-- `AppDatabase`
-- `WikidataDao` / `WikidataEntity`
-- `WikimediaDao` / `WikimediaEntity`
-- `WikidataMapper`
-- `WikimediaMapper`
-- persistent cache Wikidata
-- persistent cache metadanych Wikimedia
-- Coil persistent `DiskCache` dla obrazów Wikimedia
-- wspólny `WikimediaImageLoader` w `MyApp`
-- test offline po restarcie procesu
+-   Room 3
+-   KSP dla Room
+-   `AppDatabase`
+-   `WikidataDao` / `WikidataEntity`
+-   `WikimediaDao` / `WikimediaEntity`
+-   `WikidataMapper`
+-   `WikimediaMapper`
+-   persistent cache Wikidata
+-   persistent cache metadanych Wikimedia
+-   Coil persistent `DiskCache` dla obrazów Wikimedia
+-   wspólny `WikimediaImageLoader` w `MyApp`
+-   test offline po restarcie procesu
 
 ### Zrobione -- Git
 
-- Git repository dla projektu
-- GitHub
-- branch `feature/room`
-- logiczne commity dla kolejnych etapów Room/cache
-- merge `feature/room` → `main` przez `Fast-forward`
-- push zaktualizowanego `main` do GitHub
+-   Git repository dla projektu
+-   GitHub
+-   branch `feature/room`
+-   logiczne commity dla kolejnych etapów Room/cache
+-   merge `feature/room` → `main` przez `Fast-forward`
+-   push zaktualizowanego `main` do GitHub
 
 ### Zrobione -- Quiz MVP
 
-- `QuizQuestion`
-- `QuizRepository`
-- `QuizRepositoryImpl`
-- `QuizViewModel`
-- `QuizViewModelFactory`
-- `QuizScreen`
-- route `quiz`
-- przycisk Quiz na `HomeScreen`
-- 10 pytań
-- 4 odpowiedzi na pytanie
-- jedna poprawna odpowiedź
-- blokowanie ponownego wyboru odpowiedzi
-- zielone oznaczenie poprawnej odpowiedzi
-- czerwone oznaczenie wybranej błędnej odpowiedzi
-- przechodzenie przez kolejne pytania
-- `PODSUMOWANIE` na ostatnim pytaniu
+-   `QuizQuestion`
+-   `QuizRepository`
+-   `QuizRepositoryImpl`
+-   `QuizViewModel`
+-   `QuizViewModelFactory`
+-   `QuizScreen`
+-   route `quiz`
+-   przycisk Quiz na `HomeScreen`
+-   10 pytań
+-   4 odpowiedzi na pytanie
+-   jedna poprawna odpowiedź
+-   blokowanie ponownego wyboru odpowiedzi
+-   zielone oznaczenie poprawnej odpowiedzi
+-   czerwone oznaczenie wybranej błędnej odpowiedzi
+-   przechodzenie przez kolejne pytania
+-   `PODSUMOWANIE` na ostatnim pytaniu
 
 ### Aktualny etap
 
-```text
+``` text
 feature/quiz
     ↓
 Quiz MVP ✅
@@ -317,67 +339,67 @@ TOP 10 / TOP 20
 
 ### Następnie
 
-1. Quiz — ekran podsumowania.
-2. Quiz — zapis wyniku w Room.
-3. Quiz — nickname gracza.
-4. Quiz — ranking TOP 10/20.
-5. Rozbudowa danych quizu i UX.
-6. Mapy OSM.
-7. Search.
-8. Favorites.
-9. Weather.
+1.  Quiz --- ekran podsumowania.
+2.  Quiz --- zapis wyniku w Room.
+3.  Quiz --- nickname gracza.
+4.  Quiz --- ranking TOP 10/20.
+5.  Rozbudowa danych quizu i UX.
+6.  Mapy OSM.
+7.  Search.
+8.  Favorites.
+9.  Weather.
 10. Hilt / DI.
 
 ## Aktualizacja 14 września 2026
 
 ### Zrobione -- Quiz
 
-- `QuizQuestion`
-- `QuizDifficulty`
-- `QuizRepository` / `QuizRepositoryImpl`
-- `QuizQuestionDataSource`
-- `QuizQuestionDto`
-- `QuizQuestionMapper`
-- 50 pytań w `questions.json`
-- 5 poziomów trudności
-- ekran startowy quizu
-- ekran wyboru trudności
-- klasyczny quiz 10 pytań
-- 4 odpowiedzi na pytanie
-- jedna poprawna odpowiedź
-- blokowanie odpowiedzi po wyborze
-- zielone oznaczenie poprawnej odpowiedzi
-- czerwone oznaczenie wybranej błędnej odpowiedzi
-- ekran podsumowania
-- nickname
-- zapis wyników do Room
-- TOP 10
-- poziom trudności wyświetlany obok wyniku
-- możliwość przerwania quizu z potwierdzeniem
-- reset stanu po przerwaniu quizu
+-   `QuizQuestion`
+-   `QuizDifficulty`
+-   `QuizRepository` / `QuizRepositoryImpl`
+-   `QuizQuestionDataSource`
+-   `QuizQuestionDto`
+-   `QuizQuestionMapper`
+-   50 pytań w `questions.json`
+-   5 poziomów trudności
+-   ekran startowy quizu
+-   ekran wyboru trudności
+-   klasyczny quiz 10 pytań
+-   4 odpowiedzi na pytanie
+-   jedna poprawna odpowiedź
+-   blokowanie odpowiedzi po wyborze
+-   zielone oznaczenie poprawnej odpowiedzi
+-   czerwone oznaczenie wybranej błędnej odpowiedzi
+-   ekran podsumowania
+-   nickname
+-   zapis wyników do Room
+-   TOP 10
+-   poziom trudności wyświetlany obok wyniku
+-   możliwość przerwania quizu z potwierdzeniem
+-   reset stanu po przerwaniu quizu
 
 ### Zrobione -- UI / Theme
 
-- własny Light Theme
-- własny Dark Theme
-- wyłączone dynamic colors
-- wspólne `Shapes`
-- rozszerzona typografia Material 3
-- odświeżony `QuizStartScreen`
-- odświeżony `QuizDifficultyScreen`
-- mały przycisk `X` do opuszczenia quizu
+-   własny Light Theme
+-   własny Dark Theme
+-   wyłączone dynamic colors
+-   wspólne `Shapes`
+-   rozszerzona typografia Material 3
+-   odświeżony `QuizStartScreen`
+-   odświeżony `QuizDifficultyScreen`
+-   mały przycisk `X` do opuszczenia quizu
 
 ### Zrobione -- Git
 
-- `feature/quiz` rozwijany jako osobny branch
-- logiczne commity
-- testy Build po kolejnych etapach
-- merge `feature/quiz` → `main` przez `Fast-forward`
-- push zaktualizowanego `main` do GitHub
+-   `feature/quiz` rozwijany jako osobny branch
+-   logiczne commity
+-   testy Build po kolejnych etapach
+-   merge `feature/quiz` → `main` przez `Fast-forward`
+-   push zaktualizowanego `main` do GitHub
 
 ## Aktualny stan aplikacji
 
-```text
+``` text
 main
   ↓
 Quiz MVP ✅
@@ -393,9 +415,10 @@ Theme Light/Dark ✅
 
 ## Historyczna wersja planu Arcade -- stan sprzed implementacji
 
-W starszej wersji roadmapy Arcade było jeszcze etapem planowanym. Założenia zapisane wtedy wyglądały następująco:
+W starszej wersji roadmapy Arcade było jeszcze etapem planowanym.
+Założenia zapisane wtedy wyglądały następująco:
 
-```text
+``` text
 pula pytań: wszystkie dostępne pytania
 czas początkowy: 30 s
 poprawna odpowiedź: +5 s
@@ -403,55 +426,58 @@ błędna odpowiedź: -3 s
 koniec gry: 0 s
 ```
 
-Zakładano również brak powtórek pytań oraz osobny ranking Arcade. Te wartości były planem roboczym i zostały później zmienione przed ukończeniem implementacji. Aktualne, obowiązujące zasady znajdują się w sekcji poniżej.
+Zakładano również brak powtórek pytań oraz osobny ranking Arcade. Te
+wartości były planem roboczym i zostały później zmienione przed
+ukończeniem implementacji. Aktualne, obowiązujące zasady znajdują się w
+sekcji poniżej.
 
 ## Aktualizacja 3 października 2026 -- Arcade Mode ukończony
 
 ### Zrobione -- Arcade
 
-- osobny `ArcadeScreen`
-- osobny `ArcadeViewModel`
-- osobny `ArcadeGameState`
-- wykorzystanie wspólnego `QuizRepository`
-- pula wszystkich 50 pytań
-- brak powtórek pytań w jednej rozgrywce
-- timer startujący od 45 sekund
-- `+5 s` za poprawną odpowiedź
-- `-5 s` za błędną odpowiedź
-- `+1 punkt` za poprawną odpowiedź
-- koniec gry przy 0 sekundach
-- blokowanie odpowiedzi po wyborze
-- przycisk `X` i potwierdzenie wyjścia
-- brak zapisu niedokończonej rozgrywki
+-   osobny `ArcadeScreen`
+-   osobny `ArcadeViewModel`
+-   osobny `ArcadeGameState`
+-   wykorzystanie wspólnego `QuizRepository`
+-   pula wszystkich 50 pytań
+-   brak powtórek pytań w jednej rozgrywce
+-   timer startujący od 45 sekund
+-   `+5 s` za poprawną odpowiedź
+-   `-5 s` za błędną odpowiedź
+-   `+1 punkt` za poprawną odpowiedź
+-   koniec gry przy 0 sekundach
+-   blokowanie odpowiedzi po wyborze
+-   przycisk `X` i potwierdzenie wyjścia
+-   brak zapisu niedokończonej rozgrywki
 
 ### Zrobione -- ranking Arcade
 
-- `ArcadeResult`
-- `ArcadeResultEntity`
-- `ArcadeResultDao`
-- `ArcadeResultMapper`
-- `ArcadeResultRepository` / `ArcadeResultRepositoryImpl`
-- `ArcadeResultViewModel` / `ArcadeResultViewModelFactory`
-- osobna tabela Room dla wyników Arcade
-- TOP 10 Arcade
-- sortowanie `score DESC`, następnie `date ASC`
-- nickname ograniczony do 15 znaków
-- blokada wielokrotnego zapisu tego samego wyniku
-- przyciski `TOP 10 ARCADE` i `MENU QUIZU` po zapisaniu wyniku
+-   `ArcadeResult`
+-   `ArcadeResultEntity`
+-   `ArcadeResultDao`
+-   `ArcadeResultMapper`
+-   `ArcadeResultRepository` / `ArcadeResultRepositoryImpl`
+-   `ArcadeResultViewModel` / `ArcadeResultViewModelFactory`
+-   osobna tabela Room dla wyników Arcade
+-   TOP 10 Arcade
+-   sortowanie `score DESC`, następnie `date ASC`
+-   nickname ograniczony do 15 znaków
+-   blokada wielokrotnego zapisu tego samego wyniku
+-   przyciski `TOP 10 ARCADE` i `MENU QUIZU` po zapisaniu wyniku
 
 ### Zrobione -- Room i Navigation
 
-- migracja `MIGRATION_1_2`
-- zwiększenie wersji `AppDatabase`
-- zachowanie istniejących danych przy migracji
-- osobna trasa `QuizArcade`
-- osobna trasa `QuizArcadeRanking`
-- start gry wykonywany przed nawigacją do Arcade
-- zachowanie stanu gry po powrocie z rankingu
+-   migracja `MIGRATION_1_2`
+-   zwiększenie wersji `AppDatabase`
+-   zachowanie istniejących danych przy migracji
+-   osobna trasa `QuizArcade`
+-   osobna trasa `QuizArcadeRanking`
+-   start gry wykonywany przed nawigacją do Arcade
+-   zachowanie stanu gry po powrocie z rankingu
 
 ### Aktualny stan aplikacji
 
-```text
+``` text
 main
   ↓
 Quiz klasyczny + TOP 10 + Room ✅
@@ -463,43 +489,44 @@ Arcade Mode + TOP 10 Arcade + Room ✅
 
 ## Następne etapy
 
-1. Mapy OSM.
-2. Search.
-3. Favorites.
-4. Weather.
-5. Dalsze dopracowanie UX całej aplikacji.
-6. Hilt / DI.
-7. Przygotowanie architektury pod KMP.
-8. Dalsze źródła, autorzy i licencje zdjęć.
+1.  Mapy OSM.
+2.  Search.
+3.  Favorites.
+4.  Weather.
+5.  Dalsze dopracowanie UX całej aplikacji.
+6.  Hilt / DI.
+7.  Przygotowanie architektury pod KMP.
+8.  Dalsze źródła, autorzy i licencje zdjęć.
 
 ## Aktualizacja 4 października 2026 -- rozpoczęcie migracji KMP
 
 ### Zrobione -- fundament KMP domeny
 
-- `shared` z modelami domenowymi
-- `Place` przeniesiony do `shared`
-- `PlaceType` w `shared`
-- `WikimediaImageRef` w `shared`
-- `PlaceContent` w `shared`
-- `PlaceFallback` w `shared`
-- `PlaceData` w `shared`
-- rozdzielenie danych strukturalnych (`Place`) od treści (`PlaceContent`)
-- `PlacesRepository` pracujący na `PlaceData`
-- `PlacesRepositoryImpl` pracujący na `PlaceData`
-- `PlacesViewModel` pracujący na `PlaceData`
-- `CitiesViewModel` pracujący na `PlaceData`
-- `PlacesUiState` i `CitiesUiState` dostosowane do `PlaceData`
-- `CityDetailsUiState` dostosowany do `PlaceData`
-- `CitiesScreen` i `CityListItem` dostosowane do `PlaceData`
-- `CityDetailsScreen` dostosowany do `PlaceData`
-- wspólne `createPages()` dostosowane do `String` descriptions
-- `DetailsPage.description` dostosowane do `String?`
-- Build OK po migracji
-- działanie aplikacji sprawdzone po migracji
+-   `shared` z modelami domenowymi
+-   `Place` przeniesiony do `shared`
+-   `PlaceType` w `shared`
+-   `WikimediaImageRef` w `shared`
+-   `PlaceContent` w `shared`
+-   `PlaceFallback` w `shared`
+-   `PlaceData` w `shared`
+-   rozdzielenie danych strukturalnych (`Place`) od treści
+    (`PlaceContent`)
+-   `PlacesRepository` pracujący na `PlaceData`
+-   `PlacesRepositoryImpl` pracujący na `PlaceData`
+-   `PlacesViewModel` pracujący na `PlaceData`
+-   `CitiesViewModel` pracujący na `PlaceData`
+-   `PlacesUiState` i `CitiesUiState` dostosowane do `PlaceData`
+-   `CityDetailsUiState` dostosowany do `PlaceData`
+-   `CitiesScreen` i `CityListItem` dostosowane do `PlaceData`
+-   `CityDetailsScreen` dostosowany do `PlaceData`
+-   wspólne `createPages()` dostosowane do `String` descriptions
+-   `DetailsPage.description` dostosowane do `String?`
+-   Build OK po migracji
+-   działanie aplikacji sprawdzone po migracji
 
 ### Aktualny przepływ
 
-```text
+``` text
 DataSource
     ↓
 List<PlaceData>
@@ -515,50 +542,58 @@ Compose UI
 
 ### Stan przejściowy
 
-`MoroccoDataSource` nadal znajduje się w module `app` i korzysta z `R.string.*`. `PlaceContent` używa obecnie `String` jako tymczasowego rozwiązania pozwalającego zweryfikować nowy przepływ danych.
+`MoroccoDataSource` nadal znajduje się w module `app` i korzysta z
+`R.string.*`. `PlaceContent` używa obecnie `String` jako tymczasowego
+rozwiązania pozwalającego zweryfikować nowy przepływ danych.
 
-Nie projektujemy jeszcze finalnego formatu lokalizacji ani akapitów. Zostanie to ustalone podczas migracji treści do JSON.
+Nie projektujemy jeszcze finalnego formatu lokalizacji ani akapitów.
+Zostanie to ustalone podczas migracji treści do JSON.
 
 ## Najbliższy etap -- DataSource i JSON
 
-1. Przeanalizować kompletny `MoroccoDataSource`.
-2. Zaprojektować strukturę JSON na podstawie rzeczywistych danych.
-3. Oddzielić dane strukturalne od treści i danych platformowych.
-4. Przenieść treści do JSON.
-5. Zbudować data source w `shared`, który będzie zwracał `List<PlaceData>`.
-6. Zachować istniejący przepływ Repository → ViewModel → UiState → UI.
-7. Dopiero po ustabilizowaniu JSON ustalić finalną strategię lokalizacji i formatowania akapitów.
+1.  Przeanalizować kompletny `MoroccoDataSource`.
+2.  Zaprojektować strukturę JSON na podstawie rzeczywistych danych.
+3.  Oddzielić dane strukturalne od treści i danych platformowych.
+4.  Przenieść treści do JSON.
+5.  Zbudować data source w `shared`, który będzie zwracał
+    `List<PlaceData>`.
+6.  Zachować istniejący przepływ Repository → ViewModel → UiState → UI.
+7.  Dopiero po ustabilizowaniu JSON ustalić finalną strategię
+    lokalizacji i formatowania akapitów.
 
 ### Zasada kolejnego etapu
 
-Nie łączyć jednocześnie migracji JSON, lokalizacji, UI i kolejnych funkcji. Najpierw doprowadzić DataSource do poprawnego, platform-independent modelu i po każdym większym kroku wykonać Build oraz test działania aplikacji.
+Nie łączyć jednocześnie migracji JSON, lokalizacji, UI i kolejnych
+funkcji. Najpierw doprowadzić DataSource do poprawnego,
+platform-independent modelu i po każdym większym kroku wykonać Build
+oraz test działania aplikacji.
 
 ## Aktualizacja 4 października 2026 -- JSON DataSource
 
 ### Zrobione -- pierwszy etap JSON
 
-- serializowalne DTO w `commonMain`
-- `PlaceDto`
-- `PlaceContentDto`
-- `PlaceFallbackDto`
-- `WikimediaImageRefDto`
-- `PlaceMapper`
-- `JsonPlaceDataSource`
-- `JsonResourceReader`
-- Androidowa implementacja `AndroidJsonResourceReader`
-- `morocco.json` w `shared/src/androidMain/assets`
-- `androidResources { enable = true }`
-- test `JsonPlaceDataSourceTest`
-- poprawne odczytanie JSON na fizycznym urządzeniu
-- pierwszy rekord -- Marrakesz
-- `TEST` jako tymczasowy opis potwierdzający odczyt z JSON
-- poprawne działanie Wikimedia po migracji
-- poprawne działanie Wikidata po migracji
-- Build OK
+-   serializowalne DTO w `commonMain`
+-   `PlaceDto`
+-   `PlaceContentDto`
+-   `PlaceFallbackDto`
+-   `WikimediaImageRefDto`
+-   `PlaceMapper`
+-   `JsonPlaceDataSource`
+-   `JsonResourceReader`
+-   Androidowa implementacja `AndroidJsonResourceReader`
+-   `morocco.json` w `shared/src/androidMain/assets`
+-   `androidResources { enable = true }`
+-   test `JsonPlaceDataSourceTest`
+-   poprawne odczytanie JSON na fizycznym urządzeniu
+-   pierwszy rekord -- Marrakesz
+-   `TEST` jako tymczasowy opis potwierdzający odczyt z JSON
+-   poprawne działanie Wikimedia po migracji
+-   poprawne działanie Wikidata po migracji
+-   Build OK
 
 ### Aktualny przepływ
 
-```text
+``` text
 morocco.json
     ↓
 AndroidJsonResourceReader
@@ -582,18 +617,20 @@ Compose UI
 
 ### Najbliższy etap -- uporządkowanie DI
 
-1. Scentralizować tworzenie `PlacesRepository`.
-2. Przestać tworzyć `PlacesRepositoryImpl` niezależnie w kilku ViewModel factories.
-3. Przekazywać tę samą konfigurację Repository do ViewModeli.
-4. Wykonać Build i sprawdzić wszystkie ekrany korzystające z `PlacesRepository`.
+1.  Scentralizować tworzenie `PlacesRepository`.
+2.  Przestać tworzyć `PlacesRepositoryImpl` niezależnie w kilku
+    ViewModel factories.
+3.  Przekazywać tę samą konfigurację Repository do ViewModeli.
+4.  Wykonać Build i sprawdzić wszystkie ekrany korzystające z
+    `PlacesRepository`.
 
 ### Dopiero później -- rozszerzenie JSON
 
-5. Zmienić JSON z jednego obiektu na listę `PlaceDto`.
-6. Dodać kilka miejsc testowych.
-7. Sprawdzić `CITY`, `parentPlaceId`, `null`, Wikimedia i fallbacki.
-8. Dopiero po stabilizacji rozszerzyć JSON do wszystkich miejsc.
-9. Usunąć stary hardcoded `MoroccoDataSource`.
+5.  Zmienić JSON z jednego obiektu na listę `PlaceDto`.
+6.  Dodać kilka miejsc testowych.
+7.  Sprawdzić `CITY`, `parentPlaceId`, `null`, Wikimedia i fallbacki.
+8.  Dopiero po stabilizacji rozszerzyć JSON do wszystkich miejsc.
+9.  Usunąć stary hardcoded `MoroccoDataSource`.
 
 ### Jeszcze później -- pełna niezależność platformowa
 
@@ -605,7 +642,7 @@ Compose UI
 
 Nie łączyć jednocześnie:
 
-```text
+``` text
 DI
 +
 pełnej migracji JSON
@@ -619,7 +656,7 @@ Najpierw jedna odpowiedzialność, Build, test działania, checkpoint.
 
 Najbliższy konkretny cel:
 
-```text
+``` text
 MyApp / composition root
         ↓
 PlacesRepository
@@ -629,44 +666,60 @@ ViewModel factories
 ViewModels
 ```
 
-Hilt pozostaje na późniejszym etapie. Najpierw ręczne DI ma zostać uporządkowane i zrozumiane.
----
+## Hilt pozostaje na późniejszym etapie. Najpierw ręczne DI ma zostać uporządkowane i zrozumiane.
 
-## Aktualny stan przed finalnym pushem — baza `95fcc35`
+## Aktualny stan przed finalnym pushem --- baza `95fcc35`
 
-Ta sekcja jest aktualnym podsumowaniem stanu projektu na potrzeby `main`. Historyczne plany poniżej wcześniejszych wpisów dokumentują poprzednie etapy i nie powinny być odczytywane jako aktualny status zadań.
+Ta sekcja jest aktualnym podsumowaniem stanu projektu na potrzeby
+`main`. Historyczne plany poniżej wcześniejszych wpisów dokumentują
+poprzednie etapy i nie powinny być odczytywane jako aktualny status
+zadań.
 
 ### Zrealizowane
 
-- Moduł `shared` z kodem domenowym i logiką danych Kotlin Multiplatform.
-- Rozdzielenie danych miejsca na `Place`, `PlaceContent` i `PlaceData`.
-- DTO oraz mapper z JSON do modelu domenowego.
-- Źródło danych `JsonPlaceDataSource`, korzystające z `ma_cities.json`, `ma_monuments.json` i `ma_nature.json`.
-- `PlacesRepository` i jego implementacja oparte na `PlaceData`.
-- Współdzielone implementacje repozytoriów Wikimedia i Wikidata.
-- Przekazywanie platformowych adapterów API i cache do repozytoriów z `AppContainer`.
-- Ręczne, scentralizowane DI bez Hilt.
-- Działanie aplikacji Android i wyświetlanie wszystkich miejsc Maroka — potwierdzone ręcznie przez użytkownika.
+-   Moduł `shared` z kodem domenowym i logiką danych Kotlin
+    Multiplatform.
+-   Rozdzielenie danych miejsca na `Place`, `PlaceContent` i
+    `PlaceData`.
+-   DTO oraz mapper z JSON do modelu domenowego.
+-   Źródło danych `JsonPlaceDataSource`, korzystające z
+    `ma_cities.json`, `ma_monuments.json` i `ma_nature.json`.
+-   `PlacesRepository` i jego implementacja oparte na `PlaceData`.
+-   Współdzielone implementacje repozytoriów Wikimedia i Wikidata.
+-   Przekazywanie platformowych adapterów API i cache do repozytoriów z
+    `AppContainer`.
+-   Ręczne, scentralizowane DI bez Hilt.
+-   Działanie aplikacji Android i wyświetlanie wszystkich miejsc Maroka
+    --- potwierdzone ręcznie przez użytkownika.
 
 ### Otwarte zadania
 
-1. **Walidacja przed pushem:** uruchomić build i testy, a asercje testów JSON porównać z aktualnym zestawem rekordów.
-2. Zaimplementować `PlacesRepository.search()` i dodać testy wyszukiwania.
-3. Dodać lub uzupełnić testy mapowania DTO → `PlaceData`, typów miejsc i relacji rodzic–dziecko.
-4. Zaprojektować oraz zaimplementować sposób odczytu zasobów dla iOS; zweryfikować wspólny przepływ danych na każdym zadeklarowanym targetcie.
-5. Ustalić docelową strategię lokalizacji i formatowania treści, jeśli aplikacja ma obsługiwać wiele języków.
-6. Dopiero po ustabilizowaniu danych i granic platformowych rozważyć dalsze etapy migracji UI.
+1.  **Walidacja przed pushem:** uruchomić build i testy, a asercje
+    testów JSON porównać z aktualnym zestawem rekordów.
+2.  Zaimplementować `PlacesRepository.search()` i dodać testy
+    wyszukiwania.
+3.  Dodać lub uzupełnić testy mapowania DTO → `PlaceData`, typów miejsc
+    i relacji rodzic--dziecko.
+4.  Zaprojektować oraz zaimplementować sposób odczytu zasobów dla iOS;
+    zweryfikować wspólny przepływ danych na każdym zadeklarowanym
+    targetcie.
+5.  Ustalić docelową strategię lokalizacji i formatowania treści, jeśli
+    aplikacja ma obsługiwać wiele języków.
+6.  Dopiero po ustabilizowaniu danych i granic platformowych rozważyć
+    dalsze etapy migracji UI.
 
 ### Poza zakresem tej bazy
 
-- Migracja ekranów do Compose Multiplatform nie jest częścią stanu `95fcc35`; interfejs Androida pozostaje w `app`.
-- Nie należy scalać commitów `2ba5e36` ani `c60215d` tylko po to, by zaktualizować dokumentację.
-- Zadeklarowane targety iOS nie oznaczają ukończonej aplikacji iOS.
-- Hilt nie jest wdrożony.
+-   Migracja ekranów do Compose Multiplatform nie jest częścią stanu
+    `95fcc35`; interfejs Androida pozostaje w `app`.
+-   Nie należy scalać commitów `2ba5e36` ani `c60215d` tylko po to, by
+    zaktualizować dokumentację.
+-   Zadeklarowane targety iOS nie oznaczają ukończonej aplikacji iOS.
+-   Hilt nie jest wdrożony.
 
 ### Kolejność dalszych prac
 
-```text
+``` text
 Build + testy na bazie 95fcc35
         ↓
 weryfikacja spójności JSON i testów
@@ -680,41 +733,53 @@ weryfikacja współdzielonego przepływu na iOS
 dopiero potem decyzje o dalszej migracji UI
 ```
 
----
+------------------------------------------------------------------------
 
-## Aktualizacja 2 listopada 2026 — miniaturki Wikimedia ukończone
+## Aktualizacja 2 listopada 2026 --- miniaturki Wikimedia ukończone
 
 ### Zrobione
 
-- Rozszerzono `WikimediaImage` o `thumbnailUrl`, `thumbnailWidth` i `thumbnailHeight`.
-- Dodano obsługę pól miniatury w odpowiedzi API / DTO.
-- Dodano pola miniatury do `WikimediaEntity` oraz mapowanie w `WikimediaMapper`.
-- `KtorWikimediaDataSource` żąda miniatur przez `iiurlwidth=1200`.
-- Ekrany list i `DetailsPager` preferują `thumbnailUrl`, z fallbackiem do oryginalnego `url`.
-- Zachowano lokalny fallback zdjęć w listach, gdy metadane Wikimedia nie są jeszcze dostępne.
-- `DetailsPage` przechowuje `pageId`, co pozwala powiązać stronę z metadanymi i atrybucją Wikimedia.
-- Zaktualizowano test `KtorWikimediaDataSourceTest` o parametr żądania i pola miniatury.
-- Poprawiono współbieżną aktualizację mapy obrazów w `WikimediaViewModel` przez `MutableStateFlow.update`.
-- Zachowano kolejność cache: `WikimediaCache` → Room (`WikimediaPersistentCache`) → API.
-- Testy `:shared:testAndroidHostTest` zakończone pomyślnie.
-- Build `:app:assembleDevDebug` zakończony pomyślnie.
-- Testy na urządzeniu potwierdziły poprawne wyświetlanie obrazów po wejściu, powrocie z Home i ponownej instalacji.
+-   Rozszerzono `WikimediaImage` o `thumbnailUrl`, `thumbnailWidth` i
+    `thumbnailHeight`.
+-   Dodano obsługę pól miniatury w odpowiedzi API / DTO.
+-   Dodano pola miniatury do `WikimediaEntity` oraz mapowanie w
+    `WikimediaMapper`.
+-   `KtorWikimediaDataSource` żąda miniatur przez `iiurlwidth=1200`.
+-   Ekrany list i `DetailsPager` preferują `thumbnailUrl`, z fallbackiem
+    do oryginalnego `url`.
+-   Zachowano lokalny fallback zdjęć w listach, gdy metadane Wikimedia
+    nie są jeszcze dostępne.
+-   `DetailsPage` przechowuje `pageId`, co pozwala powiązać stronę z
+    metadanymi i atrybucją Wikimedia.
+-   Zaktualizowano test `KtorWikimediaDataSourceTest` o parametr żądania
+    i pola miniatury.
+-   Poprawiono współbieżną aktualizację mapy obrazów w
+    `WikimediaViewModel` przez `MutableStateFlow.update`.
+-   Zachowano kolejność cache: `WikimediaCache` → Room
+    (`WikimediaPersistentCache`) → API.
+-   Testy `:shared:testAndroidHostTest` zakończone pomyślnie.
+-   Build `:app:assembleDevDebug` zakończony pomyślnie.
+-   Testy na urządzeniu potwierdziły poprawne wyświetlanie obrazów po
+    wejściu, powrocie z Home i ponownej instalacji.
 
 ### Ważna poprawka współbieżności
 
-Wcześniejszy zapis `_images.value += (pageId to image)` zastąpiono atomowym:
+Wcześniejszy zapis `_images.value += (pageId to image)` zastąpiono
+atomowym:
 
-```kotlin
+``` kotlin
 _images.update { current ->
     current + (pageId to image)
 }
 ```
 
-Zmiana zabezpiecza wspólną mapę przed utratą aktualizacji przy równoległym kończeniu pobrań. W przeprowadzonych testach rozwiązała obserwowany problem niestabilnie brakujących obrazów.
+Zmiana zabezpiecza wspólną mapę przed utratą aktualizacji przy
+równoległym kończeniu pobrań. W przeprowadzonych testach rozwiązała
+obserwowany problem niestabilnie brakujących obrazów.
 
 ### Aktualny status
 
-```text
+``` text
 Wikimedia thumbnails
         ↓
 DTO + mapper + domain model
@@ -732,29 +797,43 @@ Attribution preserved
 
 ### Następne obszary prac
 
-1. Kontynuować migrację ekranów z `app` do `shared` zgodnie z aktualnym planem KMP.
-2. Podczas przenoszenia ekranów uporządkować tymczasowe logi diagnostyczne dodane przy analizie ładowania Wikimedia.
-3. Kontynuować weryfikację współdzielonych przepływów danych i odpowiedzialności platformowych.
-4. Pozostałe zadania z wcześniejszego planu KMP — m.in. implementacja `PlacesRepository.search()` oraz platformowy odczyt zasobów dla iOS — pozostają otwarte, o ile nie zostały zrealizowane w osobnym etapie.
+1.  Kontynuować migrację ekranów z `app` do `shared` zgodnie z aktualnym
+    planem KMP.
+2.  Podczas przenoszenia ekranów uporządkować tymczasowe logi
+    diagnostyczne dodane przy analizie ładowania Wikimedia.
+3.  Kontynuować weryfikację współdzielonych przepływów danych i
+    odpowiedzialności platformowych.
+4.  Pozostałe zadania z wcześniejszego planu KMP --- m.in. implementacja
+    `PlacesRepository.search()` oraz platformowy odczyt zasobów dla iOS
+    --- pozostają otwarte, o ile nie zostały zrealizowane w osobnym
+    etapie.
 
+------------------------------------------------------------------------
 
----
-
-## Aktualizacja 3 listopada 2026 — etap `feature/kmp-ui-migration`
+## Aktualizacja 3 listopada 2026 --- etap `feature/kmp-ui-migration`
 
 ### Zrealizowane i wypchnięte
 
-- Przeniesiono definicje tras `Screen.kt` do `shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt`.
-- Usunięto pusty placeholder `shared/.../MoroccoApp.kt`.
-- Wprowadzono poprawki edge-to-edge w Android UI (`MainActivity`, `CitiesScreen`, `PlacesScreen`, `DetailsPager`).
-- Ustawiono domyślną wartość `emptyList()` dla `WikimediaResponse.imageInfo`, aby obsłużyć brak pola w odpowiedzi API.
-- Dodano Android `network_security_config.xml` i odwołanie do niego w manifeście.
-- Przetestowano konfigurację na Huawei z Androidem 7. Wersja z globalnym zaufaniem do systemowych i użytkownikowych CA wyświetla zdjęcia; testowana wersja ograniczona do domen Wikimedia nie wyświetlała części zdjęć.
-- Cztery commity zostały wypchnięte na `origin/feature/kmp-ui-migration`.
+-   Przeniesiono definicje tras `Screen.kt` do
+    `shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt`.
+-   Usunięto pusty placeholder `shared/.../MoroccoApp.kt`.
+-   Wprowadzono poprawki edge-to-edge w Android UI (`MainActivity`,
+    `CitiesScreen`, `PlacesScreen`, `DetailsPager`).
+-   Ustawiono domyślną wartość `emptyList()` dla
+    `WikimediaResponse.imageInfo`, aby obsłużyć brak pola w odpowiedzi
+    API.
+-   Dodano Android `network_security_config.xml` i odwołanie do niego w
+    manifeście.
+-   Przetestowano konfigurację na Huawei z Androidem 7. Wersja z
+    globalnym zaufaniem do systemowych i użytkownikowych CA wyświetla
+    zdjęcia; testowana wersja ograniczona do domen Wikimedia nie
+    wyświetlała części zdjęć.
+-   Cztery commity zostały wypchnięte na
+    `origin/feature/kmp-ui-migration`.
 
 ### Commity etapu
 
-```text
+``` text
 b90c59e Add Android network security config for user certificates
 4801d34 Handle missing Wikimedia image info
 3a48cf1 Improve Android edge-to-edge UI handling
@@ -763,107 +842,229 @@ cbdbb36 Move navigation routes to shared module
 
 ### Ważne ostrzeżenie bezpieczeństwa
 
-Aktualny Android `network_security_config.xml` zawiera `src="user"` w `base-config`. Oznacza to zaufanie do CA zainstalowanych przez użytkownika dla połączeń aplikacji objętych konfiguracją, a nie wyłącznie dla domen Wikimedia. Jest to świadomy kompromis dla kompatybilności z tabletem Huawei z Androidem 7. Konfiguracja Androida nie ustawia polityki TLS dla iOS.
+Aktualny Android `network_security_config.xml` zawiera `src="user"` w
+`base-config`. Oznacza to zaufanie do CA zainstalowanych przez
+użytkownika dla połączeń aplikacji objętych konfiguracją, a nie
+wyłącznie dla domen Wikimedia. Jest to świadomy kompromis dla
+kompatybilności z tabletem Huawei z Androidem 7. Konfiguracja Androida
+nie ustawia polityki TLS dla iOS.
 
 ### Aktualny zakres KMP
 
-Definicje tras są już w `shared/commonMain`, ale nie oznacza to ukończenia wspólnej nawigacji ani migracji wszystkich ekranów do Compose Multiplatform. Poprawki edge-to-edge dotyczą Android UI w `app`.
+Definicje tras są już w `shared/commonMain`, ale nie oznacza to
+ukończenia wspólnej nawigacji ani migracji wszystkich ekranów do Compose
+Multiplatform. Poprawki edge-to-edge dotyczą Android UI w `app`.
 
 ### Następne kroki
 
-1. Zaktualizować dokumentację i zatwierdzić ją osobnym commitem.
-2. Sprawdzić stan lokalnego `main` oraz `origin/main` i porównać je z `feature/kmp-ui-migration`.
-3. Uzgodnić bezpieczny sposób integracji brancha z `main`; przed merge nie zakładać, że historia obu gałęzi jest identyczna.
-4. Po integracji przygotować pełny ZIP projektu do audytu architektury, z wyłączeniem sekretów, plików lokalnych i artefaktów builda.
-5. W audycie zweryfikować, które pozostałe elementy `app` mogą zostać przeniesione do `shared`, w tym granice wspólnego UI, ViewModeli, nawigacji i adapterów platformowych.
+1.  Zaktualizować dokumentację i zatwierdzić ją osobnym commitem.
+2.  Sprawdzić stan lokalnego `main` oraz `origin/main` i porównać je z
+    `feature/kmp-ui-migration`.
+3.  Uzgodnić bezpieczny sposób integracji brancha z `main`; przed merge
+    nie zakładać, że historia obu gałęzi jest identyczna.
+4.  Po integracji przygotować pełny ZIP projektu do audytu architektury,
+    z wyłączeniem sekretów, plików lokalnych i artefaktów builda.
+5.  W audycie zweryfikować, które pozostałe elementy `app` mogą zostać
+    przeniesione do `shared`, w tym granice wspólnego UI, ViewModeli,
+    nawigacji i adapterów platformowych.
 
 ### Nadal nieuznawane za ukończone
 
-- Pełna migracja ekranów do Compose Multiplatform.
-- Pełna wspólna nawigacja iOS/Android.
-- Uruchomienie i weryfikacja aplikacji na iOS.
-- Platformowy odczyt zasobów i pozostałe otwarte zadania wymienione w poprzednich etapach.
-- `PlacesRepository.search()` — o ile nie został zaimplementowany w późniejszej, nieudokumentowanej zmianie.
----
+-   Pełna migracja ekranów do Compose Multiplatform.
 
-## Aktualizacja 5 listopada 2026 — migracja KMP scalona z main
+-   Pełna wspólna nawigacja iOS/Android.
 
-### Zakończone — główny etap migracji KMP
+-   Uruchomienie i weryfikacja aplikacji na iOS.
+
+-   Platformowy odczyt zasobów i pozostałe otwarte zadania wymienione w
+    poprzednich etapach.
+
+-   ## `PlacesRepository.search()` --- o ile nie został zaimplementowany w późniejszej, nieudokumentowanej zmianie.
+
+## Aktualizacja 5 listopada 2026 --- migracja KMP scalona z main
+
+### Zakończone --- główny etap migracji KMP
 
 Zmiany zostały scalone do `main` i wypchnięte na GitHub.
 
-```text
+``` text
 b8db742 Move app navigation and result repositories to shared
 67248a5 Complete shared UI and ViewModel migration
 ```
 
-Potwierdzony stan Git po scaleniu:
-- `main` i `origin/main` wskazują na `67248a5`;
-- `feature/kmp-navigation` wskazuje na ten sam commit;
-- working tree jest czysty;
-- lokalny `main` jest zsynchronizowany z `origin/main`.
+Potwierdzony stan Git po scaleniu: - `main` i `origin/main` wskazują na
+`67248a5`; - `feature/kmp-navigation` wskazuje na ten sam commit; -
+working tree jest czysty; - lokalny `main` jest zsynchronizowany z
+`origin/main`.
 
-Zakres zakończonego etapu:
-- dalsza migracja nawigacji do `shared`;
-- repozytoria wyników Quiz i Arcade w `shared`;
-- wspólne ekrany Compose i ViewModele w `shared`;
-- wspólny `AppContainer` składający współdzielone repozytoria z użyciem zależności przekazanych przez platformę.
+Zakres zakończonego etapu: - dalsza migracja nawigacji do `shared`; -
+repozytoria wyników Quiz i Arcade w `shared`; - wspólne ekrany Compose i
+ViewModele w `shared`; - wspólny `AppContainer` składający współdzielone
+repozytoria z użyciem zależności przekazanych przez platformę.
 
 ### Pozostałe prace po migracji
 
-To są zadania audytowe i porządkowe, a nie kolejny duży etap przenoszenia funkcjonalności:
+To są zadania audytowe i porządkowe, a nie kolejny duży etap
+przenoszenia funkcjonalności:
 
-1. Sprawdzić, czy `AndroidJsonResourceReader` nie ma już aktywnych referencji.
-2. Sprawdzić, czy stary Androidowy `QuizQuestionDataSource` jest nadal używany.
-3. Sprawdzić, czy rejestracja Android assets w konfiguracji Gradle `shared` jest nadal potrzebna.
-4. Przejrzeć zależności w `app` i `shared`, oddzielając rzeczywiście platformowe od wspólnych.
-5. Uruchomić dostępne buildy i testy po porządkach.
+1.  Sprawdzić, czy `AndroidJsonResourceReader` nie ma już aktywnych
+    referencji.
+2.  Sprawdzić, czy stary Androidowy `QuizQuestionDataSource` jest nadal
+    używany.
+3.  Sprawdzić, czy rejestracja Android assets w konfiguracji Gradle
+    `shared` jest nadal potrzebna.
+4.  Przejrzeć zależności w `app` i `shared`, oddzielając rzeczywiście
+    platformowe od wspólnych.
+5.  Uruchomić dostępne buildy i testy po porządkach.
 
-Elementów z punktów 1–3 nie usuwać przed sprawdzeniem referencji oraz poprawnym buildem.
+Elementów z punktów 1--3 nie usuwać przed sprawdzeniem referencji oraz
+poprawnym buildem.
 
 ### Ważne rozróżnienie: migracja a gotowość iOS
 
-Główna migracja kodu istniejącej aplikacji do wspólnego modułu jest w dużej części wykonana. Nie oznacza to jeszcze ukończonej aplikacji iOS. Nadal potrzebne będą:
-- konfiguracja iOS oraz platformowych zależności;
-- build i uruchomienie na iOS;
-- testy integracji platformowych;
-- weryfikacja UI, zasobów, sieci i trwałego przechowywania danych na iOS.
+Główna migracja kodu istniejącej aplikacji do wspólnego modułu jest w
+dużej części wykonana. Nie oznacza to jeszcze ukończonej aplikacji iOS.
+Nadal potrzebne będą: - konfiguracja iOS oraz platformowych
+zależności; - build i uruchomienie na iOS; - testy integracji
+platformowych; - weryfikacja UI, zasobów, sieci i trwałego
+przechowywania danych na iOS.
 
-### Następny etap — Maps KMP
+### Następny etap --- Maps KMP
 
-Mapy będą tworzone od początku z myślą o Androidzie i iOS. Nie planujemy implementacji Android-only z późniejszym przepisywaniem.
+Mapy będą tworzone od początku z myślą o Androidzie i iOS. Nie planujemy
+implementacji Android-only z późniejszym przepisywaniem.
 
-#### Etap 1 — mapa w Place Details
+#### Etap 1 --- mapa w Place Details
 
-- Dodać mapę na pierwszej stronie `Place Details`.
-- Wyświetlić granice danego miejsca na podstawie GeoJSON, jeżeli geometria jest dostępna.
-- Dopasować kamerę do granic lub lokalizacji miejsca.
-- Obsłużyć brak geometrii bez awarii i bez wymyślania granic.
+-   Dodać mapę na pierwszej stronie `Place Details`.
+-   Wyświetlić granice danego miejsca na podstawie GeoJSON, jeżeli
+    geometria jest dostępna.
+-   Dopasować kamerę do granic lub lokalizacji miejsca.
+-   Obsłużyć brak geometrii bez awarii i bez wymyślania granic.
 
-#### Etap 2 — mapa miasta w City Details
+#### Etap 2 --- mapa miasta w City Details
 
-- Dodać przełącznik pomiędzy istniejącym `LazyRow` kart miejsc a mapą.
-- Wyświetlić markery miejsc przypisanych do miasta.
-- Po wybraniu markera pokazać tytuł i snippet (lub sam tytuł).
-- Umożliwić przejście do `Place Details` z użyciem `placeId`.
+-   Dodać przełącznik pomiędzy istniejącym `LazyRow` kart miejsc a mapą.
+-   Wyświetlić markery miejsc przypisanych do miasta.
+-   Po wybraniu markera pokazać tytuł i snippet (lub sam tytuł).
+-   Umożliwić przejście do `Place Details` z użyciem `placeId`.
 
 #### Decyzje architektoniczne
 
-- Dane geograficzne (współrzędne, GeoJSON, identyfikatory i relacje) pozostają niezależne od silnika mapowego.
-- Stan i logika mapy powinny być wspólne w `shared`, o ile nie wymagają API platformowego.
-- Renderowanie i integracje platformowe należy odizolować od modeli domenowych i repozytoriów.
-- MapLibre Compose jest kandydatem do prototypu, a nie jeszcze zatwierdzoną i zweryfikowaną zależnością.
-- Przed decyzją o pełnym użyciu sprawdzić obsługę Android/iOS, GeoJSON, polygonów, markerów, zdarzeń, stylów, gestów i offline. Nie zakładać parytetu funkcji ani działania offline bez testów.
+-   Dane geograficzne (współrzędne, GeoJSON, identyfikatory i relacje)
+    pozostają niezależne od silnika mapowego.
+-   Stan i logika mapy powinny być wspólne w `shared`, o ile nie
+    wymagają API platformowego.
+-   Renderowanie i integracje platformowe należy odizolować od modeli
+    domenowych i repozytoriów.
+-   MapLibre Compose jest kandydatem do prototypu, a nie jeszcze
+    zatwierdzoną i zweryfikowaną zależnością.
+-   Przed decyzją o pełnym użyciu sprawdzić obsługę Android/iOS,
+    GeoJSON, polygonów, markerów, zdarzeń, stylów, gestów i offline. Nie
+    zakładać parytetu funkcji ani działania offline bez testów.
 
 ### Kolejność najbliższych prac
 
-1. Dokończyć audyt i porządki po migracji.
-2. Utworzyć branch dla funkcjonalności map po zatwierdzeniu dokumentacji.
-3. Zweryfikować MapLibre Compose i wykonać minimalny prototyp mapy w `Place Details`.
-4. Dodać granice GeoJSON i dopasowanie kamery.
-5. Dopiero po potwierdzeniu podstawowego działania rozbudować `City Details` o przełącznik LazyRow/mapa i markery.
-6. Po uzyskaniu dostępu do środowiska Apple zweryfikować wspólny kod oraz renderowanie na iOS.
+1.  Dokończyć audyt i porządki po migracji.
+2.  Utworzyć branch dla funkcjonalności map po zatwierdzeniu
+    dokumentacji.
+3.  Zweryfikować MapLibre Compose i wykonać minimalny prototyp mapy w
+    `Place Details`.
+4.  Dodać granice GeoJSON i dopasowanie kamery.
+5.  Dopiero po potwierdzeniu podstawowego działania rozbudować
+    `City Details` o przełącznik LazyRow/mapa i markery.
+6.  Po uzyskaniu dostępu do środowiska Apple zweryfikować wspólny kod
+    oraz renderowanie na iOS.
 
 ### Zadania historyczne wymagające ponownego sprawdzenia
 
-W starszych sekcjach roadmapy znajdują się pozycje takie jak `PlacesRepository.search()`, Weather, Favorites, Hilt i platformowy reader zasobów dla iOS. Ich status należy sprawdzić względem aktualnego kodu przed ponownym wpisaniem ich do bieżącego planu. Starsze listy zachowano jako zapis historyczny; nie są automatycznie aktualną kolejnością prac.
+## W starszych sekcjach roadmapy znajdują się pozycje takie jak `PlacesRepository.search()`, Weather, Favorites, Hilt i platformowy reader zasobów dla iOS. Ich status należy sprawdzić względem aktualnego kodu przed ponownym wpisaniem ich do bieżącego planu. Starsze listy zachowano jako zapis historyczny; nie są automatycznie aktualną kolejnością prac.
+
+## Aktualizacja 7 listopada 2026 --- Mapy KMP i GPS
+
+### Zrobione --- architektura mapy
+
+-   [x] Przeniesienie `PlaceMapSection.kt` do `ui/screens/map/`.
+-   [x] Aktualizacja package i importów.
+-   [x] Dodanie `FullScreenMap.kt`.
+-   [x] Podłączenie pełnoekranowej mapy w `MoroccoApp`.
+-   [x] Przekazywanie `placeId` w trasie pełnoekranowej mapy.
+-   [x] Dodanie wspólnej konfiguracji MapLibre.
+-   [x] Zmiana stylu mapy na `bright`.
+
+### Zrobione --- obszary geograficzne
+
+-   [x] Dodanie modelu domenowego `MapArea`.
+-   [x] Granice obszaru: `south`, `west`, `north`, `east`.
+-   [x] Minimalny i maksymalny zoom.
+-   [x] `MapAreaDto` i mapowanie do modelu domenowego.
+-   [x] Zastąpienie pola `showMapButton` opcjonalnym `mapArea`.
+-   [x] Ograniczenia kamery na podstawie `MapArea`.
+-   [x] Uzupełnienie i korekta wybranych współrzędnych oraz zoomów w
+    danych JSON.
+
+### Zrobione --- podstawowy przepływ GPS na Androidzie
+
+-   [x] Wspólny model stanu lokalizacji w `commonMain`.
+-   [x] Modele `LocationMode`, `LocationPermissionStatus` i
+    `UserLocationState`.
+-   [x] `LocationViewModel`.
+-   [x] Platformowe implementacje `AppSettings` dla Androida i iOS.
+-   [x] Komponent `MapLocationButton`.
+-   [x] Warstwa lokalizacji użytkownika na mapie.
+-   [x] Build po zmianach.
+-   [x] Test podstawowego przepływu GPS na dwóch urządzeniach Android.
+
+Uwaga: pozycje dotyczące iOS oznaczają przygotowanie implementacji w
+`iosMain`; build i test na iOS pozostają do wykonania. Nie oznaczamy
+całego etapu GPS jako ukończonego.
+
+### Tymczasowe dane testowe
+
+W `ma_monuments.json` pozostaje testowy punkt `gps_test_point_warsaw`
+(`placeId = 99001`). Jest celowo zachowany na czas testów GPS. Po
+zakończeniu testów należy go usunąć.
+
+### Nadal do zrobienia --- GPS i interakcja
+
+-   [ ] Zweryfikować zachowanie lokalizacji na iOS.
+-   [ ] Sprawdzić GPS bez dostępu do internetu.
+-   [ ] Potwierdzić centrowanie mapy na użytkowniku w każdym scenariuszu
+    uprawnień.
+-   [ ] Zweryfikować tryb śledzenia przemieszczania się użytkownika.
+-   [ ] Potwierdzić wyłączanie śledzenia po ręcznym przesunięciu mapy.
+-   [ ] Potwierdzić wznowienie śledzenia przyciskiem.
+
+### Nadal do zrobienia --- geometria, POI i offline
+
+-   [ ] Rozważyć dokładniejsze granice oparte na GeoJSON.
+-   [ ] Utworzyć model `MapPoi`.
+-   [ ] Zdefiniować kategorie POI i ikony.
+-   [ ] Wyświetlać markery POI.
+-   [ ] Obsłużyć wybór markera i prezentację informacji o miejscu.
+-   [ ] Dodać filtrowanie markerów według kategorii.
+-   [ ] Dopasowywać kamerę do obszaru i punktów POI.
+-   [ ] Zweryfikować MapLibre Offline Packs w używanej wersji.
+-   [ ] Przetestować pobieranie małego obszaru i zmierzyć rozmiar
+    danych.
+-   [ ] Zaprojektować zarządzanie pobranymi obszarami, postępem, pauzą,
+    wznowieniem, anulowaniem i usuwaniem.
+-   [ ] Przetestować mapę bez internetu.
+-   [ ] Przygotować ekran zarządzania mapami offline.
+
+### Uwagi architektoniczne
+
+`MapArea` jest prostokątnym bounding boxem, a nie geometrią GeoJSON.
+Brak `mapArea` jest prawidłowym stanem i nie może powodować awarii
+ekranu. GPS oraz dostępność podkładu mapowego należy testować osobno:
+działający odbiornik lokalizacji nie gwarantuje dostępności kafelków
+offline.
+
+### Kolejny etap
+
+1.  Dokończyć testy GPS i obsługę przypadków braku uprawnień.
+2.  Zweryfikować implementację na iOS.
+3.  Uporządkować dane testowe po zakończeniu testów GPS.
+4.  Następnie przejść do markerów POI i mapy miasta w `City Details`.
+5.  Dopiero po prototypie POI wrócić do projektu map offline i pomiarów
+    rzeczywistego zużycia pamięci.

@@ -2,11 +2,13 @@
 
 ## Cel projektu
 
-MoroccoApp to nowoczesna aplikacja podróżnicza w Kotlin + Jetpack Compose. Projekt jest budowany etapami z naciskiem na rozdzielenie odpowiedzialności między UI, ViewModel, Repository i DataSource.
+MoroccoApp to nowoczesna aplikacja podróżnicza w Kotlin + Jetpack
+Compose. Projekt jest budowany etapami z naciskiem na rozdzielenie
+odpowiedzialności między UI, ViewModel, Repository i DataSource.
 
 ## Warstwy
 
-```text
+``` text
 UI
 ↓
 ViewModel
@@ -18,21 +20,23 @@ DataSource
 Model
 ```
 
-UI nie pobiera danych bezpośrednio z DataSource. ViewModel korzysta z Repository, a stan ekranu jest wystawiany przez StateFlow.
+UI nie pobiera danych bezpośrednio z DataSource. ViewModel korzysta z
+Repository, a stan ekranu jest wystawiany przez StateFlow.
 
 ## Przepływ danych
 
-```text
+``` text
 DataSource → Repository → ViewModel → StateFlow → collectAsState() → Compose UI
 ```
 
 ## Model i Repository
 
-`Place` reprezentuje zarówno miasta, jak i miejsca znajdujące się w miastach. O typie obiektu informuje `PlaceType`.
+`Place` reprezentuje zarówno miasta, jak i miejsca znajdujące się w
+miastach. O typie obiektu informuje `PlaceType`.
 
 `PlacesRepository` udostępnia m.in.:
 
-```kotlin
+``` kotlin
 fun getPlaces(): List<Place>
 fun getPlace(placeId: Int): Place?
 fun getPlacesByType(placeType: PlaceType): List<Place>
@@ -40,24 +44,29 @@ fun getChildren(parentPlaceId: Int): List<Place>
 fun search(query: String): List<Place>
 ```
 
-`getPlace()` służy do pobrania konkretnego obiektu po identyfikatorze, natomiast `getChildren()` pozwala powiązać miejsca z miastem nadrzędnym.
+`getPlace()` służy do pobrania konkretnego obiektu po identyfikatorze,
+natomiast `getChildren()` pozwala powiązać miejsca z miastem nadrzędnym.
 
 ### Dane zdjęć i opisów
 
-`Place` przechowuje listy zdjęć i opisów. Zdjęcia na ekranach szczegółów mają typ nullable:
+`Place` przechowuje listy zdjęć i opisów. Zdjęcia na ekranach szczegółów
+mają typ nullable:
 
-```kotlin
+``` kotlin
 placeImages: List<String?>
 placeDescriptions: List<Int>
 ```
 
-`null` w `placeImages` ma znaczenie: oznacza, że na danej stronie nie ma zdjęcia. Nie powinien być traktowany jako błąd ładowania zdjęcia i dlatego nie powoduje wyświetlenia `default_image`.
+`null` w `placeImages` ma znaczenie: oznacza, że na danej stronie nie ma
+zdjęcia. Nie powinien być traktowany jako błąd ładowania zdjęcia i
+dlatego nie powoduje wyświetlenia `default_image`.
 
-Liczba zdjęć i opisów nie musi być taka sama. Pozycje są łączone przez system stron `CityPage`.
+Liczba zdjęć i opisów nie musi być taka sama. Pozycje są łączone przez
+system stron `CityPage`.
 
 ## Lista miast
 
-```text
+``` text
 CitiesScreen
 ↓
 LazyColumn
@@ -72,17 +81,19 @@ Card
     └── placeSnippet
 ```
 
-`CityListItem` nie zna ViewModelu i nie wykonuje Navigation. Zgłasza kliknięcie przez:
+`CityListItem` nie zna ViewModelu i nie wykonuje Navigation. Zgłasza
+kliknięcie przez:
 
-```kotlin
+``` kotlin
 onClick: (Place) -> Unit
 ```
 
 ## Navigation do miasta
 
-Po kliknięciu miasta przekazywany jest jego identyfikator, a nie cały obiekt `Place`.
+Po kliknięciu miasta przekazywany jest jego identyfikator, a nie cały
+obiekt `Place`.
 
-```text
+``` text
 CityListItem
 ↓
 CitiesScreen
@@ -92,13 +103,16 @@ navController.navigate("city_details/{cityId}")
 CityDetailsScreen(placeId)
 ```
 
-Argument Navigation jest pobierany jako `String`, a następnie konwertowany do `Int`.
+Argument Navigation jest pobierany jako `String`, a następnie
+konwertowany do `Int`.
 
 ## CityDetailsScreen
 
-`CityDetailsScreen` otrzymuje `placeId`. Sam tworzy `CityDetailsViewModel` przy użyciu `CityDetailsViewModelFactory` i obserwuje jego `uiState`.
+`CityDetailsScreen` otrzymuje `placeId`. Sam tworzy
+`CityDetailsViewModel` przy użyciu `CityDetailsViewModelFactory` i
+obserwuje jego `uiState`.
 
-```text
+``` text
 Navigation
 ↓
 placeId
@@ -112,20 +126,21 @@ PlacesRepository
 
 ### CityDetailsUiState
 
-```kotlin
+``` kotlin
 data class CityDetailsUiState(
     val place: Place? = null,
     val children: List<Place> = emptyList()
 )
 ```
 
-`place` jest głównym miastem, a `children` to miejsca przypisane do tego miasta.
+`place` jest głównym miastem, a `children` to miejsca przypisane do tego
+miasta.
 
 ### CityDetailsViewModel
 
 ViewModel pobiera oba elementy przez Repository:
 
-```text
+``` text
 getPlace(cityId)
 getChildren(cityId)
 ```
@@ -134,11 +149,12 @@ i zapisuje je w jednym `CityDetailsUiState`.
 
 ### CityDetailsViewModelFactory
 
-Ponieważ `CityDetailsViewModel` wymaga `placeId` w konstruktorze, używany jest `ViewModelProvider.Factory`.
+Ponieważ `CityDetailsViewModel` wymaga `placeId` w konstruktorze,
+używany jest `ViewModelProvider.Factory`.
 
 Schemat:
 
-```text
+``` text
 cityId
 ↓
 Int
@@ -152,7 +168,7 @@ CityDetailsViewModel(placeId)
 
 `CityDetailsScreen` prezentuje `uiState.children` w poziomym `LazyRow`.
 
-```text
+``` text
 CityDetailsScreen
 ↓
 LazyRow
@@ -160,26 +176,31 @@ LazyRow
 PlaceListItem
 ```
 
-`PlaceListItem` jest osobnym komponentem, ponieważ ma inne zastosowanie niż `CityListItem`.
+`PlaceListItem` jest osobnym komponentem, ponieważ ma inne zastosowanie
+niż `CityListItem`.
 
-- `CityListItem` — lista miast w `CitiesScreen`.
-- `PlaceListItem` — małe karty miejsc w `LazyRow` miasta.
+-   `CityListItem` --- lista miast w `CitiesScreen`.
+-   `PlaceListItem` --- małe karty miejsc w `LazyRow` miasta.
 
-`PlaceListItem` również nie wykonuje Navigation samodzielnie. Otrzymuje callback:
+`PlaceListItem` również nie wykonuje Navigation samodzielnie. Otrzymuje
+callback:
 
-```kotlin
+``` kotlin
 onClick: (Place) -> Unit
 ```
 
 ## System stron szczegółów
 
-Zarówno `CityDetailsScreen`, jak i `PlaceDetailsScreen` korzystają z `HorizontalPager`.
+Zarówno `CityDetailsScreen`, jak i `PlaceDetailsScreen` korzystają z
+`HorizontalPager`.
 
-Dane są przekształcane do listy `CityPage` przez funkcje `createCityPages()` / `createPlacePages()`.
+Dane są przekształcane do listy `CityPage` przez funkcje
+`createCityPages()` / `createPlacePages()`.
 
-Liczba stron jest wyznaczana na podstawie większej z liczby zdjęć i opisów, z dodatkową stroną `index == 0` na informacje podstawowe:
+Liczba stron jest wyznaczana na podstawie większej z liczby zdjęć i
+opisów, z dodatkową stroną `index == 0` na informacje podstawowe:
 
-```kotlin
+``` kotlin
 val pageCount = maxOf(
     images.size,
     descriptions.size
@@ -188,7 +209,7 @@ val pageCount = maxOf(
 
 Pierwsza strona:
 
-```text
+``` text
 index == 0
 ↓
 zdjęcie, jeśli istnieje
@@ -204,7 +225,7 @@ LazyRow miejsc (CityDetails)
 
 Kolejne strony:
 
-```text
+``` text
 index > 0
 ↓
 opcjonalne zdjęcie
@@ -212,23 +233,31 @@ opcjonalne zdjęcie
 description
 ```
 
-Opis dla strony jest pobierany z pozycji `index - 1` listy `placeDescriptions`, natomiast zdjęcie z pozycji `index` listy `placeImages`. Dzięki temu można niezależnie sterować liczbą opisów i zdjęć.
+Opis dla strony jest pobierany z pozycji `index - 1` listy
+`placeDescriptions`, natomiast zdjęcie z pozycji `index` listy
+`placeImages`. Dzięki temu można niezależnie sterować liczbą opisów i
+zdjęć.
 
-`null` w `placeImages` oznacza pustą przestrzeń zdjęciową na konkretnej stronie:
+`null` w `placeImages` oznacza pustą przestrzeń zdjęciową na konkretnej
+stronie:
 
-```text
+``` text
 Page 1 → image + description
 Page 2 → null + description
 Page 3 → image + description
 ```
 
-Brak zdjęcia wynikający z `null` nie wyświetla placeholdera. Placeholder jest używany tylko tam, gdzie `AsyncImage` faktycznie próbuje załadować obraz i występuje błąd lub brak modelu w miejscach, w których przewidziano obsługę fallback.
+Brak zdjęcia wynikający z `null` nie wyświetla placeholdera. Placeholder
+jest używany tylko tam, gdzie `AsyncImage` faktycznie próbuje załadować
+obraz i występuje błąd lub brak modelu w miejscach, w których
+przewidziano obsługę fallback.
 
 ## Pionowy scroll i collapsing
 
-Każda strona `HorizontalPager` ma własny `rememberScrollState()` i `verticalScroll()`.
+Każda strona `HorizontalPager` ma własny `rememberScrollState()` i
+`verticalScroll()`.
 
-```text
+``` text
 HorizontalPager
 ↓
 page
@@ -238,13 +267,16 @@ rememberScrollState()
 Column.verticalScroll(scrollState)
 ```
 
-Dzięki temu przesuwanie poziome między kartami jest niezależne od pionowego przewijania treści danej karty.
+Dzięki temu przesuwanie poziome między kartami jest niezależne od
+pionowego przewijania treści danej karty.
 
-Zdjęcie hero ma maksymalną wysokość `240.dp`. Podczas pionowego scrollowania wysokość zdjęcia jest zmniejszana o aktualną wartość scrolla, aż do zera.
+Zdjęcie hero ma maksymalną wysokość `240.dp`. Podczas pionowego
+scrollowania wysokość zdjęcia jest zmniejszana o aktualną wartość
+scrolla, aż do zera.
 
 Do przeliczania `dp` i `px` używany jest `LocalDensity.current`:
 
-```kotlin
+``` kotlin
 val imageHeight = with(density) {
     (imageMaxHeight.toPx() - scrollState.value)
         .coerceAtLeast(0f)
@@ -254,7 +286,7 @@ val imageHeight = with(density) {
 
 Schemat działania:
 
-```text
+``` text
 scrollState.value
 ↓
 zmniejszenie wysokości zdjęcia
@@ -270,29 +302,33 @@ Przy powrocie na górę wysokość zdjęcia ponownie rośnie.
 
 ## PageIndicator
 
-`PageIndicator` jest wspólnym komponentem UI używanym przez ekrany szczegółów.
+`PageIndicator` jest wspólnym komponentem UI używanym przez ekrany
+szczegółów.
 
-Wyświetla serię małych okręgów odpowiadających liczbie stron. Aktywny okrąg wskazuje `pagerState.currentPage`.
+Wyświetla serię małych okręgów odpowiadających liczbie stron. Aktywny
+okrąg wskazuje `pagerState.currentPage`.
 
-```text
+``` text
 ● ○ ○ ○
 ```
 
 Komponent przyjmuje:
 
-```kotlin
+``` kotlin
 pageCount: Int
 currentPage: Int
 modifier: Modifier
 ```
 
-`modifier` pozwala rodzicowi określić pozycję wskaźnika, np. przez `align(Alignment.BottomCenter)` w `Box` zawierającym zdjęcie.
+`modifier` pozwala rodzicowi określić pozycję wskaźnika, np. przez
+`align(Alignment.BottomCenter)` w `Box` zawierającym zdjęcie.
 
 ## PlaceDetailsScreen
 
-`PlaceDetailsScreen` korzysta z tego samego mechanizmu stron co `CityDetailsScreen`.
+`PlaceDetailsScreen` korzysta z tego samego mechanizmu stron co
+`CityDetailsScreen`.
 
-```text
+``` text
 PlaceListItem
 ↓
 onClick(place)
@@ -308,20 +344,19 @@ PlaceDetailsViewModel
 PlacesRepository.getPlace(placeId)
 ```
 
-Na pierwszej stronie pokazuje podstawowe informacje o miejscu. Kolejne strony prezentują `placeDescriptions` oraz opcjonalne zdjęcia.
+Na pierwszej stronie pokazuje podstawowe informacje o miejscu. Kolejne
+strony prezentują `placeDescriptions` oraz opcjonalne zdjęcia.
 
-`PlaceDetailsScreen` ma również:
-- `HorizontalPager`,
-- pionowy scroll każdej strony,
-- collapsing zdjęcia,
-- `PageIndicator`,
-- HTML-owe opisy.
+`PlaceDetailsScreen` ma również: - `HorizontalPager`, - pionowy scroll
+każdej strony, - collapsing zdjęcia, - `PageIndicator`, - HTML-owe
+opisy.
 
 ## HTML w opisach
 
-Opisy w `placeDescriptions` są przechowywane jako identyfikatory zasobów `R.string`, ale ich zawartość może zawierać HTML, np.:
+Opisy w `placeDescriptions` są przechowywane jako identyfikatory zasobów
+`R.string`, ale ich zawartość może zawierać HTML, np.:
 
-```html
+``` html
 <h4>Etymologia</h4>
 <p>Treść akapitu...</p>
 <b>Ważna informacja</b>
@@ -331,32 +366,33 @@ Do konwersji używany jest komponent `HtmlText`.
 
 `HtmlText` wykorzystuje:
 
-```kotlin
+``` kotlin
 Html.fromHtml(
     text,
     Html.FROM_HTML_MODE_LEGACY
 )
 ```
 
-Następnie analizowane są spany Androida i przekształcane do `AnnotatedString` Compose.
+Następnie analizowane są spany Androida i przekształcane do
+`AnnotatedString` Compose.
 
-Obsługiwane są m.in.:
-- `StyleSpan` → `FontWeight.Bold` / `FontStyle.Italic`,
-- `RelativeSizeSpan` → `SpanStyle(fontSize = ...)`,
-- struktura akapitów generowana przez HTML,
-- wyrównanie tekstu przez `TextAlign`.
+Obsługiwane są m.in.: - `StyleSpan` → `FontWeight.Bold` /
+`FontStyle.Italic`, - `RelativeSizeSpan` →
+`SpanStyle(fontSize = ...)`, - struktura akapitów generowana przez
+HTML, - wyrównanie tekstu przez `TextAlign`.
 
 `HtmlText` przyjmuje parametr:
 
-```kotlin
+``` kotlin
 textAlign: TextAlign = TextAlign.Justify
 ```
 
-Dzięki temu ekran może użyć np. `TextAlign.Justify`, zachowując formatowanie HTML.
+Dzięki temu ekran może użyć np. `TextAlign.Justify`, zachowując
+formatowanie HTML.
 
 ## Docelowy przepływ szczegółów
 
-```text
+``` text
 CitiesScreen
 ↓
 CityDetailsScreen
@@ -378,21 +414,23 @@ HorizontalPager
 └── ...
 ```
 
-Miasto i konkretne miejsce mają osobne ekrany szczegółów, ale korzystają z tej samej koncepcji prezentacji treści.
+Miasto i konkretne miejsce mają osobne ekrany szczegółów, ale korzystają
+z tej samej koncepcji prezentacji treści.
 
 ## Obrazy
 
 W listach reprezentacyjne zdjęcie może być wybierane przez:
 
-```kotlin
+``` kotlin
 place.placeImages.firstOrNull()
 ```
 
-Na ekranach szczegółów lista może zawierać `null`, aby zachować kontrolę nad tym, na których stronach ma pojawić się zdjęcie.
+Na ekranach szczegółów lista może zawierać `null`, aby zachować kontrolę
+nad tym, na których stronach ma pojawić się zdjęcie.
 
 Obraz ładuje Coil 3 przez `AsyncImage`.
 
-```text
+``` text
 placeImages
 ↓
 AsyncImage
@@ -402,24 +440,25 @@ HTTPS / OkHttp
 
 Aplikacja wymaga:
 
-```xml
+``` xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ## UI i layout
 
-`CityListItem` korzysta z `Card`, `Row`, `Column`, `fillMaxWidth()`, `weight(1f)`, `padding()`, zdjęcia 112 dp i `ContentScale.Crop`.
+`CityListItem` korzysta z `Card`, `Row`, `Column`, `fillMaxWidth()`,
+`weight(1f)`, `padding()`, zdjęcia 112 dp i `ContentScale.Crop`.
 
 Karta używa:
 
-```kotlin
+``` kotlin
 shape = MaterialTheme.shapes.medium
 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
 ```
 
 Hierarchia tekstu:
 
-```text
+``` text
 placeName
 ↓ 8 dp
 placeTranslate
@@ -429,13 +468,16 @@ placeSnippet
 
 `placeTranslate` jest wyświetlane kursywą.
 
-Na ekranach szczegółów zdjęcie jest traktowane jako szeroki element typu hero. Tekst poniżej ma własne marginesy, dzięki czemu zdjęcie może wykorzystać pełną szerokość ekranu.
+Na ekranach szczegółów zdjęcie jest traktowane jako szeroki element typu
+hero. Tekst poniżej ma własne marginesy, dzięki czemu zdjęcie może
+wykorzystać pełną szerokość ekranu.
 
 ## Zasada odpowiedzialności komponentów
 
-Komponenty UI nie powinny same decydować o Navigation ani pobierać danych z Repository.
+Komponenty UI nie powinny same decydować o Navigation ani pobierać
+danych z Repository.
 
-```text
+``` text
 PlaceListItem
 ↓
 onClick(place)
@@ -445,15 +487,18 @@ rodzic
 Navigation
 ```
 
-Navigation przekazuje identyfikatory, a ViewModel pobiera właściwe obiekty domenowe.
+Navigation przekazuje identyfikatory, a ViewModel pobiera właściwe
+obiekty domenowe.
 
 ## Aktualny etap
 
-Podstawowa architektura list, Navigation, ekranów szczegółów, pagera, scrollowania, collapsing oraz formatowania opisów HTML jest zaimplementowana.
+Podstawowa architektura list, Navigation, ekranów szczegółów, pagera,
+scrollowania, collapsing oraz formatowania opisów HTML jest
+zaimplementowana.
 
 Kolejne planowane obszary:
 
-```text
+``` text
 dalsze dopracowanie UX
 ↓
 Weather
@@ -471,18 +516,24 @@ Hilt
 
 ## Zdjęcia i licencje
 
-W przyszłości planowane jest korzystanie m.in. ze zdjęć Wikimedia Commons. Docelowo można rozważyć model zdjęcia zawierający URL, źródło, autora i licencję.
+W przyszłości planowane jest korzystanie m.in. ze zdjęć Wikimedia
+Commons. Docelowo można rozważyć model zdjęcia zawierający URL, źródło,
+autora i licencję.
 
-
-## Aktualizacja 30–31 sierpnia 2026
+## Aktualizacja 30--31 sierpnia 2026
 
 ### Wikimedia ImageLoader
 
-Konfiguracja ładowania zdjęć Wikimedia została scentralizowana w `data/image/WikimediaImageLoader.kt`. `createWikimediaImageLoader(context)` tworzy Coil `ImageLoader` wykorzystujący wspólny klient OkHttp z odpowiednim `User-Agent`. Dzięki temu konfiguracja nie jest kopiowana w `CityDetailsScreen`, `PlaceDetailsScreen` i `CityListItem`.
+Konfiguracja ładowania zdjęć Wikimedia została scentralizowana w
+`data/image/WikimediaImageLoader.kt`.
+`createWikimediaImageLoader(context)` tworzy Coil `ImageLoader`
+wykorzystujący wspólny klient OkHttp z odpowiednim `User-Agent`. Dzięki
+temu konfiguracja nie jest kopiowana w `CityDetailsScreen`,
+`PlaceDetailsScreen` i `CityListItem`.
 
-Przepływ: 
+Przepływ:
 
-```text
+``` text
 WikimediaRetrofit
 ↓
 WikimediaRepository
@@ -498,9 +549,12 @@ AsyncImage
 
 ### Wspólny DetailsPager
 
-Logika `CityDetailsScreen` i `PlaceDetailsScreen` została zrefaktoryzowana do `DetailsPager`. Wspólny komponent obsługuje pager, zdjęcia, attribution, collapsing, scroll, PageIndicator, nazwę, tłumaczenie, snippet i descriptions.
+Logika `CityDetailsScreen` i `PlaceDetailsScreen` została
+zrefaktoryzowana do `DetailsPager`. Wspólny komponent obsługuje pager,
+zdjęcia, attribution, collapsing, scroll, PageIndicator, nazwę,
+tłumaczenie, snippet i descriptions.
 
-```text
+``` text
 CityDetailsScreen ──┐
                     ├── DetailsPager
 PlaceDetailsScreen ─┘
@@ -508,32 +562,43 @@ PlaceDetailsScreen ─┘
 
 Różnice są przekazywane przez opcjonalny slot Compose:
 
-```kotlin
+``` kotlin
 content: @Composable () -> Unit = {}
 ```
 
-City przekazuje `LazyRow` miejsc, Place nie przekazuje dodatkowej zawartości.
+City przekazuje `LazyRow` miejsc, Place nie przekazuje dodatkowej
+zawartości.
 
 ### Wspólne tworzenie stron
 
-Wcześniejsze `createCityPages()` i `createPlacePages()` zostały zastąpione wspólnym `createPages()`. Dzięki temu sposób mapowania `WikimediaImageRef`, lokalnych URL-i i opisów jest jeden dla obu ekranów.
+Wcześniejsze `createCityPages()` i `createPlacePages()` zostały
+zastąpione wspólnym `createPages()`. Dzięki temu sposób mapowania
+`WikimediaImageRef`, lokalnych URL-i i opisów jest jeden dla obu
+ekranów.
 
 ### Odpowiedzialność layoutu
 
-W `DetailsPager` `Box` zawiera wyłącznie hero image i elementy nakładane na zdjęcie (`WikimediaAttributionIcon`, `PageIndicator`). Nazwa, translate, snippet, descriptions i opcjonalny `content()` znajdują się w nadrzędnym `Column`, dzięki czemu nie nachodzą na zdjęcie.
+W `DetailsPager` `Box` zawiera wyłącznie hero image i elementy nakładane
+na zdjęcie (`WikimediaAttributionIcon`, `PageIndicator`). Nazwa,
+translate, snippet, descriptions i opcjonalny `content()` znajdują się w
+nadrzędnym `Column`, dzięki czemu nie nachodzą na zdjęcie.
 
 ### Przyszła Application
 
-Projekt obecnie nie ma własnej klasy `Application`. Jest to świadoma sytuacja na obecnym etapie. Przy planowanym dodaniu map OSM konfiguracja aplikacji może zostać przeniesiona do własnej klasy `Application`, podobnie jak wcześniej w GlobeTrotter.
+Projekt obecnie nie ma własnej klasy `Application`. Jest to świadoma
+sytuacja na obecnym etapie. Przy planowanym dodaniu map OSM konfiguracja
+aplikacji może zostać przeniesiona do własnej klasy `Application`,
+podobnie jak wcześniej w GlobeTrotter.
 
-
-## Aktualizacja 31 sierpnia – 1 września 2026
+## Aktualizacja 31 sierpnia -- 1 września 2026
 
 ### Źródła danych online
 
-Do architektury dołączono Wikidata jako źródło dynamicznych danych dla obiektów posiadających `wikidataId`. Wikimedia pozostaje źródłem informacji o zdjęciach i ich attribution.
+Do architektury dołączono Wikidata jako źródło dynamicznych danych dla
+obiektów posiadających `wikidataId`. Wikimedia pozostaje źródłem
+informacji o zdjęciach i ich attribution.
 
-```text
+``` text
 Place
   └── wikidataId
         ↓
@@ -544,13 +609,16 @@ WikidataInfo
 CityDetails / PlaceDetails
 ```
 
-Dla City `WikidataInfo` zawiera obecnie `population`, `area`, `elevation` oraz `inception: WikidataTime?`.
+Dla City `WikidataInfo` zawiera obecnie `population`, `area`,
+`elevation` oraz `inception: WikidataTime?`.
 
 ### Repository i cache
 
-Repository jest nadal interfejsem w `domain/repository`, a implementacja znajduje się w `data/repository`. Do danych online dodano interfejsy cache w domenie oraz implementacje pamięciowe w warstwie data.
+Repository jest nadal interfejsem w `domain/repository`, a implementacja
+znajduje się w `data/repository`. Do danych online dodano interfejsy
+cache w domenie oraz implementacje pamięciowe w warstwie data.
 
-```text
+``` text
 domain/repository
 ├── WikidataRepository
 ├── WikidataCache
@@ -567,52 +635,72 @@ domain/repository
 
 ### `MyApp` i współdzielone zależności
 
-Projekt ma już własną klasę `MyApp : Application`. Na obecnym etapie przechowuje wspólne instancje `WikidataMemoryCache` i `WikimediaMemoryCache`. Jest to punkt centralizacji zależności, który w przyszłości może zostać rozszerzony o konfigurację OSM i inne elementy infrastruktury.
+Projekt ma już własną klasę `MyApp : Application`. Na obecnym etapie
+przechowuje wspólne instancje `WikidataMemoryCache` i
+`WikimediaMemoryCache`. Jest to punkt centralizacji zależności, który w
+przyszłości może zostać rozszerzony o konfigurację OSM i inne elementy
+infrastruktury.
 
 ### Wspólny klient HTTP
 
-Konfiguracja `User-Agent` została wydzielona do wspólnego klienta HTTP, wykorzystywanego przez usługi Wikimedia/Wikidata oraz Coil. Eliminuje to kolejne duplikaty konfiguracji i centralizuje zachowanie sieciowe.
+Konfiguracja `User-Agent` została wydzielona do wspólnego klienta HTTP,
+wykorzystywanego przez usługi Wikimedia/Wikidata oraz Coil. Eliminuje to
+kolejne duplikaty konfiguracji i centralizuje zachowanie sieciowe.
 
 ### Wikimedia -- ograniczenie requestów
 
-`WikimediaViewModel` ogranicza liczbę jednoczesnych requestów do trzech (`Semaphore(3)`) oraz blokuje równoległe ponowne pobieranie tego samego `pageId`. Repository korzysta z `WikimediaCache`, dzięki czemu dane pobrane wcześniej w bieżącej sesji mogą być używane bez kolejnego requestu.
+`WikimediaViewModel` ogranicza liczbę jednoczesnych requestów do trzech
+(`Semaphore(3)`) oraz blokuje równoległe ponowne pobieranie tego samego
+`pageId`. Repository korzysta z `WikimediaCache`, dzięki czemu dane
+pobrane wcześniej w bieżącej sesji mogą być używane bez kolejnego
+requestu.
 
 ### Loading obrazu
 
-Stan ładowania właściwego pliku obrazu jest obecnie kontrolowany przez Coil w `DetailsPager`, a nie przez stan pobierania metadanych Wikimedia. `LinearProgressIndicator` jest wyświetlany podczas `onLoading` i znika przy `onSuccess`/`onError`.
+Stan ładowania właściwego pliku obrazu jest obecnie kontrolowany przez
+Coil w `DetailsPager`, a nie przez stan pobierania metadanych Wikimedia.
+`LinearProgressIndicator` jest wyświetlany podczas `onLoading` i znika
+przy `onSuccess`/`onError`.
 
 ### Offline
 
-Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po utracie sieci w obrębie tej samej sesji. Cache znika po zakończeniu procesu aplikacji. Trwały storage nie został jeszcze wdrożony. Room pozostaje przyszłym krokiem, kiedy potrzebny będzie offline po restarcie.
+Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po
+utracie sieci w obrębie tej samej sesji. Cache znika po zakończeniu
+procesu aplikacji. Trwały storage nie został jeszcze wdrożony. Room
+pozostaje przyszłym krokiem, kiedy potrzebny będzie offline po
+restarcie.
 
 ### Planowane rozszerzenia
 
-W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model domenowy i przepływy online/offline.
+W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a
+następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane
+aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model
+domenowy i przepływy online/offline.
 
-## Aktualizacja 2–3 września 2026 -- Room, Git i Quiz
+## Aktualizacja 2--3 września 2026 -- Room, Git i Quiz
 
 ### Trwały cache z Room
 
-Do projektu dodano Room 3 oraz KSP. Room przechowuje lokalnie metadane Wikidata i Wikimedia, dzięki czemu dane mogą być odzyskane po zakończeniu procesu aplikacji.
+Do projektu dodano Room 3 oraz KSP. Room przechowuje lokalnie metadane
+Wikidata i Wikimedia, dzięki czemu dane mogą być odzyskane po
+zakończeniu procesu aplikacji.
 
-Utworzono:
-- `AppDatabase`
-- `WikidataEntity` / `WikidataDao`
-- `WikimediaEntity` / `WikimediaDao`
-- `WikidataMapper`
-- `WikimediaMapper`
+Utworzono: - `AppDatabase` - `WikidataEntity` / `WikidataDao` -
+`WikimediaEntity` / `WikimediaDao` - `WikidataMapper` -
+`WikimediaMapper`
 
 Mechanizm dostępu do danych:
 
-```text
+``` text
 Wikidata / Wikimedia metadata:
 MemoryCache → Room → API
 API → Room → MemoryCache → UI
 ```
 
-Dla obrazów właściwy plik jest niezależnie obsługiwany przez Coil i jego persistent `DiskCache`.
+Dla obrazów właściwy plik jest niezależnie obsługiwany przez Coil i jego
+persistent `DiskCache`.
 
-```text
+``` text
 Wikimedia image URL
         ↓
       Coil
@@ -620,19 +708,24 @@ Wikimedia image URL
    DiskCache
 ```
 
-`MyApp : Application` przechowuje obecnie wspólne MemoryCache, bazę Room oraz współdzielony `WikimediaImageLoader`.
+`MyApp : Application` przechowuje obecnie wspólne MemoryCache, bazę Room
+oraz współdzielony `WikimediaImageLoader`.
 
 ### Test offline po restarcie
 
-Przetestowano działanie persistent cache po zakończeniu procesu aplikacji i ponownym uruchomieniu bez internetu. Logcat wykazał odczyty `ROOM CACHE HIT`, a użytkownik potwierdził wyświetlenie zapisanych zdjęć offline.
+Przetestowano działanie persistent cache po zakończeniu procesu
+aplikacji i ponownym uruchomieniu bez internetu. Logcat wykazał odczyty
+`ROOM CACHE HIT`, a użytkownik potwierdził wyświetlenie zapisanych zdjęć
+offline.
 
 ### Git i organizacja pracy
 
-Projekt został podłączony do Git i GitHub. Praca nad funkcjami odbywa się na osobnych branchach.
+Projekt został podłączony do Git i GitHub. Praca nad funkcjami odbywa
+się na osobnych branchach.
 
 Aktualna historia:
 
-```text
+``` text
 main
 ├── chore: initialize MoroccoApp repository
 ├── chore: configure Room and KSP
@@ -646,9 +739,10 @@ Następnie utworzono branch `feature/quiz`.
 
 ### Quiz -- aktualna architektura
 
-Pierwsza wersja quizu korzysta z osobnego modelu, Repository i ViewModelu.
+Pierwsza wersja quizu korzysta z osobnego modelu, Repository i
+ViewModelu.
 
-```text
+``` text
 HomeScreen
     ↓
 Navigation
@@ -662,23 +756,21 @@ QuizRepository
 QuizQuestion
 ```
 
-Ukończono:
-- `QuizQuestion`
-- `QuizRepository`
-- `QuizRepositoryImpl`
-- `QuizViewModel`
-- `QuizViewModelFactory`
-- `QuizScreen`
-- trasę `quiz` w Navigation
-- przycisk wejścia do quizu na `HomeScreen`
+Ukończono: - `QuizQuestion` - `QuizRepository` - `QuizRepositoryImpl` -
+`QuizViewModel` - `QuizViewModelFactory` - `QuizScreen` - trasę `quiz` w
+Navigation - przycisk wejścia do quizu na `HomeScreen`
 
-Quiz zawiera obecnie 10 pytań. Każde pytanie ma 4 odpowiedzi i dokładnie jedną poprawną odpowiedź.
+Quiz zawiera obecnie 10 pytań. Każde pytanie ma 4 odpowiedzi i dokładnie
+jedną poprawną odpowiedź.
 
-Po wybraniu odpowiedzi użytkownik nie może jej zmienić. Poprawna odpowiedź jest oznaczana na zielono, a błędna wybrana odpowiedź na czerwono. Na ostatnim pytaniu przycisk zmienia się z `NASTĘPNE` na `PODSUMOWANIE`.
+Po wybraniu odpowiedzi użytkownik nie może jej zmienić. Poprawna
+odpowiedź jest oznaczana na zielono, a błędna wybrana odpowiedź na
+czerwono. Na ostatnim pytaniu przycisk zmienia się z `NASTĘPNE` na
+`PODSUMOWANIE`.
 
 ### Najbliższe elementy quizu
 
-```text
+``` text
 QuizScreen
     ↓
 QuizSummaryScreen
@@ -694,15 +786,16 @@ TOP 10 / TOP 20
 
 ### Quiz -- źródło pytań
 
-Pytania quizowe nie są już przechowywane jako hardkodowana lista w `QuizRepositoryImpl`. Są przechowywane w pliku:
+Pytania quizowe nie są już przechowywane jako hardkodowana lista w
+`QuizRepositoryImpl`. Są przechowywane w pliku:
 
-```text
+``` text
 app/src/main/assets/quiz/questions.json
 ```
 
 Każdy rekord zawiera:
 
-```text
+``` text
 id
 difficulty
 question
@@ -712,7 +805,7 @@ correctAnswerIndex
 
 Aktualnie baza zawiera 50 pytań:
 
-```text
+``` text
 VERY_EASY  → 10
 EASY       → 10
 MEDIUM     → 10
@@ -722,7 +815,7 @@ VERY_HARD  → 10
 
 ### Przepływ danych quizu
 
-```text
+``` text
 questions.json
       ↓
 QuizQuestionDataSource
@@ -742,13 +835,15 @@ QuizViewModel
 Compose UI
 ```
 
-`QuizQuestionDto` odwzorowuje format JSON, natomiast `QuizQuestion` jest modelem domenowym. Konwersja `difficulty` z tekstu JSON do `QuizDifficulty` odbywa się w mapperze.
+`QuizQuestionDto` odwzorowuje format JSON, natomiast `QuizQuestion` jest
+modelem domenowym. Konwersja `difficulty` z tekstu JSON do
+`QuizDifficulty` odbywa się w mapperze.
 
 ### Trudność quizu
 
 `QuizDifficulty` znajduje się w `domain/model` i posiada pięć poziomów:
 
-```kotlin
+``` kotlin
 VERY_EASY
 EASY
 MEDIUM
@@ -756,17 +851,23 @@ HARD
 VERY_HARD
 ```
 
-Poziom jest wybierany na osobnym `QuizDifficultyScreen`. `QuizViewModel.startQuiz(difficulty)` zapamiętuje wybrany poziom i pobiera odpowiednie pytania przez Repository.
+Poziom jest wybierany na osobnym `QuizDifficultyScreen`.
+`QuizViewModel.startQuiz(difficulty)` zapamiętuje wybrany poziom i
+pobiera odpowiednie pytania przez Repository.
 
 ### Klasyczny quiz
 
-Klasyczny quiz składa się z 10 pytań. Każde pytanie posiada 4 odpowiedzi i dokładnie jedną poprawną. Po udzieleniu odpowiedzi wybór zostaje zablokowany. Poprawna odpowiedź jest oznaczana na zielono, a wybrana błędna odpowiedź na czerwono.
+Klasyczny quiz składa się z 10 pytań. Każde pytanie posiada 4 odpowiedzi
+i dokładnie jedną poprawną. Po udzieleniu odpowiedzi wybór zostaje
+zablokowany. Poprawna odpowiedź jest oznaczana na zielono, a wybrana
+błędna odpowiedź na czerwono.
 
 ### Przerwanie quizu
 
-`QuizScreen` posiada mały przycisk `X` w prawym górnym rogu. Przed opuszczeniem rozgrywki wyświetlany jest `AlertDialog` z potwierdzeniem.
+`QuizScreen` posiada mały przycisk `X` w prawym górnym rogu. Przed
+opuszczeniem rozgrywki wyświetlany jest `AlertDialog` z potwierdzeniem.
 
-```text
+``` text
 X
 ↓
 potwierdzenie
@@ -774,13 +875,14 @@ potwierdzenie
 └── WYJDŹ → reset stanu + powrót do ekranu startowego quizu
 ```
 
-Przerwanie quizu nie zapisuje wyniku. Resetowany jest bieżący stan rozgrywki.
+Przerwanie quizu nie zapisuje wyniku. Resetowany jest bieżący stan
+rozgrywki.
 
 ### Wyniki quizu i Room
 
 `QuizResult` zawiera obecnie:
 
-```kotlin
+``` kotlin
 nickname
 difficulty
 score
@@ -788,32 +890,39 @@ totalQuestions
 date
 ```
 
-Wynik jest zapisywany przez `QuizResultRepository` do Room. Ranking jest sortowany przede wszystkim po liczbie poprawnych odpowiedzi (`score DESC`). Poziom trudności jest informacją prezentowaną obok wyniku i nie daje automatycznego bonusu w rankingu.
+Wynik jest zapisywany przez `QuizResultRepository` do Room. Ranking jest
+sortowany przede wszystkim po liczbie poprawnych odpowiedzi
+(`score DESC`). Poziom trudności jest informacją prezentowaną obok
+wyniku i nie daje automatycznego bonusu w rankingu.
 
 Przykład:
 
-```text
+``` text
 10/10 MEDIUM
 9/10 HARD
 ```
 
 ### Quiz UI i Theme
 
-Dla aplikacji wprowadzono własny Material 3 Theme dla Light i Dark Mode. Dynamic colors są wyłączone.
+Dla aplikacji wprowadzono własny Material 3 Theme dla Light i Dark Mode.
+Dynamic colors są wyłączone.
 
 Wspólne elementy Theme obejmują:
 
-```text
+``` text
 ColorScheme
 Shapes
 Typography
 ```
 
-`Shape.kt` definiuje wspólną skalę zaokrągleń. Ekrany startowy i wyboru trudności korzystają z tej samej hierarchii typografii i spacingu.
+`Shape.kt` definiuje wspólną skalę zaokrągleń. Ekrany startowy i wyboru
+trudności korzystają z tej samej hierarchii typografii i spacingu.
 
 ### Git
 
-Etap `feature/quiz` został ukończony, przetestowany i scalony do `main` metodą `Fast-forward`. Zaktualizowany `main` został wypchnięty do GitHub.
+Etap `feature/quiz` został ukończony, przetestowany i scalony do `main`
+metodą `Fast-forward`. Zaktualizowany `main` został wypchnięty do
+GitHub.
 
 Następnym etapem będzie osobny branch dla `Arcade Mode`.
 
@@ -821,9 +930,10 @@ Następnym etapem będzie osobny branch dla `Arcade Mode`.
 
 ### Architektura Arcade
 
-Arcade korzysta z istniejącego `QuizRepository`, dlatego wykorzystuje tę samą pulę 50 pytań co klasyczny Quiz.
+Arcade korzysta z istniejącego `QuizRepository`, dlatego wykorzystuje tę
+samą pulę 50 pytań co klasyczny Quiz.
 
-```text
+``` text
 ArcadeScreen
     ↓
 ArcadeViewModel
@@ -835,13 +945,17 @@ QuizQuestionDataSource
 questions.json
 ```
 
-`ArcadeViewModel` zarządza stanem pojedynczej rozgrywki. Stan jest przechowywany w `ArcadeGameState` i obejmuje m.in. aktualne pytanie, wybraną odpowiedź, wynik, pozostały czas, identyfikatory wykorzystanych pytań oraz informację o zakończeniu gry.
+`ArcadeViewModel` zarządza stanem pojedynczej rozgrywki. Stan jest
+przechowywany w `ArcadeGameState` i obejmuje m.in. aktualne pytanie,
+wybraną odpowiedź, wynik, pozostały czas, identyfikatory wykorzystanych
+pytań oraz informację o zakończeniu gry.
 
 ### Zasady rozgrywki
 
-Arcade wykorzystuje wszystkie pytania dostępne w `QuizRepository`. W jednej rozgrywce pytanie nie może pojawić się ponownie.
+Arcade wykorzystuje wszystkie pytania dostępne w `QuizRepository`. W
+jednej rozgrywce pytanie nie może pojawić się ponownie.
 
-```text
+``` text
 czas początkowy: 45 s
 poprawna odpowiedź: +5 s, +1 punkt
 błędna odpowiedź: -5 s
@@ -849,13 +963,16 @@ koniec gry: 0 s
 wynik: liczba poprawnych odpowiedzi
 ```
 
-Po odpowiedzi przyciski odpowiedzi zostają zablokowane. Następne pytanie jest losowane dopiero po przejściu dalej. `usedQuestionIds` pozwala wykluczyć pytania wykorzystane wcześniej w tej samej rozgrywce.
+Po odpowiedzi przyciski odpowiedzi zostają zablokowane. Następne pytanie
+jest losowane dopiero po przejściu dalej. `usedQuestionIds` pozwala
+wykluczyć pytania wykorzystane wcześniej w tej samej rozgrywce.
 
 ### Stan Arcade
 
-`ArcadeGameState` jest osobnym modelem stanu, ponieważ Arcade ma inne reguły niż klasyczny quiz.
+`ArcadeGameState` jest osobnym modelem stanu, ponieważ Arcade ma inne
+reguły niż klasyczny quiz.
 
-```text
+``` text
 ArcadeGameState
 ├── currentQuestion
 ├── selectedAnswerIndex
@@ -866,19 +983,25 @@ ArcadeGameState
 └── isGameOver
 ```
 
-Oddzielenie stanu Arcade od `QuizViewModel` pozwala zachować osobną logikę gry bez dokładania timerów i dodatkowych stanów do klasycznego quizu.
+Oddzielenie stanu Arcade od `QuizViewModel` pozwala zachować osobną
+logikę gry bez dokładania timerów i dodatkowych stanów do klasycznego
+quizu.
 
 ### Timer
 
-Timer jest zarządzany przez `ArcadeViewModel`. Odliczanie jest uruchamiane razem z rozpoczęciem gry i zatrzymywane po zakończeniu rozgrywki lub opuszczeniu Arcade.
+Timer jest zarządzany przez `ArcadeViewModel`. Odliczanie jest
+uruchamiane razem z rozpoczęciem gry i zatrzymywane po zakończeniu
+rozgrywki lub opuszczeniu Arcade.
 
-Zmiana czasu po odpowiedzi jest wykonywana w ViewModelu, a UI jedynie obserwuje `remainingTimeSeconds` przez `StateFlow`.
+Zmiana czasu po odpowiedzi jest wykonywana w ViewModelu, a UI jedynie
+obserwuje `remainingTimeSeconds` przez `StateFlow`.
 
 ### Zakończenie i wyjście z Arcade
 
-`ArcadeScreen` posiada przycisk `X` w prawym górnym rogu. Przed opuszczeniem aktywnej rozgrywki wyświetlany jest `AlertDialog`.
+`ArcadeScreen` posiada przycisk `X` w prawym górnym rogu. Przed
+opuszczeniem aktywnej rozgrywki wyświetlany jest `AlertDialog`.
 
-```text
+``` text
 X
 ↓
 potwierdzenie
@@ -892,7 +1015,7 @@ Niezakończona rozgrywka nie jest zapisywana do rankingu.
 
 Dla Arcade utworzono osobny model domenowy:
 
-```kotlin
+``` kotlin
 data class ArcadeResult(
     val nickname: String,
     val score: Int,
@@ -900,13 +1023,14 @@ data class ArcadeResult(
 )
 ```
 
-Wynik jest niezależny od `QuizResult`, ponieważ klasyczny quiz zapisuje dodatkowo poziom trudności i liczbę pytań.
+Wynik jest niezależny od `QuizResult`, ponieważ klasyczny quiz zapisuje
+dodatkowo poziom trudności i liczbę pytań.
 
 ### Room -- ranking Arcade
 
 Arcade ma osobną tabelę Room:
 
-```kotlin
+``` kotlin
 @Entity
 data class ArcadeResultEntity(
     @PrimaryKey(autoGenerate = true)
@@ -917,11 +1041,12 @@ data class ArcadeResultEntity(
 )
 ```
 
-`ArcadeResultDao` udostępnia zapis wyniku oraz pobranie TOP 10. Ranking sortuje wyniki po `score DESC`, a przy takim samym wyniku po `date ASC`.
+`ArcadeResultDao` udostępnia zapis wyniku oraz pobranie TOP 10. Ranking
+sortuje wyniki po `score DESC`, a przy takim samym wyniku po `date ASC`.
 
 Przepływ zapisu:
 
-```text
+``` text
 ArcadeScreen
     ↓
 ArcadeResultViewModel
@@ -933,15 +1058,18 @@ ArcadeResultDao
 Room
 ```
 
-Mapper rozdziela model domenowy `ArcadeResult` od encji Room `ArcadeResultEntity`.
+Mapper rozdziela model domenowy `ArcadeResult` od encji Room
+`ArcadeResultEntity`.
 
 ### Zapis wyniku
 
-Wynik można zapisać dopiero po zakończeniu gry. Nick jest ograniczony do 15 znaków i nie może być pusty po usunięciu białych znaków.
+Wynik można zapisać dopiero po zakończeniu gry. Nick jest ograniczony do
+15 znaków i nie może być pusty po usunięciu białych znaków.
 
-Po zapisaniu wynik jest blokowany przed ponownym zapisem w tej samej rozgrywce. Dopiero wtedy dostępne są przyciski:
+Po zapisaniu wynik jest blokowany przed ponownym zapisem w tej samej
+rozgrywce. Dopiero wtedy dostępne są przyciski:
 
-```text
+``` text
 ZAPISZ WYNIK
       ↓
 WYNIK ZAPISANY
@@ -952,15 +1080,20 @@ MENU QUIZU
 
 ### Ranking Arcade
 
-`ArcadeRankingScreen` pobiera wyniki przez `ArcadeResultViewModel` i wyświetla 10 najlepszych zapisanych wyników.
+`ArcadeRankingScreen` pobiera wyniki przez `ArcadeResultViewModel` i
+wyświetla 10 najlepszych zapisanych wyników.
 
-Ranking Arcade jest oddzielony od rankingu klasycznego quizu. Nie korzysta z `QuizResultEntity` ani `QuizResultDao`.
+Ranking Arcade jest oddzielony od rankingu klasycznego quizu. Nie
+korzysta z `QuizResultEntity` ani `QuizResultDao`.
 
 ### Room Migration 1 → 2
 
-Dodanie tabeli `ArcadeResultEntity` wymagało zwiększenia wersji `AppDatabase` i dodania migracji `MIGRATION_1_2`. Migracja tworzy tabelę wyników Arcade bez usuwania istniejących danych cache i wyników klasycznego quizu.
+Dodanie tabeli `ArcadeResultEntity` wymagało zwiększenia wersji
+`AppDatabase` i dodania migracji `MIGRATION_1_2`. Migracja tworzy tabelę
+wyników Arcade bez usuwania istniejących danych cache i wyników
+klasycznego quizu.
 
-```text
+``` text
 Room v1
   ↓ MIGRATION_1_2
 Room v2
@@ -972,11 +1105,13 @@ Room v2
 
 ### Integracja w `MoroccoApp`
 
-W `MyApp` znajduje się wspólna instancja `AppDatabase`. W `MoroccoApp` tworzony jest osobny `ArcadeResultRepository` i `ArcadeResultViewModel` na podstawie `ArcadeResultDao`.
+W `MyApp` znajduje się wspólna instancja `AppDatabase`. W `MoroccoApp`
+tworzony jest osobny `ArcadeResultRepository` i `ArcadeResultViewModel`
+na podstawie `ArcadeResultDao`.
 
 Dzięki temu UI nie zna Room bezpośrednio:
 
-```text
+``` text
 ArcadeScreen
 ↓
 ArcadeResultViewModel
@@ -990,7 +1125,7 @@ ArcadeResultDao
 
 Arcade posiada osobne trasy dla gry i rankingu:
 
-```text
+``` text
 QuizStartScreen
 ├── Quiz
 ├── Arcade
@@ -1001,40 +1136,50 @@ QuizStartScreen
 └── QuizRanking
 ```
 
-Uruchomienie Arcade wywołuje `arcadeViewModel.startGame()` przed przejściem do ekranu gry. Dzięki temu powrót z `ArcadeRankingScreen` nie uruchamia automatycznie nowej rozgrywki i zachowuje bieżący stan gry.
+Uruchomienie Arcade wywołuje `arcadeViewModel.startGame()` przed
+przejściem do ekranu gry. Dzięki temu powrót z `ArcadeRankingScreen` nie
+uruchamia automatycznie nowej rozgrywki i zachowuje bieżący stan gry.
 
 ### Build i testy
 
-Po kolejnych logicznych zmianach Arcade wykonywano Build i testy ręczne. Sprawdzono m.in. przebieg rozgrywki, brak powtórzeń pytań, zmianę czasu, zapis wyniku, ochronę przed wielokrotnym zapisem, ranking oraz powrót do menu quizu.
+Po kolejnych logicznych zmianach Arcade wykonywano Build i testy ręczne.
+Sprawdzono m.in. przebieg rozgrywki, brak powtórzeń pytań, zmianę czasu,
+zapis wyniku, ochronę przed wielokrotnym zapisem, ranking oraz powrót do
+menu quizu.
 
 ## Aktualizacja 4 października 2026 -- KMP: migracja modelu Place do PlaceData
 
 ### Cel etapu
 
-Rozpoczęto właściwą migrację domeny do Kotlin Multiplatform. Pierwszym krokiem było oddzielenie danych strukturalnych miejsca od treści prezentacyjnych i usunięcie zależności Android `R` z modelu współdzielonego.
+Rozpoczęto właściwą migrację domeny do Kotlin Multiplatform. Pierwszym
+krokiem było oddzielenie danych strukturalnych miejsca od treści
+prezentacyjnych i usunięcie zależności Android `R` z modelu
+współdzielonego.
 
 ### Współdzielone modele domenowe
 
 Modele platform-independent znajdują się w:
 
-```text
+``` text
 shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/
 ```
 
 Aktualnie znajdują się tam:
 
-- `Place`
-- `PlaceData`
-- `PlaceContent`
-- `PlaceFallback`
-- `PlaceType`
-- `WikimediaImageRef`
+-   `Place`
+-   `PlaceData`
+-   `PlaceContent`
+-   `PlaceFallback`
+-   `PlaceType`
+-   `WikimediaImageRef`
 
-`Place` zawiera dane strukturalne miejsca, m.in. `placeId`, `placeType`, `parentPlaceId`, `wikidataId`, referencje Wikimedia, lokalne obrazy oraz dane mapy.
+`Place` zawiera dane strukturalne miejsca, m.in. `placeId`, `placeType`,
+`parentPlaceId`, `wikidataId`, referencje Wikimedia, lokalne obrazy oraz
+dane mapy.
 
 `PlaceContent` zawiera treść prezentacyjną:
 
-```kotlin
+``` kotlin
 data class PlaceContent(
     val id: String,
     val name: String,
@@ -1049,7 +1194,7 @@ data class PlaceContent(
 
 `PlaceData` łączy oba modele:
 
-```kotlin
+``` kotlin
 data class PlaceData(
     val place: Place,
     val content: PlaceContent,
@@ -1060,7 +1205,7 @@ data class PlaceData(
 
 W warstwach, które zostały już zmigrowane, obowiązuje:
 
-```text
+``` text
 DataSource
     ↓
 List<PlaceData>
@@ -1074,40 +1219,48 @@ UiState
 Compose UI
 ```
 
-Nie stosujemy mapowania `PlaceData → Place` tylko po to, aby zachować stary przepływ danych.
+Nie stosujemy mapowania `PlaceData → Place` tylko po to, aby zachować
+stary przepływ danych.
 
 ### Zmigrowane elementy
 
 Do `PlaceData` zostały dostosowane:
 
-- `PlacesRepository`
-- `PlacesRepositoryImpl`
-- `PlacesViewModel`
-- `PlacesUiState`
-- `CitiesViewModel`
-- `CitiesUiState`
-- `CityDetailsUiState`
-- `CitiesScreen`
-- `CityListItem`
-- `CityDetailsScreen`
-- wspólne `createPages()`
-- `DetailsPage`
+-   `PlacesRepository`
+-   `PlacesRepositoryImpl`
+-   `PlacesViewModel`
+-   `PlacesUiState`
+-   `CitiesViewModel`
+-   `CitiesUiState`
+-   `CityDetailsUiState`
+-   `CitiesScreen`
+-   `CityListItem`
+-   `CityDetailsScreen`
+-   wspólne `createPages()`
+-   `DetailsPage`
 
-`CityDetailsUiState` przechowuje obecnie `PlaceData?` dla głównego miasta oraz `List<PlaceData>` dla jego dzieci.
+`CityDetailsUiState` przechowuje obecnie `PlaceData?` dla głównego
+miasta oraz `List<PlaceData>` dla jego dzieci.
 
 ### Treść opisów
 
-`PlaceContent.descriptions` oraz `DetailsPage.description` używają obecnie `String` / `String?` zamiast wcześniejszych identyfikatorów `R.string`.
+`PlaceContent.descriptions` oraz `DetailsPage.description` używają
+obecnie `String` / `String?` zamiast wcześniejszych identyfikatorów
+`R.string`.
 
-Jest to rozwiązanie przejściowe. Docelowo treści zostaną przeniesione do JSON. Wtedy zostanie ustalona finalna strategia lokalizacji oraz formatowania akapitów.
+Jest to rozwiązanie przejściowe. Docelowo treści zostaną przeniesione do
+JSON. Wtedy zostanie ustalona finalna strategia lokalizacji oraz
+formatowania akapitów.
 
 ### Aktualny DataSource
 
-`MoroccoDataSource` nadal znajduje się w module Android `app` i zawiera odwołania do `R.string.*`. Jest to świadomie pozostawiony kolejny etap migracji.
+`MoroccoDataSource` nadal znajduje się w module Android `app` i zawiera
+odwołania do `R.string.*`. Jest to świadomie pozostawiony kolejny etap
+migracji.
 
 Docelowy kierunek:
 
-```text
+``` text
 JSON
     ↓
 shared data layer
@@ -1121,20 +1274,22 @@ ViewModel
 Compose UI
 ```
 
-Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie zaprojektowany po przeanalizowaniu całego obecnego `MoroccoDataSource`.
+Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie
+zaprojektowany po przeanalizowaniu całego obecnego `MoroccoDataSource`.
 
 ### Stan po etapie
 
-- Gradle Sync: OK
-- Build: OK
-- aplikacja uruchamia się poprawnie
-- lista miast działa
-- szczegóły miasta działają
-- zdjęcia Wikimedia działają
-- opisy działają
-- lista miejsc przypisanych do miasta działa
+-   Gradle Sync: OK
+-   Build: OK
+-   aplikacja uruchamia się poprawnie
+-   lista miast działa
+-   szczegóły miasta działają
+-   zdjęcia Wikimedia działają
+-   opisy działają
+-   lista miejsc przypisanych do miasta działa
 
-Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do JSON.
+Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do
+JSON.
 
 ## Aktualizacja 4 października 2026 -- JSON DataSource i KMP
 
@@ -1142,7 +1297,7 @@ Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do JSON.
 
 W `commonMain` utworzono DTO przeznaczone do deserializacji JSON:
 
-```text
+``` text
 PlaceDto
 ├── PlaceDtoData
 ├── PlaceContentDto
@@ -1152,7 +1307,7 @@ PlaceDto
 
 DTO są mapowane do modeli domenowych przez `PlaceMapper`.
 
-```text
+``` text
 JSON
 ↓
 PlaceDto
@@ -1164,17 +1319,20 @@ PlaceData
 
 ### JsonPlaceDataSource
 
-Utworzono wspólny `JsonPlaceDataSource`, który korzysta z `kotlinx.serialization`.
+Utworzono wspólny `JsonPlaceDataSource`, który korzysta z
+`kotlinx.serialization`.
 
-Jego odpowiedzialność ogranicza się do odczytania tekstu JSON, deserializacji DTO oraz mapowania DTO do `PlaceData`.
+Jego odpowiedzialność ogranicza się do odczytania tekstu JSON,
+deserializacji DTO oraz mapowania DTO do `PlaceData`.
 
 ### Rozdzielenie odpowiedzialności między commonMain i Android
 
-`commonMain` nie korzysta bezpośrednio z Androidowego `Context` ani `AssetManager`.
+`commonMain` nie korzysta bezpośrednio z Androidowego `Context` ani
+`AssetManager`.
 
 Zdefiniowano:
 
-```kotlin
+``` kotlin
 interface JsonResourceReader {
     fun readText(path: String): String
 }
@@ -1182,7 +1340,7 @@ interface JsonResourceReader {
 
 Android dostarcza implementację:
 
-```text
+``` text
 commonMain
     ↓
 JsonResourceReader
@@ -1192,19 +1350,20 @@ AndroidJsonResourceReader
 Context.assets
 ```
 
-Dzięki temu sposób odczytu pliku jest zależnością platformową, a parsowanie JSON i mapowanie danych pozostaje wspólne.
+Dzięki temu sposób odczytu pliku jest zależnością platformową, a
+parsowanie JSON i mapowanie danych pozostaje wspólne.
 
 ### Aktualna lokalizacja JSON
 
 Obecny plik znajduje się w:
 
-```text
+``` text
 shared/src/androidMain/assets/morocco.json
 ```
 
 W konfiguracji modułu `shared` włączone jest:
 
-```kotlin
+``` kotlin
 androidResources {
     enable = true
 }
@@ -1216,17 +1375,17 @@ Na tym etapie JSON zawiera jeden rekord -- Marrakesz.
 
 Weryfikacja na fizycznym urządzeniu potwierdziła:
 
-- `JsonPlaceDataSourceTest` poprawnie odczytuje JSON,
-- `placeId = 4100`,
-- nazwa `Marrakesz`,
-- `wikidataId = "Q101625"`,
-- dane Wikimedia,
-- dane Wikidata,
-- opis z JSON wyświetlany jako `TEST`.
+-   `JsonPlaceDataSourceTest` poprawnie odczytuje JSON,
+-   `placeId = 4100`,
+-   nazwa `Marrakesz`,
+-   `wikidataId = "Q101625"`,
+-   dane Wikimedia,
+-   dane Wikidata,
+-   opis z JSON wyświetlany jako `TEST`.
 
 Oznacza to, że przepływ działa end-to-end:
 
-```text
+``` text
 morocco.json
 ↓
 AndroidJsonResourceReader
@@ -1248,54 +1407,73 @@ Compose UI
 
 ### Ręczne dependency injection
 
-ViewModel otrzymuje `PlacesRepository` przez konstruktor zamiast samodzielnie tworzyć zależność.
+ViewModel otrzymuje `PlacesRepository` przez konstruktor zamiast
+samodzielnie tworzyć zależność.
 
 Przykładowy kierunek:
 
-```kotlin
+``` kotlin
 class PlacesViewModel(
     private val repository: PlacesRepository
 ) : ViewModel()
 ```
 
-Na tym etapie używane jest ręczne DI oraz `ViewModelProvider.Factory`. Hilt nie został jeszcze wprowadzony.
+Na tym etapie używane jest ręczne DI oraz `ViewModelProvider.Factory`.
+Hilt nie został jeszcze wprowadzony.
 
 ### Najbliższy krok architektoniczny
 
-Obecnie kilka factory tworzy `PlacesRepository` niezależnie. Następnym krokiem będzie scentralizowanie tworzenia tej zależności, tak aby wszystkie ViewModel korzystały z tej samej konfiguracji Repository.
+Obecnie kilka factory tworzy `PlacesRepository` niezależnie. Następnym
+krokiem będzie scentralizowanie tworzenia tej zależności, tak aby
+wszystkie ViewModel korzystały z tej samej konfiguracji Repository.
 
-Dopiero po uporządkowaniu DI JSON zostanie rozszerzony z jednego rekordu do kilku, a następnie do kompletnego zestawu miejsc.
----
+## Dopiero po uporządkowaniu DI JSON zostanie rozszerzony z jednego rekordu do kilku, a następnie do kompletnego zestawu miejsc.
 
-## Stan architektury na commit `95fcc35` — przed zmianami `2ba5e36` i `c60215d`
+## Stan architektury na commit `95fcc35` --- przed zmianami `2ba5e36` i `c60215d`
 
-Ta sekcja opisuje stan przyjęty jako baza do finalnego pushu na `main`. Zachowuje wcześniejsze wpisy jako historię etapów migracji; poniższy opis zastępuje nieaktualne plany z pierwszego etapu KMP.
+Ta sekcja opisuje stan przyjęty jako baza do finalnego pushu na `main`.
+Zachowuje wcześniejsze wpisy jako historię etapów migracji; poniższy
+opis zastępuje nieaktualne plany z pierwszego etapu KMP.
 
 ### Granica migracji
 
 W tym stanie projekt ma dwa moduły Gradle:
 
-- `:app` — aplikacja Android, interfejs Compose, nawigacja, integracje platformowe i konfiguracja zależności.
-- `:shared` — moduł Kotlin Multiplatform z logiką domenową, źródłem danych JSON, mapperami, kontraktami i implementacjami repozytoriów oraz współdzielonymi ViewModelami i stanami UI.
+-   `:app` --- aplikacja Android, interfejs Compose, nawigacja,
+    integracje platformowe i konfiguracja zależności.
+-   `:shared` --- moduł Kotlin Multiplatform z logiką domenową, źródłem
+    danych JSON, mapperami, kontraktami i implementacjami repozytoriów
+    oraz współdzielonymi ViewModelami i stanami UI.
 
-**Interfejs Compose pozostaje po stronie `:app`.** Ten opis nie zakłada migracji ekranów do Compose Multiplatform ani wymiany istniejącego UI. Commity `2ba5e36` i `c60215d` nie należą do dokumentowanego punktu bazowego.
+**Interfejs Compose pozostaje po stronie `:app`.** Ten opis nie zakłada
+migracji ekranów do Compose Multiplatform ani wymiany istniejącego UI.
+Commity `2ba5e36` i `c60215d` nie należą do dokumentowanego punktu
+bazowego.
 
 ### Model domenowy i treści
 
-W `shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/` model jest rozdzielony na:
+W `shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/` model
+jest rozdzielony na:
 
-- `Place` — dane strukturalne miejsca: identyfikator, typ, relacja rodzic–dziecko, identyfikator Wikidata, referencje do Wikimedia, obrazy lokalne i współrzędne.
-- `PlaceContent` — nazwę i teksty prezentacyjne, m.in. tłumaczenie, zajawkę, opisy, godziny otwarcia oraz dane zapasowe.
-- `PlaceData` — połączenie `Place` i `PlaceContent`.
-- `PlaceType`, `PlaceFallback` i `WikimediaImageRef` — typy pomocnicze.
+-   `Place` --- dane strukturalne miejsca: identyfikator, typ, relacja
+    rodzic--dziecko, identyfikator Wikidata, referencje do Wikimedia,
+    obrazy lokalne i współrzędne.
+-   `PlaceContent` --- nazwę i teksty prezentacyjne, m.in. tłumaczenie,
+    zajawkę, opisy, godziny otwarcia oraz dane zapasowe.
+-   `PlaceData` --- połączenie `Place` i `PlaceContent`.
+-   `PlaceType`, `PlaceFallback` i `WikimediaImageRef` --- typy
+    pomocnicze.
 
-Współdzielony model nie powinien zależeć od Androidowego `R.string`. Teksty są przekazywane jako dane, a DTO JSON nie jest bezpośrednio modelem używanym przez warstwę domenową.
+Współdzielony model nie powinien zależeć od Androidowego `R.string`.
+Teksty są przekazywane jako dane, a DTO JSON nie jest bezpośrednio
+modelem używanym przez warstwę domenową.
 
 ### Aktualne źródło danych miejsc
 
-Źródłem danych jest `JsonPlaceDataSource` w `commonMain`. Ładuje listy rekordów z plików:
+Źródłem danych jest `JsonPlaceDataSource` w `commonMain`. Ładuje listy
+rekordów z plików:
 
-```text
+``` text
 shared/src/androidMain/assets/
 ├── ma_cities.json
 ├── ma_monuments.json
@@ -1304,7 +1482,7 @@ shared/src/androidMain/assets/
 
 Przepływ danych:
 
-```text
+``` text
 AndroidJsonResourceReader
         ↓
 JsonPlaceDataSource
@@ -1322,42 +1500,59 @@ ViewModel / UiState
 Compose UI w :app
 ```
 
-`PlaceDto`, DTO zagnieżdżone oraz `PlaceMapper` odpowiadają za deserializację i mapowanie do modelu domenowego. `JsonResourceReader` jest abstrakcją w `commonMain`, natomiast `AndroidJsonResourceReader` korzysta z Androidowego `Context.assets`. Dzięki temu logika odczytu i mapowania jest współdzielona, ale dostęp do zasobów nie jest jeszcze w pełni niezależny od platformy.
+`PlaceDto`, DTO zagnieżdżone oraz `PlaceMapper` odpowiadają za
+deserializację i mapowanie do modelu domenowego. `JsonResourceReader`
+jest abstrakcją w `commonMain`, natomiast `AndroidJsonResourceReader`
+korzysta z Androidowego `Context.assets`. Dzięki temu logika odczytu i
+mapowania jest współdzielona, ale dostęp do zasobów nie jest jeszcze w
+pełni niezależny od platformy.
 
 ### Repozytoria Wikimedia i Wikidata
 
-Implementacje `WikimediaRepositoryImpl` i `WikidataRepositoryImpl` znajdują się w `shared/commonMain`. Współdzielona warstwa definiuje kontrakty źródeł danych i cache. Konkretną komunikację Retrofit oraz trwałe cache oparte na Room dostarcza moduł Android i przekazuje je do repozytoriów przez `AppContainer`.
+Implementacje `WikimediaRepositoryImpl` i `WikidataRepositoryImpl`
+znajdują się w `shared/commonMain`. Współdzielona warstwa definiuje
+kontrakty źródeł danych i cache. Konkretną komunikację Retrofit oraz
+trwałe cache oparte na Room dostarcza moduł Android i przekazuje je do
+repozytoriów przez `AppContainer`.
 
 Typowa kolejność odczytu danych z tych repozytoriów:
 
-1. cache pamięciowy,
-2. cache trwały,
-3. zewnętrzne API.
+1.  cache pamięciowy,
+2.  cache trwały,
+3.  zewnętrzne API.
 
-Błąd odczytu lub zapisu cache nie powinien sam w sobie uniemożliwiać próby pobrania danych z API. Błędy są obsługiwane w repozytoriach, a nie powinny powodować niekontrolowanego przerwania całego ekranu.
+Błąd odczytu lub zapisu cache nie powinien sam w sobie uniemożliwiać
+próby pobrania danych z API. Błędy są obsługiwane w repozytoriach, a nie
+powinny powodować niekontrolowanego przerwania całego ekranu.
 
 ### Dependency injection
 
-Zależności są centralizowane w `AppContainer`. Kontener tworzy czytnik zasobów, `JsonPlaceDataSource` i `PlacesRepository`, a także konfiguruje repozytoria Wikimedia/Wikidata z adapterami API i cache.
+Zależności są centralizowane w `AppContainer`. Kontener tworzy czytnik
+zasobów, `JsonPlaceDataSource` i `PlacesRepository`, a także konfiguruje
+repozytoria Wikimedia/Wikidata z adapterami API i cache.
 
 Jest to **ręczne DI**. Hilt nie jest częścią opisanego stanu.
 
 ### Ograniczenia znane na tym etapie
 
-- `PlacesRepository.search()` pozostaje do zaimplementowania.
-- Czytnik JSON jest dostępny dla Androida; odpowiednik dla iOS nie jest jeszcze opisany jako gotowy.
-- Zadeklarowanie targetów iOS w Gradle nie oznacza ukończonej aplikacji iOS ani zweryfikowanego odczytu danych na iOS.
-- UI Compose pozostaje w `:app`; ten punkt bazowy nie dokumentuje migracji ekranów do Compose Multiplatform.
+-   `PlacesRepository.search()` pozostaje do zaimplementowania.
+-   Czytnik JSON jest dostępny dla Androida; odpowiednik dla iOS nie
+    jest jeszcze opisany jako gotowy.
+-   Zadeklarowanie targetów iOS w Gradle nie oznacza ukończonej
+    aplikacji iOS ani zweryfikowanego odczytu danych na iOS.
+-   UI Compose pozostaje w `:app`; ten punkt bazowy nie dokumentuje
+    migracji ekranów do Compose Multiplatform.
 
----
+------------------------------------------------------------------------
 
-## Aktualizacja 2 listopada 2026 — miniaturki Wikimedia i współbieżność
+## Aktualizacja 2 listopada 2026 --- miniaturki Wikimedia i współbieżność
 
 ### Model metadanych obrazu
 
-`WikimediaImage` przechowuje zarówno oryginalny adres pliku, jak i dane miniatury:
+`WikimediaImage` przechowuje zarówno oryginalny adres pliku, jak i dane
+miniatury:
 
-```kotlin
+``` kotlin
 data class WikimediaImage(
     val title: String,
     val url: String,
@@ -1374,44 +1569,59 @@ data class WikimediaImage(
 )
 ```
 
-Pola miniatury są nullable, ponieważ API nie musi zwrócić miniatury dla każdego pliku. Informacje o miniaturze są przenoszone przez cały przepływ danych: DTO Wikimedia → mapper → `WikimediaImage` → `WikimediaEntity` w Room. `WikimediaMapper` mapuje je w obie strony.
+Pola miniatury są nullable, ponieważ API nie musi zwrócić miniatury dla
+każdego pliku. Informacje o miniaturze są przenoszone przez cały
+przepływ danych: DTO Wikimedia → mapper → `WikimediaImage` →
+`WikimediaEntity` w Room. `WikimediaMapper` mapuje je w obie strony.
 
-`KtorWikimediaDataSource` wysyła parametr `iiurlwidth=1200`. Wikimedia może zwrócić najbliższy dostępny wariant, dlatego rzeczywista szerokość pliku miniatury może różnić się od żądanej.
+`KtorWikimediaDataSource` wysyła parametr `iiurlwidth=1200`. Wikimedia
+może zwrócić najbliższy dostępny wariant, dlatego rzeczywista szerokość
+pliku miniatury może różnić się od żądanej.
 
 ### Wybór adresu obrazu w UI
 
-Listy miejsc i miast oraz `DetailsPager` preferują miniaturę, a w razie jej braku używają oryginalnego URL:
+Listy miejsc i miast oraz `DetailsPager` preferują miniaturę, a w razie
+jej braku używają oryginalnego URL:
 
-```kotlin
+``` kotlin
 image.thumbnailUrl ?: image.url
 ```
 
-W ekranach list lokalne `placeImages` pozostają dodatkowym fallbackiem, gdy metadane Wikimedia nie są jeszcze dostępne. W `DetailsPage` przechowywany jest `pageId`, aby `DetailsPager` mógł pobrać właściwe metadane i nadal wyświetlać atrybucję Wikimedia. Wybór miniatury nie usuwa informacji o autorze, licencji ani stronie pliku.
+W ekranach list lokalne `placeImages` pozostają dodatkowym fallbackiem,
+gdy metadane Wikimedia nie są jeszcze dostępne. W `DetailsPage`
+przechowywany jest `pageId`, aby `DetailsPager` mógł pobrać właściwe
+metadane i nadal wyświetlać atrybucję Wikimedia. Wybór miniatury nie
+usuwa informacji o autorze, licencji ani stronie pliku.
 
 ### Cache metadanych Wikimedia
 
-`WikimediaRepositoryImpl` korzysta z trzech poziomów źródła danych, w tej kolejności:
+`WikimediaRepositoryImpl` korzysta z trzech poziomów źródła danych, w
+tej kolejności:
 
-1. `WikimediaCache` — cache w pamięci,
-2. `WikimediaPersistentCache` — trwały cache oparty na Room,
-3. `WikimediaDataSource` — API Wikimedia, jeśli danych nie ma w obu cache.
+1.  `WikimediaCache` --- cache w pamięci,
+2.  `WikimediaPersistentCache` --- trwały cache oparty na Room,
+3.  `WikimediaDataSource` --- API Wikimedia, jeśli danych nie ma w obu
+    cache.
 
-Wynik API jest zapisywany w Room i cache pamięciowym. Odczyt z Room uzupełnia również cache pamięciowy. Błąd odczytu lub zapisu Room jest obsługiwany i nie powinien blokować próby pobrania z API.
+Wynik API jest zapisywany w Room i cache pamięciowym. Odczyt z Room
+uzupełnia również cache pamięciowy. Błąd odczytu lub zapisu Room jest
+obsługiwany i nie powinien blokować próby pobrania z API.
 
 ### Bezpieczna aktualizacja stanu obrazów
 
 `WikimediaViewModel` przechowuje wyniki w:
 
-```kotlin
+``` kotlin
 private val _images =
     MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
 
 val images: StateFlow<Map<Int, WikimediaImage>> = _images
 ```
 
-Wiele korutyn może kończyć pobieranie w zbliżonym czasie. Aktualizacja mapy musi więc być atomowa:
+Wiele korutyn może kończyć pobieranie w zbliżonym czasie. Aktualizacja
+mapy musi więc być atomowa:
 
-```kotlin
+``` kotlin
 if (image != null) {
     _images.update { current ->
         current + (pageId to image)
@@ -1419,56 +1629,88 @@ if (image != null) {
 }
 ```
 
-Nie należy zastępować tego operacją odczyt–modyfikacja–zapis:
+Nie należy zastępować tego operacją odczyt--modyfikacja--zapis:
 
-```kotlin
+``` kotlin
 _images.value += (pageId to image)
 ```
 
-Przy równoległych zapisach taka operacja może utracić aktualizację innej korutyny. `update` używa mechanizmu CAS i ponawia obliczenie, jeżeli stan zmienił się między odczytem a zatwierdzeniem. Lambda przekazana do `update` powinna być wolna od efektów ubocznych, ponieważ może zostać wykonana więcej niż raz.
+Przy równoległych zapisach taka operacja może utracić aktualizację innej
+korutyny. `update` używa mechanizmu CAS i ponawia obliczenie, jeżeli
+stan zmienił się między odczytem a zatwierdzeniem. Lambda przekazana do
+`update` powinna być wolna od efektów ubocznych, ponieważ może zostać
+wykonana więcej niż raz.
 
-`loadingImagesInternal` jest osobnym stanem zbioru identyfikatorów aktualnie pobieranych obrazów. Dodawanie identyfikatora wykorzystuje `compareAndSet`, a jego usuwanie `update`. `Semaphore(5)` ogranicza liczbę równoległych operacji repozytorium do pięciu; pozostałe korutyny oczekują na permit.
+`loadingImagesInternal` jest osobnym stanem zbioru identyfikatorów
+aktualnie pobieranych obrazów. Dodawanie identyfikatora wykorzystuje
+`compareAndSet`, a jego usuwanie `update`. `Semaphore(5)` ogranicza
+liczbę równoległych operacji repozytorium do pięciu; pozostałe korutyny
+oczekują na permit.
 
 ### Weryfikacja
 
-- Test `:shared:testAndroidHostTest` zakończył się `BUILD SUCCESSFUL`.
-- Build `:app:assembleDevDebug` zakończył się `BUILD SUCCESSFUL`.
-- Testy na urządzeniu potwierdziły wyświetlanie miniaturek na listach i ekranach szczegółów.
-- Diagnostyczne logi potwierdziły odczyty `ROOM HIT` oraz `MEMORY HIT`; przy ponownym wejściu do Places nie było potrzeby ponownego pobierania metadanych z API.
-- Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update` obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach, także po ponownej instalacji aplikacji.
+-   Test `:shared:testAndroidHostTest` zakończył się `BUILD SUCCESSFUL`.
+-   Build `:app:assembleDevDebug` zakończył się `BUILD SUCCESSFUL`.
+-   Testy na urządzeniu potwierdziły wyświetlanie miniaturek na listach
+    i ekranach szczegółów.
+-   Diagnostyczne logi potwierdziły odczyty `ROOM HIT` oraz
+    `MEMORY HIT`; przy ponownym wejściu do Places nie było potrzeby
+    ponownego pobierania metadanych z API.
+-   Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update`
+    obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach,
+    także po ponownej instalacji aplikacji.
 
-Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów. Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie należy jednak traktować pojedynczej serii testów jako formalnego dowodu braku wszystkich możliwych problemów współbieżności.
+Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej
+mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów.
+Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie
+należy jednak traktować pojedynczej serii testów jako formalnego dowodu
+braku wszystkich możliwych problemów współbieżności.
 
+------------------------------------------------------------------------
 
----
-
-## Aktualizacja 3 listopada 2026 — etap `feature/kmp-ui-migration`
+## Aktualizacja 3 listopada 2026 --- etap `feature/kmp-ui-migration`
 
 ### Wspólne definicje tras
 
-Definicje tras nawigacyjnych zostały przeniesione z modułu Android `app` do:
+Definicje tras nawigacyjnych zostały przeniesione z modułu Android `app`
+do:
 
-```text
+``` text
 shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt
 ```
 
-Dzięki temu definicje `Screen` są dostępne w kodzie wspólnym. Samo przeniesienie tras **nie oznacza jeszcze**, że cała implementacja nawigacji ani wszystkie ekrany zostały przeniesione do `shared`. Należy rozróżniać współdzielone definicje tras od platformowej integracji nawigacji i UI.
+Dzięki temu definicje `Screen` są dostępne w kodzie wspólnym. Samo
+przeniesienie tras **nie oznacza jeszcze**, że cała implementacja
+nawigacji ani wszystkie ekrany zostały przeniesione do `shared`. Należy
+rozróżniać współdzielone definicje tras od platformowej integracji
+nawigacji i UI.
 
-W ramach tego etapu usunięto również pusty placeholder `shared/.../MoroccoApp.kt`, aby nie pozostawiać w module wspólnym pliku, który nie reprezentował rzeczywistego punktu wejścia aplikacji.
+W ramach tego etapu usunięto również pusty placeholder
+`shared/.../MoroccoApp.kt`, aby nie pozostawiać w module wspólnym pliku,
+który nie reprezentował rzeczywistego punktu wejścia aplikacji.
 
 ### Android UI
 
-W module `app` wprowadzono poprawki obsługi edge-to-edge w `MainActivity` oraz powiązanych ekranach/komponentach UI (`CitiesScreen`, `PlacesScreen`, `DetailsPager`). Są to zmiany warstwy Android UI; nie należy na ich podstawie wnioskować, że te ekrany są już wspólne dla Androida i iOS.
+W module `app` wprowadzono poprawki obsługi edge-to-edge w
+`MainActivity` oraz powiązanych ekranach/komponentach UI
+(`CitiesScreen`, `PlacesScreen`, `DetailsPager`). Są to zmiany warstwy
+Android UI; nie należy na ich podstawie wnioskować, że te ekrany są już
+wspólne dla Androida i iOS.
 
 ### Odporność odpowiedzi Wikimedia
 
-W `WikimediaResponse.kt` pole `imageInfo` otrzymało domyślną wartość pustej listy. Odpowiedź API, w której brakuje tego pola, może dzięki temu zostać zdeserializowana bez traktowania braku `imageInfo` jako błędu wymagającego wartości nie-null.
+W `WikimediaResponse.kt` pole `imageInfo` otrzymało domyślną wartość
+pustej listy. Odpowiedź API, w której brakuje tego pola, może dzięki
+temu zostać zdeserializowana bez traktowania braku `imageInfo` jako
+błędu wymagającego wartości nie-null.
 
-### Android Network Security Config — kompromis kompatybilności
+### Android Network Security Config --- kompromis kompatybilności
 
-Manifest Androida wskazuje `@xml/network_security_config`. Aktualna konfiguracja bazowa ufa zarówno systemowym certyfikatom CA, jak i certyfikatom CA zainstalowanym przez użytkownika:
+Manifest Androida wskazuje `@xml/network_security_config`. Aktualna
+konfiguracja bazowa ufa zarówno systemowym certyfikatom CA, jak i
+certyfikatom CA zainstalowanym przez użytkownika:
 
-```xml
+``` xml
 <base-config>
     <trust-anchors>
         <certificates src="system" />
@@ -1477,55 +1719,71 @@ Manifest Androida wskazuje `@xml/network_security_config`. Aktualna konfiguracja
 </base-config>
 ```
 
-Takie ustawienie zostało zachowane po teście na tablecie Huawei z Androidem 7: przy tej konfiguracji obrazy wyświetlały się poprawnie, natomiast zawężona konfiguracja dopuszczająca certyfikaty użytkownika tylko dla `commons.wikimedia.org` i `upload.wikimedia.org` powodowała, że część zdjęć nie była wyświetlana.
+Takie ustawienie zostało zachowane po teście na tablecie Huawei z
+Androidem 7: przy tej konfiguracji obrazy wyświetlały się poprawnie,
+natomiast zawężona konfiguracja dopuszczająca certyfikaty użytkownika
+tylko dla `commons.wikimedia.org` i `upload.wikimedia.org` powodowała,
+że część zdjęć nie była wyświetlana.
 
-**Ostrzeżenie bezpieczeństwa:** `src="user"` w `base-config` oznacza zaufanie do certyfikatów CA zainstalowanych przez użytkownika dla połączeń objętych konfiguracją aplikacji, a nie wyłącznie do jednego wskazanego certyfikatu lub jednej domeny. Jest to świadomy kompromis przyjęty dla kompatybilności ze starym urządzeniem. Nie należy opisywać tej konfiguracji jako ograniczonej wyłącznie do Wikimedia.
+**Ostrzeżenie bezpieczeństwa:** `src="user"` w `base-config` oznacza
+zaufanie do certyfikatów CA zainstalowanych przez użytkownika dla
+połączeń objętych konfiguracją aplikacji, a nie wyłącznie do jednego
+wskazanego certyfikatu lub jednej domeny. Jest to świadomy kompromis
+przyjęty dla kompatybilności ze starym urządzeniem. Nie należy opisywać
+tej konfiguracji jako ograniczonej wyłącznie do Wikimedia.
 
-Jest to konfiguracja Android Network Security Config. Nie konfiguruje ona zaufania TLS na iOS; platforma iOS ma odrębny mechanizm polityki połączeń sieciowych.
+Jest to konfiguracja Android Network Security Config. Nie konfiguruje
+ona zaufania TLS na iOS; platforma iOS ma odrębny mechanizm polityki
+połączeń sieciowych.
 
 ### Stan gałęzi i zakres potwierdzonych zmian
 
-Zmiany etapu zostały zapisane na branchu `feature/kmp-ui-migration` i wypchnięte do `origin/feature/kmp-ui-migration`.
+Zmiany etapu zostały zapisane na branchu `feature/kmp-ui-migration` i
+wypchnięte do `origin/feature/kmp-ui-migration`.
 
 Potwierdzone commity:
 
-```text
+``` text
 b90c59e Add Android network security config for user certificates
 4801d34 Handle missing Wikimedia image info
 3a48cf1 Improve Android edge-to-edge UI handling
 cbdbb36 Move navigation routes to shared module
 ```
 
-Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.
----
+## Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.
 
-## Aktualizacja 5 listopada 2026 — zakończenie głównego etapu migracji KMP
+## Aktualizacja 5 listopada 2026 --- zakończenie głównego etapu migracji KMP
 
 ### Aktualny stan architektury
 
-Główna część migracji istniejącego projektu do Kotlin Multiplatform została scalona z `main` i wypchnięta do `origin/main`.
+Główna część migracji istniejącego projektu do Kotlin Multiplatform
+została scalona z `main` i wypchnięta do `origin/main`.
 
 Potwierdzone commity:
 
-```text
+``` text
 b8db742 Move app navigation and result repositories to shared
 67248a5 Complete shared UI and ViewModel migration
 ```
 
-Po scaleniu lokalny `main` i `origin/main` wskazywały na `67248a5`, a `git status` potwierdzał czyste i zsynchronizowane repozytorium.
+Po scaleniu lokalny `main` i `origin/main` wskazywały na `67248a5`, a
+`git status` potwierdzał czyste i zsynchronizowane repozytorium.
 
-W ramach tego etapu:
-- przeniesiono dalszą część nawigacji do `shared`;
-- przeniesiono repozytoria wyników Quiz i Arcade do `shared`;
-- przeniesiono wspólne ekrany Compose i ViewModele do `shared`;
-- pozostawiono w module Android elementy wymagające integracji z platformą Android;
-- dodano wspólny `AppContainer` w `shared`, który składa współdzielone repozytoria i otrzymuje zależności platformowe, takie jak `AppDatabase` oraz `HttpClientEngine`.
+W ramach tego etapu: - przeniesiono dalszą część nawigacji do
+`shared`; - przeniesiono repozytoria wyników Quiz i Arcade do
+`shared`; - przeniesiono wspólne ekrany Compose i ViewModele do
+`shared`; - pozostawiono w module Android elementy wymagające integracji
+z platformą Android; - dodano wspólny `AppContainer` w `shared`, który
+składa współdzielone repozytoria i otrzymuje zależności platformowe,
+takie jak `AppDatabase` oraz `HttpClientEngine`.
 
-Przepływ zależności jest obecnie organizowany wokół wspólnego modułu, a platforma dostarcza elementy, których `commonMain` nie może samodzielnie utworzyć.
+Przepływ zależności jest obecnie organizowany wokół wspólnego modułu, a
+platforma dostarcza elementy, których `commonMain` nie może samodzielnie
+utworzyć.
 
 Schemat odpowiedzialności:
 
-```text
+``` text
 Android application
     ├── platform entry point / Activity
     ├── platform database creation
@@ -1539,44 +1797,198 @@ Android application
 
 ### Granica między kodem wspólnym i platformowym
 
-Nowy kod funkcjonalny należy projektować najpierw z myślą o `commonMain`. Kod zależny od Android SDK, UIKit, konkretnego silnika systemowego lub platformowego cyklu życia powinien pozostać w odpowiednim source secie i być udostępniany przez możliwie wąski interfejs.
+Nowy kod funkcjonalny należy projektować najpierw z myślą o
+`commonMain`. Kod zależny od Android SDK, UIKit, konkretnego silnika
+systemowego lub platformowego cyklu życia powinien pozostać w
+odpowiednim source secie i być udostępniany przez możliwie wąski
+interfejs.
 
-Nie oznacza to, że każdy plik musi znajdować się w `commonMain`. Celem jest współdzielenie logiki, modeli, stanu i UI tam, gdzie jest to uzasadnione, przy zachowaniu jawnych granic platformowych.
+Nie oznacza to, że każdy plik musi znajdować się w `commonMain`. Celem
+jest współdzielenie logiki, modeli, stanu i UI tam, gdzie jest to
+uzasadnione, przy zachowaniu jawnych granic platformowych.
 
 ### Co nie jest jeszcze potwierdzone
 
-Scalenie migracji z `main` nie jest równoznaczne z ukończeniem iOS. Na dzień tej aktualizacji:
-- nie potwierdzono builda i uruchomienia aplikacji na iOS;
-- nie zweryfikowano wszystkich zachowań na rzeczywistym urządzeniu iOS;
-- nie wykonano końcowego audytu wszystkich zależności i plików pozostawionych w `app`;
-- nie zakończono porządków po migracji.
+Scalenie migracji z `main` nie jest równoznaczne z ukończeniem iOS. Na
+dzień tej aktualizacji: - nie potwierdzono builda i uruchomienia
+aplikacji na iOS; - nie zweryfikowano wszystkich zachowań na
+rzeczywistym urządzeniu iOS; - nie wykonano końcowego audytu wszystkich
+zależności i plików pozostawionych w `app`; - nie zakończono porządków
+po migracji.
 
-Dlatego migrację istniejącego kodu do wspólnej architektury można uznać za zaawansowaną i w głównej części zakończoną, ale gotowość produkcyjna obu platform wymaga osobnej weryfikacji.
+Dlatego migrację istniejącego kodu do wspólnej architektury można uznać
+za zaawansowaną i w głównej części zakończoną, ale gotowość produkcyjna
+obu platform wymaga osobnej weryfikacji.
 
 ### Planowana funkcjonalność map
 
-Mapy będą projektowane od początku jako funkcjonalność KMP. Nie należy najpierw tworzyć implementacji opartej wyłącznie na Androidowym `MapFragment`, Google Maps SDK lub `osmdroid`, a następnie planować jej przepisywania.
+Mapy będą projektowane od początku jako funkcjonalność KMP. Nie należy
+najpierw tworzyć implementacji opartej wyłącznie na Androidowym
+`MapFragment`, Google Maps SDK lub `osmdroid`, a następnie planować jej
+przepisywania.
 
 Pierwszy zakres funkcjonalny:
 
-1. **Mapa w Place Details** — na pierwszej stronie szczegółów miejsca ma pojawić się mapa z granicami danego obszaru. Geometria będzie pochodzić z danych GeoJSON, o ile jest dostępna dla danego miejsca.
-2. **Mapa miasta w City Details** — w późniejszym etapie użytkownik będzie mógł przełączać widok pomiędzy obecnym `LazyRow` kart miejsc a mapą miasta z markerami miejsc.
-3. **Interakcja z markerem** — marker ma udostępniać tytuł oraz krótki snippet (albo sam tytuł); wybranie miejsca ma umożliwiać przejście do jego `Place Details`.
+1.  **Mapa w Place Details** --- na pierwszej stronie szczegółów miejsca
+    ma pojawić się mapa z granicami danego obszaru. Geometria będzie
+    pochodzić z danych GeoJSON, o ile jest dostępna dla danego miejsca.
+2.  **Mapa miasta w City Details** --- w późniejszym etapie użytkownik
+    będzie mógł przełączać widok pomiędzy obecnym `LazyRow` kart miejsc
+    a mapą miasta z markerami miejsc.
+3.  **Interakcja z markerem** --- marker ma udostępniać tytuł oraz
+    krótki snippet (albo sam tytuł); wybranie miejsca ma umożliwiać
+    przejście do jego `Place Details`.
 
 ### Zasady architektoniczne dla map
 
-- Geometrie GeoJSON, współrzędne, identyfikatory miejsc i relacje miasto–miejsce powinny być niezależne od biblioteki renderującej mapę.
-- Wspólna logika wyboru miejsca, filtrowania markerów, stanu kamery i prezentacji informacji powinna być umieszczona w `shared`, jeśli nie wymaga API platformowego.
-- Renderowanie mapy i integracje wymagające konkretnej platformy należy odizolować za wspólnym API lub komponentem.
-- Nie należy uzależniać modeli domenowych od klas SDK mapowego.
-- Obsługa braku geometrii lub współrzędnych musi być jawna; brak danych geograficznych nie może powodować awarii ekranu szczegółów.
+-   Geometrie GeoJSON, współrzędne, identyfikatory miejsc i relacje
+    miasto--miejsce powinny być niezależne od biblioteki renderującej
+    mapę.
+-   Wspólna logika wyboru miejsca, filtrowania markerów, stanu kamery i
+    prezentacji informacji powinna być umieszczona w `shared`, jeśli nie
+    wymaga API platformowego.
+-   Renderowanie mapy i integracje wymagające konkretnej platformy
+    należy odizolować za wspólnym API lub komponentem.
+-   Nie należy uzależniać modeli domenowych od klas SDK mapowego.
+-   Obsługa braku geometrii lub współrzędnych musi być jawna; brak
+    danych geograficznych nie może powodować awarii ekranu szczegółów.
 
-**MapLibre Compose jest kandydatem do sprawdzenia**, ponieważ jest rozwijany z myślą o Compose Multiplatform. Przed przyjęciem go jako docelowego silnika trzeba zweryfikować aktualne wersje, status Android/iOS, wymagane source sety, dostępność potrzebnych funkcji (GeoJSON, poligony, markery, zdarzenia, style, gesty) oraz sposób obsługi offline. Nie traktować trybu offline ani pełnej zgodności funkcji obu platform jako potwierdzonych, dopóki nie zostaną przetestowane.
+**MapLibre Compose jest kandydatem do sprawdzenia**, ponieważ jest
+rozwijany z myślą o Compose Multiplatform. Przed przyjęciem go jako
+docelowego silnika trzeba zweryfikować aktualne wersje, status
+Android/iOS, wymagane source sety, dostępność potrzebnych funkcji
+(GeoJSON, poligony, markery, zdarzenia, style, gesty) oraz sposób
+obsługi offline. Nie traktować trybu offline ani pełnej zgodności
+funkcji obu platform jako potwierdzonych, dopóki nie zostaną
+przetestowane.
 
 ### Najbliższe działania techniczne
 
-1. Wykonać audyt pozostałych zależności Android-only i elementów w `app`.
-2. Sprawdzić odłożone porządki po migracji: `AndroidJsonResourceReader`, stary Androidowy `QuizQuestionDataSource` oraz rejestrację Android assets — usuwać wyłącznie po sprawdzeniu referencji.
-3. Zweryfikować aktualne konfiguracje `shared` i `app` oraz testy.
-4. Przygotować osobny branch dla map dopiero po zatwierdzeniu aktualizacji dokumentacji na `main`.
-5. Przetestować MapLibre Compose na Androidzie jako pierwszy pionowy wycinek funkcjonalny, ale od razu z kodem i modelem danych zaprojektowanymi pod KMP.
+1.  Wykonać audyt pozostałych zależności Android-only i elementów w
+    `app`.
+
+2.  Sprawdzić odłożone porządki po migracji:
+    `AndroidJsonResourceReader`, stary Androidowy
+    `QuizQuestionDataSource` oraz rejestrację Android assets --- usuwać
+    wyłącznie po sprawdzeniu referencji.
+
+3.  Zweryfikować aktualne konfiguracje `shared` i `app` oraz testy.
+
+4.  Przygotować osobny branch dla map dopiero po zatwierdzeniu
+    aktualizacji dokumentacji na `main`.
+
+5.  ## Przetestować MapLibre Compose na Androidzie jako pierwszy pionowy wycinek funkcjonalny, ale od razu z kodem i modelem danych zaprojektowanymi pod KMP.
+
+## Aktualizacja 7 listopada 2026 --- Mapy KMP i lokalizacja użytkownika
+
+### Zakres aktualnej implementacji
+
+Rozpoczęto implementację map jako funkcjonalności projektowanej dla
+Kotlin Multiplatform. Wspólny kod map znajduje się w
+`shared/src/commonMain/kotlin/com/razegon/shared/`, natomiast integracje
+wymagające platformowych API są rozdzielone na odpowiednie source sety.
+
+Aktualnie zaimplementowane elementy obejmują: - przeniesienie
+`PlaceMapSection.kt` do `ui/screens/map/`; - ekran pełnoekranowej mapy
+`FullScreenMap.kt`; - podłączenie ekranu do nawigacji w `MoroccoApp`; -
+przekazywanie `placeId` w trasie pełnoekranowej mapy; - model domenowy
+`MapArea` z granicami `south`, `west`, `north`, `east` oraz
+ograniczeniami zoomu; - mapowanie `MapAreaDto` z JSON do modelu
+domenowego; - ograniczenia kamery mapy do obszaru określonego dla
+miejsca; - wspólny stan lokalizacji użytkownika i obsługę statusu
+uprawnień; - `LocationViewModel` oraz komponent `MapLocationButton`; -
+platformowe implementacje `AppSettings` dla Androida i iOS; - integrację
+MapLibre Compose, w tym moduł lokalizacyjny dla Androida.
+
+### Model danych geograficznych
+
+Model `Place` nie przechowuje już flagi `showMapButton`. Zastąpiono ją
+opcjonalnym `mapArea`, które opisuje prostokątny obszar geograficzny:
+
+``` text
+MapArea
+├── south
+├── west
+├── north
+├── east
+├── minZoom
+└── maxZoom
+```
+
+Analogiczny obiekt DTO (`MapAreaDto`) jest częścią struktury danych
+JSON. `PlaceMapper` odpowiada za konwersję DTO do modelu domenowego.
+Dzięki temu konfiguracja obszaru mapy jest częścią danych miejsca, a nie
+warunkiem zakodowanym w UI.
+
+Brak `mapArea` pozostaje prawidłowym stanem danych. Nie należy zakładać,
+że każde miejsce ma zdefiniowany obszar ani tworzyć fikcyjnych granic.
+
+### Mapa osadzona i pełnoekranowa
+
+`PlaceMapSection` jest komponentem mapy używanym na ekranie szczegółów
+miejsca. Został przeniesiony do pakietu `ui.screens.map`. Pełnoekranowa
+mapa jest osobnym ekranem `FullScreenMap`, uruchamianym przez trasę
+zawierającą `placeId`.
+
+Przepływ nawigacji:
+
+``` text
+PlaceDetails
+    ↓
+PlaceMapSection
+    ↓
+FullScreenMap
+    ↓
+placeId
+```
+
+Przekazywany jest identyfikator miejsca, a nie cały obiekt domenowy.
+Pełnoekranowy ekran może na tej podstawie odtworzyć kontekst miejsca i
+zastosować jego konfigurację mapy.
+
+W aktualnej implementacji używany jest styl MapLibre `bright`.
+Konfiguracja ograniczeń kamery uwzględnia `MapArea`; dla wybranych
+przypadków, np. Cieśniny Gibraltarskiej, zastosowano szczególne
+ograniczenie minimalnego zoomu.
+
+### Lokalizacja użytkownika
+
+Wspólny model stanu lokalizacji znajduje się w `commonMain`, natomiast
+dostęp do ustawień i uprawnień jest rozdzielony platformowo. W kodzie
+występują m.in.: - `LocationMode`; - `LocationPermissionStatus`; -
+`UserLocationState`; - `LocationViewModel`; - `AppSettings` oraz
+implementacje `AppSettings.android.kt` i `AppSettings.ios.kt`; -
+`MapLocationButton`.
+
+`MapLocationButton` odpowiada za prezentację akcji związanej z
+uprawnieniem. Rodzic przekazuje aktualny status oraz callbacki żądania
+uprawnienia i otwarcia ustawień. Obsługa cyklu życia i decyzja o
+powrocie z ustawień pozostają po stronie ekranu nadrzędnego.
+
+Na mapie osadzono warstwę lokalizacji MapLibre. Przetestowano build i
+działanie aplikacji na dwóch urządzeniach Android; użytkownik
+potwierdził poprawne działanie przepływu GPS. Sam fakt istnienia
+implementacji `iosMain` nie potwierdza jeszcze uruchomienia ani
+poprawnego działania na iOS.
+
+### Dane testowe GPS
+
+W `ma_monuments.json` znajduje się tymczasowy punkt testowy
+`gps_test_point_warsaw` o identyfikatorze `99001`, zlokalizowany w
+Warszawie. Pozostaje w danych na czas dalszych testów GPS. Nie jest
+obiektem docelowej bazy miejsc Maroka i powinien zostać usunięty po
+zakończeniu testów.
+
+### Granice potwierdzonej funkcjonalności
+
+Potwierdzono implementację podstawowej mapy osadzonej i pełnoekranowej,
+obszaru `MapArea`, ograniczeń kamery oraz podstawowego przepływu
+lokalizacji na Androidzie.
+
+Nie należy jeszcze uznawać za ukończone: - pełnego testowania iOS na
+urządzeniu; - śledzenia ruchu użytkownika w tle lub w trybie ciągłym; -
+automatycznego wyłączania śledzenia po ręcznym przesunięciu mapy i
+wznowienia go przyciskiem, jeśli nie zostało osobno przetestowane; - map
+offline; - markerów POI i filtrowania kategorii; - granic
+GeoJSON/polygonów --- `MapArea` jest prostokątnym ograniczeniem
+geograficznym, a nie geometrią administracyjną.

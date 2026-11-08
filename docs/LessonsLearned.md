@@ -2,43 +2,48 @@
 
 ## Compose i podstawy UI
 
-- StateFlow vs collectAsState()
-- Callback `(Place) -> Unit`
-- LazyColumn i `items()`
-- LazyRow i `items()`
-- Card / Row / Column
-- stringResource()
-- `?.let`
-- `R.string` to `Int`, nie `String`
-- `Modifier.padding()`, `fillMaxWidth()`, `size()`, `weight()`, `width()`, `height()`
-- `Arrangement.spacedBy()`
-- Material 3 Typography
-- `FontStyle.Italic`
-- Card `shape` i `elevation`
-- `Box` do nakładania elementów, np. PageIndicator na zdjęciu
-- `Alignment.BottomCenter` do pozycjonowania elementu wewnątrz `Box`
-- `TextAlign.Justify` do justowania tekstu
+-   StateFlow vs collectAsState()
+-   Callback `(Place) -> Unit`
+-   LazyColumn i `items()`
+-   LazyRow i `items()`
+-   Card / Row / Column
+-   stringResource()
+-   `?.let`
+-   `R.string` to `Int`, nie `String`
+-   `Modifier.padding()`, `fillMaxWidth()`, `size()`, `weight()`,
+    `width()`, `height()`
+-   `Arrangement.spacedBy()`
+-   Material 3 Typography
+-   `FontStyle.Italic`
+-   Card `shape` i `elevation`
+-   `Box` do nakładania elementów, np. PageIndicator na zdjęciu
+-   `Alignment.BottomCenter` do pozycjonowania elementu wewnątrz `Box`
+-   `TextAlign.Justify` do justowania tekstu
 
 ## ViewModel i stan
 
-- ViewModel zarządza stanem potrzebnym do wyświetlenia ekranu.
-- `MutableStateFlow` pozostaje wewnętrznym stanem ViewModelu, a na zewnątrz wystawiamy `StateFlow`.
-- `viewModel()` zachowuje instancję zgodnie z cyklem życia właściciela Compose.
-- `init` wykonuje się przy inicjalizacji ViewModelu.
-- Jeden UiState może zawierać główny obiekt oraz powiązaną listę.
-- `CityDetailsUiState` zawiera `place` i `children`.
+-   ViewModel zarządza stanem potrzebnym do wyświetlenia ekranu.
+-   `MutableStateFlow` pozostaje wewnętrznym stanem ViewModelu, a na
+    zewnątrz wystawiamy `StateFlow`.
+-   `viewModel()` zachowuje instancję zgodnie z cyklem życia właściciela
+    Compose.
+-   `init` wykonuje się przy inicjalizacji ViewModelu.
+-   Jeden UiState może zawierać główny obiekt oraz powiązaną listę.
+-   `CityDetailsUiState` zawiera `place` i `children`.
 
 ## ViewModel z argumentem
 
-- ViewModel z konstruktorem wymagającym `placeId` wymaga dodatkowej konfiguracji.
-- `ViewModelProvider.Factory` pozwala przekazać argument do ViewModelu.
-- Factory implementuje `create(modelClass)`.
-- `modelClass.isAssignableFrom(...)` sprawdza oczekiwany typ.
-- Factory tworzy ViewModel z przekazanym argumentem.
+-   ViewModel z konstruktorem wymagającym `placeId` wymaga dodatkowej
+    konfiguracji.
+-   `ViewModelProvider.Factory` pozwala przekazać argument do
+    ViewModelu.
+-   Factory implementuje `create(modelClass)`.
+-   `modelClass.isAssignableFrom(...)` sprawdza oczekiwany typ.
+-   Factory tworzy ViewModel z przekazanym argumentem.
 
 Schemat:
 
-```text
+``` text
 Navigation argument
 ↓
 String
@@ -52,49 +57,55 @@ ViewModel(placeId)
 
 ## Odpowiedzialność komponentów
 
-- `CitiesScreen` pobiera `uiState` i wyświetla listę.
-- `CityListItem` odpowiada za miasto.
-- `PlaceListItem` odpowiada za miejsce w `LazyRow`.
-- Komponenty listowe nie decydują o Navigation.
-- Zdarzenie przekazywane jest przez `onClick: (Place) -> Unit`.
-- `Card(onClick = ...)` pozwala zrobić całą kartę klikalną.
+-   `CitiesScreen` pobiera `uiState` i wyświetla listę.
+-   `CityListItem` odpowiada za miasto.
+-   `PlaceListItem` odpowiada za miejsce w `LazyRow`.
+-   Komponenty listowe nie decydują o Navigation.
+-   Zdarzenie przekazywane jest przez `onClick: (Place) -> Unit`.
+-   `Card(onClick = ...)` pozwala zrobić całą kartę klikalną.
 
 ## Navigation
 
-- Navigation nie powinna przekazywać całego `Place`.
-- Przekazywany jest `placeId`.
-- Route zawiera argument, np. `city_details/{cityId}` lub `place_details/{placeId}`.
-- Ekran szczegółów pobiera pełne dane przez ViewModel i Repository.
+-   Navigation nie powinna przekazywać całego `Place`.
+-   Przekazywany jest `placeId`.
+-   Route zawiera argument, np. `city_details/{cityId}` lub
+    `place_details/{placeId}`.
+-   Ekran szczegółów pobiera pełne dane przez ViewModel i Repository.
 
 ## Hierarchia danych
 
-- `Place` może reprezentować miasto lub konkretne miejsce.
-- `placeType` określa typ obiektu.
-- `parentPlaceId` wiąże miejsce z miastem.
-- `getChildren(parentPlaceId)` pobiera miejsca miasta.
-- `CityDetailsScreen` prezentuje je w `LazyRow`.
+-   `Place` może reprezentować miasto lub konkretne miejsce.
+-   `placeType` określa typ obiektu.
+-   `parentPlaceId` wiąże miejsce z miastem.
+-   `getChildren(parentPlaceId)` pobiera miejsca miasta.
+-   `CityDetailsScreen` prezentuje je w `LazyRow`.
 
 ## Layout i UI
 
-- `fillMaxWidth()` wykorzystuje dostępną szerokość.
-- `padding()` może określać odstęp od otoczenia lub od krawędzi zawartości.
-- `weight(1f)` pozwala Column wykorzystać pozostałą szerokość.
-- `Arrangement.spacedBy()` daje równe odstępy.
-- Karta miasta używa `MaterialTheme.shapes.medium` i `4.dp` elevation.
-- CityDetailsScreen może mieć hero image na pełną szerokość, a tekst z własnym paddingiem.
-- LazyRow powinien mieć kontrolowaną szerokość kart i odstępy.
-- `Box` jest przydatny, gdy element ma być nałożony na inny element.
+-   `fillMaxWidth()` wykorzystuje dostępną szerokość.
+-   `padding()` może określać odstęp od otoczenia lub od krawędzi
+    zawartości.
+-   `weight(1f)` pozwala Column wykorzystać pozostałą szerokość.
+-   `Arrangement.spacedBy()` daje równe odstępy.
+-   Karta miasta używa `MaterialTheme.shapes.medium` i `4.dp` elevation.
+-   CityDetailsScreen może mieć hero image na pełną szerokość, a tekst z
+    własnym paddingiem.
+-   LazyRow powinien mieć kontrolowaną szerokość kart i odstępy.
+-   `Box` jest przydatny, gdy element ma być nałożony na inny element.
 
 ## HorizontalPager
 
-- `HorizontalPager` pozwala potraktować kolejne elementy jako osobne karty przewijane poziomo.
-- `rememberPagerState()` przechowuje aktualną stronę pagera.
-- `pagerState.currentPage` może sterować UI, np. `PageIndicator`.
-- Pager i pionowy scroll rozwiązują dwa różne kierunki nawigacji: poziomy pager wybiera stronę, a `verticalScroll()` przewija treść strony.
+-   `HorizontalPager` pozwala potraktować kolejne elementy jako osobne
+    karty przewijane poziomo.
+-   `rememberPagerState()` przechowuje aktualną stronę pagera.
+-   `pagerState.currentPage` może sterować UI, np. `PageIndicator`.
+-   Pager i pionowy scroll rozwiązują dwa różne kierunki nawigacji:
+    poziomy pager wybiera stronę, a `verticalScroll()` przewija treść
+    strony.
 
 Schemat:
 
-```text
+``` text
 HorizontalPager
 ├── Page 0
 ├── Page 1
@@ -110,22 +121,24 @@ verticalScroll()
 
 ## Projektowanie stron na podstawie danych
 
-Gdy liczba zdjęć i opisów jest różna, nie należy zakładać prostego `images[index]` dla każdej strony.
+Gdy liczba zdjęć i opisów jest różna, nie należy zakładać prostego
+`images[index]` dla każdej strony.
 
 Zastosowano:
 
-```kotlin
+``` kotlin
 val pageCount = maxOf(
     images.size,
     descriptions.size
 ) + 1
 ```
 
-Dodatkowa strona wynika z rezerwacji `index == 0` na podstawowe informacje.
+Dodatkowa strona wynika z rezerwacji `index == 0` na podstawowe
+informacje.
 
 Dla pozostałych stron:
 
-```kotlin
+``` kotlin
 description = if (index > 0) {
     descriptions.getOrNull(index - 1)
 } else {
@@ -133,19 +146,21 @@ description = if (index > 0) {
 }
 ```
 
-`getOrNull()` jest ważne, ponieważ liczba elementów listy może być różna.
+`getOrNull()` jest ważne, ponieważ liczba elementów listy może być
+różna.
 
 ## `List<String?>` i świadomy brak zdjęcia
 
-Wcześniej brak zdjęcia był łatwo mylony z błędem ładowania. Dla ekranów szczegółów potrzebna była większa kontrola.
+Wcześniej brak zdjęcia był łatwo mylony z błędem ładowania. Dla ekranów
+szczegółów potrzebna była większa kontrola.
 
-```kotlin
+``` kotlin
 List<String?>
 ```
 
 umożliwia:
 
-```kotlin
+``` kotlin
 listOf(
     "zdjecie1",
     null,
@@ -155,7 +170,7 @@ listOf(
 
 Znaczenie:
 
-```text
+``` text
 index 0 → pokaż zdjęcie
 index 1 → nie pokazuj zdjęcia
 index 2 → pokaż zdjęcie
@@ -163,7 +178,7 @@ index 2 → pokaż zdjęcie
 
 To ważne rozróżnienie:
 
-```text
+``` text
 null jako świadomy brak zdjęcia
 ≠
 error podczas ładowania istniejącego URL
@@ -173,15 +188,16 @@ Dlatego `null` nie powinien automatycznie uruchamiać placeholdera.
 
 ## Scroll i collapsing
 
-- `rememberScrollState()` przechowuje pozycję pionowego scrolla.
-- `verticalScroll(scrollState)` musi używać tego samego obiektu `scrollState`, który jest używany do obliczenia wysokości zdjęcia.
-- `scrollState.value` jest wartością w pikselach.
-- Wysokość layoutu jest wyrażana w `dp`.
-- `coerceAtLeast(0f)` zabezpiecza przed ujemną wysokością.
+-   `rememberScrollState()` przechowuje pozycję pionowego scrolla.
+-   `verticalScroll(scrollState)` musi używać tego samego obiektu
+    `scrollState`, który jest używany do obliczenia wysokości zdjęcia.
+-   `scrollState.value` jest wartością w pikselach.
+-   Wysokość layoutu jest wyrażana w `dp`.
+-   `coerceAtLeast(0f)` zabezpiecza przed ujemną wysokością.
 
 Mechanizm:
 
-```text
+``` text
 imageMaxHeight
 ↓
 imageMaxHeight - scrollState.value
@@ -193,15 +209,16 @@ imageHeight
 
 ### LocalDensity
 
-`LocalDensity.current` daje dostęp do gęstości ekranu potrzebnej do konwersji jednostek.
+`LocalDensity.current` daje dostęp do gęstości ekranu potrzebnej do
+konwersji jednostek.
 
-```kotlin
+``` kotlin
 val density = LocalDensity.current
 ```
 
 Przeliczenie:
 
-```kotlin
+``` kotlin
 with(density) {
     (imageMaxHeight.toPx() - scrollState.value)
         .coerceAtLeast(0f)
@@ -209,35 +226,43 @@ with(density) {
 }
 ```
 
-Wniosek: gdy operujemy na `scrollState.value` i wymiarach Compose, warto jawnie kontrolować konwersję px/dp zamiast polegać na niejawnych przeliczeniach.
+Wniosek: gdy operujemy na `scrollState.value` i wymiarach Compose, warto
+jawnie kontrolować konwersję px/dp zamiast polegać na niejawnych
+przeliczeniach.
 
 ## PageIndicator
 
-- Wskaźnik stron może być osobnym, współdzielonym komponentem.
-- Rodzic przekazuje `pageCount`, `currentPage` i `modifier`.
-- `modifier` nie powinien być ignorowany w komponencie, ponieważ to rodzic decyduje o położeniu elementu.
-- Umieszczenie wskaźnika w `Box` pozwala położyć go na zdjęciu.
+-   Wskaźnik stron może być osobnym, współdzielonym komponentem.
+-   Rodzic przekazuje `pageCount`, `currentPage` i `modifier`.
+-   `modifier` nie powinien być ignorowany w komponencie, ponieważ to
+    rodzic decyduje o położeniu elementu.
+-   Umieszczenie wskaźnika w `Box` pozwala położyć go na zdjęciu.
 
 ## Obrazy i Coil
 
-- `placeImages` w danych szczegółów jest listą `String?`.
-- Reprezentacyjne zdjęcie może być wybierane przez `firstOrNull()`.
-- Nie losujemy zdjęcia podczas recomposition.
-- Coil ładuje obrazy przez `AsyncImage`.
-- Obrazy sieciowe korzystają z `coil-network-okhttp`.
-- Aplikacja potrzebuje `INTERNET`.
-- `ContentScale.Crop` wypełnia ustalony obszar i może przyciąć zdjęcie.
-- `ContentScale.Inside` pozwala pokazać całe zdjęcie.
-- `fallback` i `error` dotyczą stanów ładowania obrazu; świadome `null` w pagerze powinno być obsłużone przez brak `AsyncImage`, a nie przez placeholder.
-- Sam komunikat o chwilowym contention w `DiskLruCache` nie musi oznaczać błędu, jeśli obraz finalnie się ładuje.
+-   `placeImages` w danych szczegółów jest listą `String?`.
+-   Reprezentacyjne zdjęcie może być wybierane przez `firstOrNull()`.
+-   Nie losujemy zdjęcia podczas recomposition.
+-   Coil ładuje obrazy przez `AsyncImage`.
+-   Obrazy sieciowe korzystają z `coil-network-okhttp`.
+-   Aplikacja potrzebuje `INTERNET`.
+-   `ContentScale.Crop` wypełnia ustalony obszar i może przyciąć
+    zdjęcie.
+-   `ContentScale.Inside` pozwala pokazać całe zdjęcie.
+-   `fallback` i `error` dotyczą stanów ładowania obrazu; świadome
+    `null` w pagerze powinno być obsłużone przez brak `AsyncImage`, a
+    nie przez placeholder.
+-   Sam komunikat o chwilowym contention w `DiskLruCache` nie musi
+    oznaczać błędu, jeśli obraz finalnie się ładuje.
 
 ## HTML i AnnotatedString
 
-Opisy są przechowywane jako `R.string`, ale ich zawartość może zawierać HTML.
+Opisy są przechowywane jako `R.string`, ale ich zawartość może zawierać
+HTML.
 
 Podstawą jest:
 
-```kotlin
+``` kotlin
 Html.fromHtml(
     text,
     Html.FROM_HTML_MODE_LEGACY
@@ -248,9 +273,10 @@ Android zwraca `Spanned`, czyli tekst z informacją o zakresach stylów.
 
 ### StyleSpan
 
-`StyleSpan` opisuje m.in. pogrubienie i kursywę. Można go przełożyć na Compose:
+`StyleSpan` opisuje m.in. pogrubienie i kursywę. Można go przełożyć na
+Compose:
 
-```text
+``` text
 Typeface.BOLD
 → FontWeight.Bold
 
@@ -263,15 +289,20 @@ Typeface.BOLD_ITALIC
 
 ### RelativeSizeSpan
 
-Nagłówki HTML mogą generować `RelativeSizeSpan`. Odczytanie `span.sizeChange` pozwala przełożyć względną wielkość na `SpanStyle(fontSize = ...)`.
+Nagłówki HTML mogą generować `RelativeSizeSpan`. Odczytanie
+`span.sizeChange` pozwala przełożyć względną wielkość na
+`SpanStyle(fontSize = ...)`.
 
-Dzięki temu `<h4>` i `<h5>` mogą zostać wizualnie odróżnione od tekstu podstawowego bez ręcznego tworzenia osobnych stringów Compose.
+Dzięki temu `<h4>` i `<h5>` mogą zostać wizualnie odróżnione od tekstu
+podstawowego bez ręcznego tworzenia osobnych stringów Compose.
 
 ### `buildAnnotatedString`
 
-`buildAnnotatedString` pozwala zbudować jeden tekst, a następnie nakładać `SpanStyle` na konkretne zakresy znaków.
+`buildAnnotatedString` pozwala zbudować jeden tekst, a następnie
+nakładać `SpanStyle` na konkretne zakresy znaków.
 
-Ważna rzecz: najpierw trzeba dodać cały tekst przez `append()`, a następnie używać indeksów spanów Androida do nałożenia stylów.
+Ważna rzecz: najpierw trzeba dodać cały tekst przez `append()`, a
+następnie używać indeksów spanów Androida do nałożenia stylów.
 
 ## Justowanie tekstu
 
@@ -279,44 +310,40 @@ Ważna rzecz: najpierw trzeba dodać cały tekst przez `append()`, a następnie 
 
 W `HtmlText` można wystawić parametr:
 
-```kotlin
+``` kotlin
 textAlign: TextAlign = TextAlign.Justify
 ```
 
 i przekazać go do:
 
-```kotlin
+``` kotlin
 Text(
     text = annotatedString,
     textAlign = textAlign
 )
 ```
 
-Wniosek: parametr UI, taki jak wyrównanie tekstu, powinien być przekazywany do komponentu zamiast wpisywania go na stałe w jego wnętrzu.
+Wniosek: parametr UI, taki jak wyrównanie tekstu, powinien być
+przekazywany do komponentu zamiast wpisywania go na stałe w jego
+wnętrzu.
 
 ## Najważniejszy postęp
 
-Projektowanie obejmuje teraz:
-- odpowiedzialność klas,
-- przepływ danych,
-- stany UI,
-- identyfikatory Navigation,
-- hierarchię danych,
-- obsługę brakujących/błędnych obrazów,
-- rozdzielenie ekranów miasta i miejsca,
-- poziomą nawigację stron,
-- niezależny pionowy scroll stron,
-- collapsing hero image,
-- wskaźnik stron,
-- konwersję HTML do stylowanego tekstu Compose.
+Projektowanie obejmuje teraz: - odpowiedzialność klas, - przepływ
+danych, - stany UI, - identyfikatory Navigation, - hierarchię danych, -
+obsługę brakujących/błędnych obrazów, - rozdzielenie ekranów miasta i
+miejsca, - poziomą nawigację stron, - niezależny pionowy scroll stron, -
+collapsing hero image, - wskaźnik stron, - konwersję HTML do stylowanego
+tekstu Compose.
 
-Zasada pozostaje ta sama: najpierw sprawdzić przepływ danych i działanie, potem dopracowywać wygląd.
+Zasada pozostaje ta sama: najpierw sprawdzić przepływ danych i
+działanie, potem dopracowywać wygląd.
 
 ## Kolejny etap nauki
 
 Po ukończeniu obecnego mechanizmu szczegółów kolejne większe obszary to:
 
-```text
+``` text
 UX ekranów szczegółów
 ↓
 Weather
@@ -332,20 +359,25 @@ Room
 Hilt
 ```
 
-
-## 30–31 sierpnia 2026 -- refactor i centralizacja
+## 30--31 sierpnia 2026 -- refactor i centralizacja
 
 ### Centralizacja ImageLoader
 
-Jeżeli kilka komponentów potrzebuje identycznej konfiguracji Coil/OkHttp, nie warto tworzyć `ImageLoader` osobno w każdym miejscu. Konfigurację Wikimedia przeniesiono do `WikimediaImageLoader.kt`, a ekrany korzystają z `createWikimediaImageLoader(context)`.
+Jeżeli kilka komponentów potrzebuje identycznej konfiguracji
+Coil/OkHttp, nie warto tworzyć `ImageLoader` osobno w każdym miejscu.
+Konfigurację Wikimedia przeniesiono do `WikimediaImageLoader.kt`, a
+ekrany korzystają z `createWikimediaImageLoader(context)`.
 
-Wymagany `User-Agent` był istotny, ponieważ Wikimedia zwracało `HTTP 403` przy nieprawidłowo zidentyfikowanych żądaniach.
+Wymagany `User-Agent` był istotny, ponieważ Wikimedia zwracało
+`HTTP 403` przy nieprawidłowo zidentyfikowanych żądaniach.
 
 ### Slot `content()`
 
-`content: @Composable () -> Unit = {}` jest prostym sposobem na rozszerzenie wspólnego komponentu bez dodawania do niego wielu warunków `if`.
+`content: @Composable () -> Unit = {}` jest prostym sposobem na
+rozszerzenie wspólnego komponentu bez dodawania do niego wielu warunków
+`if`.
 
-```kotlin
+``` kotlin
 DetailsPager(...) {
     LazyRow {
         ...
@@ -353,15 +385,19 @@ DetailsPager(...) {
 }
 ```
 
-Domyślne `= {}` sprawia, że PlaceDetails nie musi przekazywać dodatkowej zawartości.
+Domyślne `= {}` sprawia, że PlaceDetails nie musi przekazywać dodatkowej
+zawartości.
 
 ### Box kontra Column
 
-`Box` układa elementy w tej samej przestrzeni, więc świetnie nadaje się do umieszczania ikon i wskaźnika na zdjęciu. Nie powinien jednak zawierać tekstów i `LazyRow`, które mają znajdować się pod zdjęciem. Do tego służy `Column`.
+`Box` układa elementy w tej samej przestrzeni, więc świetnie nadaje się
+do umieszczania ikon i wskaźnika na zdjęciu. Nie powinien jednak
+zawierać tekstów i `LazyRow`, które mają znajdować się pod zdjęciem. Do
+tego służy `Column`.
 
 Poprawny wzorzec:
 
-```text
+``` text
 Column
 ├── Box
 │   ├── zdjęcie
@@ -375,76 +411,123 @@ Column
 
 ### Refactor `createPages()`
 
-Dwie funkcje o niemal identycznym działaniu (`createCityPages()` i `createPlacePages()`) nie były potrzebne. Jedna wspólna `createPages()` upraszcza utrzymanie kodu. Różnice powinny być wyprowadzane na zewnątrz tylko wtedy, gdy rzeczywiście dotyczą zachowania konkretnego ekranu.
+Dwie funkcje o niemal identycznym działaniu (`createCityPages()` i
+`createPlacePages()`) nie były potrzebne. Jedna wspólna `createPages()`
+upraszcza utrzymanie kodu. Różnice powinny być wyprowadzane na zewnątrz
+tylko wtedy, gdy rzeczywiście dotyczą zachowania konkretnego ekranu.
 
 ### Zasada refactoru
 
-Najpierw warto wydzielić rzeczy faktycznie wspólne i dopiero później abstrahować różnice. Nadmierna abstrakcja może pogorszyć czytelność. W tym przypadku `DetailsPager` jest uzasadniony, ponieważ oba ekrany miały tę samą logikę prezentacji.
+Najpierw warto wydzielić rzeczy faktycznie wspólne i dopiero później
+abstrahować różnice. Nadmierna abstrakcja może pogorszyć czytelność. W
+tym przypadku `DetailsPager` jest uzasadniony, ponieważ oba ekrany miały
+tę samą logikę prezentacji.
 
 ### Przyszła Application
 
-Obecnie aplikacja nie ma własnej klasy `Application`. Nie jest ona potrzebna tylko dlatego, że korzystamy z Coil. Przy dodaniu map OSM będzie można wprowadzić `Application` do centralnej konfiguracji map i innych zależności aplikacyjnych.
+Obecnie aplikacja nie ma własnej klasy `Application`. Nie jest ona
+potrzebna tylko dlatego, że korzystamy z Coil. Przy dodaniu map OSM
+będzie można wprowadzić `Application` do centralnej konfiguracji map i
+innych zależności aplikacyjnych.
 
-
-## Aktualizacja 31 sierpnia – 1 września 2026
+## Aktualizacja 31 sierpnia -- 1 września 2026
 
 ### Wikidata -- najważniejsza lekcja dotycząca modelowania danych
 
-Nie każdą informację z Wikidata należy sprowadzać do prostego typu. `P571` może reprezentować moment o różnej precyzji, dlatego utworzono `WikidataTime` z `year`, `precision` i `raw`. Dzięki temu model zachowuje informację potrzebną do późniejszego poprawnego formatowania, np. roku albo przybliżonego okresu historycznego.
+Nie każdą informację z Wikidata należy sprowadzać do prostego typu.
+`P571` może reprezentować moment o różnej precyzji, dlatego utworzono
+`WikidataTime` z `year`, `precision` i `raw`. Dzięki temu model
+zachowuje informację potrzebną do późniejszego poprawnego formatowania,
+np. roku albo przybliżonego okresu historycznego.
 
 ### Brak danych nie musi oznaczać błędu
 
-Test 17 miast wykazał, że dostępność właściwości Wikidata jest różna. Model `WikidataInfo` używa nullable pól, a UI pokazuje tylko wartości, które rzeczywiście istnieją. To lepsze niż sztuczne podstawianie danych lub traktowanie brakującej właściwości jako awarii.
+Test 17 miast wykazał, że dostępność właściwości Wikidata jest różna.
+Model `WikidataInfo` używa nullable pól, a UI pokazuje tylko wartości,
+które rzeczywiście istnieją. To lepsze niż sztuczne podstawianie danych
+lub traktowanie brakującej właściwości jako awarii.
 
 ### `403` i `User-Agent`
 
-HTTP 403 z usług Wikimedia/Wikidata nie zawsze oznacza błędny endpoint. W tym projekcie problem został rozwiązany przez poprawne zidentyfikowanie klienta HTTP nagłówkiem `User-Agent`. Wspólny klient zapobiega powielaniu tej konfiguracji.
+HTTP 403 z usług Wikimedia/Wikidata nie zawsze oznacza błędny endpoint.
+W tym projekcie problem został rozwiązany przez poprawne
+zidentyfikowanie klienta HTTP nagłówkiem `User-Agent`. Wspólny klient
+zapobiega powielaniu tej konfiguracji.
 
 ### `429` i kontrola współbieżności
 
-Sam cache nie rozwiązuje problemu, gdy wiele requestów wystartuje jednocześnie przed zapisaniem wyniku. `Semaphore(3)` pozwala ograniczyć liczbę równoległych requestów bez sztucznego opóźniania każdego wywołania. Gdy jeden request się kończy, kolejne oczekujące mogą zostać uruchomione.
+Sam cache nie rozwiązuje problemu, gdy wiele requestów wystartuje
+jednocześnie przed zapisaniem wyniku. `Semaphore(3)` pozwala ograniczyć
+liczbę równoległych requestów bez sztucznego opóźniania każdego
+wywołania. Gdy jeden request się kończy, kolejne oczekujące mogą zostać
+uruchomione.
 
-Dodatkowo zbiór `loadingImages` chroni przed wielokrotnym uruchomieniem tego samego `pageId` w obrębie jednego `WikimediaViewModel`.
+Dodatkowo zbiór `loadingImages` chroni przed wielokrotnym uruchomieniem
+tego samego `pageId` w obrębie jednego `WikimediaViewModel`.
 
 ### Metadane a właściwy plik zdjęcia to dwa różne procesy
 
-Ważne rozróżnienie: pobranie `WikimediaImage` przez API nie oznacza jeszcze, że właściwy JPG/PNG został pobrany. Dlatego loading indicator w UI powinien być związany z Coil (`onLoading`, `onSuccess`, `onError`), a nie z pobieraniem metadanych.
+Ważne rozróżnienie: pobranie `WikimediaImage` przez API nie oznacza
+jeszcze, że właściwy JPG/PNG został pobrany. Dlatego loading indicator w
+UI powinien być związany z Coil (`onLoading`, `onSuccess`, `onError`), a
+nie z pobieraniem metadanych.
 
 ### Dwa rodzaje cache
 
-`WikidataMemoryCache` i `WikimediaMemoryCache` przechowują dane w pamięci procesu. Coil może niezależnie korzystać z własnego cache obrazu. Testy pokazały, że offline w obrębie sesji działa, ale po zakończeniu procesu dane z własnego MemoryCache są tracone.
+`WikidataMemoryCache` i `WikimediaMemoryCache` przechowują dane w
+pamięci procesu. Coil może niezależnie korzystać z własnego cache
+obrazu. Testy pokazały, że offline w obrębie sesji działa, ale po
+zakończeniu procesu dane z własnego MemoryCache są tracone.
 
-Wniosek: cache RAM jest dobrym pierwszym etapem, ale prawdziwy offline po restarcie wymaga trwałego storage'u.
+Wniosek: cache RAM jest dobrym pierwszym etapem, ale prawdziwy offline
+po restarcie wymaga trwałego storage'u.
 
 ### `Application` jako centralizacja zależności
 
-Wprowadzenie `MyApp : Application` okazało się przydatne, gdy pojawiły się współdzielone cache. Należy jednak uważać, aby ViewModel nie zaczął znać całej aplikacji. Docelowo zależności powinny być przekazywane przez Factory/DI, a `MyApp` może pozostać miejscem konfiguracji infrastruktury procesu.
+Wprowadzenie `MyApp : Application` okazało się przydatne, gdy pojawiły
+się współdzielone cache. Należy jednak uważać, aby ViewModel nie zaczął
+znać całej aplikacji. Docelowo zależności powinny być przekazywane przez
+Factory/DI, a `MyApp` może pozostać miejscem konfiguracji infrastruktury
+procesu.
 
 ### UI -- źródło prawdy o ładowaniu obrazu
 
-`AsyncImage`/Coil daje stan rzeczywistego ładowania pliku. Dzięki wykorzystaniu `onLoading`, `onSuccess` i `onError` można pokazać użytkownikowi dyskretny progress bez sztucznego procentowego postępu.
+`AsyncImage`/Coil daje stan rzeczywistego ładowania pliku. Dzięki
+wykorzystaniu `onLoading`, `onSuccess` i `onError` można pokazać
+użytkownikowi dyskretny progress bez sztucznego procentowego postępu.
 
 ### `HorizontalPager` i wyrównanie
 
-Przy pagerze z dynamiczną zawartością warto jawnie określić `verticalAlignment = Alignment.Top`. Szczególnie przy rotacji ekranu brak jawnego wyrównania może powodować chwilowe niepożądane pozycjonowanie strony podczas pomiaru i kompozycji.
+Przy pagerze z dynamiczną zawartością warto jawnie określić
+`verticalAlignment = Alignment.Top`. Szczególnie przy rotacji ekranu
+brak jawnego wyrównania może powodować chwilowe niepożądane
+pozycjonowanie strony podczas pomiaru i kompozycji.
 
 ### Naturalne proporcje zdjęć
 
-Dla kolejnych stron `DetailsPager` korzysta z rzeczywistego aspect ratio obrazu. Sztywna wysokość nie sprawdza się dla zestawu zdjęć panoramicznych i pionowych. Wysokość wynikająca z proporcji pozwala wykorzystać pełną szerokość ekranu, a `verticalScroll()` obsługuje wysokie zdjęcia pionowe.
+Dla kolejnych stron `DetailsPager` korzysta z rzeczywistego aspect ratio
+obrazu. Sztywna wysokość nie sprawdza się dla zestawu zdjęć
+panoramicznych i pionowych. Wysokość wynikająca z proporcji pozwala
+wykorzystać pełną szerokość ekranu, a `verticalScroll()` obsługuje
+wysokie zdjęcia pionowe.
 
 ### Zasada na dalszy rozwój
 
-Przed dodaniem kolejnych funkcji warto najpierw ustabilizować mechanizmy wspólne: sieć, cache, offline i dependency management. Dopiero na takiej bazie warto rozszerzać Wikidata na Places, a następnie dodawać Quiz i mapę.
+Przed dodaniem kolejnych funkcji warto najpierw ustabilizować mechanizmy
+wspólne: sieć, cache, offline i dependency management. Dopiero na takiej
+bazie warto rozszerzać Wikidata na Places, a następnie dodawać Quiz i
+mapę.
 
 ## Git i praca na branchach
 
 ### Branch jako osobny etap funkcji
 
-Funkcję warto rozwijać na osobnym branchu, a następnie scalać ją do `main` dopiero po zakończeniu i przetestowaniu.
+Funkcję warto rozwijać na osobnym branchu, a następnie scalać ją do
+`main` dopiero po zakończeniu i przetestowaniu.
 
 W projekcie zastosowano:
 
-```text
+``` text
 main
   ↓
 feature/room
@@ -460,41 +543,49 @@ Następnie rozpoczęto analogiczny etap `feature/quiz`.
 
 ### `git diff` a `git log`
 
-`git log --oneline --graph --decorate --all` pokazuje historię commitów i relacje między branchami.
+`git log --oneline --graph --decorate --all` pokazuje historię commitów
+i relacje między branchami.
 
-`git diff` pokazuje zawartość zmian. Przy porównaniu całego brancha można użyć:
+`git diff` pokazuje zawartość zmian. Przy porównaniu całego brancha
+można użyć:
 
-```bash
+``` bash
 git diff --stat main..feature/room
 git diff --name-status main..feature/room
 ```
 
-`--stat` daje podsumowanie rozmiaru zmian, a `--name-status` listę plików wraz ze statusem `A` / `M` / `D`.
+`--stat` daje podsumowanie rozmiaru zmian, a `--name-status` listę
+plików wraz ze statusem `A` / `M` / `D`.
 
 ### Fast-forward merge
 
-Jeżeli `main` nie ma własnych nowych commitów od momentu utworzenia brancha, Git może wykonać `Fast-forward`. Wtedy nie powstaje dodatkowy commit merge — wskaźnik `main` zostaje przesunięty na ostatni commit brancha.
+Jeżeli `main` nie ma własnych nowych commitów od momentu utworzenia
+brancha, Git może wykonać `Fast-forward`. Wtedy nie powstaje dodatkowy
+commit merge --- wskaźnik `main` zostaje przesunięty na ostatni commit
+brancha.
 
 ### Commit message
 
-W projekcie stosowane są komunikaty zgodne z Conventional Commits, m.in.:
+W projekcie stosowane są komunikaty zgodne z Conventional Commits,
+m.in.:
 
-```text
+``` text
 chore: technical / maintenance changes
 feat: new functionality
 ```
 
----
+------------------------------------------------------------------------
 
 ## Room i persistent cache
 
 ### MemoryCache a trwały storage
 
-MemoryCache działa tylko w czasie życia procesu aplikacji. Room pozwala zachować dane po zakończeniu procesu.
+MemoryCache działa tylko w czasie życia procesu aplikacji. Room pozwala
+zachować dane po zakończeniu procesu.
 
 W projekcie rozdzielono:
 
-```text
+``` text
 MemoryCache → szybki dostęp w RAM
 Room        → trwałe metadane
 Coil        → cache plików obrazów
@@ -502,45 +593,53 @@ Coil        → cache plików obrazów
 
 ### Dwie warstwy cache nie oznaczają tego samego
 
-Metadane Wikimedia (`WikimediaImage`) i właściwy plik JPG/PNG są osobnymi procesami. Zapisanie metadanych w Room nie oznacza automatycznie zapisania pliku obrazu. Dlatego Coil korzysta z własnego `DiskCache`.
+Metadane Wikimedia (`WikimediaImage`) i właściwy plik JPG/PNG są
+osobnymi procesami. Zapisanie metadanych w Room nie oznacza
+automatycznie zapisania pliku obrazu. Dlatego Coil korzysta z własnego
+`DiskCache`.
 
----
+------------------------------------------------------------------------
 
 ## Quiz -- modelowanie stanu
 
 Quiz pokazuje praktyczne zastosowanie kilku wartości stanu w ViewModelu:
 
-```text
+``` text
 currentQuestionIndex
 selectedAnswerIndex
 score
 isAnswerChecked
 ```
 
-`selectedAnswerIndex` ma wartość `null`, dopóki użytkownik nie wybierze odpowiedzi.
+`selectedAnswerIndex` ma wartość `null`, dopóki użytkownik nie wybierze
+odpowiedzi.
 
 `isAnswerChecked` blokuje ponowny wybór po udzieleniu odpowiedzi.
 
-`nextQuestion()` zwraca `Boolean`, dzięki czemu ekran może później rozróżnić:
+`nextQuestion()` zwraca `Boolean`, dzięki czemu ekran może później
+rozróżnić:
 
-```text
+``` text
 true  → następne pytanie
 false → koniec quizu / podsumowanie
 ```
 
 ### Odpowiedzialność QuizViewModel
 
-`QuizScreen` nie powinien samodzielnie obliczać wyniku. ViewModel przechowuje stan quizu i wykonuje logikę wyboru odpowiedzi.
+`QuizScreen` nie powinien samodzielnie obliczać wyniku. ViewModel
+przechowuje stan quizu i wykonuje logikę wyboru odpowiedzi.
 
 ### Factory dla ViewModelu
 
-Ponieważ `QuizViewModel` otrzymuje `QuizRepository` w konstruktorze, do jego utworzenia używany jest `QuizViewModelFactory`.
+Ponieważ `QuizViewModel` otrzymuje `QuizRepository` w konstruktorze, do
+jego utworzenia używany jest `QuizViewModelFactory`.
 
 ## Quiz -- JSON jako źródło danych
 
-Pytania zostały oddzielone od logiki aplikacji i przeniesione do `questions.json`.
+Pytania zostały oddzielone od logiki aplikacji i przeniesione do
+`questions.json`.
 
-```text
+``` text
 questions.json
     ↓
 QuizQuestionDto
@@ -565,15 +664,18 @@ QuizQuestionMapper
 QuizQuestion
 ```
 
-Ważna lekcja: DTO powinno odwzorowywać format danych zewnętrznych, a model domenowy powinien pozostać niezależny od szczegółów formatu JSON.
+Ważna lekcja: DTO powinno odwzorowywać format danych zewnętrznych, a
+model domenowy powinien pozostać niezależny od szczegółów formatu JSON.
 
-W praktyce `difficulty` jest tekstem w JSON, ale domena używa `QuizDifficulty`. Mapper wykonuje tę konwersję.
+W praktyce `difficulty` jest tekstem w JSON, ale domena używa
+`QuizDifficulty`. Mapper wykonuje tę konwersję.
 
 ### Dlaczego DataSource?
 
-`QuizRepositoryImpl` nie powinno wiedzieć, jak otwierany jest plik ani jak Gson parsuje JSON. DataSource ukrywa szczegół źródła danych.
+`QuizRepositoryImpl` nie powinno wiedzieć, jak otwierany jest plik ani
+jak Gson parsuje JSON. DataSource ukrywa szczegół źródła danych.
 
-```text
+``` text
 QuizRepositoryImpl
         ↓
 QuizQuestionDataSource
@@ -581,13 +683,14 @@ QuizQuestionDataSource
 questions.json
 ```
 
-Dzięki temu późniejsza zmiana źródła danych nie musi zmieniać ViewModelu.
+Dzięki temu późniejsza zmiana źródła danych nie musi zmieniać
+ViewModelu.
 
 ## Quiz -- stan wyjścia z rozgrywki
 
 Przerwanie quizu wymagało rozdzielenia odpowiedzialności:
 
-```text
+``` text
 QuizScreen
 → pokazuje dialog i obsługuje wybór użytkownika
 
@@ -600,40 +703,46 @@ QuizViewModel
 
 ## Quiz -- ranking i difficulty
 
-`difficulty` zostało dodane do `QuizResult`, ponieważ ranking musi pokazywać kontekst wyniku.
+`difficulty` zostało dodane do `QuizResult`, ponieważ ranking musi
+pokazywać kontekst wyniku.
 
 Poziom trudności nie zmienia kolejności rankingu. Nadal obowiązuje:
 
-```text
+``` text
 więcej poprawnych odpowiedzi → wyższa pozycja
 ```
 
 Poziom jest informacją, np.:
 
-```text
+``` text
 10/10 MEDIUM
 9/10 HARD
 ```
 
 ## Material 3 Theme -- centralizacja wyglądu
 
-Zamiast ustawiać wygląd komponentów niezależnie w każdym ekranie, wprowadzono wspólny:
+Zamiast ustawiać wygląd komponentów niezależnie w każdym ekranie,
+wprowadzono wspólny:
 
-```text
+``` text
 ColorScheme
 Shapes
 Typography
 ```
 
-Wniosek: decyzje wizualne, które mają obowiązywać w całej aplikacji, powinny być centralizowane w Theme. Pojedynczy ekran powinien korzystać z `MaterialTheme.colorScheme`, `MaterialTheme.typography` i `MaterialTheme.shapes` zamiast tworzyć własne wartości bez potrzeby.
+Wniosek: decyzje wizualne, które mają obowiązywać w całej aplikacji,
+powinny być centralizowane w Theme. Pojedynczy ekran powinien korzystać
+z `MaterialTheme.colorScheme`, `MaterialTheme.typography` i
+`MaterialTheme.shapes` zamiast tworzyć własne wartości bez potrzeby.
 
 ## Git -- zakończenie etapu feature
 
-`feature/quiz` zostało przetestowane, scalone do `main` przez `Fast-forward` i wypchnięte na GitHub.
+`feature/quiz` zostało przetestowane, scalone do `main` przez
+`Fast-forward` i wypchnięte na GitHub.
 
 Praktyczny wzorzec pracy:
 
-```text
+``` text
 feature branch
     ↓
 małe logiczne zmiany
@@ -649,21 +758,26 @@ merge do main
 push main
 ```
 
-
-
 ## Historyczna wersja planu Arcade
 
-Przed implementacją zapisano robocze założenia `30 s` na start, `+5 s` za poprawną odpowiedź i `-3 s` za błędną odpowiedź. Był to etap planowania, a nie finalna specyfikacja. W trakcie implementacji czas początkowy zmieniono na `45 s`, a kara za błędną odpowiedź na `-5 s`.
+Przed implementacją zapisano robocze założenia `30 s` na start, `+5 s`
+za poprawną odpowiedź i `-3 s` za błędną odpowiedź. Był to etap
+planowania, a nie finalna specyfikacja. W trakcie implementacji czas
+początkowy zmieniono na `45 s`, a kara za błędną odpowiedź na `-5 s`.
 
-Ta zmiana jest dobrym przykładem, dlaczego reguły gry warto trzymać w dokumentacji jako aktualizowaną specyfikację, a wcześniejsze wartości traktować jako historię decyzji.
+Ta zmiana jest dobrym przykładem, dlaczego reguły gry warto trzymać w
+dokumentacji jako aktualizowaną specyfikację, a wcześniejsze wartości
+traktować jako historię decyzji.
 
 ## Arcade Mode -- projektowanie osobnego stanu gry
 
-Arcade nie powinien być tylko wariantem `QuizViewModel`, ponieważ ma dodatkową oś czasu i inne reguły rozgrywki. Osobny `ArcadeViewModel` i `ArcadeGameState` upraszczają odpowiedzialność obu trybów.
+Arcade nie powinien być tylko wariantem `QuizViewModel`, ponieważ ma
+dodatkową oś czasu i inne reguły rozgrywki. Osobny `ArcadeViewModel` i
+`ArcadeGameState` upraszczają odpowiedzialność obu trybów.
 
 Stan Arcade można opisać jako:
 
-```text
+``` text
 currentQuestion
 selectedAnswerIndex
 isAnswerChecked
@@ -673,13 +787,17 @@ usedQuestionIds
 isGameOver
 ```
 
-Wniosek: gdy dwa tryby używają tych samych danych wejściowych, ale mają wyraźnie różne reguły stanu, warto współdzielić Repository, a niekoniecznie ViewModel.
+Wniosek: gdy dwa tryby używają tych samych danych wejściowych, ale mają
+wyraźnie różne reguły stanu, warto współdzielić Repository, a
+niekoniecznie ViewModel.
 
 ## Arcade Mode -- losowanie bez powtórek
 
-W jednej rozgrywce wykorzystano `usedQuestionIds`. Przy wyborze kolejnego pytania dostępna pula jest ograniczana do pytań, których identyfikator nie znajduje się w zbiorze użytych pytań.
+W jednej rozgrywce wykorzystano `usedQuestionIds`. Przy wyborze
+kolejnego pytania dostępna pula jest ograniczana do pytań, których
+identyfikator nie znajduje się w zbiorze użytych pytań.
 
-```text
+``` text
 wszystkie pytania
       ↓
 filtracja po usedQuestionIds
@@ -691,34 +809,43 @@ nowe pytanie
 dodanie ID do zbioru
 ```
 
-To jest prostsze i bezpieczniejsze niż losowanie z całej listy i próba wykrywania powtórek dopiero po fakcie.
+To jest prostsze i bezpieczniejsze niż losowanie z całej listy i próba
+wykrywania powtórek dopiero po fakcie.
 
 ## Arcade Mode -- timer jako część logiki ViewModelu
 
-Timer nie powinien być liczony w Compose UI. Ekran obserwuje `remainingTimeSeconds`, natomiast `ArcadeViewModel` odpowiada za odliczanie i zmianę czasu po odpowiedzi.
+Timer nie powinien być liczony w Compose UI. Ekran obserwuje
+`remainingTimeSeconds`, natomiast `ArcadeViewModel` odpowiada za
+odliczanie i zmianę czasu po odpowiedzi.
 
 Reguły są jednoznaczne:
 
-```text
+``` text
 45 s start
 +5 s poprawna odpowiedź
 -5 s błędna odpowiedź
 0 s → koniec gry
 ```
 
-Dzięki temu UI pozostaje warstwą prezentacji, a reguły gry można testować niezależnie od layoutu.
+Dzięki temu UI pozostaje warstwą prezentacji, a reguły gry można
+testować niezależnie od layoutu.
 
 ## Arcade Mode -- osobny ranking i model wyniku
 
-`ArcadeResult` nie został połączony z `QuizResult`, ponieważ oba tryby zapisują inny zestaw informacji. Klasyczny quiz przechowuje m.in. `difficulty` i `totalQuestions`, natomiast Arcade potrzebuje tylko nicku, wyniku i daty.
+`ArcadeResult` nie został połączony z `QuizResult`, ponieważ oba tryby
+zapisują inny zestaw informacji. Klasyczny quiz przechowuje m.in.
+`difficulty` i `totalQuestions`, natomiast Arcade potrzebuje tylko
+nicku, wyniku i daty.
 
 Osobny DAO i tabela Room pozwalają również zachować niezależny ranking.
 
 ## Room -- migracja zamiast usuwania danych
 
-Dodanie `ArcadeResultEntity` wymagało migracji `MIGRATION_1_2`. Ważna lekcja: przy zmianie schematu bazy należy zmienić wersję i przygotować migrację, zamiast traktować nową tabelę jak świeżą bazę.
+Dodanie `ArcadeResultEntity` wymagało migracji `MIGRATION_1_2`. Ważna
+lekcja: przy zmianie schematu bazy należy zmienić wersję i przygotować
+migrację, zamiast traktować nową tabelę jak świeżą bazę.
 
-```text
+``` text
 Room v1
    ↓
 MIGRATION_1_2
@@ -730,21 +857,29 @@ Migracja tworzy nową tabelę i pozostawia wcześniejsze dane bez zmian.
 
 ## Navigation -- moment rozpoczęcia gry ma znaczenie
 
-Początkowo uruchamianie `startGame()` przy wejściu na route Arcade powodowało problem: powrót z rankingu tworzył nową rozgrywkę. Poprawne rozwiązanie polegało na uruchomieniu gry w akcji przycisku `Arcade` przed nawigacją.
+Początkowo uruchamianie `startGame()` przy wejściu na route Arcade
+powodowało problem: powrót z rankingu tworzył nową rozgrywkę. Poprawne
+rozwiązanie polegało na uruchomieniu gry w akcji przycisku `Arcade`
+przed nawigacją.
 
-Wniosek: route ekranu nie zawsze jest właściwym miejscem do inicjalizacji operacji, która ma wykonać się tylko raz przy rozpoczęciu konkretnej akcji użytkownika.
+Wniosek: route ekranu nie zawsze jest właściwym miejscem do
+inicjalizacji operacji, która ma wykonać się tylko raz przy rozpoczęciu
+konkretnej akcji użytkownika.
 
 ## Arcade Mode -- zapis wyniku tylko po zakończeniu
 
-Wynik bieżącej gry nie powinien trafiać do rankingu przed jej zakończeniem. `ArcadeScreen` udostępnia zapis dopiero dla `isGameOver`.
+Wynik bieżącej gry nie powinien trafiać do rankingu przed jej
+zakończeniem. `ArcadeScreen` udostępnia zapis dopiero dla `isGameOver`.
 
-Dodatkowo stan UI `isResultSaved` chroni przed wielokrotnym zapisaniem tego samego wyniku przez wielokrotne kliknięcie przycisku.
+Dodatkowo stan UI `isResultSaved` chroni przed wielokrotnym zapisaniem
+tego samego wyniku przez wielokrotne kliknięcie przycisku.
 
 ## Arcade Mode -- testowanie stanu, nie tylko UI
 
-Przy timerze i losowaniu pytań sam Build nie wystarcza. Test manualny powinien obejmować co najmniej:
+Przy timerze i losowaniu pytań sam Build nie wystarcza. Test manualny
+powinien obejmować co najmniej:
 
-```text
+``` text
 start gry
 ↓
 odliczanie
@@ -762,19 +897,24 @@ zapis wyniku
 TOP 10 Arcade
 ```
 
-Dodatkowo sprawdzono ochronę przed drugim zapisem oraz zachowanie stanu po powrocie z rankingu.
+Dodatkowo sprawdzono ochronę przed drugim zapisem oraz zachowanie stanu
+po powrocie z rankingu.
 
 ## KMP -- migracja `Place` do `PlaceData`
 
-Pierwszy etap migracji do Kotlin Multiplatform pokazał, że model domenowy warto podzielić według odpowiedzialności, zamiast próbować przenosić istniejący model Androida 1:1.
+Pierwszy etap migracji do Kotlin Multiplatform pokazał, że model
+domenowy warto podzielić według odpowiedzialności, zamiast próbować
+przenosić istniejący model Androida 1:1.
 
 ### `Place` nie powinien zawierać Androidowego `R`
 
-Identyfikator `R.string` ma typ `Int`, ale jego znaczenie jest związane z Androidowym systemem zasobów. W modelu `shared` nie powinien być podstawą przechowywania treści.
+Identyfikator `R.string` ma typ `Int`, ale jego znaczenie jest związane
+z Androidowym systemem zasobów. W modelu `shared` nie powinien być
+podstawą przechowywania treści.
 
 Dlatego dane zostały rozdzielone:
 
-```text
+``` text
 Place
     ↓
 struktura i identyfikatory miejsca
@@ -790,9 +930,10 @@ połączenie obu części
 
 ### `PlaceData` jako obiekt przepływu danych
 
-Nie należy po migracji mapować `PlaceData` z powrotem do `Place` tylko dlatego, że starszy kod tego oczekuje. Lepszy przepływ to:
+Nie należy po migracji mapować `PlaceData` z powrotem do `Place` tylko
+dlatego, że starszy kod tego oczekuje. Lepszy przepływ to:
 
-```text
+``` text
 DataSource
 ↓
 PlaceData
@@ -806,26 +947,29 @@ UiState
 UI
 ```
 
-Dzięki temu migracja może przebiegać warstwami, a każda kolejna warstwa jest dostosowywana do nowego modelu.
+Dzięki temu migracja może przebiegać warstwami, a każda kolejna warstwa
+jest dostosowywana do nowego modelu.
 
 ### Błędy typu są użytecznym sygnałem migracji
 
 Podczas przejścia z `R.string` na `String` pojawiły się błędy typu:
 
-```text
+``` text
 List<String> ≠ List<Int>
 String? ≠ Int?
 ```
 
-Nie należy ich omijać konwersją wsteczną. Warto prześledzić przepływ typu przez kolejne warstwy i usunąć pozostałości starego modelu.
+Nie należy ich omijać konwersją wsteczną. Warto prześledzić przepływ
+typu przez kolejne warstwy i usunąć pozostałości starego modelu.
 
-Przykładowo `createPages()` musiało zostać dostosowane z `List<Int>` do `List<String>`, a `DetailsPage.description` z `Int?` do `String?`.
+Przykładowo `createPages()` musiało zostać dostosowane z `List<Int>` do
+`List<String>`, a `DetailsPage.description` z `Int?` do `String?`.
 
 ### Nie przenosić wszystkiego naraz
 
 Migracja została wykonana etapami:
 
-```text
+``` text
 model
 ↓
 repository
@@ -839,33 +983,41 @@ Build
 test działania
 ```
 
-Dzięki temu po każdym większym kroku wiadomo, która warstwa jest źródłem kolejnego błędu.
+Dzięki temu po każdym większym kroku wiadomo, która warstwa jest źródłem
+kolejnego błędu.
 
 ### `String` jako rozwiązanie przejściowe
 
-Zwykłe `String` w `PlaceContent` pozwoliły najpierw zweryfikować architekturę KMP bez jednoczesnego projektowania całego systemu JSON i lokalizacji.
+Zwykłe `String` w `PlaceContent` pozwoliły najpierw zweryfikować
+architekturę KMP bez jednoczesnego projektowania całego systemu JSON i
+lokalizacji.
 
-Nie oznacza to, że obecny sposób przechowywania tekstów jest rozwiązaniem finalnym. Przy migracji `MoroccoDataSource` do JSON trzeba osobno zaprojektować:
+Nie oznacza to, że obecny sposób przechowywania tekstów jest
+rozwiązaniem finalnym. Przy migracji `MoroccoDataSource` do JSON trzeba
+osobno zaprojektować:
 
-- strukturę JSON,
-- identyfikatory treści,
-- lokalizację,
-- formatowanie akapitów,
-- sposób przechowywania treści wielojęzycznych.
+-   strukturę JSON,
+-   identyfikatory treści,
+-   lokalizację,
+-   formatowanie akapitów,
+-   sposób przechowywania treści wielojęzycznych.
 
 ### Checkpoint przed kolejnym etapem
 
-Po migracji `PlaceData` Build przeszedł, aplikacja działa, a Git status jest czysty. To dobry moment na osobny commit przed rozpoczęciem migracji `MoroccoDataSource`.
+Po migracji `PlaceData` Build przeszedł, aplikacja działa, a Git status
+jest czysty. To dobry moment na osobny commit przed rozpoczęciem
+migracji `MoroccoDataSource`.
 
 ## KMP -- rozdzielenie odpowiedzialności
 
-Pierwszy etap migracji do Kotlin Multiplatform pokazał, że nie należy przenosić istniejącego kodu Androidowego do `commonMain` 1:1.
+Pierwszy etap migracji do Kotlin Multiplatform pokazał, że nie należy
+przenosić istniejącego kodu Androidowego do `commonMain` 1:1.
 
 Trzeba najpierw znaleźć elementy zależne od platformy.
 
 Przykład:
 
-```text
+``` text
 Android
 Context
 AssetManager
@@ -876,7 +1028,7 @@ nie powinny trafiać bezpośrednio do wspólnej warstwy domenowej.
 
 Zamiast tego wspólny kod może definiować abstrakcję:
 
-```kotlin
+``` kotlin
 interface JsonResourceReader {
     fun readText(path: String): String
 }
@@ -884,7 +1036,7 @@ interface JsonResourceReader {
 
 a Android dostarcza implementację:
 
-```text
+``` text
 JsonResourceReader
         ↑
 AndroidJsonResourceReader
@@ -894,7 +1046,7 @@ Context.assets
 
 Dzięki temu:
 
-```text
+``` text
 commonMain
 ├── logika JSON
 ├── DTO
@@ -912,7 +1064,7 @@ DTO nie powinno automatycznie stawać się modelem używanym przez UI.
 
 W projekcie zastosowano:
 
-```text
+``` text
 JSON
 ↓
 PlaceDto
@@ -928,35 +1080,39 @@ ViewModel
 UI
 ```
 
-Pozwala to zmienić format JSON bez uzależniania całej aplikacji od jego struktury.
+Pozwala to zmienić format JSON bez uzależniania całej aplikacji od jego
+struktury.
 
 ## JSON i odpowiedzialność platformowa
 
-Samo parsowanie JSON może być wspólne, natomiast sposób znalezienia pliku zależy od platformy.
+Samo parsowanie JSON może być wspólne, natomiast sposób znalezienia
+pliku zależy od platformy.
 
 Na Androidzie obecnie:
 
-```text
+``` text
 shared/src/androidMain/assets/morocco.json
 ```
 
 jest odczytywany przez `AndroidJsonResourceReader`.
 
-W przyszłości inna platforma będzie mogła dostarczyć własną implementację `JsonResourceReader`, bez zmiany `JsonPlaceDataSource`.
+W przyszłości inna platforma będzie mogła dostarczyć własną
+implementację `JsonResourceReader`, bez zmiany `JsonPlaceDataSource`.
 
 ## Problem z assets i testami
 
 Pierwsza próba odczytu `morocco.json` zakończyła się:
 
-```text
+``` text
 FileNotFoundException: morocco.json
 ```
 
-Ważna lekcja: poprawny kod `AssetManager.open()` nie gwarantuje jeszcze, że plik znajduje się w APK testowym.
+Ważna lekcja: poprawny kod `AssetManager.open()` nie gwarantuje jeszcze,
+że plik znajduje się w APK testowym.
 
 Po włączeniu:
 
-```kotlin
+``` kotlin
 androidResources {
     enable = true
 }
@@ -966,7 +1122,7 @@ oraz Sync asset został prawidłowo dołączony i test przeszedł.
 
 Czyli w przypadku problemów z zasobami trzeba rozdzielić:
 
-```text
+``` text
 czy kod otwierający plik jest poprawny?
         ↓
 czy plik jest faktycznie pakowany do odpowiedniego APK?
@@ -978,7 +1134,7 @@ Podczas migracji JSON pojawiła się kolejna ważna lekcja.
 
 ViewModel nie powinien sam tworzyć konkretnego Repository:
 
-```kotlin
+``` kotlin
 PlacesRepositoryImpl()
 ```
 
@@ -986,7 +1142,7 @@ jeżeli chcemy mieć możliwość łatwego podmieniania zależności.
 
 Lepszy kierunek:
 
-```kotlin
+``` kotlin
 class PlacesViewModel(
     private val repository: PlacesRepository
 ) : ViewModel()
@@ -994,7 +1150,7 @@ class PlacesViewModel(
 
 Wtedy:
 
-```text
+``` text
 Factory / composition root
         ↓
 PlacesRepository
@@ -1006,24 +1162,25 @@ Obecnie stosujemy ręczne DI. Hilt nie został jeszcze wprowadzony.
 
 ## Centralizacja zależności
 
-Kolejnym problemem do rozwiązania jest powtarzanie tworzenia `PlacesRepository` w kilku miejscach.
+Kolejnym problemem do rozwiązania jest powtarzanie tworzenia
+`PlacesRepository` w kilku miejscach.
 
 Zanim wprowadzimy Hilt, warto najpierw zrobić to ręcznie i zrozumieć:
 
-- gdzie powstaje zależność,
-- kto jest jej właścicielem,
-- kto ją przekazuje,
-- ile instancji powinno istnieć.
+-   gdzie powstaje zależność,
+-   kto jest jej właścicielem,
+-   kto ją przekazuje,
+-   ile instancji powinno istnieć.
 
 Dopiero potem automatyzacja przez framework DI będzie miała sens.
 
 ## Najważniejsza lekcja z pierwszego etapu KMP
 
-KMP nie polega na tym, żeby „przenieść Androida do `commonMain`”.
+KMP nie polega na tym, żeby „przenieść Androida do `commonMain`".
 
 Lepszy sposób myślenia:
 
-```text
+``` text
 Co jest logiką aplikacji?
         ↓
 commonMain
@@ -1033,191 +1190,357 @@ Co jest sposobem komunikacji z platformą?
 androidMain / iosMain / inne platformy
 ```
 
-W tym projekcie `JsonPlaceDataSource` jest logiką wspólną, natomiast dostęp do Androidowych assets jest szczegółem platformowym.
+W tym projekcie `JsonPlaceDataSource` jest logiką wspólną, natomiast
+dostęp do Androidowych assets jest szczegółem platformowym.
 
-To jest dokładnie kierunek, który będzie potrzebny przy kolejnych elementach migracji.
----
+## To jest dokładnie kierunek, który będzie potrzebny przy kolejnych elementach migracji.
 
 ## Wnioski z migracji KMP i przeniesienia danych do JSON
 
 ### Oddzielaj model domenowy od formatu danych
 
-`PlaceDto` opisuje strukturę wejściowego JSON, a `PlaceData` jest modelem domenowym. Mapper jest jedynym miejscem, które powinno odpowiadać za przejście pomiędzy tymi reprezentacjami. Dzięki temu zmiana formatu pliku nie musi automatycznie zmieniać API repozytorium i ViewModeli.
+`PlaceDto` opisuje strukturę wejściowego JSON, a `PlaceData` jest
+modelem domenowym. Mapper jest jedynym miejscem, które powinno
+odpowiadać za przejście pomiędzy tymi reprezentacjami. Dzięki temu
+zmiana formatu pliku nie musi automatycznie zmieniać API repozytorium i
+ViewModeli.
 
 ### Nie przenoś zależności platformowych do `commonMain`
 
-Współdzielona logika może korzystać z abstrakcji `JsonResourceReader`, ale nie powinna samodzielnie odwoływać się do Androidowego `Context` ani `R.string`. Implementacja Androidowa znajduje się w `androidMain`; dla iOS potrzebny będzie osobny sposób dostarczania treści zasobów.
+Współdzielona logika może korzystać z abstrakcji `JsonResourceReader`,
+ale nie powinna samodzielnie odwoływać się do Androidowego `Context` ani
+`R.string`. Implementacja Androidowa znajduje się w `androidMain`; dla
+iOS potrzebny będzie osobny sposób dostarczania treści zasobów.
 
-Samo zadeklarowanie targetu iOS w Gradle nie potwierdza jeszcze, że wszystkie zależności, zasoby i przepływy danych działają na iOS.
+Samo zadeklarowanie targetu iOS w Gradle nie potwierdza jeszcze, że
+wszystkie zależności, zasoby i przepływy danych działają na iOS.
 
 ### Rozdzielenie struktury miejsca od treści ułatwia migrację
 
-`Place` przechowuje strukturę i metadane, `PlaceContent` — teksty prezentacyjne, a `PlaceData` scala je na potrzeby przepływu aplikacji. Nie należy wracać do identyfikatorów `R.string` w modelu współdzielonym tylko po to, by zachować stary interfejs API.
+`Place` przechowuje strukturę i metadane, `PlaceContent` --- teksty
+prezentacyjne, a `PlaceData` scala je na potrzeby przepływu aplikacji.
+Nie należy wracać do identyfikatorów `R.string` w modelu współdzielonym
+tylko po to, by zachować stary interfejs API.
 
 ### Współdziel repozytorium, pozostaw adaptery platformowe na granicy
 
-Implementacja repozytorium może znajdować się w `shared`, podczas gdy dostęp do Retrofit, Room lub zasobów Androida pozostaje po stronie `app`. Kontrakty źródeł danych i cache pozwalają przekazać te zależności do współdzielonej logiki bez wiązania jej z konkretną platformą.
+Implementacja repozytorium może znajdować się w `shared`, podczas gdy
+dostęp do Retrofit, Room lub zasobów Androida pozostaje po stronie
+`app`. Kontrakty źródeł danych i cache pozwalają przekazać te zależności
+do współdzielonej logiki bez wiązania jej z konkretną platformą.
 
 ### Cache nie powinien blokować źródła nadrzędnego
 
-Dla Wikimedia i Wikidata kolejność jest następująca: cache pamięciowy, cache trwały, API. Awaria odczytu lub zapisu cache powinna być obsłużona i nie powinna automatycznie uniemożliwiać pobrania świeżych danych.
+Dla Wikimedia i Wikidata kolejność jest następująca: cache pamięciowy,
+cache trwały, API. Awaria odczytu lub zapisu cache powinna być obsłużona
+i nie powinna automatycznie uniemożliwiać pobrania świeżych danych.
 
 ### Centralizuj tworzenie zależności
 
-`AppContainer` jest jednym miejscem konfiguracji źródła JSON i repozytoriów. Ręczne DI wystarcza na obecnym etapie i pozwala prześledzić cykl życia zależności. Wprowadzenie frameworka DI powinno być osobną decyzją, a nie warunkiem ukończenia migracji.
+`AppContainer` jest jednym miejscem konfiguracji źródła JSON i
+repozytoriów. Ręczne DI wystarcza na obecnym etapie i pozwala
+prześledzić cykl życia zależności. Wprowadzenie frameworka DI powinno
+być osobną decyzją, a nie warunkiem ukończenia migracji.
 
 ### Odróżniaj działający Android od gotowego KMP
 
-Potwierdzenie, że aplikacja Android działa i wyświetla wszystkie miejsca, nie jest równoznaczne z ukończeniem iOS. W aktualnym punkcie bazowym nadal trzeba przygotować i zweryfikować platformowy odczyt zasobów dla iOS. Ponadto `PlacesRepository.search()` jest zadeklarowane, ale niezaimplementowane.
+Potwierdzenie, że aplikacja Android działa i wyświetla wszystkie
+miejsca, nie jest równoznaczne z ukończeniem iOS. W aktualnym punkcie
+bazowym nadal trzeba przygotować i zweryfikować platformowy odczyt
+zasobów dla iOS. Ponadto `PlacesRepository.search()` jest zadeklarowane,
+ale niezaimplementowane.
 
 ### Nie traktuj historycznego planu jako aktualnego stanu
 
-Wpisy z początku migracji dokumentują to, co było wtedy planowane. Przy aktualizacji Roadmap należy jawnie oznaczać zakończone etapy i pozostawiać jako otwarte tylko zadania, które nadal nie są zaimplementowane.
+Wpisy z początku migracji dokumentują to, co było wtedy planowane. Przy
+aktualizacji Roadmap należy jawnie oznaczać zakończone etapy i
+pozostawiać jako otwarte tylko zadania, które nadal nie są
+zaimplementowane.
 
----
+------------------------------------------------------------------------
 
 ## Współbieżność i atomowa aktualizacja StateFlow
 
-### Problem: read–modify–write
+### Problem: read--modify--write
 
 Operacja:
 
-```kotlin
+``` kotlin
 _images.value += (pageId to image)
 ```
 
-wygląda jak pojedyncze dodanie elementu, ale logicznie obejmuje trzy kroki:
+wygląda jak pojedyncze dodanie elementu, ale logicznie obejmuje trzy
+kroki:
 
-1. odczyt aktualnej mapy,
-2. utworzenie mapy z nowym wpisem,
-3. zapis nowej mapy.
+1.  odczyt aktualnej mapy,
+2.  utworzenie mapy z nowym wpisem,
+3.  zapis nowej mapy.
 
-Jeżeli kilka korutyn wykona te kroki jednocześnie, mogą odczytać ten sam stan początkowy. Późniejszy zapis jednej korutyny może wtedy nadpisać zmianę wykonaną przez inną. To przykład `race condition` i utraconej aktualizacji (*lost update*).
+Jeżeli kilka korutyn wykona te kroki jednocześnie, mogą odczytać ten sam
+stan początkowy. Późniejszy zapis jednej korutyny może wtedy nadpisać
+zmianę wykonaną przez inną. To przykład `race condition` i utraconej
+aktualizacji (*lost update*).
 
 ### Rozwiązanie: `MutableStateFlow.update`
 
-Dla współdzielonego stanu modyfikowanego równolegle należy używać atomowej aktualizacji:
+Dla współdzielonego stanu modyfikowanego równolegle należy używać
+atomowej aktualizacji:
 
-```kotlin
+``` kotlin
 _images.update { current ->
     current + (pageId to image)
 }
 ```
 
-`update` z `kotlinx.coroutines.flow` wykorzystuje mechanizm CAS (*Compare-And-Set*). W uproszczeniu odczytuje stan, oblicza nową wartość i próbuje zatwierdzić ją tylko wtedy, gdy stan nie zmienił się w międzyczasie. Jeśli inna korutyna zdążyła zmienić stan, obliczenie jest ponawiane na aktualnej wartości.
+`update` z `kotlinx.coroutines.flow` wykorzystuje mechanizm CAS
+(*Compare-And-Set*). W uproszczeniu odczytuje stan, oblicza nową wartość
+i próbuje zatwierdzić ją tylko wtedy, gdy stan nie zmienił się w
+międzyczasie. Jeśli inna korutyna zdążyła zmienić stan, obliczenie jest
+ponawiane na aktualnej wartości.
 
-Dzięki temu równoległe dodawanie różnych `pageId` nie powinno powodować wzajemnego nadpisywania wpisów.
+Dzięki temu równoległe dodawanie różnych `pageId` nie powinno powodować
+wzajemnego nadpisywania wpisów.
 
 ### Lambda `update` musi być wolna od efektów ubocznych
 
-Funkcja przekazana do `update` może zostać wywołana więcej niż raz, jeśli CAS musi ponowić próbę. Dlatego wewnątrz niej należy wykonywać wyłącznie obliczenie nowego stanu.
+Funkcja przekazana do `update` może zostać wywołana więcej niż raz,
+jeśli CAS musi ponowić próbę. Dlatego wewnątrz niej należy wykonywać
+wyłącznie obliczenie nowego stanu.
 
 Dobrze:
 
-```kotlin
+``` kotlin
 _images.update { current ->
     current + (pageId to image)
 }
 ```
 
-Nie należy umieszczać w tej lambdzie operacji, które mają wykonać się dokładnie raz, np. zapisu do bazy, wysłania żądania sieciowego, nawigacji lub logowania zdarzenia biznesowego.
+Nie należy umieszczać w tej lambdzie operacji, które mają wykonać się
+dokładnie raz, np. zapisu do bazy, wysłania żądania sieciowego,
+nawigacji lub logowania zdarzenia biznesowego.
 
 ### Rozdziel odpowiedzialności mechanizmów
 
-W `WikimediaViewModel` występują różne mechanizmy i każdy rozwiązuje inny problem:
+W `WikimediaViewModel` występują różne mechanizmy i każdy rozwiązuje
+inny problem:
 
-- `_images: MutableStateFlow<Map<Int, WikimediaImage>>` — przechowuje wyniki i udostępnia je obserwatorom.
-- `_images.update { ... }` — atomowo aktualizuje wspólną mapę.
-- `loadingImagesInternal` — zapobiega uruchamianiu równoległych pobrań tego samego `pageId`; dodawanie wykorzystuje `compareAndSet`, usuwanie `update`.
-- `Semaphore(5)` — ogranicza liczbę równoległych operacji do pięciu. Nie jest mechanizmem ochrony mapy `_images`.
+-   `_images: MutableStateFlow<Map<Int, WikimediaImage>>` ---
+    przechowuje wyniki i udostępnia je obserwatorom.
+-   `_images.update { ... }` --- atomowo aktualizuje wspólną mapę.
+-   `loadingImagesInternal` --- zapobiega uruchamianiu równoległych
+    pobrań tego samego `pageId`; dodawanie wykorzystuje `compareAndSet`,
+    usuwanie `update`.
+-   `Semaphore(5)` --- ogranicza liczbę równoległych operacji do pięciu.
+    Nie jest mechanizmem ochrony mapy `_images`.
 
-Wniosek: ograniczenie liczby równoległych żądań nie zastępuje atomowości aktualizacji wspólnego stanu. Nawet przy limicie pięciu operacji kilka korutyn może próbować zapisać wyniki niemal jednocześnie.
+Wniosek: ograniczenie liczby równoległych żądań nie zastępuje atomowości
+aktualizacji wspólnego stanu. Nawet przy limicie pięciu operacji kilka
+korutyn może próbować zapisać wyniki niemal jednocześnie.
 
 ### Przykład z MoroccoApp
 
-Podczas pobierania metadanych około 50 miejsc część obrazów pojawiała się niestabilnie, mimo że repozytorium odczytywało je z Room lub cache pamięciowego. Po zastąpieniu `_images.value += ...` przez `_images.update { ... }` wszystkie obrazy wyświetlały się w kolejnych testach, także po powrocie z Home i ponownej instalacji aplikacji.
+Podczas pobierania metadanych około 50 miejsc część obrazów pojawiała
+się niestabilnie, mimo że repozytorium odczytywało je z Room lub cache
+pamięciowego. Po zastąpieniu `_images.value += ...` przez
+`_images.update { ... }` wszystkie obrazy wyświetlały się w kolejnych
+testach, także po powrocie z Home i ponownej instalacji aplikacji.
 
-To praktyczny przykład, dlaczego współdzielony stan aktualizowany przez wiele korutyn powinien być modyfikowany atomowo.
+To praktyczny przykład, dlaczego współdzielony stan aktualizowany przez
+wiele korutyn powinien być modyfikowany atomowo.
 
+------------------------------------------------------------------------
 
----
+## KMP --- współdziel definicje tras, ale nie utożsamiaj ich z całą nawigacją
 
-## KMP — współdziel definicje tras, ale nie utożsamiaj ich z całą nawigacją
+Przeniesienie `Screen.kt` do `shared/commonMain` pozwala współdzielić
+definicje tras między platformami. Nie dowodzi jednak, że kontroler
+nawigacji, integracja z cyklem życia ani ekrany zostały przeniesione do
+`commonMain`.
 
-Przeniesienie `Screen.kt` do `shared/commonMain` pozwala współdzielić definicje tras między platformami. Nie dowodzi jednak, że kontroler nawigacji, integracja z cyklem życia ani ekrany zostały przeniesione do `commonMain`.
-
-W dokumentacji i planie migracji rozróżniaj:
-- wspólne modele/definicje tras,
-- wspólną logikę nawigacji,
-- platformowy punkt wejścia i integrację,
-- wspólne ekrany Compose Multiplatform.
+W dokumentacji i planie migracji rozróżniaj: - wspólne modele/definicje
+tras, - wspólną logikę nawigacji, - platformowy punkt wejścia i
+integrację, - wspólne ekrany Compose Multiplatform.
 
 Każdy z tych zakresów wymaga osobnej weryfikacji.
 
-## Android Network Security Config — zakres `src="user"`
+## Android Network Security Config --- zakres `src="user"`
 
-`<certificates src="user" />` oznacza zaufanie do certyfikatów CA zainstalowanych przez użytkownika. Umieszczenie tego wpisu w `base-config` rozszerza zaufanie na połączenia aplikacji objęte konfiguracją, a nie tylko na wskazane serwisy.
+`<certificates src="user" />` oznacza zaufanie do certyfikatów CA
+zainstalowanych przez użytkownika. Umieszczenie tego wpisu w
+`base-config` rozszerza zaufanie na połączenia aplikacji objęte
+konfiguracją, a nie tylko na wskazane serwisy.
 
-Zawężenie `user` do `domain-config` może być bezpieczniejsze, ale musi uwzględniać rzeczywiste hosty i zachowanie połączeń. Nie należy dopisywać domen na podstawie przypuszczeń. W przypadku MoroccoApp test na Huawei z Androidem 7 wykazał, że konfiguracja globalna działała, a testowana konfiguracja ograniczona powodowała brak części obrazów. Przyjęte ustawienie jest więc kompromisem kompatybilności i powinno być jawnie opisane jako decyzja bezpieczeństwa.
+Zawężenie `user` do `domain-config` może być bezpieczniejsze, ale musi
+uwzględniać rzeczywiste hosty i zachowanie połączeń. Nie należy
+dopisywać domen na podstawie przypuszczeń. W przypadku MoroccoApp test
+na Huawei z Androidem 7 wykazał, że konfiguracja globalna działała, a
+testowana konfiguracja ograniczona powodowała brak części obrazów.
+Przyjęte ustawienie jest więc kompromisem kompatybilności i powinno być
+jawnie opisane jako decyzja bezpieczeństwa.
 
-Konfiguracja Android Network Security Config nie konfiguruje zaufania TLS na iOS.
+Konfiguracja Android Network Security Config nie konfiguruje zaufania
+TLS na iOS.
 
 ## Nie utożsamiaj wspólnych tras z ukończonym UI KMP
 
-Przeniesienie `Screen.kt` do `shared/commonMain` jest konkretnym krokiem w kierunku wspólnej architektury. Nie należy na tej podstawie deklarować ukończenia migracji ekranów, nawigacji ani aplikacji iOS. Zakres migracji trzeba oceniać na podstawie rzeczywistej lokalizacji i zależności kodu.
----
+## Przeniesienie `Screen.kt` do `shared/commonMain` jest konkretnym krokiem w kierunku wspólnej architektury. Nie należy na tej podstawie deklarować ukończenia migracji ekranów, nawigacji ani aplikacji iOS. Zakres migracji trzeba oceniać na podstawie rzeczywistej lokalizacji i zależności kodu.
 
-## KMP — wnioski z migracji wspólnego UI i ViewModeli
+## KMP --- wnioski z migracji wspólnego UI i ViewModeli
 
 ### Wspólny kod nie oznacza braku kodu platformowego
 
-Kotlin Multiplatform pozwala współdzielić logikę, modele, ViewModele i UI Compose, ale nie usuwa potrzeby integracji z platformą. Obiekty wymagające Android SDK, konkretnego silnika HTTP, bazy danych lub cyklu życia platformy powinny być tworzone po stronie platformy i przekazywane do kodu wspólnego.
+Kotlin Multiplatform pozwala współdzielić logikę, modele, ViewModele i
+UI Compose, ale nie usuwa potrzeby integracji z platformą. Obiekty
+wymagające Android SDK, konkretnego silnika HTTP, bazy danych lub cyklu
+życia platformy powinny być tworzone po stronie platformy i przekazywane
+do kodu wspólnego.
 
 ### Wstrzykuj zależności platformowe do wspólnego kontenera
 
-`AppContainer` w `shared` może tworzyć wspólne repozytoria, jeśli otrzyma wymagane zależności z platformy, np. bazę danych i `HttpClientEngine`. Dzięki temu repozytoria nie muszą samodzielnie znać sposobu tworzenia zasobów Androida.
+`AppContainer` w `shared` może tworzyć wspólne repozytoria, jeśli
+otrzyma wymagane zależności z platformy, np. bazę danych i
+`HttpClientEngine`. Dzięki temu repozytoria nie muszą samodzielnie znać
+sposobu tworzenia zasobów Androida.
 
 ### Nie oceniaj gotowości iOS wyłącznie na podstawie kompilacji commonMain
 
-Poprawna kompilacja kodu wspólnego nie potwierdza:
-- poprawnego linkowania i uruchomienia aplikacji iOS;
-- zgodności wszystkich zależności z iOS;
-- poprawnego zachowania integracji platformowych;
-- kompletności zasobów i konfiguracji aplikacji na iOS.
+Poprawna kompilacja kodu wspólnego nie potwierdza: - poprawnego
+linkowania i uruchomienia aplikacji iOS; - zgodności wszystkich
+zależności z iOS; - poprawnego zachowania integracji platformowych; -
+kompletności zasobów i konfiguracji aplikacji na iOS.
 
 Te elementy wymagają osobnej weryfikacji na docelowej platformie.
 
 ### Przed usunięciem starego kodu sprawdź referencje
 
-Po przeniesieniu implementacji do `shared` stare klasy Androidowe mogą nadal być używane przez testy, konfigurację Gradle lub kod platformowy. Usuwanie powinno następować dopiero po wyszukaniu referencji i przeprowadzeniu builda/testów.
+Po przeniesieniu implementacji do `shared` stare klasy Androidowe mogą
+nadal być używane przez testy, konfigurację Gradle lub kod platformowy.
+Usuwanie powinno następować dopiero po wyszukaniu referencji i
+przeprowadzeniu builda/testów.
 
-Dotyczy to w szczególności odłożonych elementów:
-- `AndroidJsonResourceReader`;
-- starego Androidowego `QuizQuestionDataSource`;
-- rejestracji Android assets w konfiguracji `shared`.
+Dotyczy to w szczególności odłożonych elementów: -
+`AndroidJsonResourceReader`; - starego Androidowego
+`QuizQuestionDataSource`; - rejestracji Android assets w konfiguracji
+`shared`.
 
----
+------------------------------------------------------------------------
 
-## KMP — zasady projektowania funkcji mapowych
+## KMP --- zasady projektowania funkcji mapowych
 
 ### Oddziel dane geograficzne od silnika mapy
 
-Wspólne modele powinny przechowywać dane domenowe, np. identyfikator miejsca, współrzędne i geometrię GeoJSON. Nie powinny przechowywać obiektów specyficznych dla SDK mapowego.
+Wspólne modele powinny przechowywać dane domenowe, np. identyfikator
+miejsca, współrzędne i geometrię GeoJSON. Nie powinny przechowywać
+obiektów specyficznych dla SDK mapowego.
 
 ### Oddziel stan mapy od renderowania
 
-Stan, taki jak wybrane miejsce, widoczne kategorie, identyfikator markera lub docelowy obszar kamery, powinien być współdzielony, jeśli nie zależy od platformowego API. Samo rysowanie mapy może wymagać warstwy specyficznej dla platformy.
+Stan, taki jak wybrane miejsce, widoczne kategorie, identyfikator
+markera lub docelowy obszar kamery, powinien być współdzielony, jeśli
+nie zależy od platformowego API. Samo rysowanie mapy może wymagać
+warstwy specyficznej dla platformy.
 
 ### Brak geometrii to prawidłowy stan danych
 
-Nie każde miejsce musi mieć granice administracyjne lub polygon GeoJSON. UI powinno obsłużyć brak geometrii, np. przez pokazanie mapy z punktem lokalizacji albo czytelnego stanu bez granic. Nie należy tworzyć fikcyjnych granic.
+Nie każde miejsce musi mieć granice administracyjne lub polygon GeoJSON.
+UI powinno obsłużyć brak geometrii, np. przez pokazanie mapy z punktem
+lokalizacji albo czytelnego stanu bez granic. Nie należy tworzyć
+fikcyjnych granic.
 
 ### Nie zakładaj parytetu funkcji mapowych bez testów
 
-Biblioteka deklarująca wsparcie KMP nie gwarantuje automatycznie identycznego zestawu funkcji, stabilności ani zachowania offline na Androidzie i iOS. Przed wyborem silnika należy sprawdzić wymagane funkcje na obu platformach.
+Biblioteka deklarująca wsparcie KMP nie gwarantuje automatycznie
+identycznego zestawu funkcji, stabilności ani zachowania offline na
+Androidzie i iOS. Przed wyborem silnika należy sprawdzić wymagane
+funkcje na obu platformach.
 
-Dla MoroccoApp MapLibre Compose jest kandydatem do prototypu. Obsługę GeoJSON, polygonów, markerów, popupów, gestów, stylów, wydajności i offline trzeba potwierdzić w praktycznym teście.
+Dla MoroccoApp MapLibre Compose jest kandydatem do prototypu. Obsługę
+GeoJSON, polygonów, markerów, popupów, gestów, stylów, wydajności i
+offline trzeba potwierdzić w praktycznym teście.
 
 ### Nawigacja z markera
 
-Marker powinien identyfikować miejsce przez stabilny `placeId`. Po wybraniu markera ekran mapy może pokazać tytuł i snippet, a przejście do `Place Details` powinno korzystać z istniejącego mechanizmu nawigacji opartego na identyfikatorze, nie na przekazywaniu całego obiektu domenowego.
+## Marker powinien identyfikować miejsce przez stabilny `placeId`. Po wybraniu markera ekran mapy może pokazać tytuł i snippet, a przejście do `Place Details` powinno korzystać z istniejącego mechanizmu nawigacji opartego na identyfikatorze, nie na przekazywaniu całego obiektu domenowego.
+
+## KMP --- mapy i lokalizacja użytkownika (7 listopada 2026)
+
+### Dane domenowe nie powinny zależeć od SDK mapowego
+
+Współrzędne i ograniczenia obszaru są danymi miejsca, dlatego należą do
+modelu domenowego. Model `MapArea` nie powinien przechowywać obiektów
+MapLibre ani typów zależnych od konkretnego silnika.
+
+Przepływ danych powinien pozostać czytelny:
+
+``` text
+JSON
+↓
+DTO
+↓
+Mapper
+↓
+Domain model
+↓
+ViewModel / UI
+```
+
+Zmiana `showMapButton` na `mapArea` jest istotna semantycznie: zamiast
+flagi mówiącej jedynie, czy pokazać przycisk, model przechowuje dane
+potrzebne do ograniczenia kamery mapy.
+
+### Prostokątny obszar mapy to nie GeoJSON
+
+`MapArea` z granicami `south`, `west`, `north`, `east` opisuje
+prostokątny bounding box. Nie jest polygonem ani dokładną granicą
+administracyjną. Jeżeli w przyszłości potrzebne będą nieregularne
+granice, należy przechowywać lub pobierać geometrię GeoJSON niezależnie
+od `MapArea`.
+
+### Przekazuj `placeId` przez Navigation
+
+Pełnoekranowa mapa otrzymuje `placeId`, a nie cały `Place`. To zachowuje
+dotychczasową zasadę nawigacji w aplikacji: trasa przenosi stabilny
+identyfikator, a ekran odtwarza potrzebny kontekst z warstwy danych.
+
+### Wspólny stan, platformowe uprawnienia
+
+W KMP należy rozdzielać: - wspólny model statusu i stanu lokalizacji; -
+logikę prezentacji oraz callbacki; - platformowe żądanie uprawnień i
+otwieranie ustawień.
+
+`AppSettings` stanowi wspólny kontrakt, a implementacje `androidMain` i
+`iosMain` izolują szczegóły platformowe. Samo umieszczenie pliku w
+`iosMain` nie potwierdza jeszcze poprawnego działania na iOS ---
+potrzebny jest build i test na tej platformie.
+
+### Komponent przycisku nie powinien przejmować całego cyklu życia
+
+`MapLocationButton` prezentuje stan uprawnień i zgłasza zdarzenia
+callbackami. Ekran nadrzędny pozostaje właścicielem stanu lokalizacji,
+żądania uprawnień, otwierania ustawień i reakcji na powrót do aplikacji.
+Taki podział ogranicza sprzężenie komponentu UI z platformowym cyklem
+życia.
+
+### GPS i podkład mapowy to dwa różne źródła działania
+
+Odczyt pozycji GPS może działać bez internetu, ale nie oznacza to, że
+mapa bazowa również będzie dostępna offline. Kafelki, styl i zasoby mapy
+mają osobne wymagania sieciowe lub wymagają wcześniej przygotowanego
+cache/offline packa. Te scenariusze trzeba testować oddzielnie.
+
+### Test punktu GPS powinien być jawnie tymczasowy
+
+Punkt `gps_test_point_warsaw` (`placeId = 99001`) jest używany do testów
+GPS. Nie należy traktować go jako docelowego miejsca w danych Maroka. Po
+zakończeniu testów trzeba usunąć rekord i sprawdzić, czy nie pozostały
+odwołania do jego identyfikatora.
+
+### Testy wieloplatformowe
+
+Build Android i test na dwóch urządzeniach potwierdzają działanie
+sprawdzonego przepływu na Androidzie. Nie potwierdzają: - uruchomienia
+aplikacji iOS; - parytetu funkcji MapLibre Compose na obu platformach; -
+działania GPS bez internetu; - działania map offline; - trybu ciągłego
+śledzenia i zachowania po ręcznym przesunięciu kamery.
+
+Każdy z tych punktów powinien mieć osobny test.
