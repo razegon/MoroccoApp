@@ -23,6 +23,7 @@ val LightBlueDarkThemeContainer = Color(0xFF4A90C2)
 
 // Material
 val MaterialBlue700 = Color(0xFF1976D2)
+val MaterialGreen700 = Color(0xFF2E9D50)
 
 // GPS accuracy colors
 val GpsAccuracyGood = Color(0xFF16A34A)

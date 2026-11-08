@@ -1,7 +1,9 @@
 package com.razegon.shared.ui.screens.map
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,21 +15,22 @@ import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import com.razegon.shared.domain.config.MapConfig
 import com.razegon.shared.domain.config.MapConfig.GIBRALTAR_STRAIT_ID
 import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.CameraUpdate
 import org.maplibre.compose.interaction.ClickResult
+import org.maplibre.compose.interaction.MapInteractions
 import org.maplibre.compose.layers.LocationIndicatorLayer
 import org.maplibre.compose.location.LocationState
 import org.maplibre.compose.map.CameraConstraints
@@ -63,11 +66,13 @@ fun PlaceMapSection(
         minZoom = if (placeId == GIBRALTAR_STRAIT_ID) 8.0 else 15.0
     )
 
-    val coroutineScope = rememberCoroutineScope()
-
     val clickedLocation = remember {
         mutableStateOf<Position?>(null)
     }
+
+    val isTracking = remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     val mapState = rememberMapState(
         baseStyle = BaseStyle.Uri(MAP_STYLE_URL),
@@ -97,8 +102,22 @@ fun PlaceMapSection(
                 onClick = {
                     clickedLocation.value = state.lastLocation?.position
                     ClickResult.Consume
-
                 }
+            )
+        }
+    }
+
+    LaunchedEffect(
+        isTracking.value,
+        locationState?.lastLocation?.position
+    ) {
+        val currentPosition = locationState?.lastLocation?.position
+
+        if (isTracking.value && currentPosition != null) {
+            mapState.animateCamera(
+                update = CameraUpdate(
+                    center = currentPosition
+                )
             )
         }
     }
@@ -137,20 +156,52 @@ fun PlaceMapSection(
         MaplibreMap(
             state = mapState,
             modifier = Modifier.fillMaxSize(),
-            cameraConstraints = cameraConstraints
+            cameraConstraints = cameraConstraints,
+            interactions = MapInteractions {
+                camera {
+                    pan {
+                        onStart {
+                            isTracking.value = false
+                        }
+                    }
+                }
+            }
         ) {
             include(MapOverlay.None)
 
-            locationState?.lastLocation?.horizontalAccuracy?.let { accuracy ->
-                LocationAccuracyIndicator(
-                    horizontalAccuracy = accuracy.toDouble(Meters),
+            if (locationState != null) {
+                Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
-                        .padding(
-                            start = 8.dp,
-                            bottom = 8.dp
+                        .padding(start = 8.dp, bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    locationState.lastLocation?.horizontalAccuracy?.let { accuracy ->
+                        LocationAccuracyIndicator(
+                            horizontalAccuracy = accuracy.toDouble(Meters)
                         )
-                )
+                    }
+
+                    MapTrackingButton(
+                        isTracking = isTracking.value,
+                        onClick = {
+                            val currentPosition = locationState.lastLocation?.position
+
+                            if (currentPosition != null) {
+                                isTracking.value = true
+
+                                coroutineScope.launch {
+                                    mapState.animateCamera(
+                                        update = CameraUpdate(
+                                            center = currentPosition
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    )
+                }
             }
 
             Surface(

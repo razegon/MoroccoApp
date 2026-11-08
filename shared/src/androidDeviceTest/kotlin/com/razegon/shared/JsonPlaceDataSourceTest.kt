@@ -1,6 +1,7 @@
 package com.razegon.shared
 
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlinx.coroutines.test.runTest
 import com.razegon.shared.data.source.AndroidJsonResourceReader
 import com.razegon.shared.data.source.JsonPlaceDataSource
 import com.razegon.shared.domain.model.PlaceType
@@ -10,7 +11,7 @@ import org.junit.Test
 class JsonPlaceDataSourceTest {
 
     @Test
-    fun readsMarrakeshFromJson() {
+    fun readsMarrakeshFromJson() = runTest {
         val context = InstrumentationRegistry
             .getInstrumentation()
             .targetContext
