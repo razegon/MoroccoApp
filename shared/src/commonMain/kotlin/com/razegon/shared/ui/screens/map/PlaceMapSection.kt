@@ -13,14 +13,21 @@ import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.razegon.shared.domain.config.MapConfig
 import com.razegon.shared.domain.config.MapConfig.GIBRALTAR_STRAIT_ID
+import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.CameraUpdate
+import org.maplibre.compose.interaction.ClickResult
 import org.maplibre.compose.layers.LocationIndicatorLayer
 import org.maplibre.compose.location.LocationState
 import org.maplibre.compose.map.CameraConstraints
@@ -33,6 +40,7 @@ import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
+
 
 private const val MAP_STYLE_URL =
     "https://tiles.openfreemap.org/styles/bright"
@@ -54,6 +62,12 @@ fun PlaceMapSection(
         longitude = longitude,
         minZoom = if (placeId == GIBRALTAR_STRAIT_ID) 8.0 else 15.0
     )
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val clickedLocation = remember {
+        mutableStateOf<Position?>(null)
+    }
 
     val mapState = rememberMapState(
         baseStyle = BaseStyle.Uri(MAP_STYLE_URL),
@@ -78,8 +92,28 @@ fun PlaceMapSection(
                 id = "user-location",
                 locationState = state,
                 accuracyRadiusColor = accuracyColor.copy(alpha = 0.15f),
-                accuracyRadiusBorderColor = accuracyColor
+                accuracyRadiusBorderColor = accuracyColor,
+                hitPadding = 30.dp,
+                onClick = {
+                    clickedLocation.value = state.lastLocation?.position
+                    ClickResult.Consume
+
+                }
             )
+        }
+    }
+
+    LaunchedEffect(clickedLocation.value) {
+        val targetLocation = clickedLocation.value
+
+        if (targetLocation != null) {
+            mapState.animateCamera(
+                update = CameraUpdate(
+                    center = targetLocation
+                )
+            )
+
+            clickedLocation.value = null
         }
     }
 
