@@ -1,5 +1,9 @@
 package com.razegon.moroccoapp.ui.screens.placedetails
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,6 +54,14 @@ fun PlaceDetailsScreen(
     // Contains Wikimedia metadata currently loaded into memory.
     val wikimediaImages by wikimediaViewModel.images.collectAsState()
 
+    var isMapFullscreen by remember {
+        mutableStateOf(false)
+    }
+
+    BackHandler(enabled = isMapFullscreen) {
+        isMapFullscreen = false
+    }
+
     // Contains the current state of the selected place.
     val uiState by viewModel.uiState.collectAsState()
 
@@ -71,7 +83,13 @@ fun PlaceDetailsScreen(
             placeData = placeData,
             wikimediaImages = wikimediaImages,
             imageLoader = application.wikimediaImageLoader,
-            onOpenMap = onOpenMap,
+            onOpenFullscreen = {
+                isMapFullscreen = true
+            },
+            isMapFullscreen = isMapFullscreen,
+            onCloseFullscreen = {
+                isMapFullscreen = false
+            }
 
 
         )

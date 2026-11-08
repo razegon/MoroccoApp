@@ -86,24 +86,26 @@ fun PlaceMapSection(
     ) {
         checkNotNull(LocalMapState.current)
 
-        locationState?.let { state ->
-            val accuracyMeters = state.lastLocation
-                ?.horizontalAccuracy
-                ?.toDouble(Meters)
+        if (isFullscreen) {
+            locationState?.let { state ->
+                val accuracyMeters = state.lastLocation
+                    ?.horizontalAccuracy
+                    ?.toDouble(Meters)
 
-            val accuracyColor = getGpsAccuracyColor(accuracyMeters)
+                val accuracyColor = getGpsAccuracyColor(accuracyMeters)
 
-            LocationIndicatorLayer(
-                id = "user-location",
-                locationState = state,
-                accuracyRadiusColor = accuracyColor.copy(alpha = 0.15f),
-                accuracyRadiusBorderColor = accuracyColor,
-                hitPadding = 30.dp,
-                onClick = {
-                    clickedLocation.value = state.lastLocation?.position
-                    ClickResult.Consume
-                }
-            )
+                LocationIndicatorLayer(
+                    id = "user-location",
+                    locationState = state,
+                    accuracyRadiusColor = accuracyColor.copy(alpha = 0.15f),
+                    accuracyRadiusBorderColor = accuracyColor,
+                    hitPadding = 30.dp,
+                    onClick = {
+                        clickedLocation.value = state.lastLocation?.position
+                        ClickResult.Consume
+                    }
+                )
+            }
         }
     }
 
@@ -169,7 +171,7 @@ fun PlaceMapSection(
         ) {
             include(MapOverlay.None)
 
-            if (locationState != null) {
+            if (isFullscreen&& locationState != null) {
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
