@@ -83,10 +83,10 @@ fun PlaceDetailsScreen(
             placeData = placeData,
             wikimediaImages = wikimediaImages,
             imageLoader = application.wikimediaImageLoader,
+            isMapFullscreen = isMapFullscreen,
             onOpenFullscreen = {
                 isMapFullscreen = true
             },
-            isMapFullscreen = isMapFullscreen,
             onCloseFullscreen = {
                 isMapFullscreen = false
             }

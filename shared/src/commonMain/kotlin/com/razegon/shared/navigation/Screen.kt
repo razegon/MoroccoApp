@@ -32,4 +32,6 @@ sealed class Screen(
 
     data object PlaceMapFullScreen :
         Screen("place_map/{latitude}/{longitude}/{zoom}/{placeId}")
+
+    data object CityMapFullScreen : Screen("city_map_fullscreen/{cityId}")
 }

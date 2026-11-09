@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +22,7 @@ import com.razegon.shared.domain.model.QuizDifficulty
 import com.razegon.shared.navigation.Screen
 import com.razegon.shared.ui.screens.arcade.ArcadeInstructionsScreen
 import com.razegon.shared.ui.screens.home.HomeScreen
+import com.razegon.shared.ui.screens.map.FullscreenCityMapScreen
 import com.razegon.shared.ui.screens.map.FullscreenMapScreen
 import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.shared.ui.screens.quiz.QuizStartScreen
@@ -30,12 +35,9 @@ fun MoroccoApp(
     onStartArcade: () -> Unit,
 
     citiesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
-    cityDetailsScreen: @Composable (Int, (PlaceData) -> Unit) -> Unit,
+    cityDetailsScreen: @Composable (Int, (PlaceData) -> Unit, (PlaceData, List<PlaceData>) -> Unit)  -> Unit,
     placesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
-    placeDetailsScreen: @Composable (
-        Int,
-        (Double, Double, Float) -> Unit
-    ) -> Unit,
+    placeDetailsScreen: @Composable (Int, (Double, Double, Float) -> Unit) -> Unit,
 
     quizGameScreen: @Composable (() -> Unit, () -> Unit) -> Unit,
     quizSummaryScreen: @Composable (() -> Unit, () -> Unit, () -> Unit) -> Unit,
@@ -45,6 +47,10 @@ fun MoroccoApp(
     arcadeRankingScreen: @Composable (() -> Unit) -> Unit
 ) {
     val navController = rememberNavController()
+
+    var cityMapData by remember {
+        mutableStateOf<Pair<PlaceData, List<PlaceData>>?>(null)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -90,11 +96,18 @@ fun MoroccoApp(
                 }?.toIntOrNull()
 
                 if (cityId != null) {
-                    cityDetailsScreen(cityId) { placeData ->
-                        navController.navigate(
-                            "place_details/${placeData.place.placeId}"
-                        )
-                    }
+                    cityDetailsScreen(
+                        cityId,
+                        { placeData ->
+                            navController.navigate(
+                                "place_details/${placeData.place.placeId}"
+                            )
+                        },
+                        { placeData, children ->
+                            cityMapData = placeData to children
+                            navController.navigate(Screen.CityMapFullScreen.route)
+                        }
+                    )
                 }
             }
 
@@ -144,6 +157,23 @@ fun MoroccoApp(
                         longitude = longitude,
                         zoom = zoom ?: 12f,
                         placeId = placeId,
+                        onBackClick = {
+                            navController.popBackStack()
+                        }
+                    )
+                }
+            }
+
+            composable(Screen.CityMapFullScreen.route) {
+                cityMapData?.let { (placeData, children) ->
+                    FullscreenCityMapScreen(
+                        placeData = placeData,
+                        children = children,
+                        onPlaceClick = { place ->
+                            navController.navigate(
+                                "place_details/${place.place.placeId}"
+                            )
+                        },
                         onBackClick = {
                             navController.popBackStack()
                         }

@@ -43,6 +43,7 @@ import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
+import com.razegon.shared.ui.components.FullscreenIcon
 
 
 private const val MAP_STYLE_URL =
@@ -171,7 +172,7 @@ fun PlaceMapSection(
         ) {
             include(MapOverlay.None)
 
-            if (isFullscreen&& locationState != null) {
+            if (isFullscreen && locationState != null) {
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
@@ -225,24 +226,4 @@ fun PlaceMapSection(
             }
         }
     }
-}
-
-@Composable
-private fun FullscreenIcon(
-    isFullscreen: Boolean
-) {
-    Icon(
-        imageVector = if (isFullscreen) {
-            Icons.Default.CloseFullscreen
-        } else {
-            Icons.Default.OpenInFull
-        },
-        contentDescription = if (isFullscreen) {
-            "Zamknij pełny ekran"
-        } else {
-            "Otwórz pełny ekran"
-        },
-        tint = Color.DarkGray,
-        modifier = Modifier.size(24.dp)
-    )
 }

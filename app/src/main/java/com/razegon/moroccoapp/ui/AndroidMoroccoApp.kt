@@ -67,10 +67,11 @@ fun AndroidMoroccoApp() {
                 onPlaceClick = onPlaceClick
             )
         },
-        cityDetailsScreen = { placeId: Int, onPlaceClick: (PlaceData) -> Unit ->
+        cityDetailsScreen = { placeId, onPlaceClick, onOpenCityMap ->
             CityDetailsScreen(
                 placeId = placeId,
-                onPlaceClick = onPlaceClick
+                onPlaceClick = onPlaceClick,
+                onOpenCityMap = onOpenCityMap
             )
         },
         placesScreen = { onPlaceClick: (PlaceData) -> Unit ->
@@ -82,7 +83,6 @@ fun AndroidMoroccoApp() {
             PlaceDetailsScreen(
                 placeId = placeId,
                 onOpenMap = onOpenMap,
-
             )
         },
 
