@@ -1,4 +1,4 @@
-package com.razegon.shared.ui.screens.map
+package com.razegon.shared.ui.components.map
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

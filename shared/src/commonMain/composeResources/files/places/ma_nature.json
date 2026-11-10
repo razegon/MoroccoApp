@@ -274,7 +274,7 @@
     "_comment": "========== CAP SPARTEL ==========",
     "place": {
       "placeId": 4206,
-      "placeType": "NATURE",
+      "placeType": "VIEWPOINT",
       "parentPlaceId": null,
       "wikidataId": null,
       "wikimediaImages": [
@@ -312,7 +312,7 @@
     "_comment": "==========  ==========",
     "place": {
       "placeId": 4207,
-      "placeType": "NATURE",
+      "placeType": "BEACH",
       "parentPlaceId": 4105,
       "wikidataId": null,
       "wikimediaImages": [

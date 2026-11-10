@@ -15,12 +15,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razegon.shared.domain.model.PlaceData
-import com.razegon.shared.ui.components.FullscreenIcon
-import kotlinx.serialization.json.jsonPrimitive
+import com.razegon.shared.map.marker.toMarkerStyle
+import com.razegon.shared.ui.components.map.FullscreenIcon
+import com.razegon.shared.ui.components.map.MapMarker
 import org.maplibre.compose.camera.CameraPosition
-import org.maplibre.compose.expressions.dsl.const
-import org.maplibre.compose.interaction.ClickResult
-import org.maplibre.compose.layers.CircleLayer
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.rememberMapState
 import org.maplibre.compose.overlay.MapOverlay
@@ -32,6 +30,8 @@ import org.maplibre.spatialk.geojson.Position
 
 private const val CITY_MAP_STYLE_URL =
     "https://tiles.openfreemap.org/styles/bright"
+
+
 
 /**
  * Displays child places on a city map.
@@ -82,7 +82,7 @@ fun CityMapSection(
 
         append(
             mappedChildren.joinToString(",") { child ->
-                """{"type":"Feature","properties":{"placeId":${child.place.placeId}},"geometry":{"type":"Point","coordinates":[${child.place.longitude},${child.place.latitude}]}}"""
+                """{"type":"Feature","properties":{"placeId":${child.place.placeId},"iconKey":"${child.place.placeType.toMarkerStyle().iconKey}"},"geometry":{"type":"Point","coordinates":[${child.place.longitude},${child.place.latitude}]}}"""
             }
         )
 
@@ -99,40 +99,19 @@ fun CityMapSection(
             zoom = (placeData.place.zoom ?: 13f).toDouble()
         )
     ) {
+
         val placesSource = rememberGeoJsonSource(
             data = GeoJsonData.JsonString(geoJson)
-        )
+        ) {
+            cluster = true
+        }
 
-        CircleLayer(
-            id = "city-child-place-markers",
+        MapMarker(
             source = placesSource,
-            color = const(Color(0xFF1976D2)),
-            radius = const(4.dp),
-            strokeColor = const(Color.White),
-            strokeWidth = const(2.dp),
-            hitPadding = 12.dp,
-            onClick = { features ->
-                val placeId = features
-                    .firstOrNull()
-                    ?.properties
-                    ?.get("placeId")
-                    ?.jsonPrimitive
-                    ?.content
-                    ?.toIntOrNull()
-
-                val selectedPlace = mappedChildren.firstOrNull {
-                    it.place.placeId == placeId
-                }
-
-                selectedPlace?.let(onPlaceClick)
-
-                if (selectedPlace != null) {
-                    ClickResult.Consume
-                } else {
-                    ClickResult.Pass
-                }
-            }
+            places = mappedChildren,
+            onPlaceClick = onPlaceClick
         )
+
     }
 
     Box(
@@ -164,7 +143,6 @@ fun CityMapSection(
                     FullscreenIcon(isFullscreen = isFullscreen)
                 }
             }
-
         }
     }
 }

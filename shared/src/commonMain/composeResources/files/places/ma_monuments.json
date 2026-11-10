@@ -34,7 +34,7 @@
     "_comment": "========== VOLUBILIS ==========",
     "place": {
       "placeId": 4000,
-      "placeType": "MONUMENT",
+      "placeType": "ARCHAEOLOGICAL_SITE",
       "parentPlaceId": null,
       "wikidataId": null,
       "wikimediaImages": [
@@ -140,7 +140,7 @@
     "_comment": "========== JARDIN SECRET ==========",
     "place": {
       "placeId": 4002,
-      "placeType": "MONUMENT",
+      "placeType": "GARDEN",
       "parentPlaceId": 4100,
       "wikidataId": null,
       "wikimediaImages": [
@@ -232,7 +232,7 @@
     "_comment": "========== HASSAN TOWER ==========",
     "place": {
       "placeId": 4004,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4101,
       "wikidataId": null,
       "wikimediaImages": [
@@ -270,7 +270,7 @@
     "_comment": "========== MAUSOLEUM MOHAMMED V ==========",
     "place": {
       "placeId": 4005,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4101,
       "wikidataId": null,
       "wikimediaImages": [
@@ -308,7 +308,7 @@
     "_comment": "========== HASSAN II MOSQUE ==========",
     "place": {
       "placeId": 4006,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4104,
       "wikidataId": null,
       "wikimediaImages": [
@@ -360,7 +360,7 @@
     "_comment": "========== MEDERSA BEN YOUSSEF ==========",
     "place": {
       "placeId": 4007,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4100,
       "wikidataId": null,
       "wikimediaImages": [
@@ -442,7 +442,7 @@
     "_comment": "========== JEMAA EL FNAA ==========",
     "place": {
       "placeId": 4009,
-      "placeType": "MONUMENT",
+      "placeType": "MARKET",
       "parentPlaceId": 4100,
       "wikidataId": null,
       "wikimediaImages": [
@@ -488,7 +488,7 @@
     "_comment": "========== MAUSOLEUM MOULAY ISMAIL ==========",
     "place": {
       "placeId": 4010,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4103,
       "wikidataId": null,
       "wikimediaImages": [
@@ -656,7 +656,7 @@
     "_comment": "========== AL-QARAWIYYIN ==========",
     "place": {
       "placeId": 4015,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -742,7 +742,7 @@
     "_comment": "========== CHELLAH ==========",
     "place": {
       "placeId": 4017,
-      "placeType": "MONUMENT",
+      "placeType": "ARCHAEOLOGICAL_SITE",
       "parentPlaceId": 4101,
       "wikidataId": null,
       "wikimediaImages": [
@@ -775,7 +775,7 @@
     "_comment": "========== MOULAY IDRIS II MAUSOLEUM ==========",
     "place": {
       "placeId": 4018,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -813,7 +813,7 @@
     "_comment": "========== MEDERSA BOU INANIA ==========",
     "place": {
       "placeId": 4019,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -851,7 +851,7 @@
     "_comment": "========== MEDERSA CHERRATINE ==========",
     "place": {
       "placeId": 4020,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -927,7 +927,7 @@
     "_comment": "========== MARINIDE TOMBS ==========",
     "place": {
       "placeId": 4022,
-      "placeType": "MONUMENT",
+      "placeType": "RELIGIOUS_SITE",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -965,7 +965,7 @@
     "_comment": "========== NEJJARINE MUSEUM ==========",
     "place": {
       "placeId": 4023,
-      "placeType": "MONUMENT",
+      "placeType": "MUSEUM",
       "parentPlaceId": 4102,
       "wikidataId": null,
       "wikimediaImages": [
@@ -1369,7 +1369,7 @@
     "_comment": "========== RICK'S CAFE ==========",
     "place": {
       "placeId": 4033,
-      "placeType": "MONUMENT",
+      "placeType": "RESTAURANT",
       "parentPlaceId": 4104,
       "wikidataId": "Q5857561",
       "wikimediaImages": [
@@ -1715,7 +1715,7 @@
     "_comment": "========== AMAZIGH HERITAGE MUSEUM ==========",
     "place": {
       "placeId": 4046,
-      "placeType": "MONUMENT",
+      "placeType": "MUSEUM",
       "parentPlaceId": 4107,
       "wikidataId": "Q12238590",
       "wikimediaImages": [
@@ -1791,7 +1791,7 @@
     "_comment": "========== SOUK EL HAD ==========",
     "place": {
       "placeId": 4048,
-      "placeType": "MONUMENT",
+      "placeType": "MARKET",
       "parentPlaceId": 4107,
       "wikidataId": null,
       "wikimediaImages": [
@@ -1829,7 +1829,7 @@
     "_comment": "========== CROCOPARC ==========",
     "place": {
       "placeId": 4049,
-      "placeType": "MONUMENT",
+      "placeType": "PARK",
       "parentPlaceId": 4107,
       "wikidataId": "Q27919299",
       "wikimediaImages": [
@@ -1875,7 +1875,7 @@
     "_comment": "========== JARDIN D'OLHAO ==========",
     "place": {
       "placeId": 4050,
-      "placeType": "MONUMENT",
+      "placeType": "GARDEN",
       "parentPlaceId": 4107,
       "wikidataId": "Q57703822",
       "wikimediaImages": [

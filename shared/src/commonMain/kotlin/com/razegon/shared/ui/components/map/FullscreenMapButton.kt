@@ -1,4 +1,4 @@
-package com.razegon.shared.ui.components
+package com.razegon.shared.ui.components.map
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons

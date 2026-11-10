@@ -1,5 +1,4 @@
-
-package com.razegon.shared.ui.screens.map
+package com.razegon.shared.ui.components.map
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding

@@ -1,6 +1,8 @@
 package com.razegon.shared.ui.screens.map
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,10 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CloseFullscreen
-import androidx.compose.material.icons.filled.OpenInFull
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import com.razegon.shared.domain.config.MapConfig
 import com.razegon.shared.domain.config.MapConfig.GIBRALTAR_STRAIT_ID
@@ -43,7 +43,13 @@ import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
-import com.razegon.shared.ui.components.FullscreenIcon
+import com.razegon.shared.ui.components.map.FullscreenIcon
+import com.razegon.shared.ui.components.map.LocationAccuracyIndicator
+import com.razegon.shared.ui.components.map.MapTrackingButton
+import com.razegon.shared.ui.components.map.getGpsAccuracyColor
+import org.maplibre.compose.overlay.DisappearingCompassButton
+import org.maplibre.compose.overlay.DisappearingScaleBar
+import kotlin.time.Duration.Companion.seconds
 
 
 private const val MAP_STYLE_URL =
@@ -170,7 +176,24 @@ fun PlaceMapSection(
                 }
             }
         ) {
-            include(MapOverlay.None)
+
+            val mapOverlay = MapOverlay {
+                DisappearingScaleBar(
+                    metersPerDp = { mapState.viewport?.metersPerDpAtCenter ?: 0.0 },
+                    zoom = { mapState.cameraPosition.zoom },
+                    visibilityDuration = 2.seconds,
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 4.dp)
+                )
+                DisappearingCompassButton(
+                    size = 32.dp,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(bottom = 12.dp, end = 12.dp)
+                        .border(width = 1.dp, color = Color.Red, shape = CircleShape)
+                )
+            }
+            include(mapOverlay)
 
             if (isFullscreen && locationState != null) {
                 Row(
@@ -211,7 +234,7 @@ fun PlaceMapSection(
                 onClick = onExpandClick,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(top = 24.dp, end = 8.dp)
+                    .padding(top = 8.dp, end = 8.dp)
                     .size(32.dp),
                 shape = CircleShape,
                 color = Color.White,

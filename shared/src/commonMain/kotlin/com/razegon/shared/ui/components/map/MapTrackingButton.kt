@@ -1,8 +1,9 @@
-package com.razegon.shared.ui.screens.map
+package com.razegon.shared.ui.components.map
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -48,7 +49,7 @@ fun MapTrackingButton(
             containerColor = Color.White,
             contentColor = iconColor
         ),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Icon(
             imageVector = Icons.Default.MyLocation,

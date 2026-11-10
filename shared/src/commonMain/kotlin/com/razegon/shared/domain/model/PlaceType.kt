@@ -10,5 +10,9 @@ enum class PlaceType {
     PARK,
     NATURE,
     VIEWPOINT,
-    SHOP
+    SHOP,
+    MARKET,
+    ARCHAEOLOGICAL_SITE,
+    GARDEN,
+    RELIGIOUS_SITE
 }

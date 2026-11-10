@@ -31,7 +31,7 @@ import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.openAppSettings
 import com.razegon.shared.ui.components.DetailsPager
 import com.razegon.shared.ui.components.createPages
-import com.razegon.shared.ui.screens.map.MapLocationButton
+import com.razegon.shared.ui.components.map.MapLocationButton
 import com.razegon.shared.ui.screens.map.PlaceMapSection
 import kotlinx.coroutines.awaitCancellation
 import org.maplibre.compose.location.rememberDefaultLocationProvider
