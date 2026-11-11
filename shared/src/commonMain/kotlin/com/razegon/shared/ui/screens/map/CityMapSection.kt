@@ -104,6 +104,9 @@ fun CityMapSection(
             data = GeoJsonData.JsonString(geoJson)
         ) {
             cluster = true
+            clusterRadius = 60
+            clusterMinPoints = 2
+            clusterMaxZoom = 15
         }
 
         MapMarker(

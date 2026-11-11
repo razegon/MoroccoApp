@@ -6,7 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,7 +47,7 @@ fun CityDetailsScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     // Fullscreen state belongs to the screen, so it survives content recompositions.
-    var isMapFullscreen by remember { mutableStateOf(false) }
+    var isMapFullscreen by rememberSaveable { mutableStateOf(false) }
 
     // Back closes the fullscreen map before leaving the city details screen.
     BackHandler(enabled = isMapFullscreen) {

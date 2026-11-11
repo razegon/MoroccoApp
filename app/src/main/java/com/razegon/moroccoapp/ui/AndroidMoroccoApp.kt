@@ -1,12 +1,15 @@
 package com.razegon.moroccoapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.razegon.moroccoapp.MyApp
 import com.razegon.moroccoapp.ui.screens.arcade.ArcadeScreen
 import com.razegon.moroccoapp.ui.screens.city.CitiesScreen
 import com.razegon.moroccoapp.ui.screens.citydetails.CityDetailsScreen
+import com.razegon.shared.ui.screens.map.FullscreenCityMapScreen
 import com.razegon.moroccoapp.ui.screens.placedetails.PlaceDetailsScreen
 import com.razegon.moroccoapp.ui.screens.places.PlacesScreen
 import com.razegon.moroccoapp.ui.screens.quiz.QuizScreen
@@ -17,6 +20,8 @@ import com.razegon.moroccoapp.viewmodel.ArcadeAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.ArcadeResultAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.ArcadeResultViewModelFactory
 import com.razegon.moroccoapp.viewmodel.ArcadeViewModelFactory
+import com.razegon.moroccoapp.viewmodel.CityMapAndroidViewModel
+import com.razegon.moroccoapp.viewmodel.CityMapViewModelFactory
 import com.razegon.moroccoapp.viewmodel.QuizAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultViewModelFactory
@@ -72,6 +77,23 @@ fun AndroidMoroccoApp() {
                 placeId = placeId,
                 onPlaceClick = onPlaceClick,
                 onOpenCityMap = onOpenCityMap
+            )
+        },
+        cityMapScreen = { cityId, onPlaceClick, onBackClick ->
+            val cityMapViewModel: CityMapAndroidViewModel = viewModel(
+                key = "cityMap_$cityId",
+                factory = CityMapViewModelFactory(
+                    cityId = cityId,
+                    appContainer = appContainer
+                )
+            )
+
+            val uiState by cityMapViewModel.uiState.collectAsState()
+
+            FullscreenCityMapScreen(
+                uiState = uiState,
+                onPlaceClick = onPlaceClick,
+                onBackClick = onBackClick
             )
         },
         placesScreen = { onPlaceClick: (PlaceData) -> Unit ->

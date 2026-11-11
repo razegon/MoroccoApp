@@ -110,7 +110,7 @@ fun PlaceDetailsContent(
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                //.padding(innerPadding)
         ) {
             val normalMapHeight = (maxHeight - 12.dp) * 0.5f
 
