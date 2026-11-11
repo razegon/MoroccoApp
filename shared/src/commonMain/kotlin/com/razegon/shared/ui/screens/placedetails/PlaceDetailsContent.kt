@@ -122,6 +122,14 @@ fun PlaceDetailsContent(
                 }
             )
 
+            val pagerHeight = animateDpAsState(
+                targetValue = if (pagerState.currentPage == 0) {
+                    normalMapHeight
+                } else {
+                    maxHeight
+                }
+            )
+
             DetailsPager(
                 placeData = placeData,
                 pages = pages,
@@ -130,7 +138,7 @@ fun PlaceDetailsContent(
                 pagerState = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(normalMapHeight)
+                    .height(pagerHeight.value)
             )
 
             if (pagerState.currentPage == 0 &&
