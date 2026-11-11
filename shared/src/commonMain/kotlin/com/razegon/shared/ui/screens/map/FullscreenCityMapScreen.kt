@@ -8,12 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.razegon.shared.presentation.model.CityMapUiState
+import coil3.ImageLoader
+import com.razegon.shared.domain.model.WikimediaImage
+import com.razegon.shared.domain.model.PlaceData
 
 @Composable
 fun FullscreenCityMapScreen(
     uiState: CityMapUiState,
-    onPlaceClick: (com.razegon.shared.domain.model.PlaceData) -> Unit,
-    onBackClick: () -> Unit
+    onPlaceClick: (PlaceData) -> Unit,
+    onBackClick: () -> Unit,
+    selectedPlaceId: Int?,
+    onPlaceSelected: (Int?) -> Unit,
+    wikimediaImages: Map<Int, WikimediaImage>,
+    imageLoader: ImageLoader
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -27,7 +34,11 @@ fun FullscreenCityMapScreen(
                 modifier = Modifier.fillMaxSize(),
                 onPlaceClick = onPlaceClick,
                 onExpandClick = onBackClick,
-                isFullscreen = true
+                isFullscreen = true,
+                selectedPlaceId = selectedPlaceId,
+                onPlaceSelected = onPlaceSelected,
+                wikimediaImages = wikimediaImages,
+                imageLoader = imageLoader
             )
         } else if (uiState.isLoading) {
             CircularProgressIndicator(

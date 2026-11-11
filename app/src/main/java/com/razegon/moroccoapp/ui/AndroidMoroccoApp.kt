@@ -1,6 +1,7 @@
 package com.razegon.moroccoapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +27,8 @@ import com.razegon.moroccoapp.viewmodel.QuizAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultAndroidViewModel
 import com.razegon.moroccoapp.viewmodel.QuizResultViewModelFactory
 import com.razegon.moroccoapp.viewmodel.QuizViewModelFactory
+import com.razegon.moroccoapp.viewmodel.WikimediaAndroidViewModel
+import com.razegon.moroccoapp.viewmodel.WikimediaViewModelFactory
 import com.razegon.shared.domain.model.PlaceData
 import com.razegon.shared.domain.model.QuizDifficulty
 import com.razegon.shared.ui.MoroccoApp
@@ -72,14 +75,19 @@ fun AndroidMoroccoApp() {
                 onPlaceClick = onPlaceClick
             )
         },
-        cityDetailsScreen = { placeId, onPlaceClick, onOpenCityMap ->
+
+        cityDetailsScreen = { placeId, selectedPlaceId, onPlaceSelected, onPlaceClick, onOpenCityMap ->
             CityDetailsScreen(
                 placeId = placeId,
+                selectedPlaceId = selectedPlaceId,
+                onPlaceSelected = onPlaceSelected,
                 onPlaceClick = onPlaceClick,
                 onOpenCityMap = onOpenCityMap
             )
         },
-        cityMapScreen = { cityId, onPlaceClick, onBackClick ->
+
+        cityMapScreen = { cityId, selectedPlaceId, onPlaceSelected, onPlaceClick, onBackClick ->
+
             val cityMapViewModel: CityMapAndroidViewModel = viewModel(
                 key = "cityMap_$cityId",
                 factory = CityMapViewModelFactory(
@@ -88,19 +96,49 @@ fun AndroidMoroccoApp() {
                 )
             )
 
+            val wikimediaViewModel: WikimediaAndroidViewModel = viewModel(
+                key = "wikimediaCityMap_$cityId",
+                factory = WikimediaViewModelFactory(
+                    appContainer.wikimediaRepository
+                )
+            )
+
             val uiState by cityMapViewModel.uiState.collectAsState()
+            val wikimediaImages by wikimediaViewModel.images.collectAsState()
+
+            LaunchedEffect(uiState.placeData, uiState.children) {
+                uiState.placeData?.place?.wikimediaImages?.forEach { imageRef ->
+                    imageRef?.let {
+                        wikimediaViewModel.getImage(it.pageId)
+                    }
+                }
+
+                uiState.children.forEach { child ->
+                    child.place.wikimediaImages
+                        .firstOrNull()
+                        ?.let { imageRef ->
+                            wikimediaViewModel.getImage(imageRef.pageId)
+                        }
+                }
+            }
 
             FullscreenCityMapScreen(
                 uiState = uiState,
                 onPlaceClick = onPlaceClick,
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
+                selectedPlaceId = selectedPlaceId,
+                onPlaceSelected = onPlaceSelected,
+                wikimediaImages = wikimediaImages,
+                imageLoader = app.wikimediaImageLoader
             )
         },
+
         placesScreen = { onPlaceClick: (PlaceData) -> Unit ->
             PlacesScreen(
                 onPlaceClick = onPlaceClick
             )
         },
+
         placeDetailsScreen = { placeId: Int, onOpenMap: (Double, Double, Float) -> Unit ->
             PlaceDetailsScreen(
                 placeId = placeId,
@@ -115,6 +153,7 @@ fun AndroidMoroccoApp() {
                 onExitClick = onExitClick
             )
         },
+
         quizSummaryScreen = {
                 onRestartClick: () -> Unit,
                 onRankingClick: () -> Unit,
@@ -127,6 +166,7 @@ fun AndroidMoroccoApp() {
                 onHomeClick = onHomeClick
             )
         },
+
         quizRankingScreen = { onBackClick: () -> Unit ->
             QuizRankingScreen(
                 resultViewModel = quizResultViewModel,
@@ -146,6 +186,7 @@ fun AndroidMoroccoApp() {
                 onExitClick = onExitClick
             )
         },
+
         arcadeRankingScreen = { onBackClick: () -> Unit ->
             ArcadeRankingScreen(
                 resultViewModel = arcadeResultViewModel,

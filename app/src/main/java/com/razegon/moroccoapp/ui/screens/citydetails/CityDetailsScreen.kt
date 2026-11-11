@@ -21,6 +21,8 @@ import com.razegon.shared.ui.screens.citydetails.CityDetailsContent
 @Composable
 fun CityDetailsScreen(
     placeId: Int,
+    selectedPlaceId: Int?,
+    onPlaceSelected: (Int?) -> Unit,
     onPlaceClick: (PlaceData) -> Unit,
     onOpenCityMap: (PlaceData, List<PlaceData>) -> Unit
 ) {
@@ -84,7 +86,9 @@ fun CityDetailsScreen(
                                },
             onCloseFullscreen = {
                 isMapFullscreen = false
-            }
+            },
+            selectedPlaceId = selectedPlaceId,
+            onPlaceSelected = onPlaceSelected
         )
     }
 }

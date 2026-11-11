@@ -44,7 +44,9 @@ fun CityDetailsContent(
     onPlaceClick: (PlaceData) -> Unit,
     isMapFullscreen: Boolean,
     onOpenFullscreen: () -> Unit,
-    onCloseFullscreen: () -> Unit
+    onCloseFullscreen: () -> Unit,
+    selectedPlaceId: Int?,
+    onPlaceSelected: (Int?) -> Unit
 ) {
     var showMap by remember { mutableStateOf(true) }
 
@@ -116,7 +118,11 @@ fun CityDetailsContent(
                                 onOpenFullscreen()
                             }
                         },
-                        isFullscreen = isMapFullscreen
+                        isFullscreen = isMapFullscreen,
+                        selectedPlaceId = selectedPlaceId,
+                        onPlaceSelected = onPlaceSelected,
+                        wikimediaImages = wikimediaImages,
+                        imageLoader = imageLoader
                     )
                 } else if (!isMapFullscreen) {
                     LazyRow(

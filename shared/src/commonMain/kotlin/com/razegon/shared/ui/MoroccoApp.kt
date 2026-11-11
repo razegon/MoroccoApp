@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +23,8 @@ import com.razegon.shared.ui.screens.home.HomeScreen
 import com.razegon.shared.ui.screens.map.FullscreenMapScreen
 import com.razegon.shared.ui.screens.quiz.QuizDifficultyScreen
 import com.razegon.shared.ui.screens.quiz.QuizStartScreen
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 
 // Shared application entry point and navigation graph for the common UI.
 @Composable
@@ -30,8 +34,20 @@ fun MoroccoApp(
     onStartArcade: () -> Unit,
 
     citiesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
-    cityDetailsScreen: @Composable (Int, (PlaceData) -> Unit, (PlaceData, List<PlaceData>) -> Unit)  -> Unit,
-    cityMapScreen: @Composable (Int, (PlaceData) -> Unit, () -> Unit) -> Unit,
+    cityDetailsScreen: @Composable (
+        Int,
+        Int?,
+        (Int?) -> Unit,
+        (PlaceData) -> Unit,
+        (PlaceData, List<PlaceData>) -> Unit
+    )  -> Unit,
+    cityMapScreen: @Composable (
+        Int,
+        Int?,
+        (Int?) -> Unit,
+        (PlaceData) -> Unit,
+        () -> Unit
+    ) -> Unit,
     placesScreen: @Composable ((PlaceData) -> Unit) -> Unit,
     placeDetailsScreen: @Composable (Int, (Double, Double, Float) -> Unit) -> Unit,
 
@@ -43,6 +59,10 @@ fun MoroccoApp(
     arcadeRankingScreen: @Composable (() -> Unit) -> Unit
 ) {
     val navController = rememberNavController()
+
+    var selectedPlaceId by rememberSaveable {
+        mutableStateOf<Int?>(null)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -90,14 +110,18 @@ fun MoroccoApp(
                 if (cityId != null) {
                     cityDetailsScreen(
                         cityId,
+                        selectedPlaceId,
+                        { placeId ->
+                            selectedPlaceId = placeId
+                        },
                         { placeData ->
                             navController.navigate(
-                            "place_details/${placeData.place.placeId}"
+                                "place_details/${placeData.place.placeId}"
                             )
                         },
                         { placeData, _ ->
                             navController.navigate(
-                            "city_map_fullscreen/${placeData.place.placeId}"
+                                "city_map_fullscreen/${placeData.place.placeId}"
                             )
                         }
                     )
@@ -166,9 +190,13 @@ fun MoroccoApp(
                 if (cityId != null) {
                     cityMapScreen(
                         cityId,
-                        { place ->
+                        selectedPlaceId,
+                        { placeId ->
+                            selectedPlaceId = placeId
+                        },
+                        { placeData ->
                             navController.navigate(
-                                "place_details/${place.place.placeId}"
+                                "place_details/${placeData.place.placeId}"
                             )
                         },
                         {

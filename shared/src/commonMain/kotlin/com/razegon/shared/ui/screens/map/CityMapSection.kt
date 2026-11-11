@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import com.razegon.shared.domain.model.PlaceData
+import com.razegon.shared.domain.model.WikimediaImage
 import com.razegon.shared.map.marker.toMarkerStyle
 import com.razegon.shared.ui.components.map.FullscreenIcon
 import com.razegon.shared.ui.components.map.MapMarker
@@ -27,6 +29,9 @@ import org.maplibre.compose.sources.GeoJsonData
 import org.maplibre.compose.sources.rememberGeoJsonSource
 import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.Position
+import com.razegon.shared.ui.components.map.CityPlacePreviewCard
+import org.maplibre.compose.interaction.ClickResult
+import org.maplibre.compose.interaction.MapInteractions
 
 private const val CITY_MAP_STYLE_URL =
     "https://tiles.openfreemap.org/styles/bright"
@@ -47,6 +52,10 @@ fun CityMapSection(
     onPlaceClick: (PlaceData) -> Unit,
     onExpandClick: () -> Unit = {},
     isFullscreen: Boolean = false,
+    selectedPlaceId: Int?,
+    onPlaceSelected: (Int?) -> Unit,
+    wikimediaImages: Map<Int, WikimediaImage>,
+    imageLoader: ImageLoader
 ) {
     // Ignore places without valid coordinates.
     val mappedChildren = children.filter { child ->
@@ -112,7 +121,9 @@ fun CityMapSection(
         MapMarker(
             source = placesSource,
             places = mappedChildren,
-            onPlaceClick = onPlaceClick
+            onPlaceClick = { place ->
+                onPlaceSelected(place.place.placeId)
+            }
         )
 
     }
@@ -124,7 +135,17 @@ fun CityMapSection(
     ) {
         MaplibreMap(
             state = mapState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            interactions = MapInteractions {
+                callbacks {
+                    click {
+                        onUnhandled {
+                            onPlaceSelected(null)
+                            ClickResult.Consume
+                        }
+                    }
+                }
+            }
         ) {
 
             include(MapOverlay.None)
@@ -147,6 +168,19 @@ fun CityMapSection(
                 }
             }
         }
+
+        CityPlacePreviewCard(
+            placeData = mappedChildren.firstOrNull {
+                it.place.placeId == selectedPlaceId
+            },
+            wikimediaImages = wikimediaImages,
+            imageLoader = imageLoader,
+            isFullscreen = isFullscreen,
+            onDetailsClick = onPlaceClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(12.dp)
+        )
     }
 }
 
