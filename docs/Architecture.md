@@ -1,5 +1,119 @@
 # MoroccoApp -- Architecture
 
+
+## Aktualizacja 11 listopada 2026 — architektura modułu map
+
+### Przegląd rozwoju funkcjonalności map
+
+Poniższy opis uzupełnia wcześniejszą dokumentację o kolejne warstwy
+modułu map. Opiera się na historii Git oraz udostępnionych diffach.
+Nie oznacza automatycznie, że wszystkie zachowania zostały zweryfikowane
+na każdej platformie.
+
+#### Mapa miejsca i nawigacja
+
+Commit `c74b49c` (`Implement place maps and map navigation`, 6 listopada)
+dodał `PlaceMapSection` do ekranu szczegółów miejsca, zmienił
+`PlaceDetailsContent`, `DetailsPager`, trasę nawigacji i integrację
+w `MoroccoApp`. To pierwszy udokumentowany etap mapy konkretnego miejsca.
+
+#### Model miejsca i obszary mapy
+
+Commit `6e819e0` (`Refactor Place model and map area data`, 7 listopada)
+zmienił `PlaceDto`, `PlaceMapper` i domenowy `Place`, a także dane JSON
+miast, zabytków i natury. W tym samym commicie `PlaceMapSection` został
+przeniesiony do pakietu map. Szczegóły modelu `MapArea` i granic należy
+czytać łącznie z późniejszymi wpisami dotyczącymi danych geograficznych;
+sam stat commit nie opisuje całej semantyki ograniczeń kamery.
+
+#### Lokalizacja GPS
+
+Rozwój GPS składał się z kilku odrębnych zmian:
+- `6d7125e` (7 listopada): nawigacja mapowa i podstawowa obsługa
+  lokalizacji użytkownika.
+- `1e3cfef` (8 listopada): model stanu lokalizacji i wskaźnik dokładności
+  (`LocationAccuracyIndicator`), a także aktualizacje przycisku lokalizacji.
+- `5214509` (8 listopada): ponowne centrowanie mapy na lokalizacji
+  użytkownika po kliknięciu markera.
+- `7b4e121` (8 listopada): `MapTrackingButton` i rozwinięcie obsługi
+  `PlaceMapSection` o śledzenie pozycji.
+
+Lokalizacja, centrowanie i ciągłe śledzenie są osobnymi zachowaniami.
+Nie należy opisywać ich jako jednej funkcji ani zakładać, że śledzenie
+pozostaje aktywne w każdym ekranie mapy.
+
+#### Mapy pełnoekranowe
+
+Commit `63dd202` (9 listopada) poprawił obsługę lokalizacji w kontekście
+mapy pełnoekranowej oraz integrację `PlaceDetailsScreen` i
+`PlaceDetailsContent`.
+
+Commit `cf81d92` (`Implement fullscreen city and place maps`, 9 listopada)
+wydzielił pełnoekranowe widoki map miasta i miejsca. Wprowadził m.in.
+`CityMapSection`, `FullscreenCityMapScreen` i wspólny przycisk
+`FullscreenMapIcon`, a także zmiany tras i integracji w `MoroccoApp`.
+Mapa miasta otrzymała osobną sekcję z markerami miejsc potomnych.
+
+#### Markery kategorii i clustering POI
+
+Commit `c912485` (10 listopada) wprowadził wspólny komponent
+`MapMarker` oparty na `SymbolLayer`. Właściwość `iconKey` w obiektach
+GeoJSON wskazuje ikonę odpowiednią dla kategorii miejsca. Dodano
+zasoby ikon m.in. dla plaż, miast, hoteli, rynków, zabytków, muzeów,
+natury, parków, obiektów religijnych, restauracji, sklepów i punktów
+widokowych.
+
+Logika stylowania została wydzielona do `MarkerScale`, `MarkerStyle`
+i `PlaceMarkerStyles`. Kliknięcie markera odczytuje `placeId`, odnajduje
+odpowiadający mu `PlaceData` i przekazuje go do `onPlaceClick`.
+
+W tym samym commicie źródło GeoJSON w `CityMapSection` zostało
+skonfigurowane z `cluster = true`. Potwierdza to włączenie grupowania
+obiektów źródła. Dostępny diff nie dokumentuje natomiast wyglądu
+symboli klastrów ani szczegółowego zachowania po kliknięciu klastra.
+
+#### Stan mapy po zmianie konfiguracji urządzenia
+
+Commit `e70ad01` (11 listopada) wprowadził zachowanie pełnoekranowych
+map miasta i miejsca po obrocie ekranu. Zmiany objęły m.in. stan UI,
+ViewModel mapy miasta, factory i integrację sekcji mapowych.
+
+#### Podgląd POI
+
+Commit `90fa2e8` (11 listopada) dodał `CityPlacePreviewCard`. Wybór POI
+jest przechowywany jako `selectedPlaceId: Int?` na poziomie root
+`MoroccoApp`, dzięki czemu stan może być współdzielony przez mapę
+osadzoną i pełnoekranową. `null` oznacza brak wyboru.
+
+Kliknięcie markera wybiera miejsce i pokazuje kartę podglądu; kolejne
+kliknięcie markera aktualizuje kartę. Karta prezentuje zdjęcie, nazwę,
+typ i fragment opisu. Przycisk Details korzysta z istniejącego
+`onPlaceClick`. Kliknięcie pustego obszaru mapy zamyka podgląd.
+Animacja `AnimatedContent` obsługuje wejście, wyjście i zmianę
+wybranego POI, z `contentKey` opartym na `placeId`.
+
+### Aktualny obraz przepływu City Details map
+
+```text
+City Details
+    ↓
+CityMapSection / FullscreenCityMapScreen
+    ↓
+GeoJSON source (cluster = true)
+    ↓
+MapMarker / SymbolLayer
+    ↓
+selectedPlaceId w MoroccoApp
+    ↓
+CityPlacePreviewCard
+    ↓
+Details → istniejąca nawigacja Place Details
+```
+
+Mapa miasta i mapa miejsca pozostają odrębnymi kontekstami. Nie należy
+przenosić zachowań specyficznych dla POI miasta na mapę pojedynczego
+miejsca bez sprawdzenia aktualnego kodu.
+
 ## Cel projektu
 
 MoroccoApp to nowoczesna aplikacja podróżnicza w Kotlin + Jetpack
@@ -520,777 +634,512 @@ W przyszłości planowane jest korzystanie m.in. ze zdjęć Wikimedia
 Commons. Docelowo można rozważyć model zdjęcia zawierający URL, źródło,
 autora i licencję.
 
-## Aktualizacja 30--31 sierpnia 2026
+## Aktualizacja 11 listopada 2026 --- markery POI i animowana karta podglądu
 
-### Wikimedia ImageLoader
+### Wybór miejsca na mapie miasta
 
-Konfiguracja ładowania zdjęć Wikimedia została scentralizowana w
-`data/image/WikimediaImageLoader.kt`.
-`createWikimediaImageLoader(context)` tworzy Coil `ImageLoader`
-wykorzystujący wspólny klient OkHttp z odpowiednim `User-Agent`. Dzięki
-temu konfiguracja nie jest kopiowana w `CityDetailsScreen`,
-`PlaceDetailsScreen` i `CityListItem`.
+Mapa miasta obsługuje markery POI. Kliknięcie markera ustawia wybrane
+miejsce przez `placeId`; nie powoduje natychmiastowej nawigacji do
+`Place Details`. Stan wyboru jest przechowywany na poziomie głównego
+`MoroccoApp` jako `selectedPlaceId: Int?`, dzięki czemu może być
+przekazywany zarówno do mapy osadzonej w `City Details`, jak i do mapy
+pełnoekranowej. `null` oznacza brak wybranego miejsca.
 
-Przepływ:
+### `CityPlacePreviewCard`
+
+Dodano wspólny komponent
+`ui/components/map/CityPlacePreviewCard.kt`. Karta prezentuje:
+- zdjęcie miejsca, z wykorzystaniem dostępnych danych Wikimedia i
+  istniejącego `ImageLoader`, z fallbackiem do `placeImages`;
+- nazwę miejsca;
+- typ miejsca;
+- snippet lub pierwszy opis;
+- przycisk `Szczegóły`, który uruchamia istniejący callback
+  `onPlaceClick`.
+
+Kliknięcie kolejnego markera aktualizuje zawartość karty. Kliknięcie
+pustego obszaru mapy służy do wyczyszczenia wyboru; kliknięcie samej
+karty nie powinno go czyścić.
+
+### Animacja przejść
+
+Zamiast samego `AnimatedVisibility` zastosowano `AnimatedContent`.
+Kluczem treści jest `placeId`, a przejście łączy `fadeIn` /
+`fadeOut` z `slideInVertically` / `slideOutVertically`. Dzięki temu
+animacja obejmuje pojawienie się karty, jej zamknięcie oraz zmianę
+wybranego POI.
+
+Ten sam komponent jest używany w mapie osadzonej i pełnoekranowej;
+różnica rozmiaru wynika z parametru `isFullscreen`.
+
+### Integracja i potwierdzenie
+
+Zmiany obejmują root `MoroccoApp`, `AndroidMoroccoApp`,
+`CityDetailsScreen`, `CityDetailsContent`, `CityMapSection`,
+`FullscreenCityMapScreen` oraz nowy `CityPlacePreviewCard`.
+
+Potwierdzono działanie animacji po zmianie na `AnimatedContent`.
+Build przeszedł po ujednoliceniu nullable callbacków wyboru miejsca.
+Nie należy na tej podstawie deklarować testów iOS ani pełnej weryfikacji
+wszystkich scenariuszy interakcji na obu platformach.
+
+Commit:
+`90fa2e8 feat(map): add animated POI preview card`
+
+Wcześniejsze commity tego etapu:
+- `0bc8af3` --- rozwinięcie wysokości DetailsPager na stronach opisów;
+- `e70ad01` --- zachowanie pełnoekranowych map miasta i miejsca po
+  obrocie ekranu;
+- `c912485` --- refaktoryzacja komponentów mapy i dodanie markerów POI.
+
+Na podstawie przekazanego `git log` commit `90fa2e8` znajduje się na
+lokalnym `feature/kmp-maps`. Nie ma potwierdzenia, że został wypchnięty
+na zdalny branch.
+
+## Aktualizacja 7 listopada 2026 --- Mapy KMP i lokalizacja użytkownika
+
+### Zakres aktualnej implementacji
+
+Rozpoczęto implementację map jako funkcjonalności projektowanej dla
+Kotlin Multiplatform. Wspólny kod map znajduje się w
+`shared/src/commonMain/kotlin/com/razegon/shared/`, natomiast integracje
+wymagające platformowych API są rozdzielone na odpowiednie source sety.
+
+Aktualnie zaimplementowane elementy obejmują: - przeniesienie
+`PlaceMapSection.kt` do `ui/screens/map/`; - ekran pełnoekranowej mapy
+`FullScreenMap.kt`; - podłączenie ekranu do nawigacji w `MoroccoApp`; -
+przekazywanie `placeId` w trasie pełnoekranowej mapy; - model domenowy
+`MapArea` z granicami `south`, `west`, `north`, `east` oraz
+ograniczeniami zoomu; - mapowanie `MapAreaDto` z JSON do modelu
+domenowego; - ograniczenia kamery mapy do obszaru określonego dla
+miejsca; - wspólny stan lokalizacji użytkownika i obsługę statusu
+uprawnień; - `LocationViewModel` oraz komponent `MapLocationButton`; -
+platformowe implementacje `AppSettings` dla Androida i iOS; - integrację
+MapLibre Compose, w tym moduł lokalizacyjny dla Androida.
+
+### Model danych geograficznych
+
+Model `Place` nie przechowuje już flagi `showMapButton`. Zastąpiono ją
+opcjonalnym `mapArea`, które opisuje prostokątny obszar geograficzny:
 
 ``` text
-WikimediaRetrofit
-↓
-WikimediaRepository
-↓
-WikimediaViewModel
-↓
-Map<Int, WikimediaImage>
-↓
-createWikimediaImageLoader()
-↓
-AsyncImage
+MapArea
+├── south
+├── west
+├── north
+├── east
+├── minZoom
+└── maxZoom
 ```
 
-### Wspólny DetailsPager
+Analogiczny obiekt DTO (`MapAreaDto`) jest częścią struktury danych
+JSON. `PlaceMapper` odpowiada za konwersję DTO do modelu domenowego.
+Dzięki temu konfiguracja obszaru mapy jest częścią danych miejsca, a nie
+warunkiem zakodowanym w UI.
 
-Logika `CityDetailsScreen` i `PlaceDetailsScreen` została
-zrefaktoryzowana do `DetailsPager`. Wspólny komponent obsługuje pager,
-zdjęcia, attribution, collapsing, scroll, PageIndicator, nazwę,
-tłumaczenie, snippet i descriptions.
+Brak `mapArea` pozostaje prawidłowym stanem danych. Nie należy zakładać,
+że każde miejsce ma zdefiniowany obszar ani tworzyć fikcyjnych granic.
+
+### Mapa osadzona i pełnoekranowa
+
+`PlaceMapSection` jest komponentem mapy używanym na ekranie szczegółów
+miejsca. Został przeniesiony do pakietu `ui.screens.map`. Pełnoekranowa
+mapa jest osobnym ekranem `FullScreenMap`, uruchamianym przez trasę
+zawierającą `placeId`.
+
+Przepływ nawigacji:
 
 ``` text
-CityDetailsScreen ──┐
-                    ├── DetailsPager
-PlaceDetailsScreen ─┘
+PlaceDetails
+    ↓
+PlaceMapSection
+    ↓
+FullScreenMap
+    ↓
+placeId
 ```
 
-Różnice są przekazywane przez opcjonalny slot Compose:
+Przekazywany jest identyfikator miejsca, a nie cały obiekt domenowy.
+Pełnoekranowy ekran może na tej podstawie odtworzyć kontekst miejsca i
+zastosować jego konfigurację mapy.
+
+W aktualnej implementacji używany jest styl MapLibre `bright`.
+Konfiguracja ograniczeń kamery uwzględnia `MapArea`; dla wybranych
+przypadków, np. Cieśniny Gibraltarskiej, zastosowano szczególne
+ograniczenie minimalnego zoomu.
+
+### Lokalizacja użytkownika
+
+Wspólny model stanu lokalizacji znajduje się w `commonMain`, natomiast
+dostęp do ustawień i uprawnień jest rozdzielony platformowo. W kodzie
+występują m.in.: - `LocationMode`; - `LocationPermissionStatus`; -
+`UserLocationState`; - `LocationViewModel`; - `AppSettings` oraz
+implementacje `AppSettings.android.kt` i `AppSettings.ios.kt`; -
+`MapLocationButton`.
+
+`MapLocationButton` odpowiada za prezentację akcji związanej z
+uprawnieniem. Rodzic przekazuje aktualny status oraz callbacki żądania
+uprawnienia i otwarcia ustawień. Obsługa cyklu życia i decyzja o
+powrocie z ustawień pozostają po stronie ekranu nadrzędnego.
+
+Na mapie osadzono warstwę lokalizacji MapLibre. Przetestowano build i
+działanie aplikacji na dwóch urządzeniach Android; użytkownik
+potwierdził poprawne działanie przepływu GPS. Sam fakt istnienia
+implementacji `iosMain` nie potwierdza jeszcze uruchomienia ani
+poprawnego działania na iOS.
+
+### Dane testowe GPS
+
+W `ma_monuments.json` znajduje się tymczasowy punkt testowy
+`gps_test_point_warsaw` o identyfikatorze `99001`, zlokalizowany w
+Warszawie. Pozostaje w danych na czas dalszych testów GPS. Nie jest
+obiektem docelowej bazy miejsc Maroka i powinien zostać usunięty po
+zakończeniu testów.
+
+### Granice potwierdzonej funkcjonalności
+
+Potwierdzono implementację podstawowej mapy osadzonej i pełnoekranowej,
+obszaru `MapArea`, ograniczeń kamery oraz podstawowego przepływu
+lokalizacji na Androidzie.
+
+Nie należy jeszcze uznawać za ukończone: - pełnego testowania iOS na
+urządzeniu; - śledzenia ruchu użytkownika w tle lub w trybie ciągłym; -
+automatycznego wyłączania śledzenia po ręcznym przesunięciu mapy i
+wznowienia go przyciskiem, jeśli nie zostało osobno przetestowane; - map
+offline; - markerów POI i filtrowania kategorii; - granic
+GeoJSON/polygonów --- `MapArea` jest prostokątnym ograniczeniem
+geograficznym, a nie geometrią administracyjną.
+## Aktualizacja 5 listopada 2026 --- zakończenie głównego etapu migracji KMP
+
+### Aktualny stan architektury
+
+Główna część migracji istniejącego projektu do Kotlin Multiplatform
+została scalona z `main` i wypchnięta do `origin/main`.
+
+Potwierdzone commity:
+
+``` text
+b8db742 Move app navigation and result repositories to shared
+67248a5 Complete shared UI and ViewModel migration
+```
+
+Po scaleniu lokalny `main` i `origin/main` wskazywały na `67248a5`, a
+`git status` potwierdzał czyste i zsynchronizowane repozytorium.
+
+W ramach tego etapu: - przeniesiono dalszą część nawigacji do
+`shared`; - przeniesiono repozytoria wyników Quiz i Arcade do
+`shared`; - przeniesiono wspólne ekrany Compose i ViewModele do
+`shared`; - pozostawiono w module Android elementy wymagające integracji
+z platformą Android; - dodano wspólny `AppContainer` w `shared`, który
+składa współdzielone repozytoria i otrzymuje zależności platformowe,
+takie jak `AppDatabase` oraz `HttpClientEngine`.
+
+Przepływ zależności jest obecnie organizowany wokół wspólnego modułu, a
+platforma dostarcza elementy, których `commonMain` nie może samodzielnie
+utworzyć.
+
+Schemat odpowiedzialności:
+
+``` text
+Android application
+    ├── platform entry point / Activity
+    ├── platform database creation
+    ├── platform HTTP engine
+    └── platform-specific integrations
+             ↓
+        shared AppContainer
+             ↓
+    shared repositories / ViewModels / Compose UI
+```
+
+### Granica między kodem wspólnym i platformowym
+
+Nowy kod funkcjonalny należy projektować najpierw z myślą o
+`commonMain`. Kod zależny od Android SDK, UIKit, konkretnego silnika
+systemowego lub platformowego cyklu życia powinien pozostać w
+odpowiednim source secie i być udostępniany przez możliwie wąski
+interfejs.
+
+Nie oznacza to, że każdy plik musi znajdować się w `commonMain`. Celem
+jest współdzielenie logiki, modeli, stanu i UI tam, gdzie jest to
+uzasadnione, przy zachowaniu jawnych granic platformowych.
+
+### Co nie jest jeszcze potwierdzone
+
+Scalenie migracji z `main` nie jest równoznaczne z ukończeniem iOS. Na
+dzień tej aktualizacji: - nie potwierdzono builda i uruchomienia
+aplikacji na iOS; - nie zweryfikowano wszystkich zachowań na
+rzeczywistym urządzeniu iOS; - nie wykonano końcowego audytu wszystkich
+zależności i plików pozostawionych w `app`; - nie zakończono porządków
+po migracji.
+
+Dlatego migrację istniejącego kodu do wspólnej architektury można uznać
+za zaawansowaną i w głównej części zakończoną, ale gotowość produkcyjna
+obu platform wymaga osobnej weryfikacji.
+
+### Planowana funkcjonalność map
+
+Mapy będą projektowane od początku jako funkcjonalność KMP. Nie należy
+najpierw tworzyć implementacji opartej wyłącznie na Androidowym
+`MapFragment`, Google Maps SDK lub `osmdroid`, a następnie planować jej
+przepisywania.
+
+Pierwszy zakres funkcjonalny:
+
+1.  **Mapa w Place Details** --- na pierwszej stronie szczegółów miejsca
+    ma pojawić się mapa z granicami danego obszaru. Geometria będzie
+    pochodzić z danych GeoJSON, o ile jest dostępna dla danego miejsca.
+2.  **Mapa miasta w City Details** --- w późniejszym etapie użytkownik
+    będzie mógł przełączać widok pomiędzy obecnym `LazyRow` kart miejsc
+    a mapą miasta z markerami miejsc.
+3.  **Interakcja z markerem** --- marker ma udostępniać tytuł oraz
+    krótki snippet (albo sam tytuł); wybranie miejsca ma umożliwiać
+    przejście do jego `Place Details`.
+
+### Zasady architektoniczne dla map
+
+-   Geometrie GeoJSON, współrzędne, identyfikatory miejsc i relacje
+    miasto--miejsce powinny być niezależne od biblioteki renderującej
+    mapę.
+-   Wspólna logika wyboru miejsca, filtrowania markerów, stanu kamery i
+    prezentacji informacji powinna być umieszczona w `shared`, jeśli nie
+    wymaga API platformowego.
+-   Renderowanie mapy i integracje wymagające konkretnej platformy
+    należy odizolować za wspólnym API lub komponentem.
+-   Nie należy uzależniać modeli domenowych od klas SDK mapowego.
+-   Obsługa braku geometrii lub współrzędnych musi być jawna; brak
+    danych geograficznych nie może powodować awarii ekranu szczegółów.
+
+**MapLibre Compose jest kandydatem do sprawdzenia**, ponieważ jest
+rozwijany z myślą o Compose Multiplatform. Przed przyjęciem go jako
+docelowego silnika trzeba zweryfikować aktualne wersje, status
+Android/iOS, wymagane source sety, dostępność potrzebnych funkcji
+(GeoJSON, poligony, markery, zdarzenia, style, gesty) oraz sposób
+obsługi offline. Nie traktować trybu offline ani pełnej zgodności
+funkcji obu platform jako potwierdzonych, dopóki nie zostaną
+przetestowane.
+
+### Najbliższe działania techniczne
+
+1.  Wykonać audyt pozostałych zależności Android-only i elementów w
+    `app`.
+
+2.  Sprawdzić odłożone porządki po migracji:
+    `AndroidJsonResourceReader`, stary Androidowy
+    `QuizQuestionDataSource` oraz rejestrację Android assets --- usuwać
+    wyłącznie po sprawdzeniu referencji.
+
+3.  Zweryfikować aktualne konfiguracje `shared` i `app` oraz testy.
+
+4.  Przygotować osobny branch dla map dopiero po zatwierdzeniu
+    aktualizacji dokumentacji na `main`.
+
+5.  ## Przetestować MapLibre Compose na Androidzie jako pierwszy pionowy wycinek funkcjonalny, ale od razu z kodem i modelem danych zaprojektowanymi pod KMP.
+## Aktualizacja 3 listopada 2026 --- etap `feature/kmp-ui-migration`
+
+### Wspólne definicje tras
+
+Definicje tras nawigacyjnych zostały przeniesione z modułu Android `app`
+do:
+
+``` text
+shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt
+```
+
+Dzięki temu definicje `Screen` są dostępne w kodzie wspólnym. Samo
+przeniesienie tras **nie oznacza jeszcze**, że cała implementacja
+nawigacji ani wszystkie ekrany zostały przeniesione do `shared`. Należy
+rozróżniać współdzielone definicje tras od platformowej integracji
+nawigacji i UI.
+
+W ramach tego etapu usunięto również pusty placeholder
+`shared/.../MoroccoApp.kt`, aby nie pozostawiać w module wspólnym pliku,
+który nie reprezentował rzeczywistego punktu wejścia aplikacji.
+
+### Android UI
+
+W module `app` wprowadzono poprawki obsługi edge-to-edge w
+`MainActivity` oraz powiązanych ekranach/komponentach UI
+(`CitiesScreen`, `PlacesScreen`, `DetailsPager`). Są to zmiany warstwy
+Android UI; nie należy na ich podstawie wnioskować, że te ekrany są już
+wspólne dla Androida i iOS.
+
+### Odporność odpowiedzi Wikimedia
+
+W `WikimediaResponse.kt` pole `imageInfo` otrzymało domyślną wartość
+pustej listy. Odpowiedź API, w której brakuje tego pola, może dzięki
+temu zostać zdeserializowana bez traktowania braku `imageInfo` jako
+błędu wymagającego wartości nie-null.
+
+### Android Network Security Config --- kompromis kompatybilności
+
+Manifest Androida wskazuje `@xml/network_security_config`. Aktualna
+konfiguracja bazowa ufa zarówno systemowym certyfikatom CA, jak i
+certyfikatom CA zainstalowanym przez użytkownika:
+
+``` xml
+<base-config>
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
+```
+
+Takie ustawienie zostało zachowane po teście na tablecie Huawei z
+Androidem 7: przy tej konfiguracji obrazy wyświetlały się poprawnie,
+natomiast zawężona konfiguracja dopuszczająca certyfikaty użytkownika
+tylko dla `commons.wikimedia.org` i `upload.wikimedia.org` powodowała,
+że część zdjęć nie była wyświetlana.
+
+**Ostrzeżenie bezpieczeństwa:** `src="user"` w `base-config` oznacza
+zaufanie do certyfikatów CA zainstalowanych przez użytkownika dla
+połączeń objętych konfiguracją aplikacji, a nie wyłącznie do jednego
+wskazanego certyfikatu lub jednej domeny. Jest to świadomy kompromis
+przyjęty dla kompatybilności ze starym urządzeniem. Nie należy opisywać
+tej konfiguracji jako ograniczonej wyłącznie do Wikimedia.
+
+Jest to konfiguracja Android Network Security Config. Nie konfiguruje
+ona zaufania TLS na iOS; platforma iOS ma odrębny mechanizm polityki
+połączeń sieciowych.
+
+### Stan gałęzi i zakres potwierdzonych zmian
+
+Zmiany etapu zostały zapisane na branchu `feature/kmp-ui-migration` i
+wypchnięte do `origin/feature/kmp-ui-migration`.
+
+Potwierdzone commity:
+
+``` text
+b90c59e Add Android network security config for user certificates
+4801d34 Handle missing Wikimedia image info
+3a48cf1 Improve Android edge-to-edge UI handling
+cbdbb36 Move navigation routes to shared module
+```
+
+## Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.
+## Aktualizacja 2 listopada 2026 --- miniaturki Wikimedia i współbieżność
+
+### Model metadanych obrazu
+
+`WikimediaImage` przechowuje zarówno oryginalny adres pliku, jak i dane
+miniatury:
 
 ``` kotlin
-content: @Composable () -> Unit = {}
-```
-
-City przekazuje `LazyRow` miejsc, Place nie przekazuje dodatkowej
-zawartości.
-
-### Wspólne tworzenie stron
-
-Wcześniejsze `createCityPages()` i `createPlacePages()` zostały
-zastąpione wspólnym `createPages()`. Dzięki temu sposób mapowania
-`WikimediaImageRef`, lokalnych URL-i i opisów jest jeden dla obu
-ekranów.
-
-### Odpowiedzialność layoutu
-
-W `DetailsPager` `Box` zawiera wyłącznie hero image i elementy nakładane
-na zdjęcie (`WikimediaAttributionIcon`, `PageIndicator`). Nazwa,
-translate, snippet, descriptions i opcjonalny `content()` znajdują się w
-nadrzędnym `Column`, dzięki czemu nie nachodzą na zdjęcie.
-
-### Przyszła Application
-
-Projekt obecnie nie ma własnej klasy `Application`. Jest to świadoma
-sytuacja na obecnym etapie. Przy planowanym dodaniu map OSM konfiguracja
-aplikacji może zostać przeniesiona do własnej klasy `Application`,
-podobnie jak wcześniej w GlobeTrotter.
-
-## Aktualizacja 31 sierpnia -- 1 września 2026
-
-### Źródła danych online
-
-Do architektury dołączono Wikidata jako źródło dynamicznych danych dla
-obiektów posiadających `wikidataId`. Wikimedia pozostaje źródłem
-informacji o zdjęciach i ich attribution.
-
-``` text
-Place
-  └── wikidataId
-        ↓
-WikidataRepository
-        ↓
-WikidataInfo
-        ↓
-CityDetails / PlaceDetails
-```
-
-Dla City `WikidataInfo` zawiera obecnie `population`, `area`,
-`elevation` oraz `inception: WikidataTime?`.
-
-### Repository i cache
-
-Repository jest nadal interfejsem w `domain/repository`, a implementacja
-znajduje się w `data/repository`. Do danych online dodano interfejsy
-cache w domenie oraz implementacje pamięciowe w warstwie data.
-
-``` text
-domain/repository
-├── WikidataRepository
-├── WikidataCache
-└── WikimediaCache
-
- data/repository
-├── WikidataRepositoryImpl
-└── WikimediaRepositoryImpl
-
- data/cache
-├── WikidataMemoryCache
-└── WikimediaMemoryCache
-```
-
-### `MyApp` i współdzielone zależności
-
-Projekt ma już własną klasę `MyApp : Application`. Na obecnym etapie
-przechowuje wspólne instancje `WikidataMemoryCache` i
-`WikimediaMemoryCache`. Jest to punkt centralizacji zależności, który w
-przyszłości może zostać rozszerzony o konfigurację OSM i inne elementy
-infrastruktury.
-
-### Wspólny klient HTTP
-
-Konfiguracja `User-Agent` została wydzielona do wspólnego klienta HTTP,
-wykorzystywanego przez usługi Wikimedia/Wikidata oraz Coil. Eliminuje to
-kolejne duplikaty konfiguracji i centralizuje zachowanie sieciowe.
-
-### Wikimedia -- ograniczenie requestów
-
-`WikimediaViewModel` ogranicza liczbę jednoczesnych requestów do trzech
-(`Semaphore(3)`) oraz blokuje równoległe ponowne pobieranie tego samego
-`pageId`. Repository korzysta z `WikimediaCache`, dzięki czemu dane
-pobrane wcześniej w bieżącej sesji mogą być używane bez kolejnego
-requestu.
-
-### Loading obrazu
-
-Stan ładowania właściwego pliku obrazu jest obecnie kontrolowany przez
-Coil w `DetailsPager`, a nie przez stan pobierania metadanych Wikimedia.
-`LinearProgressIndicator` jest wyświetlany podczas `onLoading` i znika
-przy `onSuccess`/`onError`.
-
-### Offline
-
-Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po
-utracie sieci w obrębie tej samej sesji. Cache znika po zakończeniu
-procesu aplikacji. Trwały storage nie został jeszcze wdrożony. Room
-pozostaje przyszłym krokiem, kiedy potrzebny będzie offline po
-restarcie.
-
-### Planowane rozszerzenia
-
-W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a
-następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane
-aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model
-domenowy i przepływy online/offline.
-
-## Aktualizacja 2--3 września 2026 -- Room, Git i Quiz
-
-### Trwały cache z Room
-
-Do projektu dodano Room 3 oraz KSP. Room przechowuje lokalnie metadane
-Wikidata i Wikimedia, dzięki czemu dane mogą być odzyskane po
-zakończeniu procesu aplikacji.
-
-Utworzono: - `AppDatabase` - `WikidataEntity` / `WikidataDao` -
-`WikimediaEntity` / `WikimediaDao` - `WikidataMapper` -
-`WikimediaMapper`
-
-Mechanizm dostępu do danych:
-
-``` text
-Wikidata / Wikimedia metadata:
-MemoryCache → Room → API
-API → Room → MemoryCache → UI
-```
-
-Dla obrazów właściwy plik jest niezależnie obsługiwany przez Coil i jego
-persistent `DiskCache`.
-
-``` text
-Wikimedia image URL
-        ↓
-      Coil
-        ↓
-   DiskCache
-```
-
-`MyApp : Application` przechowuje obecnie wspólne MemoryCache, bazę Room
-oraz współdzielony `WikimediaImageLoader`.
-
-### Test offline po restarcie
-
-Przetestowano działanie persistent cache po zakończeniu procesu
-aplikacji i ponownym uruchomieniu bez internetu. Logcat wykazał odczyty
-`ROOM CACHE HIT`, a użytkownik potwierdził wyświetlenie zapisanych zdjęć
-offline.
-
-### Git i organizacja pracy
-
-Projekt został podłączony do Git i GitHub. Praca nad funkcjami odbywa
-się na osobnych branchach.
-
-Aktualna historia:
-
-``` text
-main
-├── chore: initialize MoroccoApp repository
-├── chore: configure Room and KSP
-├── feat: add persistent Wikidata cache
-└── feat: add persistent Wikimedia cache
-```
-
-Branch `feature/room` został scalony do `main` metodą `Fast-forward`.
-
-Następnie utworzono branch `feature/quiz`.
-
-### Quiz -- aktualna architektura
-
-Pierwsza wersja quizu korzysta z osobnego modelu, Repository i
-ViewModelu.
-
-``` text
-HomeScreen
-    ↓
-Navigation
-    ↓
-QuizScreen
-    ↓
-QuizViewModel
-    ↓
-QuizRepository
-    ↓
-QuizQuestion
-```
-
-Ukończono: - `QuizQuestion` - `QuizRepository` - `QuizRepositoryImpl` -
-`QuizViewModel` - `QuizViewModelFactory` - `QuizScreen` - trasę `quiz` w
-Navigation - przycisk wejścia do quizu na `HomeScreen`
-
-Quiz zawiera obecnie 10 pytań. Każde pytanie ma 4 odpowiedzi i dokładnie
-jedną poprawną odpowiedź.
-
-Po wybraniu odpowiedzi użytkownik nie może jej zmienić. Poprawna
-odpowiedź jest oznaczana na zielono, a błędna wybrana odpowiedź na
-czerwono. Na ostatnim pytaniu przycisk zmienia się z `NASTĘPNE` na
-`PODSUMOWANIE`.
-
-### Najbliższe elementy quizu
-
-``` text
-QuizScreen
-    ↓
-QuizSummaryScreen
-    ↓
-nickname + score + totalQuestions + date
-    ↓
-Room
-    ↓
-TOP 10 / TOP 20
-```
-
-## Aktualizacja 14 września 2026 -- aktualny stan po domknięciu Quiz MVP
-
-### Quiz -- źródło pytań
-
-Pytania quizowe nie są już przechowywane jako hardkodowana lista w
-`QuizRepositoryImpl`. Są przechowywane w pliku:
-
-``` text
-app/src/main/assets/quiz/questions.json
-```
-
-Każdy rekord zawiera:
-
-``` text
-id
-difficulty
-question
-answers
-correctAnswerIndex
-```
-
-Aktualnie baza zawiera 50 pytań:
-
-``` text
-VERY_EASY  → 10
-EASY       → 10
-MEDIUM     → 10
-HARD       → 10
-VERY_HARD  → 10
-```
-
-### Przepływ danych quizu
-
-``` text
-questions.json
-      ↓
-QuizQuestionDataSource
-      ↓
-Gson
-      ↓
-QuizQuestionDto
-      ↓
-QuizQuestionMapper
-      ↓
-QuizQuestion
-      ↓
-QuizRepository
-      ↓
-QuizViewModel
-      ↓
-Compose UI
-```
-
-`QuizQuestionDto` odwzorowuje format JSON, natomiast `QuizQuestion` jest
-modelem domenowym. Konwersja `difficulty` z tekstu JSON do
-`QuizDifficulty` odbywa się w mapperze.
-
-### Trudność quizu
-
-`QuizDifficulty` znajduje się w `domain/model` i posiada pięć poziomów:
-
-``` kotlin
-VERY_EASY
-EASY
-MEDIUM
-HARD
-VERY_HARD
-```
-
-Poziom jest wybierany na osobnym `QuizDifficultyScreen`.
-`QuizViewModel.startQuiz(difficulty)` zapamiętuje wybrany poziom i
-pobiera odpowiednie pytania przez Repository.
-
-### Klasyczny quiz
-
-Klasyczny quiz składa się z 10 pytań. Każde pytanie posiada 4 odpowiedzi
-i dokładnie jedną poprawną. Po udzieleniu odpowiedzi wybór zostaje
-zablokowany. Poprawna odpowiedź jest oznaczana na zielono, a wybrana
-błędna odpowiedź na czerwono.
-
-### Przerwanie quizu
-
-`QuizScreen` posiada mały przycisk `X` w prawym górnym rogu. Przed
-opuszczeniem rozgrywki wyświetlany jest `AlertDialog` z potwierdzeniem.
-
-``` text
-X
-↓
-potwierdzenie
-├── ZOSTAŃ → pozostaje w quizie
-└── WYJDŹ → reset stanu + powrót do ekranu startowego quizu
-```
-
-Przerwanie quizu nie zapisuje wyniku. Resetowany jest bieżący stan
-rozgrywki.
-
-### Wyniki quizu i Room
-
-`QuizResult` zawiera obecnie:
-
-``` kotlin
-nickname
-difficulty
-score
-totalQuestions
-date
-```
-
-Wynik jest zapisywany przez `QuizResultRepository` do Room. Ranking jest
-sortowany przede wszystkim po liczbie poprawnych odpowiedzi
-(`score DESC`). Poziom trudności jest informacją prezentowaną obok
-wyniku i nie daje automatycznego bonusu w rankingu.
-
-Przykład:
-
-``` text
-10/10 MEDIUM
-9/10 HARD
-```
-
-### Quiz UI i Theme
-
-Dla aplikacji wprowadzono własny Material 3 Theme dla Light i Dark Mode.
-Dynamic colors są wyłączone.
-
-Wspólne elementy Theme obejmują:
-
-``` text
-ColorScheme
-Shapes
-Typography
-```
-
-`Shape.kt` definiuje wspólną skalę zaokrągleń. Ekrany startowy i wyboru
-trudności korzystają z tej samej hierarchii typografii i spacingu.
-
-### Git
-
-Etap `feature/quiz` został ukończony, przetestowany i scalony do `main`
-metodą `Fast-forward`. Zaktualizowany `main` został wypchnięty do
-GitHub.
-
-Następnym etapem będzie osobny branch dla `Arcade Mode`.
-
-## Aktualizacja 3 października 2026 -- Arcade Mode
-
-### Architektura Arcade
-
-Arcade korzysta z istniejącego `QuizRepository`, dlatego wykorzystuje tę
-samą pulę 50 pytań co klasyczny Quiz.
-
-``` text
-ArcadeScreen
-    ↓
-ArcadeViewModel
-    ↓
-QuizRepository
-    ↓
-QuizQuestionDataSource
-    ↓
-questions.json
-```
-
-`ArcadeViewModel` zarządza stanem pojedynczej rozgrywki. Stan jest
-przechowywany w `ArcadeGameState` i obejmuje m.in. aktualne pytanie,
-wybraną odpowiedź, wynik, pozostały czas, identyfikatory wykorzystanych
-pytań oraz informację o zakończeniu gry.
-
-### Zasady rozgrywki
-
-Arcade wykorzystuje wszystkie pytania dostępne w `QuizRepository`. W
-jednej rozgrywce pytanie nie może pojawić się ponownie.
-
-``` text
-czas początkowy: 45 s
-poprawna odpowiedź: +5 s, +1 punkt
-błędna odpowiedź: -5 s
-koniec gry: 0 s
-wynik: liczba poprawnych odpowiedzi
-```
-
-Po odpowiedzi przyciski odpowiedzi zostają zablokowane. Następne pytanie
-jest losowane dopiero po przejściu dalej. `usedQuestionIds` pozwala
-wykluczyć pytania wykorzystane wcześniej w tej samej rozgrywce.
-
-### Stan Arcade
-
-`ArcadeGameState` jest osobnym modelem stanu, ponieważ Arcade ma inne
-reguły niż klasyczny quiz.
-
-``` text
-ArcadeGameState
-├── currentQuestion
-├── selectedAnswerIndex
-├── isAnswerChecked
-├── score
-├── remainingTimeSeconds
-├── usedQuestionIds
-└── isGameOver
-```
-
-Oddzielenie stanu Arcade od `QuizViewModel` pozwala zachować osobną
-logikę gry bez dokładania timerów i dodatkowych stanów do klasycznego
-quizu.
-
-### Timer
-
-Timer jest zarządzany przez `ArcadeViewModel`. Odliczanie jest
-uruchamiane razem z rozpoczęciem gry i zatrzymywane po zakończeniu
-rozgrywki lub opuszczeniu Arcade.
-
-Zmiana czasu po odpowiedzi jest wykonywana w ViewModelu, a UI jedynie
-obserwuje `remainingTimeSeconds` przez `StateFlow`.
-
-### Zakończenie i wyjście z Arcade
-
-`ArcadeScreen` posiada przycisk `X` w prawym górnym rogu. Przed
-opuszczeniem aktywnej rozgrywki wyświetlany jest `AlertDialog`.
-
-``` text
-X
-↓
-potwierdzenie
-├── ZOSTAŃ → powrót do gry
-└── WYJDŹ → zakończenie/reset bieżącej rozgrywki
-```
-
-Niezakończona rozgrywka nie jest zapisywana do rankingu.
-
-### Wynik Arcade
-
-Dla Arcade utworzono osobny model domenowy:
-
-``` kotlin
-data class ArcadeResult(
-    val nickname: String,
-    val score: Int,
-    val date: Long
+data class WikimediaImage(
+    val title: String,
+    val url: String,
+    val width: Int,
+    val height: Int,
+    val thumbnailUrl: String?,
+    val thumbnailWidth: Int?,
+    val thumbnailHeight: Int?,
+    val author: String?,
+    val license: String?,
+    val licenseUrl: String?,
+    val filePageUrl: String?,
+    val credit: String?
 )
 ```
 
-Wynik jest niezależny od `QuizResult`, ponieważ klasyczny quiz zapisuje
-dodatkowo poziom trudności i liczbę pytań.
+Pola miniatury są nullable, ponieważ API nie musi zwrócić miniatury dla
+każdego pliku. Informacje o miniaturze są przenoszone przez cały
+przepływ danych: DTO Wikimedia → mapper → `WikimediaImage` →
+`WikimediaEntity` w Room. `WikimediaMapper` mapuje je w obie strony.
 
-### Room -- ranking Arcade
+`KtorWikimediaDataSource` wysyła parametr `iiurlwidth=1200`. Wikimedia
+może zwrócić najbliższy dostępny wariant, dlatego rzeczywista szerokość
+pliku miniatury może różnić się od żądanej.
 
-Arcade ma osobną tabelę Room:
+### Wybór adresu obrazu w UI
 
-``` kotlin
-@Entity
-data class ArcadeResultEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val nickname: String,
-    val score: Int,
-    val date: Long
-)
-```
-
-`ArcadeResultDao` udostępnia zapis wyniku oraz pobranie TOP 10. Ranking
-sortuje wyniki po `score DESC`, a przy takim samym wyniku po `date ASC`.
-
-Przepływ zapisu:
-
-``` text
-ArcadeScreen
-    ↓
-ArcadeResultViewModel
-    ↓
-ArcadeResultRepository
-    ↓
-ArcadeResultDao
-    ↓
-Room
-```
-
-Mapper rozdziela model domenowy `ArcadeResult` od encji Room
-`ArcadeResultEntity`.
-
-### Zapis wyniku
-
-Wynik można zapisać dopiero po zakończeniu gry. Nick jest ograniczony do
-15 znaków i nie może być pusty po usunięciu białych znaków.
-
-Po zapisaniu wynik jest blokowany przed ponownym zapisem w tej samej
-rozgrywce. Dopiero wtedy dostępne są przyciski:
-
-``` text
-ZAPISZ WYNIK
-      ↓
-WYNIK ZAPISANY
-      ↓
-TOP 10 ARCADE
-MENU QUIZU
-```
-
-### Ranking Arcade
-
-`ArcadeRankingScreen` pobiera wyniki przez `ArcadeResultViewModel` i
-wyświetla 10 najlepszych zapisanych wyników.
-
-Ranking Arcade jest oddzielony od rankingu klasycznego quizu. Nie
-korzysta z `QuizResultEntity` ani `QuizResultDao`.
-
-### Room Migration 1 → 2
-
-Dodanie tabeli `ArcadeResultEntity` wymagało zwiększenia wersji
-`AppDatabase` i dodania migracji `MIGRATION_1_2`. Migracja tworzy tabelę
-wyników Arcade bez usuwania istniejących danych cache i wyników
-klasycznego quizu.
-
-``` text
-Room v1
-  ↓ MIGRATION_1_2
-Room v2
-├── WikidataEntity
-├── WikimediaEntity
-├── QuizResultEntity
-└── ArcadeResultEntity
-```
-
-### Integracja w `MoroccoApp`
-
-W `MyApp` znajduje się wspólna instancja `AppDatabase`. W `MoroccoApp`
-tworzony jest osobny `ArcadeResultRepository` i `ArcadeResultViewModel`
-na podstawie `ArcadeResultDao`.
-
-Dzięki temu UI nie zna Room bezpośrednio:
-
-``` text
-ArcadeScreen
-↓
-ArcadeResultViewModel
-↓
-ArcadeResultRepository
-↓
-ArcadeResultDao
-```
-
-### Navigation Arcade
-
-Arcade posiada osobne trasy dla gry i rankingu:
-
-``` text
-QuizStartScreen
-├── Quiz
-├── Arcade
-│    ↓
-│    ArcadeScreen
-│    ↓
-│    ArcadeRankingScreen
-└── QuizRanking
-```
-
-Uruchomienie Arcade wywołuje `arcadeViewModel.startGame()` przed
-przejściem do ekranu gry. Dzięki temu powrót z `ArcadeRankingScreen` nie
-uruchamia automatycznie nowej rozgrywki i zachowuje bieżący stan gry.
-
-### Build i testy
-
-Po kolejnych logicznych zmianach Arcade wykonywano Build i testy ręczne.
-Sprawdzono m.in. przebieg rozgrywki, brak powtórzeń pytań, zmianę czasu,
-zapis wyniku, ochronę przed wielokrotnym zapisem, ranking oraz powrót do
-menu quizu.
-
-## Aktualizacja 4 października 2026 -- KMP: migracja modelu Place do PlaceData
-
-### Cel etapu
-
-Rozpoczęto właściwą migrację domeny do Kotlin Multiplatform. Pierwszym
-krokiem było oddzielenie danych strukturalnych miejsca od treści
-prezentacyjnych i usunięcie zależności Android `R` z modelu
-współdzielonego.
-
-### Współdzielone modele domenowe
-
-Modele platform-independent znajdują się w:
-
-``` text
-shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/
-```
-
-Aktualnie znajdują się tam:
-
--   `Place`
--   `PlaceData`
--   `PlaceContent`
--   `PlaceFallback`
--   `PlaceType`
--   `WikimediaImageRef`
-
-`Place` zawiera dane strukturalne miejsca, m.in. `placeId`, `placeType`,
-`parentPlaceId`, `wikidataId`, referencje Wikimedia, lokalne obrazy oraz
-dane mapy.
-
-`PlaceContent` zawiera treść prezentacyjną:
+Listy miejsc i miast oraz `DetailsPager` preferują miniaturę, a w razie
+jej braku używają oryginalnego URL:
 
 ``` kotlin
-data class PlaceContent(
-    val id: String,
-    val name: String,
-    val translation: String? = null,
-    val snippet: String? = null,
-    val weather: String? = null,
-    val openingHours: String? = null,
-    val descriptions: List<String> = emptyList(),
-    val fallback: PlaceFallback? = null,
-)
+image.thumbnailUrl ?: image.url
 ```
 
-`PlaceData` łączy oba modele:
+W ekranach list lokalne `placeImages` pozostają dodatkowym fallbackiem,
+gdy metadane Wikimedia nie są jeszcze dostępne. W `DetailsPage`
+przechowywany jest `pageId`, aby `DetailsPager` mógł pobrać właściwe
+metadane i nadal wyświetlać atrybucję Wikimedia. Wybór miniatury nie
+usuwa informacji o autorze, licencji ani stronie pliku.
+
+### Cache metadanych Wikimedia
+
+`WikimediaRepositoryImpl` korzysta z trzech poziomów źródła danych, w
+tej kolejności:
+
+1.  `WikimediaCache` --- cache w pamięci,
+2.  `WikimediaPersistentCache` --- trwały cache oparty na Room,
+3.  `WikimediaDataSource` --- API Wikimedia, jeśli danych nie ma w obu
+    cache.
+
+Wynik API jest zapisywany w Room i cache pamięciowym. Odczyt z Room
+uzupełnia również cache pamięciowy. Błąd odczytu lub zapisu Room jest
+obsługiwany i nie powinien blokować próby pobrania z API.
+
+### Bezpieczna aktualizacja stanu obrazów
+
+`WikimediaViewModel` przechowuje wyniki w:
 
 ``` kotlin
-data class PlaceData(
-    val place: Place,
-    val content: PlaceContent,
-)
+private val _images =
+    MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
+
+val images: StateFlow<Map<Int, WikimediaImage>> = _images
 ```
 
-### Aktualny przepływ danych
+Wiele korutyn może kończyć pobieranie w zbliżonym czasie. Aktualizacja
+mapy musi więc być atomowa:
 
-W warstwach, które zostały już zmigrowane, obowiązuje:
-
-``` text
-DataSource
-    ↓
-List<PlaceData>
-    ↓
-Repository
-    ↓
-ViewModel
-    ↓
-UiState
-    ↓
-Compose UI
+``` kotlin
+if (image != null) {
+    _images.update { current ->
+        current + (pageId to image)
+    }
+}
 ```
 
-Nie stosujemy mapowania `PlaceData → Place` tylko po to, aby zachować
-stary przepływ danych.
+Nie należy zastępować tego operacją odczyt--modyfikacja--zapis:
 
-### Zmigrowane elementy
-
-Do `PlaceData` zostały dostosowane:
-
--   `PlacesRepository`
--   `PlacesRepositoryImpl`
--   `PlacesViewModel`
--   `PlacesUiState`
--   `CitiesViewModel`
--   `CitiesUiState`
--   `CityDetailsUiState`
--   `CitiesScreen`
--   `CityListItem`
--   `CityDetailsScreen`
--   wspólne `createPages()`
--   `DetailsPage`
-
-`CityDetailsUiState` przechowuje obecnie `PlaceData?` dla głównego
-miasta oraz `List<PlaceData>` dla jego dzieci.
-
-### Treść opisów
-
-`PlaceContent.descriptions` oraz `DetailsPage.description` używają
-obecnie `String` / `String?` zamiast wcześniejszych identyfikatorów
-`R.string`.
-
-Jest to rozwiązanie przejściowe. Docelowo treści zostaną przeniesione do
-JSON. Wtedy zostanie ustalona finalna strategia lokalizacji oraz
-formatowania akapitów.
-
-### Aktualny DataSource
-
-`MoroccoDataSource` nadal znajduje się w module Android `app` i zawiera
-odwołania do `R.string.*`. Jest to świadomie pozostawiony kolejny etap
-migracji.
-
-Docelowy kierunek:
-
-``` text
-JSON
-    ↓
-shared data layer
-    ↓
-List<PlaceData>
-    ↓
-Repository
-    ↓
-ViewModel
-    ↓
-Compose UI
+``` kotlin
+_images.value += (pageId to image)
 ```
 
-Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie
-zaprojektowany po przeanalizowaniu całego obecnego `MoroccoDataSource`.
+Przy równoległych zapisach taka operacja może utracić aktualizację innej
+korutyny. `update` używa mechanizmu CAS i ponawia obliczenie, jeżeli
+stan zmienił się między odczytem a zatwierdzeniem. Lambda przekazana do
+`update` powinna być wolna od efektów ubocznych, ponieważ może zostać
+wykonana więcej niż raz.
 
-### Stan po etapie
+`loadingImagesInternal` jest osobnym stanem zbioru identyfikatorów
+aktualnie pobieranych obrazów. Dodawanie identyfikatora wykorzystuje
+`compareAndSet`, a jego usuwanie `update`. `Semaphore(5)` ogranicza
+liczbę równoległych operacji repozytorium do pięciu; pozostałe korutyny
+oczekują na permit.
 
--   Gradle Sync: OK
--   Build: OK
--   aplikacja uruchamia się poprawnie
--   lista miast działa
--   szczegóły miasta działają
--   zdjęcia Wikimedia działają
--   opisy działają
--   lista miejsc przypisanych do miasta działa
+### Weryfikacja
 
-Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do
-JSON.
+-   Test `:shared:testAndroidHostTest` zakończył się `BUILD SUCCESSFUL`.
+-   Build `:app:assembleDevDebug` zakończył się `BUILD SUCCESSFUL`.
+-   Testy na urządzeniu potwierdziły wyświetlanie miniaturek na listach
+    i ekranach szczegółów.
+-   Diagnostyczne logi potwierdziły odczyty `ROOM HIT` oraz
+    `MEMORY HIT`; przy ponownym wejściu do Places nie było potrzeby
+    ponownego pobierania metadanych z API.
+-   Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update`
+    obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach,
+    także po ponownej instalacji aplikacji.
 
+Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej
+mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów.
+Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie
+należy jednak traktować pojedynczej serii testów jako formalnego dowodu
+braku wszystkich możliwych problemów współbieżności.
+
+------------------------------------------------------------------------
 ## Aktualizacja 4 października 2026 -- JSON DataSource i KMP
 
 ### DTO i mapper
@@ -1544,451 +1393,768 @@ Jest to **ręczne DI**. Hilt nie jest częścią opisanego stanu.
     migracji ekranów do Compose Multiplatform.
 
 ------------------------------------------------------------------------
+## Aktualizacja 4 października 2026 -- KMP: migracja modelu Place do PlaceData
 
-## Aktualizacja 2 listopada 2026 --- miniaturki Wikimedia i współbieżność
+### Cel etapu
 
-### Model metadanych obrazu
+Rozpoczęto właściwą migrację domeny do Kotlin Multiplatform. Pierwszym
+krokiem było oddzielenie danych strukturalnych miejsca od treści
+prezentacyjnych i usunięcie zależności Android `R` z modelu
+współdzielonego.
 
-`WikimediaImage` przechowuje zarówno oryginalny adres pliku, jak i dane
-miniatury:
+### Współdzielone modele domenowe
+
+Modele platform-independent znajdują się w:
+
+``` text
+shared/src/commonMain/kotlin/com/rezegon/shared/domain/model/
+```
+
+Aktualnie znajdują się tam:
+
+-   `Place`
+-   `PlaceData`
+-   `PlaceContent`
+-   `PlaceFallback`
+-   `PlaceType`
+-   `WikimediaImageRef`
+
+`Place` zawiera dane strukturalne miejsca, m.in. `placeId`, `placeType`,
+`parentPlaceId`, `wikidataId`, referencje Wikimedia, lokalne obrazy oraz
+dane mapy.
+
+`PlaceContent` zawiera treść prezentacyjną:
 
 ``` kotlin
-data class WikimediaImage(
-    val title: String,
-    val url: String,
-    val width: Int,
-    val height: Int,
-    val thumbnailUrl: String?,
-    val thumbnailWidth: Int?,
-    val thumbnailHeight: Int?,
-    val author: String?,
-    val license: String?,
-    val licenseUrl: String?,
-    val filePageUrl: String?,
-    val credit: String?
+data class PlaceContent(
+    val id: String,
+    val name: String,
+    val translation: String? = null,
+    val snippet: String? = null,
+    val weather: String? = null,
+    val openingHours: String? = null,
+    val descriptions: List<String> = emptyList(),
+    val fallback: PlaceFallback? = null,
 )
 ```
 
-Pola miniatury są nullable, ponieważ API nie musi zwrócić miniatury dla
-każdego pliku. Informacje o miniaturze są przenoszone przez cały
-przepływ danych: DTO Wikimedia → mapper → `WikimediaImage` →
-`WikimediaEntity` w Room. `WikimediaMapper` mapuje je w obie strony.
-
-`KtorWikimediaDataSource` wysyła parametr `iiurlwidth=1200`. Wikimedia
-może zwrócić najbliższy dostępny wariant, dlatego rzeczywista szerokość
-pliku miniatury może różnić się od żądanej.
-
-### Wybór adresu obrazu w UI
-
-Listy miejsc i miast oraz `DetailsPager` preferują miniaturę, a w razie
-jej braku używają oryginalnego URL:
+`PlaceData` łączy oba modele:
 
 ``` kotlin
-image.thumbnailUrl ?: image.url
+data class PlaceData(
+    val place: Place,
+    val content: PlaceContent,
+)
 ```
 
-W ekranach list lokalne `placeImages` pozostają dodatkowym fallbackiem,
-gdy metadane Wikimedia nie są jeszcze dostępne. W `DetailsPage`
-przechowywany jest `pageId`, aby `DetailsPager` mógł pobrać właściwe
-metadane i nadal wyświetlać atrybucję Wikimedia. Wybór miniatury nie
-usuwa informacji o autorze, licencji ani stronie pliku.
+### Aktualny przepływ danych
 
-### Cache metadanych Wikimedia
-
-`WikimediaRepositoryImpl` korzysta z trzech poziomów źródła danych, w
-tej kolejności:
-
-1.  `WikimediaCache` --- cache w pamięci,
-2.  `WikimediaPersistentCache` --- trwały cache oparty na Room,
-3.  `WikimediaDataSource` --- API Wikimedia, jeśli danych nie ma w obu
-    cache.
-
-Wynik API jest zapisywany w Room i cache pamięciowym. Odczyt z Room
-uzupełnia również cache pamięciowy. Błąd odczytu lub zapisu Room jest
-obsługiwany i nie powinien blokować próby pobrania z API.
-
-### Bezpieczna aktualizacja stanu obrazów
-
-`WikimediaViewModel` przechowuje wyniki w:
-
-``` kotlin
-private val _images =
-    MutableStateFlow<Map<Int, WikimediaImage>>(emptyMap())
-
-val images: StateFlow<Map<Int, WikimediaImage>> = _images
-```
-
-Wiele korutyn może kończyć pobieranie w zbliżonym czasie. Aktualizacja
-mapy musi więc być atomowa:
-
-``` kotlin
-if (image != null) {
-    _images.update { current ->
-        current + (pageId to image)
-    }
-}
-```
-
-Nie należy zastępować tego operacją odczyt--modyfikacja--zapis:
-
-``` kotlin
-_images.value += (pageId to image)
-```
-
-Przy równoległych zapisach taka operacja może utracić aktualizację innej
-korutyny. `update` używa mechanizmu CAS i ponawia obliczenie, jeżeli
-stan zmienił się między odczytem a zatwierdzeniem. Lambda przekazana do
-`update` powinna być wolna od efektów ubocznych, ponieważ może zostać
-wykonana więcej niż raz.
-
-`loadingImagesInternal` jest osobnym stanem zbioru identyfikatorów
-aktualnie pobieranych obrazów. Dodawanie identyfikatora wykorzystuje
-`compareAndSet`, a jego usuwanie `update`. `Semaphore(5)` ogranicza
-liczbę równoległych operacji repozytorium do pięciu; pozostałe korutyny
-oczekują na permit.
-
-### Weryfikacja
-
--   Test `:shared:testAndroidHostTest` zakończył się `BUILD SUCCESSFUL`.
--   Build `:app:assembleDevDebug` zakończył się `BUILD SUCCESSFUL`.
--   Testy na urządzeniu potwierdziły wyświetlanie miniaturek na listach
-    i ekranach szczegółów.
--   Diagnostyczne logi potwierdziły odczyty `ROOM HIT` oraz
-    `MEMORY HIT`; przy ponownym wejściu do Places nie było potrzeby
-    ponownego pobierania metadanych z API.
--   Po zastąpieniu nieatomowej aktualizacji mapy przez `_images.update`
-    obrazy zaczęły wyświetlać się poprawnie w powtarzanych próbach,
-    także po ponownej instalacji aplikacji.
-
-Obserwacje wskazują na wyścig podczas równoległej aktualizacji wspólnej
-mapy jako przyczynę wcześniejszego, niestabilnego gubienia obrazów.
-Atomowa aktualizacja rozwiązała obserwowany problem w testach; nie
-należy jednak traktować pojedynczej serii testów jako formalnego dowodu
-braku wszystkich możliwych problemów współbieżności.
-
-------------------------------------------------------------------------
-
-## Aktualizacja 3 listopada 2026 --- etap `feature/kmp-ui-migration`
-
-### Wspólne definicje tras
-
-Definicje tras nawigacyjnych zostały przeniesione z modułu Android `app`
-do:
+W warstwach, które zostały już zmigrowane, obowiązuje:
 
 ``` text
-shared/src/commonMain/kotlin/com/razegon/shared/navigation/Screen.kt
-```
-
-Dzięki temu definicje `Screen` są dostępne w kodzie wspólnym. Samo
-przeniesienie tras **nie oznacza jeszcze**, że cała implementacja
-nawigacji ani wszystkie ekrany zostały przeniesione do `shared`. Należy
-rozróżniać współdzielone definicje tras od platformowej integracji
-nawigacji i UI.
-
-W ramach tego etapu usunięto również pusty placeholder
-`shared/.../MoroccoApp.kt`, aby nie pozostawiać w module wspólnym pliku,
-który nie reprezentował rzeczywistego punktu wejścia aplikacji.
-
-### Android UI
-
-W module `app` wprowadzono poprawki obsługi edge-to-edge w
-`MainActivity` oraz powiązanych ekranach/komponentach UI
-(`CitiesScreen`, `PlacesScreen`, `DetailsPager`). Są to zmiany warstwy
-Android UI; nie należy na ich podstawie wnioskować, że te ekrany są już
-wspólne dla Androida i iOS.
-
-### Odporność odpowiedzi Wikimedia
-
-W `WikimediaResponse.kt` pole `imageInfo` otrzymało domyślną wartość
-pustej listy. Odpowiedź API, w której brakuje tego pola, może dzięki
-temu zostać zdeserializowana bez traktowania braku `imageInfo` jako
-błędu wymagającego wartości nie-null.
-
-### Android Network Security Config --- kompromis kompatybilności
-
-Manifest Androida wskazuje `@xml/network_security_config`. Aktualna
-konfiguracja bazowa ufa zarówno systemowym certyfikatom CA, jak i
-certyfikatom CA zainstalowanym przez użytkownika:
-
-``` xml
-<base-config>
-    <trust-anchors>
-        <certificates src="system" />
-        <certificates src="user" />
-    </trust-anchors>
-</base-config>
-```
-
-Takie ustawienie zostało zachowane po teście na tablecie Huawei z
-Androidem 7: przy tej konfiguracji obrazy wyświetlały się poprawnie,
-natomiast zawężona konfiguracja dopuszczająca certyfikaty użytkownika
-tylko dla `commons.wikimedia.org` i `upload.wikimedia.org` powodowała,
-że część zdjęć nie była wyświetlana.
-
-**Ostrzeżenie bezpieczeństwa:** `src="user"` w `base-config` oznacza
-zaufanie do certyfikatów CA zainstalowanych przez użytkownika dla
-połączeń objętych konfiguracją aplikacji, a nie wyłącznie do jednego
-wskazanego certyfikatu lub jednej domeny. Jest to świadomy kompromis
-przyjęty dla kompatybilności ze starym urządzeniem. Nie należy opisywać
-tej konfiguracji jako ograniczonej wyłącznie do Wikimedia.
-
-Jest to konfiguracja Android Network Security Config. Nie konfiguruje
-ona zaufania TLS na iOS; platforma iOS ma odrębny mechanizm polityki
-połączeń sieciowych.
-
-### Stan gałęzi i zakres potwierdzonych zmian
-
-Zmiany etapu zostały zapisane na branchu `feature/kmp-ui-migration` i
-wypchnięte do `origin/feature/kmp-ui-migration`.
-
-Potwierdzone commity:
-
-``` text
-b90c59e Add Android network security config for user certificates
-4801d34 Handle missing Wikimedia image info
-3a48cf1 Improve Android edge-to-edge UI handling
-cbdbb36 Move navigation routes to shared module
-```
-
-## Na tym etapie potwierdzono przeniesienie definicji tras do `shared`, poprawki Android UI, domyślną pustą listę `imageInfo` oraz konfigurację sieciową Androida. Nie jest to równoznaczne z ukończeniem migracji Compose UI do `commonMain` ani z gotowością aplikacji iOS.
-
-## Aktualizacja 5 listopada 2026 --- zakończenie głównego etapu migracji KMP
-
-### Aktualny stan architektury
-
-Główna część migracji istniejącego projektu do Kotlin Multiplatform
-została scalona z `main` i wypchnięta do `origin/main`.
-
-Potwierdzone commity:
-
-``` text
-b8db742 Move app navigation and result repositories to shared
-67248a5 Complete shared UI and ViewModel migration
-```
-
-Po scaleniu lokalny `main` i `origin/main` wskazywały na `67248a5`, a
-`git status` potwierdzał czyste i zsynchronizowane repozytorium.
-
-W ramach tego etapu: - przeniesiono dalszą część nawigacji do
-`shared`; - przeniesiono repozytoria wyników Quiz i Arcade do
-`shared`; - przeniesiono wspólne ekrany Compose i ViewModele do
-`shared`; - pozostawiono w module Android elementy wymagające integracji
-z platformą Android; - dodano wspólny `AppContainer` w `shared`, który
-składa współdzielone repozytoria i otrzymuje zależności platformowe,
-takie jak `AppDatabase` oraz `HttpClientEngine`.
-
-Przepływ zależności jest obecnie organizowany wokół wspólnego modułu, a
-platforma dostarcza elementy, których `commonMain` nie może samodzielnie
-utworzyć.
-
-Schemat odpowiedzialności:
-
-``` text
-Android application
-    ├── platform entry point / Activity
-    ├── platform database creation
-    ├── platform HTTP engine
-    └── platform-specific integrations
-             ↓
-        shared AppContainer
-             ↓
-    shared repositories / ViewModels / Compose UI
-```
-
-### Granica między kodem wspólnym i platformowym
-
-Nowy kod funkcjonalny należy projektować najpierw z myślą o
-`commonMain`. Kod zależny od Android SDK, UIKit, konkretnego silnika
-systemowego lub platformowego cyklu życia powinien pozostać w
-odpowiednim source secie i być udostępniany przez możliwie wąski
-interfejs.
-
-Nie oznacza to, że każdy plik musi znajdować się w `commonMain`. Celem
-jest współdzielenie logiki, modeli, stanu i UI tam, gdzie jest to
-uzasadnione, przy zachowaniu jawnych granic platformowych.
-
-### Co nie jest jeszcze potwierdzone
-
-Scalenie migracji z `main` nie jest równoznaczne z ukończeniem iOS. Na
-dzień tej aktualizacji: - nie potwierdzono builda i uruchomienia
-aplikacji na iOS; - nie zweryfikowano wszystkich zachowań na
-rzeczywistym urządzeniu iOS; - nie wykonano końcowego audytu wszystkich
-zależności i plików pozostawionych w `app`; - nie zakończono porządków
-po migracji.
-
-Dlatego migrację istniejącego kodu do wspólnej architektury można uznać
-za zaawansowaną i w głównej części zakończoną, ale gotowość produkcyjna
-obu platform wymaga osobnej weryfikacji.
-
-### Planowana funkcjonalność map
-
-Mapy będą projektowane od początku jako funkcjonalność KMP. Nie należy
-najpierw tworzyć implementacji opartej wyłącznie na Androidowym
-`MapFragment`, Google Maps SDK lub `osmdroid`, a następnie planować jej
-przepisywania.
-
-Pierwszy zakres funkcjonalny:
-
-1.  **Mapa w Place Details** --- na pierwszej stronie szczegółów miejsca
-    ma pojawić się mapa z granicami danego obszaru. Geometria będzie
-    pochodzić z danych GeoJSON, o ile jest dostępna dla danego miejsca.
-2.  **Mapa miasta w City Details** --- w późniejszym etapie użytkownik
-    będzie mógł przełączać widok pomiędzy obecnym `LazyRow` kart miejsc
-    a mapą miasta z markerami miejsc.
-3.  **Interakcja z markerem** --- marker ma udostępniać tytuł oraz
-    krótki snippet (albo sam tytuł); wybranie miejsca ma umożliwiać
-    przejście do jego `Place Details`.
-
-### Zasady architektoniczne dla map
-
--   Geometrie GeoJSON, współrzędne, identyfikatory miejsc i relacje
-    miasto--miejsce powinny być niezależne od biblioteki renderującej
-    mapę.
--   Wspólna logika wyboru miejsca, filtrowania markerów, stanu kamery i
-    prezentacji informacji powinna być umieszczona w `shared`, jeśli nie
-    wymaga API platformowego.
--   Renderowanie mapy i integracje wymagające konkretnej platformy
-    należy odizolować za wspólnym API lub komponentem.
--   Nie należy uzależniać modeli domenowych od klas SDK mapowego.
--   Obsługa braku geometrii lub współrzędnych musi być jawna; brak
-    danych geograficznych nie może powodować awarii ekranu szczegółów.
-
-**MapLibre Compose jest kandydatem do sprawdzenia**, ponieważ jest
-rozwijany z myślą o Compose Multiplatform. Przed przyjęciem go jako
-docelowego silnika trzeba zweryfikować aktualne wersje, status
-Android/iOS, wymagane source sety, dostępność potrzebnych funkcji
-(GeoJSON, poligony, markery, zdarzenia, style, gesty) oraz sposób
-obsługi offline. Nie traktować trybu offline ani pełnej zgodności
-funkcji obu platform jako potwierdzonych, dopóki nie zostaną
-przetestowane.
-
-### Najbliższe działania techniczne
-
-1.  Wykonać audyt pozostałych zależności Android-only i elementów w
-    `app`.
-
-2.  Sprawdzić odłożone porządki po migracji:
-    `AndroidJsonResourceReader`, stary Androidowy
-    `QuizQuestionDataSource` oraz rejestrację Android assets --- usuwać
-    wyłącznie po sprawdzeniu referencji.
-
-3.  Zweryfikować aktualne konfiguracje `shared` i `app` oraz testy.
-
-4.  Przygotować osobny branch dla map dopiero po zatwierdzeniu
-    aktualizacji dokumentacji na `main`.
-
-5.  ## Przetestować MapLibre Compose na Androidzie jako pierwszy pionowy wycinek funkcjonalny, ale od razu z kodem i modelem danych zaprojektowanymi pod KMP.
-
-## Aktualizacja 7 listopada 2026 --- Mapy KMP i lokalizacja użytkownika
-
-### Zakres aktualnej implementacji
-
-Rozpoczęto implementację map jako funkcjonalności projektowanej dla
-Kotlin Multiplatform. Wspólny kod map znajduje się w
-`shared/src/commonMain/kotlin/com/razegon/shared/`, natomiast integracje
-wymagające platformowych API są rozdzielone na odpowiednie source sety.
-
-Aktualnie zaimplementowane elementy obejmują: - przeniesienie
-`PlaceMapSection.kt` do `ui/screens/map/`; - ekran pełnoekranowej mapy
-`FullScreenMap.kt`; - podłączenie ekranu do nawigacji w `MoroccoApp`; -
-przekazywanie `placeId` w trasie pełnoekranowej mapy; - model domenowy
-`MapArea` z granicami `south`, `west`, `north`, `east` oraz
-ograniczeniami zoomu; - mapowanie `MapAreaDto` z JSON do modelu
-domenowego; - ograniczenia kamery mapy do obszaru określonego dla
-miejsca; - wspólny stan lokalizacji użytkownika i obsługę statusu
-uprawnień; - `LocationViewModel` oraz komponent `MapLocationButton`; -
-platformowe implementacje `AppSettings` dla Androida i iOS; - integrację
-MapLibre Compose, w tym moduł lokalizacyjny dla Androida.
-
-### Model danych geograficznych
-
-Model `Place` nie przechowuje już flagi `showMapButton`. Zastąpiono ją
-opcjonalnym `mapArea`, które opisuje prostokątny obszar geograficzny:
-
-``` text
-MapArea
-├── south
-├── west
-├── north
-├── east
-├── minZoom
-└── maxZoom
-```
-
-Analogiczny obiekt DTO (`MapAreaDto`) jest częścią struktury danych
-JSON. `PlaceMapper` odpowiada za konwersję DTO do modelu domenowego.
-Dzięki temu konfiguracja obszaru mapy jest częścią danych miejsca, a nie
-warunkiem zakodowanym w UI.
-
-Brak `mapArea` pozostaje prawidłowym stanem danych. Nie należy zakładać,
-że każde miejsce ma zdefiniowany obszar ani tworzyć fikcyjnych granic.
-
-### Mapa osadzona i pełnoekranowa
-
-`PlaceMapSection` jest komponentem mapy używanym na ekranie szczegółów
-miejsca. Został przeniesiony do pakietu `ui.screens.map`. Pełnoekranowa
-mapa jest osobnym ekranem `FullScreenMap`, uruchamianym przez trasę
-zawierającą `placeId`.
-
-Przepływ nawigacji:
-
-``` text
-PlaceDetails
+DataSource
     ↓
-PlaceMapSection
+List<PlaceData>
     ↓
-FullScreenMap
+Repository
     ↓
-placeId
+ViewModel
+    ↓
+UiState
+    ↓
+Compose UI
 ```
 
-Przekazywany jest identyfikator miejsca, a nie cały obiekt domenowy.
-Pełnoekranowy ekran może na tej podstawie odtworzyć kontekst miejsca i
-zastosować jego konfigurację mapy.
+Nie stosujemy mapowania `PlaceData → Place` tylko po to, aby zachować
+stary przepływ danych.
 
-W aktualnej implementacji używany jest styl MapLibre `bright`.
-Konfiguracja ograniczeń kamery uwzględnia `MapArea`; dla wybranych
-przypadków, np. Cieśniny Gibraltarskiej, zastosowano szczególne
-ograniczenie minimalnego zoomu.
+### Zmigrowane elementy
 
-### Lokalizacja użytkownika
+Do `PlaceData` zostały dostosowane:
 
-Wspólny model stanu lokalizacji znajduje się w `commonMain`, natomiast
-dostęp do ustawień i uprawnień jest rozdzielony platformowo. W kodzie
-występują m.in.: - `LocationMode`; - `LocationPermissionStatus`; -
-`UserLocationState`; - `LocationViewModel`; - `AppSettings` oraz
-implementacje `AppSettings.android.kt` i `AppSettings.ios.kt`; -
-`MapLocationButton`.
+-   `PlacesRepository`
+-   `PlacesRepositoryImpl`
+-   `PlacesViewModel`
+-   `PlacesUiState`
+-   `CitiesViewModel`
+-   `CitiesUiState`
+-   `CityDetailsUiState`
+-   `CitiesScreen`
+-   `CityListItem`
+-   `CityDetailsScreen`
+-   wspólne `createPages()`
+-   `DetailsPage`
 
-`MapLocationButton` odpowiada za prezentację akcji związanej z
-uprawnieniem. Rodzic przekazuje aktualny status oraz callbacki żądania
-uprawnienia i otwarcia ustawień. Obsługa cyklu życia i decyzja o
-powrocie z ustawień pozostają po stronie ekranu nadrzędnego.
+`CityDetailsUiState` przechowuje obecnie `PlaceData?` dla głównego
+miasta oraz `List<PlaceData>` dla jego dzieci.
 
-Na mapie osadzono warstwę lokalizacji MapLibre. Przetestowano build i
-działanie aplikacji na dwóch urządzeniach Android; użytkownik
-potwierdził poprawne działanie przepływu GPS. Sam fakt istnienia
-implementacji `iosMain` nie potwierdza jeszcze uruchomienia ani
-poprawnego działania na iOS.
+### Treść opisów
 
-### Dane testowe GPS
+`PlaceContent.descriptions` oraz `DetailsPage.description` używają
+obecnie `String` / `String?` zamiast wcześniejszych identyfikatorów
+`R.string`.
 
-W `ma_monuments.json` znajduje się tymczasowy punkt testowy
-`gps_test_point_warsaw` o identyfikatorze `99001`, zlokalizowany w
-Warszawie. Pozostaje w danych na czas dalszych testów GPS. Nie jest
-obiektem docelowej bazy miejsc Maroka i powinien zostać usunięty po
-zakończeniu testów.
+Jest to rozwiązanie przejściowe. Docelowo treści zostaną przeniesione do
+JSON. Wtedy zostanie ustalona finalna strategia lokalizacji oraz
+formatowania akapitów.
 
-### Granice potwierdzonej funkcjonalności
+### Aktualny DataSource
 
-Potwierdzono implementację podstawowej mapy osadzonej i pełnoekranowej,
-obszaru `MapArea`, ograniczeń kamery oraz podstawowego przepływu
-lokalizacji na Androidzie.
+`MoroccoDataSource` nadal znajduje się w module Android `app` i zawiera
+odwołania do `R.string.*`. Jest to świadomie pozostawiony kolejny etap
+migracji.
 
-Nie należy jeszcze uznawać za ukończone: - pełnego testowania iOS na
-urządzeniu; - śledzenia ruchu użytkownika w tle lub w trybie ciągłym; -
-automatycznego wyłączania śledzenia po ręcznym przesunięciu mapy i
-wznowienia go przyciskiem, jeśli nie zostało osobno przetestowane; - map
-offline; - markerów POI i filtrowania kategorii; - granic
-GeoJSON/polygonów --- `MapArea` jest prostokątnym ograniczeniem
-geograficznym, a nie geometrią administracyjną.
+Docelowy kierunek:
+
+``` text
+JSON
+    ↓
+shared data layer
+    ↓
+List<PlaceData>
+    ↓
+Repository
+    ↓
+ViewModel
+    ↓
+Compose UI
+```
+
+Schemat JSON nie jest jeszcze traktowany jako finalny. Zostanie
+zaprojektowany po przeanalizowaniu całego obecnego `MoroccoDataSource`.
+
+### Stan po etapie
+
+-   Gradle Sync: OK
+-   Build: OK
+-   aplikacja uruchamia się poprawnie
+-   lista miast działa
+-   szczegóły miasta działają
+-   zdjęcia Wikimedia działają
+-   opisy działają
+-   lista miejsc przypisanych do miasta działa
+
+Jest to checkpoint przed kolejnym etapem migracji DataSource i treści do
+JSON.
+## Aktualizacja 3 października 2026 -- Arcade Mode
+
+### Architektura Arcade
+
+Arcade korzysta z istniejącego `QuizRepository`, dlatego wykorzystuje tę
+samą pulę 50 pytań co klasyczny Quiz.
+
+``` text
+ArcadeScreen
+    ↓
+ArcadeViewModel
+    ↓
+QuizRepository
+    ↓
+QuizQuestionDataSource
+    ↓
+questions.json
+```
+
+`ArcadeViewModel` zarządza stanem pojedynczej rozgrywki. Stan jest
+przechowywany w `ArcadeGameState` i obejmuje m.in. aktualne pytanie,
+wybraną odpowiedź, wynik, pozostały czas, identyfikatory wykorzystanych
+pytań oraz informację o zakończeniu gry.
+
+### Zasady rozgrywki
+
+Arcade wykorzystuje wszystkie pytania dostępne w `QuizRepository`. W
+jednej rozgrywce pytanie nie może pojawić się ponownie.
+
+``` text
+czas początkowy: 45 s
+poprawna odpowiedź: +5 s, +1 punkt
+błędna odpowiedź: -5 s
+koniec gry: 0 s
+wynik: liczba poprawnych odpowiedzi
+```
+
+Po odpowiedzi przyciski odpowiedzi zostają zablokowane. Następne pytanie
+jest losowane dopiero po przejściu dalej. `usedQuestionIds` pozwala
+wykluczyć pytania wykorzystane wcześniej w tej samej rozgrywce.
+
+### Stan Arcade
+
+`ArcadeGameState` jest osobnym modelem stanu, ponieważ Arcade ma inne
+reguły niż klasyczny quiz.
+
+``` text
+ArcadeGameState
+├── currentQuestion
+├── selectedAnswerIndex
+├── isAnswerChecked
+├── score
+├── remainingTimeSeconds
+├── usedQuestionIds
+└── isGameOver
+```
+
+Oddzielenie stanu Arcade od `QuizViewModel` pozwala zachować osobną
+logikę gry bez dokładania timerów i dodatkowych stanów do klasycznego
+quizu.
+
+### Timer
+
+Timer jest zarządzany przez `ArcadeViewModel`. Odliczanie jest
+uruchamiane razem z rozpoczęciem gry i zatrzymywane po zakończeniu
+rozgrywki lub opuszczeniu Arcade.
+
+Zmiana czasu po odpowiedzi jest wykonywana w ViewModelu, a UI jedynie
+obserwuje `remainingTimeSeconds` przez `StateFlow`.
+
+### Zakończenie i wyjście z Arcade
+
+`ArcadeScreen` posiada przycisk `X` w prawym górnym rogu. Przed
+opuszczeniem aktywnej rozgrywki wyświetlany jest `AlertDialog`.
+
+``` text
+X
+↓
+potwierdzenie
+├── ZOSTAŃ → powrót do gry
+└── WYJDŹ → zakończenie/reset bieżącej rozgrywki
+```
+
+Niezakończona rozgrywka nie jest zapisywana do rankingu.
+
+### Wynik Arcade
+
+Dla Arcade utworzono osobny model domenowy:
+
+``` kotlin
+data class ArcadeResult(
+    val nickname: String,
+    val score: Int,
+    val date: Long
+)
+```
+
+Wynik jest niezależny od `QuizResult`, ponieważ klasyczny quiz zapisuje
+dodatkowo poziom trudności i liczbę pytań.
+
+### Room -- ranking Arcade
+
+Arcade ma osobną tabelę Room:
+
+``` kotlin
+@Entity
+data class ArcadeResultEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val nickname: String,
+    val score: Int,
+    val date: Long
+)
+```
+
+`ArcadeResultDao` udostępnia zapis wyniku oraz pobranie TOP 10. Ranking
+sortuje wyniki po `score DESC`, a przy takim samym wyniku po `date ASC`.
+
+Przepływ zapisu:
+
+``` text
+ArcadeScreen
+    ↓
+ArcadeResultViewModel
+    ↓
+ArcadeResultRepository
+    ↓
+ArcadeResultDao
+    ↓
+Room
+```
+
+Mapper rozdziela model domenowy `ArcadeResult` od encji Room
+`ArcadeResultEntity`.
+
+### Zapis wyniku
+
+Wynik można zapisać dopiero po zakończeniu gry. Nick jest ograniczony do
+15 znaków i nie może być pusty po usunięciu białych znaków.
+
+Po zapisaniu wynik jest blokowany przed ponownym zapisem w tej samej
+rozgrywce. Dopiero wtedy dostępne są przyciski:
+
+``` text
+ZAPISZ WYNIK
+      ↓
+WYNIK ZAPISANY
+      ↓
+TOP 10 ARCADE
+MENU QUIZU
+```
+
+### Ranking Arcade
+
+`ArcadeRankingScreen` pobiera wyniki przez `ArcadeResultViewModel` i
+wyświetla 10 najlepszych zapisanych wyników.
+
+Ranking Arcade jest oddzielony od rankingu klasycznego quizu. Nie
+korzysta z `QuizResultEntity` ani `QuizResultDao`.
+
+### Room Migration 1 → 2
+
+Dodanie tabeli `ArcadeResultEntity` wymagało zwiększenia wersji
+`AppDatabase` i dodania migracji `MIGRATION_1_2`. Migracja tworzy tabelę
+wyników Arcade bez usuwania istniejących danych cache i wyników
+klasycznego quizu.
+
+``` text
+Room v1
+  ↓ MIGRATION_1_2
+Room v2
+├── WikidataEntity
+├── WikimediaEntity
+├── QuizResultEntity
+└── ArcadeResultEntity
+```
+
+### Integracja w `MoroccoApp`
+
+W `MyApp` znajduje się wspólna instancja `AppDatabase`. W `MoroccoApp`
+tworzony jest osobny `ArcadeResultRepository` i `ArcadeResultViewModel`
+na podstawie `ArcadeResultDao`.
+
+Dzięki temu UI nie zna Room bezpośrednio:
+
+``` text
+ArcadeScreen
+↓
+ArcadeResultViewModel
+↓
+ArcadeResultRepository
+↓
+ArcadeResultDao
+```
+
+### Navigation Arcade
+
+Arcade posiada osobne trasy dla gry i rankingu:
+
+``` text
+QuizStartScreen
+├── Quiz
+├── Arcade
+│    ↓
+│    ArcadeScreen
+│    ↓
+│    ArcadeRankingScreen
+└── QuizRanking
+```
+
+Uruchomienie Arcade wywołuje `arcadeViewModel.startGame()` przed
+przejściem do ekranu gry. Dzięki temu powrót z `ArcadeRankingScreen` nie
+uruchamia automatycznie nowej rozgrywki i zachowuje bieżący stan gry.
+
+### Build i testy
+
+Po kolejnych logicznych zmianach Arcade wykonywano Build i testy ręczne.
+Sprawdzono m.in. przebieg rozgrywki, brak powtórzeń pytań, zmianę czasu,
+zapis wyniku, ochronę przed wielokrotnym zapisem, ranking oraz powrót do
+menu quizu.
+## Aktualizacja 14 września 2026 -- aktualny stan po domknięciu Quiz MVP
+
+### Quiz -- źródło pytań
+
+Pytania quizowe nie są już przechowywane jako hardkodowana lista w
+`QuizRepositoryImpl`. Są przechowywane w pliku:
+
+``` text
+app/src/main/assets/quiz/questions.json
+```
+
+Każdy rekord zawiera:
+
+``` text
+id
+difficulty
+question
+answers
+correctAnswerIndex
+```
+
+Aktualnie baza zawiera 50 pytań:
+
+``` text
+VERY_EASY  → 10
+EASY       → 10
+MEDIUM     → 10
+HARD       → 10
+VERY_HARD  → 10
+```
+
+### Przepływ danych quizu
+
+``` text
+questions.json
+      ↓
+QuizQuestionDataSource
+      ↓
+Gson
+      ↓
+QuizQuestionDto
+      ↓
+QuizQuestionMapper
+      ↓
+QuizQuestion
+      ↓
+QuizRepository
+      ↓
+QuizViewModel
+      ↓
+Compose UI
+```
+
+`QuizQuestionDto` odwzorowuje format JSON, natomiast `QuizQuestion` jest
+modelem domenowym. Konwersja `difficulty` z tekstu JSON do
+`QuizDifficulty` odbywa się w mapperze.
+
+### Trudność quizu
+
+`QuizDifficulty` znajduje się w `domain/model` i posiada pięć poziomów:
+
+``` kotlin
+VERY_EASY
+EASY
+MEDIUM
+HARD
+VERY_HARD
+```
+
+Poziom jest wybierany na osobnym `QuizDifficultyScreen`.
+`QuizViewModel.startQuiz(difficulty)` zapamiętuje wybrany poziom i
+pobiera odpowiednie pytania przez Repository.
+
+### Klasyczny quiz
+
+Klasyczny quiz składa się z 10 pytań. Każde pytanie posiada 4 odpowiedzi
+i dokładnie jedną poprawną. Po udzieleniu odpowiedzi wybór zostaje
+zablokowany. Poprawna odpowiedź jest oznaczana na zielono, a wybrana
+błędna odpowiedź na czerwono.
+
+### Przerwanie quizu
+
+`QuizScreen` posiada mały przycisk `X` w prawym górnym rogu. Przed
+opuszczeniem rozgrywki wyświetlany jest `AlertDialog` z potwierdzeniem.
+
+``` text
+X
+↓
+potwierdzenie
+├── ZOSTAŃ → pozostaje w quizie
+└── WYJDŹ → reset stanu + powrót do ekranu startowego quizu
+```
+
+Przerwanie quizu nie zapisuje wyniku. Resetowany jest bieżący stan
+rozgrywki.
+
+### Wyniki quizu i Room
+
+`QuizResult` zawiera obecnie:
+
+``` kotlin
+nickname
+difficulty
+score
+totalQuestions
+date
+```
+
+Wynik jest zapisywany przez `QuizResultRepository` do Room. Ranking jest
+sortowany przede wszystkim po liczbie poprawnych odpowiedzi
+(`score DESC`). Poziom trudności jest informacją prezentowaną obok
+wyniku i nie daje automatycznego bonusu w rankingu.
+
+Przykład:
+
+``` text
+10/10 MEDIUM
+9/10 HARD
+```
+
+### Quiz UI i Theme
+
+Dla aplikacji wprowadzono własny Material 3 Theme dla Light i Dark Mode.
+Dynamic colors są wyłączone.
+
+Wspólne elementy Theme obejmują:
+
+``` text
+ColorScheme
+Shapes
+Typography
+```
+
+`Shape.kt` definiuje wspólną skalę zaokrągleń. Ekrany startowy i wyboru
+trudności korzystają z tej samej hierarchii typografii i spacingu.
+
+### Git
+
+Etap `feature/quiz` został ukończony, przetestowany i scalony do `main`
+metodą `Fast-forward`. Zaktualizowany `main` został wypchnięty do
+GitHub.
+
+Następnym etapem będzie osobny branch dla `Arcade Mode`.
+## Aktualizacja 2--3 września 2026 -- Room, Git i Quiz
+
+### Trwały cache z Room
+
+Do projektu dodano Room 3 oraz KSP. Room przechowuje lokalnie metadane
+Wikidata i Wikimedia, dzięki czemu dane mogą być odzyskane po
+zakończeniu procesu aplikacji.
+
+Utworzono: - `AppDatabase` - `WikidataEntity` / `WikidataDao` -
+`WikimediaEntity` / `WikimediaDao` - `WikidataMapper` -
+`WikimediaMapper`
+
+Mechanizm dostępu do danych:
+
+``` text
+Wikidata / Wikimedia metadata:
+MemoryCache → Room → API
+API → Room → MemoryCache → UI
+```
+
+Dla obrazów właściwy plik jest niezależnie obsługiwany przez Coil i jego
+persistent `DiskCache`.
+
+``` text
+Wikimedia image URL
+        ↓
+      Coil
+        ↓
+   DiskCache
+```
+
+`MyApp : Application` przechowuje obecnie wspólne MemoryCache, bazę Room
+oraz współdzielony `WikimediaImageLoader`.
+
+### Test offline po restarcie
+
+Przetestowano działanie persistent cache po zakończeniu procesu
+aplikacji i ponownym uruchomieniu bez internetu. Logcat wykazał odczyty
+`ROOM CACHE HIT`, a użytkownik potwierdził wyświetlenie zapisanych zdjęć
+offline.
+
+### Git i organizacja pracy
+
+Projekt został podłączony do Git i GitHub. Praca nad funkcjami odbywa
+się na osobnych branchach.
+
+Aktualna historia:
+
+``` text
+main
+├── chore: initialize MoroccoApp repository
+├── chore: configure Room and KSP
+├── feat: add persistent Wikidata cache
+└── feat: add persistent Wikimedia cache
+```
+
+Branch `feature/room` został scalony do `main` metodą `Fast-forward`.
+
+Następnie utworzono branch `feature/quiz`.
+
+### Quiz -- aktualna architektura
+
+Pierwsza wersja quizu korzysta z osobnego modelu, Repository i
+ViewModelu.
+
+``` text
+HomeScreen
+    ↓
+Navigation
+    ↓
+QuizScreen
+    ↓
+QuizViewModel
+    ↓
+QuizRepository
+    ↓
+QuizQuestion
+```
+
+Ukończono: - `QuizQuestion` - `QuizRepository` - `QuizRepositoryImpl` -
+`QuizViewModel` - `QuizViewModelFactory` - `QuizScreen` - trasę `quiz` w
+Navigation - przycisk wejścia do quizu na `HomeScreen`
+
+Quiz zawiera obecnie 10 pytań. Każde pytanie ma 4 odpowiedzi i dokładnie
+jedną poprawną odpowiedź.
+
+Po wybraniu odpowiedzi użytkownik nie może jej zmienić. Poprawna
+odpowiedź jest oznaczana na zielono, a błędna wybrana odpowiedź na
+czerwono. Na ostatnim pytaniu przycisk zmienia się z `NASTĘPNE` na
+`PODSUMOWANIE`.
+
+### Najbliższe elementy quizu
+
+``` text
+QuizScreen
+    ↓
+QuizSummaryScreen
+    ↓
+nickname + score + totalQuestions + date
+    ↓
+Room
+    ↓
+TOP 10 / TOP 20
+```
+## Aktualizacja 31 sierpnia -- 1 września 2026
+
+### Źródła danych online
+
+Do architektury dołączono Wikidata jako źródło dynamicznych danych dla
+obiektów posiadających `wikidataId`. Wikimedia pozostaje źródłem
+informacji o zdjęciach i ich attribution.
+
+``` text
+Place
+  └── wikidataId
+        ↓
+WikidataRepository
+        ↓
+WikidataInfo
+        ↓
+CityDetails / PlaceDetails
+```
+
+Dla City `WikidataInfo` zawiera obecnie `population`, `area`,
+`elevation` oraz `inception: WikidataTime?`.
+
+### Repository i cache
+
+Repository jest nadal interfejsem w `domain/repository`, a implementacja
+znajduje się w `data/repository`. Do danych online dodano interfejsy
+cache w domenie oraz implementacje pamięciowe w warstwie data.
+
+``` text
+domain/repository
+├── WikidataRepository
+├── WikidataCache
+└── WikimediaCache
+
+ data/repository
+├── WikidataRepositoryImpl
+└── WikimediaRepositoryImpl
+
+ data/cache
+├── WikidataMemoryCache
+└── WikimediaMemoryCache
+```
+
+### `MyApp` i współdzielone zależności
+
+Projekt ma już własną klasę `MyApp : Application`. Na obecnym etapie
+przechowuje wspólne instancje `WikidataMemoryCache` i
+`WikimediaMemoryCache`. Jest to punkt centralizacji zależności, który w
+przyszłości może zostać rozszerzony o konfigurację OSM i inne elementy
+infrastruktury.
+
+### Wspólny klient HTTP
+
+Konfiguracja `User-Agent` została wydzielona do wspólnego klienta HTTP,
+wykorzystywanego przez usługi Wikimedia/Wikidata oraz Coil. Eliminuje to
+kolejne duplikaty konfiguracji i centralizuje zachowanie sieciowe.
+
+### Wikimedia -- ograniczenie requestów
+
+`WikimediaViewModel` ogranicza liczbę jednoczesnych requestów do trzech
+(`Semaphore(3)`) oraz blokuje równoległe ponowne pobieranie tego samego
+`pageId`. Repository korzysta z `WikimediaCache`, dzięki czemu dane
+pobrane wcześniej w bieżącej sesji mogą być używane bez kolejnego
+requestu.
+
+### Loading obrazu
+
+Stan ładowania właściwego pliku obrazu jest obecnie kontrolowany przez
+Coil w `DetailsPager`, a nie przez stan pobierania metadanych Wikimedia.
+`LinearProgressIndicator` jest wyświetlany podczas `onLoading` i znika
+przy `onSuccess`/`onError`.
+
+### Offline
+
+Aktualnie dostępny jest cache w pamięci procesu. Dane są dostępne po
+utracie sieci w obrębie tej samej sesji. Cache znika po zakończeniu
+procesu aplikacji. Trwały storage nie został jeszcze wdrożony. Room
+pozostaje przyszłym krokiem, kiedy potrzebny będzie offline po
+restarcie.
+
+### Planowane rozszerzenia
+
+W przyszłości baza lokalna może przechowywać dane Wikidata, Wikimedia, a
+następnie dane Quizu, ulubione obiekty, postęp użytkownika i inne dane
+aplikacji. Room jest obecnie odłożony, aby najpierw ustabilizować model
+domenowy i przepływy online/offline.
+## Aktualizacja 30--31 sierpnia 2026
+
+### Wikimedia ImageLoader
+
+Konfiguracja ładowania zdjęć Wikimedia została scentralizowana w
+`data/image/WikimediaImageLoader.kt`.
+`createWikimediaImageLoader(context)` tworzy Coil `ImageLoader`
+wykorzystujący wspólny klient OkHttp z odpowiednim `User-Agent`. Dzięki
+temu konfiguracja nie jest kopiowana w `CityDetailsScreen`,
+`PlaceDetailsScreen` i `CityListItem`.
+
+Przepływ:
+
+``` text
+WikimediaRetrofit
+↓
+WikimediaRepository
+↓
+WikimediaViewModel
+↓
+Map<Int, WikimediaImage>
+↓
+createWikimediaImageLoader()
+↓
+AsyncImage
+```
+
+### Wspólny DetailsPager
+
+Logika `CityDetailsScreen` i `PlaceDetailsScreen` została
+zrefaktoryzowana do `DetailsPager`. Wspólny komponent obsługuje pager,
+zdjęcia, attribution, collapsing, scroll, PageIndicator, nazwę,
+tłumaczenie, snippet i descriptions.
+
+``` text
+CityDetailsScreen ──┐
+                    ├── DetailsPager
+PlaceDetailsScreen ─┘
+```
+
+Różnice są przekazywane przez opcjonalny slot Compose:
+
+``` kotlin
+content: @Composable () -> Unit = {}
+```
+
+City przekazuje `LazyRow` miejsc, Place nie przekazuje dodatkowej
+zawartości.
+
+### Wspólne tworzenie stron
+
+Wcześniejsze `createCityPages()` i `createPlacePages()` zostały
+zastąpione wspólnym `createPages()`. Dzięki temu sposób mapowania
+`WikimediaImageRef`, lokalnych URL-i i opisów jest jeden dla obu
+ekranów.
+
+### Odpowiedzialność layoutu
+
+W `DetailsPager` `Box` zawiera wyłącznie hero image i elementy nakładane
+na zdjęcie (`WikimediaAttributionIcon`, `PageIndicator`). Nazwa,
+translate, snippet, descriptions i opcjonalny `content()` znajdują się w
+nadrzędnym `Column`, dzięki czemu nie nachodzą na zdjęcie.
+
+### Przyszła Application
+
+Projekt obecnie nie ma własnej klasy `Application`. Jest to świadoma
+sytuacja na obecnym etapie. Przy planowanym dodaniu map OSM konfiguracja
+aplikacji może zostać przeniesiona do własnej klasy `Application`,
+podobnie jak wcześniej w GlobeTrotter.

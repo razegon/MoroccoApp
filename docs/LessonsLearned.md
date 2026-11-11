@@ -1,5 +1,109 @@
 # Lessons Learned
 
+
+## Aktualizacja 11 listopada 2026 — mapy, GPS, markery i podgląd POI
+
+### Rozdziel lokalizację, centrowanie i śledzenie
+
+W historii MoroccoApp te zachowania zostały dodane osobnymi commitami:
+- podstawowa obsługa lokalizacji;
+- wskaźnik dokładności GPS;
+- ponowne centrowanie po kliknięciu markera;
+- śledzenie pozycji.
+
+Nie należy używać pojęć „lokalizacja GPS” i „tracking” zamiennie.
+W testach warto osobno sprawdzić uzyskanie pozycji, prezentację
+dokładności, jednorazowe centrowanie i ciągłe aktualizowanie kamery.
+
+### Clustering źródła GeoJSON
+
+W MapLibre Compose grupowanie punktów może być konfigurowane na źródle
+GeoJSON (`cluster = true`). W MoroccoApp ta konfiguracja została
+dodana do źródła miejsc podrzędnych w `CityMapSection`.
+
+Ważne: aktywacja clusteringu na źródle nie jest równoznaczna z
+udokumentowaniem własnego wyglądu klastrów, ich liczników ani
+interakcji rozwijania. Te elementy wymagają osobnej weryfikacji kodu.
+
+### Wspólna warstwa markerów
+
+`MapMarker` centralizuje prezentację POI w `SymbolLayer`. Dane GeoJSON
+przenoszą `placeId` i `iconKey`; styl ikony wynika z kategorii miejsca.
+Takie rozdzielenie pozwala oddzielić dane obiektu od zasobu graficznego
+i obsługi kliknięcia.
+
+### Wybór POI nie musi oznaczać nawigacji
+
+Kliknięcie markera może jedynie ustawić wybór i pokazać podgląd.
+Dopiero jawna akcja Details powinna uruchomić istniejącą nawigację.
+To rozdziela eksplorację mapy od przejścia na ekran szczegółów.
+
+### Stan wyboru współdzielony przez warianty mapy
+
+Jeżeli mapa osadzona i pełnoekranowa mają prezentować ten sam wybór,
+stan `selectedPlaceId` powinien mieć wspólnego właściciela wyżej w
+drzewie UI. W MoroccoApp jest to root `MoroccoApp`; `null` oznacza brak
+wyboru. Unika to dwóch niezależnych stanów wyboru.
+
+### AnimatedContent a zmiana wybranego POI
+
+`AnimatedVisibility` obsługuje zmianę widoczności, ale nie jest
+wystarczającym rozwiązaniem, gdy widoczna karta ma płynnie zmieniać
+prezentowany obiekt. `AnimatedContent` z kluczem opartym na `placeId`
+pozwala animować również przejście między różnymi POI.
+
+### Obrót urządzenia i stan pełnoekranowej mapy
+
+Zachowanie ekranu po zmianie konfiguracji należy weryfikować osobno
+dla mapy miasta i mapy miejsca. Sam fakt, że mapa działa przed
+obrotem, nie potwierdza zachowania stanu po odtworzeniu UI.
+
+## Compose --- animowanie zmiany wybranego elementu
+
+### `AnimatedVisibility` a zmiana zawartości
+
+`AnimatedVisibility` reaguje na zmianę widoczności (`true` / `false`).
+Jeżeli komponent pozostaje widoczny, ale zmienia się prezentowany
+obiekt, sama zmiana danych nie musi uruchomić ponownie animacji wejścia.
+
+### `AnimatedContent` dla przełączania elementów
+
+Jeżeli animacja ma obejmować również przejście z jednego elementu do
+drugiego, właściwym narzędziem jest `AnimatedContent`. W przypadku
+karty POI `targetState` wskazuje aktualne `PlaceData`, a `contentKey`
+oparty na `placeId` identyfikuje zmianę wybranego miejsca.
+
+W MoroccoApp połączono:
+- `fadeIn()` z `slideInVertically { it / 2 }`;
+- `fadeOut()` z `slideOutVertically { it / 2 }`;
+- `togetherWith`, aby zdefiniować animację treści wychodzącej i
+  wchodzącej.
+
+Wniosek: dobieraj API animacji do rodzaju zmiany stanu. Widoczność
+komponentu i wymiana jego zawartości to dwa różne przypadki.
+
+### Stan wyboru POI powinien mieć jednego właściciela
+
+`selectedPlaceId: Int?` jest przechowywany na poziomie root
+`MoroccoApp`, a nie niezależnie w mapie osadzonej i pełnoekranowej.
+Pozwala to przekazywać ten sam wybór między trasami i zachować spójne
+zachowanie obu prezentacji mapy. Wartość `null` reprezentuje brak
+wyboru.
+
+### Oddziel wybór markera od nawigacji
+
+Kliknięcie markera wybiera POI i prezentuje kartę podglądu. Dopiero
+jawna akcja `Szczegóły` uruchamia istniejący callback nawigacyjny.
+Dzięki temu użytkownik może przeglądać kolejne markery bez
+opuszczania mapy.
+
+### Ponowne użycie komponentu w różnych rozmiarach
+
+`CityPlacePreviewCard` jest wspólnym komponentem używanym na mapie
+osadzonej i pełnoekranowej. Parametr `isFullscreen` pozwala dostosować
+wymiary bez duplikowania logiki prezentacji i ładowania zdjęć.
+
+
 ## Compose i podstawy UI
 
 -   StateFlow vs collectAsState()
